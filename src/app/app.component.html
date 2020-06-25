@@ -1,0 +1,5 @@
+<ng-container *ngIf ="ryber.appCurrentNav  === '/home' || ryber.appCurrentNav  === '/' || ryber.appCurrentNav  === '/clt' ">
+    <ng-container *ngFor="let item of formCO; index as i;">
+        <app-form  [class] = '"formCO" +i' [appTV]= '"formCO" + i'  [ngStyle] = 'ryber["formCO"+i].quantity[0][0].ngCss[0][0]'></app-form>
+    </ng-container>
+</ng-container>
