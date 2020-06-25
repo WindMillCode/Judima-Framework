@@ -113,13 +113,14 @@ export class RyberService {
         formCO3:componentObject ={ 
             metadata:{
             },
-            generator:(function(){
-                return function *generator() {
-                    var index = 8352;
-                    while (true)
-                    yield index++;
-                }()
-            })(),            
+            //deprecated
+            // generator:(function(){
+            //     return function *generator() {
+            //         var index = 8352;
+            //         while (true)
+            //         yield index++;
+            //     }()
+            // })(),            
             quantity:[
                 [],
                 [
@@ -139,14 +140,15 @@ export class RyberService {
                                 {
                                     height:"400px",
                                     width:"100%",
-                                    // "z-index":"1",
                                     "background-color":"rgb(255, 241, 204)",
                                     top:"0px"                                
                                 }                                                                                                      
                             ]                    
                         ],                  
                         extras:[
-                            [],
+                            [
+                                {}
+                            ],
                             [],
                             []                      
                         ]
@@ -213,7 +215,8 @@ export class RyberService {
                     }})                                                                                                                                                                                                                   
                 ]
             ],       
-        };                                              
+        };                 
+                                 
         //        
     /* */   
     
@@ -246,3 +249,4 @@ export class RyberService {
     
     
 }
+

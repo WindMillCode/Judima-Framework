@@ -749,7 +749,13 @@ export function coInit (a,componentObjects,additional?) {
                     quantity:[[3]],
                     bool:[["true"]], 
                     val:[
-                        [b.valueOf().split("").join("_")+"_App"]
+                        [
+                            b
+                            .valueOf()
+                            .split("CO")[0]
+                            .split("")
+                            .join("_")+"_App"
+                        ]
                     ], 
                     text:[
                             []
@@ -806,9 +812,115 @@ export function coInit (a,componentObjects,additional?) {
 // ryber function
 export function ryberUpdate(
     devObj:{
-        
+        co:string,
+        ryber:RyberService,
+        type?:string,
+        css?:any | CSSRuleList,
+        extras?:any
     }
-)
+){
+    let {co,ryber,type,css,extras}= devObj
+    
+    if(ryber[co.valueOf()] === undefined){
+        ryber[co.valueOf()] = objectCopy(
+            { 
+                metadata:{
+                },           
+                quantity:[
+                    [],
+                    [
+                        {
+                            signature:"containing",
+                            quantity:[[3]],
+                            bool:[["div"]], 
+                            val:[
+                                [
+                                    co
+                                    .valueOf()
+                                    .split("CO")[0]
+                                    .split("")
+                                    .join("_")+"_Board"                                    
+                                ],
+                            ],  
+                            text:[
+                                [],
+                            ],
+                            symbol:[["&#8353"]],
+                            ngCss:[
+                                [
+                                    (()=>{
+                                           if(css !== undefined){
+                                               css.width = "100%" //must always be set to this value
+                                               return css
+                                           } 
+                                            
+                                            return {
+                                                height:"400px",
+                                                width:"100%",
+                                                "z-index":"1",
+                                                "background-color":"rgb(255, 241, 204)",
+                                                top:"0px"                                
+                                            }
+                                    })(),                                                                                                      
+                                ]                    
+                            ],                  
+                            extras:[
+                                [
+                                    (
+                                        extras === undefined ? extras: {}
+                                    ),                                    
+                                ],
+                                [],
+                                []                      
+                            ]
+                        },                      
+                        ...Array.from(Array(1),()=> {
+                            return {
+                                signature:"",
+                                quantity:[
+                                    [],
+                                    [],
+                                    []
+                                ],
+                                bool:[
+                                    [],
+                                    [],
+                                    []
+                                ], 
+                                val:[
+                                    [],
+                                    [],
+                                    []
+                                ], 
+                                text:[
+                                    [],
+                                    [],
+                                    []
+                                ],
+                                symbol:[
+                                    [],
+                                    [],
+                                    []
+                                ],                            
+                                ngCss:[
+                                    [],
+                                    [],
+                                    []                   
+                                ],      
+                                extras:[
+                                    [],
+                                    [],
+                                    []                      
+                                ]
+                        }})                                                                                                                                                                                                                   
+                    ]
+                ],       
+            }            
+        )
+    }
+    
+}
+
 
 
 //Action functions

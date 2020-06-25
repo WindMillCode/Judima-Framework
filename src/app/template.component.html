@@ -25,7 +25,7 @@
             </video>
         </ng-template>                  
     </ng-container>
-
+    
     <ng-container *ngFor = 'let aa of a.quantity[1];let bb = index' >
         <h1 
         #myVal 
@@ -79,7 +79,6 @@
         </ng-template> 
         <ng-template #elseBlock7  > 
             <a 
-            toggleButton [execute] ="ryber.appAvailble( a.extras[1][bb], 'toggleButton')" 
             #myVal 
             *ngIf= "a.bool[1][bb] ==='a' else elseBlock8" 
             class = {{a.val[1][bb]}} 
@@ -125,8 +124,6 @@
         </ng-template> 
         <ng-template #elseBlock12  > 
             <input
-            appDateClick [execute]=" ryber.appAvailble( a.extras[1][bb], 'appDateClick') " 
-            appMoneyClick [execute]="ryber.appAvailble( a.extras[1][bb], 'appMoneyClick') "
             #myVal 
             *ngIf= "a.bool[1][bb] ==='i' else elseBlock13" class = {{a.val[1][bb]}} 
             [ngStyle] = 'a.ngCss[1][bb]' 
@@ -145,12 +142,11 @@
         </ng-template>  
         <ng-template #elseBlock14  > 
             <canvas 
-            appSignPad [execute]="ryber.appAvailble( a.extras[1][bb],'appSignPad')" 
             #myVal
             *ngIf= "a.bool[1][bb] ==='c' else elseBlock15"
             class = {{a.val[1][bb]}}  
-            [ngStyle] = 'a.ngCss[1][bb]' >
-        </canvas>       
+            [ngStyle] = 'a.ngCss[1][bb]' >   
+            </canvas>   
         </ng-template>  
         <ng-template #elseBlock15  > 
             <label 
@@ -159,10 +155,10 @@
             class = {{a.val[1][bb]}}  
             [ngStyle] = 'a.ngCss[1][bb]' 
             [innerHTML] = 'a.text[1][bb].item'>  
-        </canvas>       
+        </label>       
         </ng-template>                                                                                                                 
     </ng-container>
-
+    
     <ng-container *ngFor = 'let aa of a.quantity[2];let bb = index' >
         <div 
             #myVal 
@@ -181,11 +177,9 @@
         <ng-template #pictureBlock1  >    
             <button #myVal 
             *ngIf= "a.bool[2][bb] ==='b' else pictureBlock2 " 
-            appFileHandler [execute]="ryber.appAvailble( a.extras[2][bb],'appFileHandler')"
             class = {{a.val[2][bb]}} 
             [ngStyle] =  'a.ngCss[2][bb]'  
             [innerHTML] = 'a.text[2][bb].item'>
-        </button>
         </button>
         </ng-template> 
         <ng-template #pictureBlock2  >    
@@ -217,6 +211,6 @@
             ></audio>
         </ng-template>                               
     </ng-container>    
-
-</ng-container>     
+    
+    </ng-container>     
     
