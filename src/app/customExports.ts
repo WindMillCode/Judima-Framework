@@ -816,16 +816,26 @@ export function ryberUpdate(
         ryber:RyberService,
         type?:string,
         css?:any | CSSRuleList,
-        extras?:any
+        extras?:any,
+        bool?:string,
+        text?:string,
+        val?:string,
+        signature?:string
     }
 ){
-    let {co,ryber,type,css,extras}= devObj
+    let {co,ryber,type,css,extras,bool,text,val,signature}= devObj
     
     if(ryber[co.valueOf()] === undefined){
+        let generator = function *generator() {
+                var index = 8354;
+                while (true)
+                yield index++;
+            }()
         ryber[co.valueOf()] = objectCopy(
             { 
                 metadata:{
-                },           
+                }, 
+                          
                 quantity:[
                     [],
                     [
@@ -917,9 +927,101 @@ export function ryberUpdate(
                 ],       
             }            
         )
+        ryber[co.valueOf()].generator = generator
+    }
+
+    else if(type === undefined){
+        type = 'add'
     }
     
+    if(type === 'add'){
+        let index = 1
+        let subCO = ryber[co.valueOf()].quantity[1][1]
+        
+        // validating bool
+        if(bool === undefined){
+            bool = "p"
+        }
+
+        else if(
+            ['div','img','b','embed','video','audio']
+            .includes(bool)
+        ){
+            index = 2
+        }
+
+        else if(
+            ![
+                ...Array.from(Array(6),(x,i)=>{return 'h'+(i+1)}),
+                'a',
+                'p',
+                'code',
+                'span',
+                'strong',
+                'i',
+                'ta',
+                'c',
+                'l'
+            ]
+            .includes(bool)
+        ){
+            bool = 'p'
+            index = 1
+        }        
+        //
+
+        //validating val
+        if(val === undefined){
+            val = co
+                .valueOf()
+                .split("CO")[0]
+                .split("")
+                .join("_")
+                
+            if(subCO.val[index].length === 0){
+                val += "_Heading"  
+            }
+
+            else {
+                val += "_Item"  
+            }            
+        }
+
+        else{
+            val = co
+            .valueOf()
+            .split("CO")[0]
+            .split("")
+            .join("_") + "_" + val
+
+        }
+        //
+
+        //valdidating signature
+        if(subCO.signature !== undefined && signature === undefined){
+            signature = subCO.signature
+        }
+        //
+
+        // adding the zChild
+            subCO.quantity[index].push(3)
+            subCO.text[index].push(text)
+            subCO.val[index].push(val)
+            subCO.bool[index].push(bool)
+            subCO.ngCss[index].push(css)
+            subCO.extras[index].push(extras)
+            subCO.symbol[index].push(
+                "&#" +
+                ryber[co.valueOf()].generator.next().value
+            )
+            subCO.signature = signature
+        //
+        // console.log(bool,index)
+        // console.log(subCO)
+    }
+
 }
+//
 
 
 
