@@ -8,6 +8,10 @@
     make sure bools got to the right index and if there is no bool or an invalid bool return p
     make sure quanitiy is pushed and gets a value of 3
     make sure different CO get handled the way they are supposed to
+    dont have the dev use this to get the ryber
+    update the formCO so the dev does not have to do it
+        but for route control the dev might have to do it, its not every sencod
+        the dev is adding a CO
 
 # E2E TESTS 
 
