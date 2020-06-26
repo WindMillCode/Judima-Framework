@@ -22,6 +22,22 @@ if (!Object.fromEntries) {
     }
 }
 
+if( !Array.prototype.includes){
+    Array.prototype.includes = function includes(item){
+        var included = false
+        try{
+            this.forEach(function(x,i){
+                if(x === item){
+                    included = true
+                    throw('e')
+                }
+            })
+        }
+        catch(e){}
+        return included
+    }
+}
+
 // https://base64.guru/developers/javascript/examples/polyfill
 (function () {
     // Do not implement polyfill if browser already support Base64 algorithms
