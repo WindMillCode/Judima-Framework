@@ -198,7 +198,15 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                     
 
                     // so you wont have to find the panel
-                    scrollTo(0,numberParse(getComputedStyle(zChild["&#8353"].element).top)-30)
+                    let currentScroll = Object
+                    .keys(zChild)
+                    .reduce((acc,x,i,src)=>{
+                        if(i === src.length-2){
+                            acc = x
+                        }
+                        return acc
+                    })
+                    scrollTo(0,numberParse(getComputedStyle(zChild[currentScroll].element).top)-30)
                     // 
 
                     // this.ryber[this.appTV].metadata.formCO10.next({
