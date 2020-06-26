@@ -10,14 +10,14 @@ import {   zChildren,getTextWidth,numberParse,
 
 
 @Component({
-  selector: 'app-heading',
+  selector: 'app-template',
   templateUrl: '../template.component.html',
-  styleUrls: ['./heading.component.css'], // useful we dont need to repeat ourcless in ngCss
+  styleUrls: ['./template.component.css'], // useful we dont need to repeat ourcless in ngCss
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
+export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
 
-    @ViewChildren('myVal') headingMyElements: any; 
+    @ViewChildren('myVal') templateMyElements: any; 
 
     constructor(
         public ryber: RyberService,
@@ -234,7 +234,7 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
     private zChildInit(devObj?): any {
         return componentBootstrap({
             appTV: this.appTV,
-            myElements: this.headingMyElements._results,
+            myElements: this.templateMyElements._results,
             ryber: this.ryber,
             zProps: {
                 extras: 'true',
