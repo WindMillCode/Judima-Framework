@@ -1003,6 +1003,17 @@ export function ryberUpdate(
         }
         //
 
+        //validating css
+        if( css === undefined){
+            css = {
+                "z-index":3
+            }
+            if( css["z-index"] === undefined){
+                css["z-index"] = 3
+            }
+        }
+        //
+
         // adding the zChild
             subCO.quantity[index].push(3)
             subCO.text[index].push(text)
@@ -1070,6 +1081,9 @@ export function stack(
                 }    
                 return 
             } 
+            if(devObj.zChild[x] === undefined){
+                return
+            }             
             let prev = devObj.zChildKeys[i-1]
             devObj.zChild[x].css['top'] =  (
 
@@ -1096,7 +1110,14 @@ export function stack(
                 )
                 +
                 (
-                    typeof(devObj.spacing) === 'number' ?  devObj.spacing : devObj.spacing[i] 
+                    typeof(devObj.spacing) === 'number' ?  
+                    devObj.spacing : 
+                    (
+                        devObj.spacing[i] === undefined ?
+                        devObj.spacing[devObj.spacing.length-1] :
+                        devObj.spacing[i]
+                    )
+                    
                 )
             ).toString() + "px"
 
@@ -1125,10 +1146,14 @@ export function stack(
         // devObj.keep = Object.fromEntries(devObj.keep)
         // console.log(devObj.keep)
         let keep  = {}
-        devObj.keep.forEach((x,i)=>{
+        devObj
+        .keep
+        .forEach((x,i)=>{
             keep[x[0].valueOf()] = x[1]
         })
-        devObj.zChildKeys.forEach((x,i)=>{
+        devObj
+        .zChildKeys
+        .forEach((x,i)=>{
 
 
             if( i === 0){
@@ -1140,6 +1165,9 @@ export function stack(
                 }
                 return 
             } 
+            if(devObj.zChild[x] === undefined){
+                return
+            }            
             let prev = devObj.zChildKeys[i-1]
             devObj.zChild[x].css['top'] = (
 
@@ -1164,7 +1192,13 @@ export function stack(
                 )
                 +
                 (
-                    typeof(devObj.spacing) === 'number' ?  devObj.spacing : devObj.spacing[i] 
+                    typeof(devObj.spacing) === 'number' ?  
+                    devObj.spacing : 
+                    (
+                        devObj.spacing[i] === undefined ?
+                        devObj.spacing[devObj.spacing.length-1] :
+                        devObj.spacing[i]
+                    )
                 )
 
 
