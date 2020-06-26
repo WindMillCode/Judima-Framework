@@ -5,6 +5,7 @@ import {eventDispatcher, esInit,coInit} from './customExports'
 // import {   Router,RouterEvent } from '@angular/router';
 import {   catchError,take,timeout,debounceTime   } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 declare global {
@@ -55,7 +56,7 @@ export class AppComponent implements OnInit,AfterViewInit,OnDestroy {
     title = 'Template';
     private googleCreds: any = null
 
-    formCO:Array<any> = Array.from(Array(0),(x,i)=> {return 'formCO'+ i })
+    formCO:  Array<any>  = Array.from(Array(1),(x,i)=> {return 'formCO'+ i })
     headingCO:Array<any> = Array.from(Array(0),(x,i)=> {return 'headingCO'+ i })
         
 ngOnInit(){
@@ -116,10 +117,10 @@ ngOnInit(){
 
     
     /* App Setup*/
-    esInit(this.ryber,['headingES','formES'])
+    esInit(this.ryber,['formES'])
     coInit(
         this.ryber,
-        [...this.headingCO,...this.formCO ],
+        [...this.formCO ],
         ((devObj)=>{
             devObj.co.metadata.formData = {}
         })
@@ -173,41 +174,14 @@ ngOnInit(){
         }            
 
 
-        if(   this.ryber.appCurrentNav  === '/' || this.ryber.appCurrentNav  === '/home'    ){
+        if(   ['/home','/'].includes(this.ryber.appCurrentNav)   ){
 
 
-            let arr = [...this.formCO].sort()
-            this.ryber.appViewCompleteArray = this.ryber.appViewCompleteArray.sort()
-            // console.log(this.ryber.appViewCompleteArray)
+            
+            this.routeDispatch({
+                arr:[...this.formCO].sort(),
+            })
 
-
-            if(
-                arr.filter((x,i) =>{ 
-                    return this.ryber.appViewCompleteArray[i] !== x 
-                }).length === 0 && arr.length === this.ryber.appViewCompleteArray.length
-            ){
-
-
-                console.log('dispatched')
-                eventDispatcher({
-                    element:window,
-                    event:'resize'
-                })        
-
-
-                this.ryber.appViewCompleteArray = []
-
-
-                if(   this.ryber.appReloaded === 'true'){
-
-
-                    this.ryber.appReloaded = 'false'
-    
-    
-                } 
-                
-
-            }
             
             
         }
@@ -217,7 +191,49 @@ ngOnInit(){
         
     })     
 
+    
     // console.log(location.pathname)
+}
+
+routeDispatch(
+    devObj:{
+        arr:Array<any>
+    }
+){
+    let {arr} = devObj
+    arr = arr.sort()
+    this.ryber.appViewCompleteArray = this.ryber.appViewCompleteArray.sort()
+    if(
+        arr
+        .filter((x,i) =>{ 
+            return this.ryber.appViewCompleteArray[i] !== x 
+        })
+        .length === 0 && 
+        arr.length === this.ryber.appViewCompleteArray.length
+    ){
+
+
+        console.log('dispatched')
+        eventDispatcher({
+            element:window,
+            event:'resize'
+        })        
+
+
+        this.ryber.appViewCompleteArray = []
+
+
+        if(   this.ryber.appReloaded === 'true'){
+
+
+            this.ryber.appReloaded = 'false'
+
+
+        } 
+        
+
+    }    
+
 }
 
 ngAfterViewInit(){
