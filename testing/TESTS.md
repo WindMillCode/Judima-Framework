@@ -13,6 +13,7 @@
         but for route control the dev might have to do it, its not every sencod
         the dev is adding a CO
     make sure for css there is an object with z-index 3 provided if creds are not met
+    make sure that the right generator is used to added the symbol for the zChild
 
 # E2E TESTS 
 

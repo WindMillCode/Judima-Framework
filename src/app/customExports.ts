@@ -2,7 +2,6 @@ import {RyberService} from './ryber.service'
 import {defer} from 'rxjs'
 import { Observable, of, Subject, Subscription } from "rxjs";
 import { ChangeDetectorRef } from '@angular/core';
-import { ignoreElements } from 'rxjs/operators';
 
 declare global {
     interface Object { fromEntries: any; }
@@ -820,19 +819,34 @@ export function ryberUpdate(
         bool?:string,
         text?:string,
         val?:string,
-        signature?:string
+        signature?:string,
+        symbolStart?:Array<number>
     }
 ){
-    let {co,type,css,extras,bool,text,val,signature}= devObj
+    let {co,type,css,extras,bool,text,val,signature,symbolStart}= devObj
     
     
     let ryber = this
     if(ryber[co.valueOf()] === undefined){
-        let generator = function *generator() {
-                var index = 8354;
+        if(   symbolStart === undefined){
+            symbolStart = [8354,8384]   
+        }
+
+        else if(   symbolStart[1] === undefined){
+            symbolStart[1] = 8384   
+        }        
+        let generator = { 
+            1:function *generator() {
+                var index = symbolStart[0];
+                while (true)
+                yield index++;
+            }(),
+            2:function *generator() {
+                var index = symbolStart[1];
                 while (true)
                 yield index++;
             }()
+        }
         ryber[co.valueOf()] = objectCopy(
             { 
                 metadata:{
@@ -929,6 +943,7 @@ export function ryberUpdate(
             }            
         )
         ryber[co.valueOf()].generator = generator
+        return
     }
 
     else if(type === undefined){
@@ -1024,7 +1039,7 @@ export function ryberUpdate(
             subCO.extras[index].push(extras)
             subCO.symbol[index].push(
                 "&#" +
-                ryber[co.valueOf()].generator.next().value
+                ryber[co.valueOf()].generator[index].next().value
             )
             subCO.signature = signature
         //
@@ -1033,6 +1048,8 @@ export function ryberUpdate(
     }
 
 }
+//
+
 
 
 //Action functions
@@ -1065,6 +1082,16 @@ export function stack(
         devObj.zChildCss = 'true'
     }
 
+    if(devObj.zChildKeys !== undefined){
+        devObj
+        .zChildKeys = devObj
+        .zChildKeys
+        .filter((x,i)=>{
+            return devObj.zChild[x] !== undefined
+        })
+        // return
+    }  
+
     if(devObj.type === 'simpleStack'){
 
 
@@ -1080,9 +1107,7 @@ export function stack(
                 }    
                 return 
             } 
-            if(devObj.zChild[x] === undefined){
-                return
-            }             
+            
             let prev = devObj.zChildKeys[i-1]
             devObj.zChild[x].css['top'] =  (
 
@@ -1164,9 +1189,7 @@ export function stack(
                 }
                 return 
             } 
-            if(devObj.zChild[x] === undefined){
-                return
-            }            
+          
             let prev = devObj.zChildKeys[i-1]
             devObj.zChild[x].css['top'] = (
 
