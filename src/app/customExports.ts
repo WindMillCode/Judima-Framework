@@ -1590,6 +1590,7 @@ export function deltaNode
         co?:Partial<componentObject>,
         subCO?: number | string,
         symbolDeltaStart?:number,
+        hook?:string
 
         position?:{
             group:any,
@@ -1621,7 +1622,7 @@ export function deltaNode
         numberParse(getComputedStyle(item).height)
     }
 
-    if(   devObj.intent ==='add'   ){
+    if(   devObj.intent ==='add' && devObj.hook !== 'prepare'   ){
 
 
         //make a storage facility for the management of added and removed elements once
@@ -1647,6 +1648,7 @@ export function deltaNode
             deltaNodeSite[devObj.group.valueOf()] = {
                 elements:[devObj.elements],
                 intent:[devObj.intent], 
+                hook:['done'],
                 subCO:[devObj.subCO],
                 count:0,
                 display:['no'],
@@ -1657,6 +1659,7 @@ export function deltaNode
         else if(   deltaNodeSite[devObj.group.valueOf()] !== undefined){
             deltaNodeSite[devObj.group.valueOf()].elements.push(devObj.elements)
             deltaNodeSite[devObj.group.valueOf()].intent.push(devObj.intent)
+            deltaNodeSite[devObj.group.valueOf()].hook.push('done')
             deltaNodeSite[devObj.group.valueOf()].subCO.push(devObj.subCO)
             deltaNodeSite[devObj.group.valueOf()].count += 1
             deltaNodeSite[devObj.group.valueOf()].display.push('no')
@@ -1734,7 +1737,7 @@ export function deltaNode
 
     }
 
-    else if(   devObj.intent === 'minus'){
+    else if(   devObj.intent === 'minus' && devObj.hook !== 'prepare'){
 
 
         //check for deltaManagement  and needed tools
@@ -1756,7 +1759,8 @@ export function deltaNode
         //
 
         //take the items from the subCO and the DOM
-        deltaNodeSite[devObj.group.valueOf()].symbols[count].forEach((x,i)=>{
+        deltaNodeSite[devObj.group.valueOf()].symbols[count]
+        .forEach((x,i)=>{
             //find where the symbol and all of its data is and properly remove it
             let sub0 = null 
             let sub1 = null 
@@ -1781,16 +1785,6 @@ export function deltaNode
                         deltaSubCO[z.valueOf()][sub0].splice(sub1,1)
                     }
                     catch(e){
-                        //deprecated
-                        // if(z === 'metadata'){
-                        //     Object.keys(deltaSubCO[z]).forEach((w,h)=>{
-                        //         try{
-                        //         deltaSubCO[z][w][sub0].splice(sub1,1)
-                        //         }
-                        //         catch(e){
-                        //         }
-                        //     })
-                        // }
                     }
                 })                
             }
@@ -1799,6 +1793,7 @@ export function deltaNode
         // 
 
         // take the items out of deltaMangement
+        deltaNodeSite[devObj.group.valueOf()].hook[count] = "done" 
         deltaNodeSite[devObj.group.valueOf()].intent[count] = "minus"
         deltaNodeSite[devObj.group.valueOf()].display[count] = "no"
         
@@ -1818,6 +1813,27 @@ export function deltaNode
         //
 
     }
+
+    else if(   devObj.hook === 'prepare'   ){
+
+        let {deltaNodeSite} = devObj.co.metadata
+        let {count,subCO} = deltaNodeSite[devObj.group.valueOf()]
+        deltaNodeSite.current ={count}
+        deltaNodeSite.current.group = devObj.group
+        deltaNodeSite.current.intent = devObj.intent
+        deltaNodeSite.current.hook = devObj.hook           
+        //
+
+        //access the right subCO
+        let deltaSubCO = devObj.co.quantity[1][subCO[count.valueOf()]]
+        //
+
+        deltaNodeSite[devObj.group.valueOf()].hook[count] = devObj.hook
+        deltaNodeSite[devObj.group.valueOf()].intent[count] = devObj.intent 
+               
+
+    }
+
 
     else if(   devObj.intent === 'position'){
         let {position} = devObj        
