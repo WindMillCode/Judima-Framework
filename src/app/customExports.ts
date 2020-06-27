@@ -97,19 +97,7 @@ export function componentBootstrap(
         // return x.val.flat(Infinity)[0]
         return flatDeep(x.val,Infinity)[0]
     })
-    //deprecated
-    // let appMetadata = null
-    // if(   devObj.zProps.metadata === 'true' && devObj.ryber[devObj.appTV].quantity[0][0].metadata !== undefined){
-
-
-    //     appMetadata = {}                   
-    //     Object.keys(devObj.ryber[devObj.appTV].quantity[0][0].metadata).forEach((x,i)=>{
-    //         let entry = [x,devObj.ryber[devObj.appTV].quantity[0][0].metadata[x]]
-    //         appMetadata[x] = entry[1][0][0]
-    //     })
-        
-
-    // }    
+   
     let appZChild = {
         element: document.querySelector('[class=' + devObj.appTV + '],[id^="root"]') as HTMLElement,
         css: devObj.ryber[devObj.appTV].quantity[0][0].ngCss[0][0],
@@ -126,7 +114,12 @@ export function componentBootstrap(
             ( devObj.ryber[devObj.appTV].quantity[0][0].val !== undefined  ? 
                 devObj.ryber[devObj.appTV].quantity[0][0].val[0][0] 
                 : undefined) 
-            : undefined,         
+            : undefined,   
+        quantity: devObj.zProps.quantity === 'true' ?  
+            ( devObj.ryber[devObj.appTV].quantity[0][0].quantity !== undefined  ? 
+                devObj.ryber[devObj.appTV].quantity[0][0].quantity[0][0] 
+                : undefined) 
+            : undefined,                     
     }
     let zChild = {"&#8352":appZChild}
 
@@ -237,21 +230,7 @@ export function componentBootstrap(
                 )    
             ){               
 
-                // deprecated
-                // properly adding metadata, thinking metadata should have been setup like extras
-                // let metadata = undefined
-                // if(   devObj.zProps.metadata === 'true' && devObj.ryber[devObj.appTV].quantity[1][j].metadata !== undefined){
 
-
-                //     metadata = {}                   
-                //     Object.keys(devObj.ryber[devObj.appTV].quantity[1][j].metadata).forEach((x,i)=>{
-                //         let entry = [x,devObj.ryber[devObj.appTV].quantity[1][j].metadata[x]]
-                //         metadata[x] = entry[1][zGrid.a][zGrid.b]
-                //     })
-                    
-
-                // }
-                //
 
                 zChild[devObj.ryber[devObj.appTV].quantity[1][j].symbol[zGrid.a][zGrid.b]] = {
                     element:x.nativeElement as HTMLElement,
@@ -268,7 +247,12 @@ export function componentBootstrap(
                         ( devObj.ryber[devObj.appTV].quantity[1][j].val !== undefined  ? 
                             devObj.ryber[devObj.appTV].quantity[1][j].val[zGrid.a][zGrid.b] 
                             : undefined) 
-                        : undefined,                        
+                        : undefined,  
+                    quantity: devObj.zProps.quantity === 'true' ?  
+                        ( devObj.ryber[devObj.appTV].quantity[1][j].quantity !== undefined  ? 
+                            devObj.ryber[devObj.appTV].quantity[1][j].quantity[zGrid.a][zGrid.b] 
+                            : undefined) 
+                        : undefined,                                                
                 }
                 // console.log(zChild)
                 
@@ -1670,7 +1654,8 @@ export function deltaNode
         let {count} = deltaNodeSite[devObj.group.valueOf()]
         deltaNodeSite.current ={count}
         deltaNodeSite.current.group = devObj.group	        
-        deltaNodeSite.current.intent = devObj.intent        
+        deltaNodeSite.current.intent = devObj.intent    
+        deltaNodeSite.current.hook = 'done'
         //
 
         //get the items on the DOM
@@ -1751,7 +1736,8 @@ export function deltaNode
         let {count,subCO} = deltaNodeSite[devObj.group.valueOf()]
         deltaNodeSite.current ={count}
         deltaNodeSite.current.group = devObj.group
-        deltaNodeSite.current.intent = devObj.intent           
+        deltaNodeSite.current.intent = devObj.intent  
+        deltaNodeSite.current.hook = 'done'         
         //
 
         //access the right subCO
@@ -1873,7 +1859,7 @@ export function deltaNode
         }); 
         //
 
-    // gathering elements we need to move for the  group's entry
+        // gathering elements we need to move for the  group's entry
         let toMove = typeof(move.toMove) === 'function'  ? move.toMove() : move.toMove 
         //
 

@@ -238,7 +238,8 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
             ryber: this.ryber,
             zProps: {
                 extras: 'true',
-                val:'true'
+                val:'true',
+                quantity:'true'
             }
         });
     }    
