@@ -2,6 +2,7 @@ import {RyberService} from './ryber.service'
 import {defer} from 'rxjs'
 import { Observable, of, Subject, Subscription } from "rxjs";
 import { ChangeDetectorRef } from '@angular/core';
+import { ignoreElements } from 'rxjs/operators';
 
 declare global {
     interface Object { fromEntries: any; }
@@ -813,7 +814,6 @@ export function coInit (a,componentObjects,additional?) {
 export function ryberUpdate(
     devObj:{
         co:string,
-        ryber:RyberService,
         type?:string,
         css?:any | CSSRuleList,
         extras?:any,
@@ -823,8 +823,10 @@ export function ryberUpdate(
         signature?:string
     }
 ){
-    let {co,ryber,type,css,extras,bool,text,val,signature}= devObj
+    let {co,type,css,extras,bool,text,val,signature}= devObj
     
+    
+    let ryber = this
     if(ryber[co.valueOf()] === undefined){
         let generator = function *generator() {
                 var index = 8354;
@@ -834,8 +836,7 @@ export function ryberUpdate(
         ryber[co.valueOf()] = objectCopy(
             { 
                 metadata:{
-                }, 
-                          
+                },        
                 quantity:[
                     [],
                     [
@@ -1012,7 +1013,7 @@ export function ryberUpdate(
                 css["z-index"] = 3
             }
         }
-        //
+        //        
 
         // adding the zChild
             subCO.quantity[index].push(3)
@@ -1032,8 +1033,6 @@ export function ryberUpdate(
     }
 
 }
-//
-
 
 
 //Action functions

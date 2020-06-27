@@ -15,7 +15,28 @@ export class RyberService {
     constructor(
         // private router:Router
         private http:HttpClient
-    ) { };
+    ) { 
+
+
+        let rUD = ((a)=>{
+            return (zConsist)=>{
+                ryberUpdate.call(a,zConsist)
+            }
+        })(this)
+        
+        
+        // add your zChildren here
+        // rUD({
+        //     co:'formCO0',
+        //     ryber:this,
+        //     css:{
+        //         height:"300px",
+        //         width:"100%",
+        //         top:"0px",
+        //         "background-color":"rgb(255, 241, 204)",
+        //     }
+        // })        
+    };
 
     /* app*/
     appCurrentNav:string = "/home"
@@ -110,112 +131,7 @@ export class RyberService {
         // formComponent Instances
         formMyElements :Subject<Array<any[]>> = new Subject<Array<any>>();
         formMyElementsArray: any[] = [];               
-        formCO3:componentObject ={ 
-            metadata:{
-            },
-            //deprecated
-            // generator:(function(){
-            //     return function *generator() {
-            //         var index = 8352;
-            //         while (true)
-            //         yield index++;
-            //     }()
-            // })(),            
-            quantity:[
-                [],
-                [
-                    {
-                        signature:"containing",
-                        quantity:[[3]],
-                        bool:[["div"]], 
-                        val:[
-                            ["f_o_r_m_Board"],
-                        ],  
-                        text:[
-                            [],
-                        ],
-                        symbol:[["&#8353"]],
-                        ngCss:[
-                            [
-                                {
-                                    height:"400px",
-                                    width:"100%",
-                                    "background-color":"rgb(255, 241, 204)",
-                                    top:"0px"                                
-                                }                                                                                                      
-                            ]                    
-                        ],                  
-                        extras:[
-                            [
-                                {}
-                            ],
-                            [],
-                            []                      
-                        ]
-                    },                      
-                    ...Array.from(Array(1),()=> {
-                        return {
-                            signature:"",
-                            quantity:[
-                                [],
-                                [],
-                                []
-                            ],
-                            bool:[
-                                [],
-                                [],
-                                []
-                            ], 
-                            val:[
-                                [],
-                                [],
-                                []
-                            ], 
-                            text:[
-                                [],
-                                [],
-                                []
-                            ],
-                            symbol:[
-                                [],
-                                [],
-                                []
-                            ],                            
-                            ngCss:[
-                                [],
-                                [],
-                                []                   
-                            ],      
-                            extras:[
-                                [],
-                                [
-                                    // ...Array.from(Array(5),()=> { 
-                                    //     return {
-                                    //         deltaIndex:1
-                                    //     }
-                                    // }),          
-                                    // {
-                                    //     attr:{
-                                    //         min:0,
-                                    //         max:200
-                                    //     },
-                                    //     deltaIndex:1
-                                    // },
-                                    // ...Array.from(Array(2),()=> { 
-                                    //     return {
-                                    //         deltaIndex:1,
-                                    //         appDateClick:{
-                                    //             confirm:"true"
-                                    //         }                                            
-                                    //     }
-                                    // }),                                                                
-                                ],
-                                []                      
-                            ]
-                    }})                                                                                                                                                                                                                   
-                ]
-            ],       
-        };                 
+                
                                  
         //        
     /* */   
