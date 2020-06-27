@@ -1873,7 +1873,7 @@ export function deltaNode
         }); 
         //
 
-        // gathering elements we need to move for the  group's entry
+    // gathering elements we need to move for the  group's entry
         let toMove = typeof(move.toMove) === 'function'  ? move.toMove() : move.toMove 
         //
 
