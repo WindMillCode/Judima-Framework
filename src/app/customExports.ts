@@ -1094,9 +1094,9 @@ export function stack(
 
     if(devObj.type === 'simpleStack'){
 
-
-
-        devObj.zChildKeys.forEach((x,i)=>{
+        devObj
+        .zChildKeys
+        .forEach((x,i)=>{
 
 
             if( i === 0){
@@ -1288,13 +1288,16 @@ export function xContain(
         parts?: Array<zChildren>,
         type:string,
         stops?: any,
-        debug? :string 
+        debug? :string  | boolean
         preserve?:{
             align:Array<string> | Array<string>[] 
             zChild:zChildren[]
             ref:ChangeDetectorRef,
             targetPos?:Array<number>,
             containPos?:Array<number>
+            type?:string
+            width?:number
+            left?:number
         }
     }
 ){
@@ -1338,17 +1341,23 @@ export function xContain(
             }
             if( devObj.preserve.containPos === undefined){
                 devObj.preserve.containPos = []
-            }            
-            devObj.preserve.align
+            }         
+            devObj
+            .preserve
+            .align
             .forEach((x,i)=>{
                                     
                 // grab the length of the 3 options
                 let OptionsFlex:any = {
                     first:
                     (
+                          devObj.preserve.type === 'center' ? 
+                        (
                         numberParse(devObj.preserve.zChild[x[x.length-1 ]].cssDefault["left"]) +
                         numberParse(devObj.preserve.zChild[x[x.length-1 ]].cssDefault["width"]) -
                         numberParse(devObj.preserve.zChild[x[0]].cssDefault["left"])
+                        ):
+                        devObj.preserve.width
                     )
                 } 
                 //
@@ -1356,20 +1365,49 @@ export function xContain(
                 // resize as the left get rezie in the beginning val of src
                     // here we take adnavntage of xPosition to make a fake length
                     // to learn how to center better
+                if(devObj.preserve.type !== 'center'){
+                    x.push(null)
+                }
+                
                 OptionsFlex.lefts = x
                 .reduce((acc,y,j,src)=>{
-                    if(j !== 0){
+                    if(j !== 0 && y !== null){
                         acc.push(
                             numberParse( devObj.preserve.zChild[y].cssDefault["left"] ) -
                             numberParse( devObj.preserve.zChild[src[j-1]].cssDefault["left"] )
                         )
+                    }   
+                    
+                    else if(j === 0 && y !== null && devObj.preserve.type!== 'center'){
+                        acc.push(
+                            // 0
+                            0,
+                            numberParse( devObj.preserve.zChild[y].cssDefault["left"] )
+                        )
+                    }                       
+                    
+                    if(j !== 0 && devObj.preserve.type!== 'center'){
+                        
+                        devObj.preserve.zChild[src[j-1]].css["left"]  =  
+                        acc
+                        .slice(0,j+2)
+                        .reduce((accc,z,k)=>{
+                            if(k ===1 ){
+                                return accc - devObj.preserve.left
+                            }
+                            return accc + z
+                        },0).toString() + "px" 
                     }    
                     
-                    devObj.preserve.zChild[src[j]].css["left"]  =  
-                    acc.slice(0,j+1)
-                    .reduce((accc,z,k)=>{
-                        return accc + z
-                    },0).toString() + "px"                                                            
+                    else{
+                        
+                        devObj.preserve.zChild[src[j]].css["left"]  =  
+                        acc
+                        .slice(0,j+2)
+                        .reduce((accc,z,k)=>{
+                            return accc + z
+                        },0).toString() + "px" 
+                    }  
                     return acc
                 },[
                     xPosition({
@@ -1378,10 +1416,19 @@ export function xContain(
                         targetPos: devObj.preserve.targetPos[i] !== undefined ? devObj.preserve.targetPos[i] :.5,
                         containPos: devObj.preserve.containPos[i] !== undefined ? devObj.preserve.containPos[i] :.5
                     })
-                ])                                    
+                ])     
+                
                 devObj.preserve.ref.detectChanges()           
                 //
+
+                if(devObj.debug === true || devObj.debug === 'true'){
+                    console.log(OptionsFlex.lefts)
+                }    
+
+                
             })
+
+        
         
             
             return 
