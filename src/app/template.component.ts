@@ -44,11 +44,20 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
         this.ryber.formLoadEvent$ = fromEvent(window,'load')
         this.ryber.formResizeEvent$ = fromEvent(window,'resize')
 
-
+//component with static zChild
 /*0  */if(this.appTV === 'formCO'+ this.CONumber.next().value){
 
 
             let zChild = this.zChildInit()
+            let staticZKeys = Object
+                                .entries(zChild)
+                                .filter((x:any,i)=>{ 
+                                    return x[1].quantity === 3
+                                })
+                                .map((x,i)=>{return x[0]})
+                                .slice(2) 
+                                // ugly rename >
+                                // if I need the board I know how to get it            
             console.log(zChild)
 
             // drags elements for you 
@@ -219,6 +228,625 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
             
             
         }
+
+//component with dyanic zChild
+/*3  */ if(this.appTV === 'formCO'+ this.CONumber.next().value){
+
+
+            let zChild = this.zChildInit()
+            let staticZKeys = Object
+                                .entries(zChild)
+                                .filter((x:any,i)=>{ 
+                                    return x[1].quantity === 3
+                                })
+                                .map((x,i)=>{return x[0]})
+                                .slice(2) 
+                                // ugly rename >
+                                // if I need the board I know how to get it
+            console.log(zChild)
+            
+
+            // drags elements for you 
+                //remove when done
+                let toPlace = Object.keys(zChild)
+                .filter((x,i)=>{  return x.match("&#") !== null })
+                .slice(2)
+                // console.log(toPlace)
+                toPlace
+                .forEach((x,i)=>{
+                    dragElement(zChild[x].element)
+                })
+            //
+
+            // highlights
+            Array.from(Array(2),(x,i)=> {return "&#" +(8354 + i)})
+            .forEach((x,i)=>{
+                // zChild[x].css["background-color"]= "red"
+            })
+            // this.ref.detectChanges()
+            //            
+
+            
+                        
+            this.ryber.appEvents({
+                typesES:this.typesES,
+                event:'resize',
+                of:(
+                    this.ryber['formCO2'].metadata[this.appTV] !== undefined ? 
+                    this.ryber['formCO2'].metadata[this.appTV] :
+                    this.ryber.formResizeEvent$ 
+                )
+                // .pipe()
+                .subscribe((moving)=>{ 
+
+                    
+                    // dynnamic element management bootstrap
+                    let  {deltaNodeSite} = this.ryber[this.appTV.valueOf()].metadata
+                    let  {houseMembers,current} = deltaNodeSite === undefined ? this.foo :deltaNodeSite
+                    if( deltaNodeSite !== undefined){
+                        // console.log(deltaNodeSite,houseMembers)     
+                        // console.log(zChild)   
+                    }
+                    //          
+
+                    // console.log(numberParse(getComputedStyle(zChild["&#8353"].element).width))
+
+                    if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > 1200   ){
+                        
+                        // element management
+                        {
+
+                            // functionality 
+                            {
+
+                                //clean up
+                                Object
+                                .keys(zChild)
+                                .slice(2)
+                                .forEach((x,i)=>{
+                                    
+                                    zChild[x].css["width"] =  zChild[x].cssDefault["width"]
+                                    zChild[x].css["height"] =  zChild[x].cssDefault["height"]
+                                    zChild[x].css["font-size"] =  zChild[x].cssDefault["font-size"]
+                                })
+                                this.ref.detectChanges()
+                                //
+
+                                zChild["&#8354"].css["left"] = xPosition({
+                                    target:numberParse(zChild["&#8354"].css["width"]),
+                                    contain: numberParse(getComputedStyle(zChild["&#8353"].element).width)
+                                }).toString() + "px"
+                                this.ref.detectChanges()
+
+                                stack({
+                                    zChildKeys:[
+                                        ...Array.from(Array(20),(x,i)=> {return "&#" + (8353 + i)}),
+                                        ...Array.from(Array(20),(x,i)=> {return "&#" + (8384 + i)})
+                                    ],
+                                    ref: this.ref, 
+                                    zChild,
+                                    spacing:[null,40,40], 
+                                    keep: [
+                                        ...Array.from(Array(3),(x,i)=> {
+                                            return ["&#" + (8355 + i),"&#8354"]
+                                        }),  
+                                        ...Array.from(Array(3),(x,i)=> {
+                                            return ["&#" + (8358 + i),"&#8356"]
+                                        }),
+                                        ...Array.from(Array(2),(x,i)=> {
+                                            return ["&#" + (8384 + i),"&#8360"]
+                                        }),                                                                                                                                                                                                                                                                         
+                                    ],                            
+                                    type:'keepSomeAligned',
+                                    heightInclude:[null,'f',...Array.from(Array(14),(x,i)=> {return 't'})]
+                                })
+                                this.ref.detectChanges() 
+
+                                // align options
+                                let align = [
+                                    Array.from(Array(2),(x,i)=> {return "&#" +(8384 + i)}),
+                                    Array.from(Array(3),(x,i)=> {return "&#" +(8355 + i)}),
+                                    Array.from(Array(3),(x,i)=> {return "&#" +(8358 + i)}),
+                                ]
+                                xContain({
+                                    preserve:{
+                                        align:align,
+                                        zChild,
+                                        ref:this.ref,
+                                        width:1085,
+                                        left:90
+                                    },
+                                    type:'preserve'
+                                })          
+                                // this.ref.detectChanges()  
+                                //            
+                                
+                                if(houseMembers !== undefined){
+                                    houseMembers
+                                    .symbols
+                                    .forEach((x,i) => {
+                                        // console.log(x)
+
+                                        // stack
+                                        stack({
+                                            zChildKeys:x,
+                                            ref: this.ref, 
+                                            zChild,
+                                            spacing:[null,0,0,40,40,40], 
+                                            keep: [
+                                                ...Array.from(Array(2),(y,j)=> {
+                                                    return [x[1+j],x[0]]
+                                                }),
+                                                ...Array.from(Array(3),(y,j)=> {
+                                                    return [x[3+j],x[2]]
+                                                })                                                                                                                                                                                                                                                                                                                                                                         
+                                            ],                            
+                                            type:'keepSomeAligned',
+                                            heightInclude:[null,'f','f',...Array.from(Array(3),(x,i)=> {return 't'})]
+                                        })  
+                                        //
+                                        
+                                        //xAlign
+                                        let align = [
+                                            Array.from(Array(3),(y,j)=> {return x[0+j]}),
+                                            Array.from(Array(3),(y,j)=> {return x[3+j]}),
+                                        ]
+                                        xContain({
+                                            preserve:{
+                                                align:align,
+                                                zChild,
+                                                ref:this.ref,
+                                                width:1085,
+                                                left:90
+                                            },
+                                            type:'preserve'
+                                        })  
+                                        this.ref.detectChanges()
+                                        //
+
+                                    });
+                                }
+
+                                //modyfying board height
+
+                                //                                
+                            }
+                            //
+
+                            //position 
+                            {
+                                stack({
+                                    type:"yPosition",
+                                    yPosition:{
+                                        zChild,
+                                        moving:{
+                                            top:moving.boardTop,
+                                            height:moving.boardHeight
+                                        },
+                                        ref:this.ref
+                                    }
+                                })
+
+                                if(houseMembers !== undefined){
+                                    houseMembers
+                                    .symbols
+                                    .forEach((x,i)=>{
+                                        // console.group('position houseMembers')
+
+
+                                            let {delta} = minMaxDelta({
+                                                items:houseMembers.elements[i],
+                                                min:(item)=>{
+                                                    return numberParse(item.css["top"])
+                                                },
+                                                max:(item)=>{
+                                                    return numberParse(item.css["top"]) + 
+                                                    numberParse(item.css["height"])
+                                                }                                                            
+                                            })    
+                                            delta  += 50     
+                                            x.forEach((y,j) => {
+                                                zChild[y].css["top"] = (
+                                                    numberParse(houseMembers.elements[i][j].css["top"]) +
+                                                    (
+                                                        delta *
+                                                        (i +1)
+                                                    )
+                                                ).toString() + "px"
+                                            })
+                                            this.ref.detectChanges() 
+                                            houseMembers.extras[i].positioned = 'true'    
+                                            
+                                            
+                                        
+                                        
+                                
+                                        // console.groupEnd()
+                                    })
+                                    
+                            
+                                    let i = (current.intent === 'minus' && current.hook === 'prepare') ?
+                                    houseMembers.symbols.length-2 :
+                                    houseMembers.symbols.length-1 
+
+                                    let x = i !== -1 ? 
+                                    houseMembers.symbols[i]:
+                                    houseMembers.elements[0]
+
+                                    let attach =  (i !== -1 ? x[x.length-1] : "&#8360")
+                                    
+                                    // console.log(x)
+                                    // console.log(i)
+                                    stack({
+                                        zChildKeys:[
+                                            attach,
+                                            ...Array.from(Array(2),(x,i)=> {return "&#" + (8384 + i)}),                                                    
+                                        ],
+                                        ref: this.ref, 
+                                        zChild,
+                                        spacing:[null,40,40], 
+                                        keep: [
+                                            ...Array.from(Array(2),(y,j)=> {
+                                                return ["&#" + (8384 + j),attach]
+                                            }),                                                                                                                                                                                                                                                                          
+                                        ],                            
+                                        type:'keepSomeAligned',
+                                        heightInclude:[null,...Array.from(Array(14),(x,i)=> {return 't'})]
+                                    })                                            
+                                    this.ref.detectChanges()
+                                    //
+
+                                }                                
+
+                                // position board
+                                zChild["&#8353"].css["height"] = (
+                                    numberParse(zChild["&#8385"].css["top"]) + 
+                                    numberParse(zChild["&#8385"].css["height"]) + 
+                                    50 -
+                                    numberParse(zChild["&#8353"].css["top"]) 
+                                ).toString() + "px"
+                                this.ref.detectChanges()    
+                                //                                        
+                                                            
+
+
+                            }
+                            //
+
+                            //moving 
+                            {
+
+                            }
+                            //
+                        }
+                        //
+                    
+                    }
+
+
+                    else if(    numberParse(getComputedStyle(zChild["&#8353"].element).width) > 0  ){
+                        
+
+                        //element management
+                        {
+                            // functionality 
+                            {
+
+                                
+                                //clean up
+
+                                //
+
+                                // console.log(zChild)
+                                // console.log(this.ryber['formCO3'])
+                                // same start
+                                staticZKeys
+                                .forEach((x,i)=>{
+                                    zChild[x].css["width"] = (
+                                        .9 * numberParse(getComputedStyle(zChild["&#8353"].element).width) 
+                                    ).toString() + "px"
+                                    this.ref.detectChanges()
+                                    zChild[x].css["left"] = xPosition({
+                                        target:numberParse(zChild[x].css["width"]),
+                                        contain: numberParse(getComputedStyle(zChild["&#8353"].element).width)
+                                    }).toString() + "px"
+                                })
+                                this.ref.detectChanges()
+                                // 
+
+                                responsiveMeasure({
+                                    item:{
+                                        target:[zChild["&#8354"]],
+                                        prop:["height"]
+                                    },
+                                    values:[
+                                        [[1200,62],[538,125]],
+                                    ],
+                                    measure:{
+                                        target:zChild["&#8353"].element,
+                                        prop:"width"
+                                    }
+                                })
+                                this.ref.detectChanges()   
+
+                                //serveral targets
+                                let fonts = [
+                                    ...Array.from(Array(6),(x,i)=> {return "&#" +(8355 + i)}),
+                                ]
+                                .forEach((x,i)=>{
+                                    zChild[x].css["font-size"]  =(
+                                        resize({
+                                            default:numberParse(   zChild[x].cssDefault["font-size"]   ),
+                                            containActual:numberParse(   getComputedStyle(   zChild["&#8353"].element   ).width   ),
+                                            containDefault:540,
+                                            type:'nonUniform',
+                                            misc:[.052,.06],
+                                            mediaQuery:[379,286,0] 
+                                        })      
+                                    ).toString() + "px" 
+                                })
+                                this.ref.detectChanges()    
+                                //   
+                                
+                                stack({
+                                    zChildKeys:[
+                                        ...Array.from(Array(20),(x,i)=> {return "&#" + (8353 + i)}),
+                                        ...Array.from(Array(20),(x,i)=> {return "&#" + (8384 + i)})
+                                    ],
+                                    ref: this.ref, 
+                                    zChild,
+                                    spacing:20,
+                                    type:'simpleStack',
+                                    heightInclude:['t','f',...Array.from(Array(11),(x,i)=> {return "t"})]
+                                })                                             
+                                this.ref.detectChanges()   
+
+                                if(houseMembers !== undefined){
+                                    houseMembers
+                                    .symbols
+                                    .forEach((x,i) => {
+                                        
+
+                                        // same start
+                                        x
+                                        .forEach((y,j)=>{
+                                            zChild[y].css["width"] = (
+                                                .9 * numberParse(getComputedStyle(zChild["&#8353"].element).width) 
+                                            ).toString() + "px"
+                                            this.ref.detectChanges()
+                                            zChild[y].css["left"] = xPosition({
+                                                target:numberParse(zChild[y].css["width"]),
+                                                contain: numberParse(getComputedStyle(zChild["&#8353"].element).width)
+                                            }).toString() + "px"
+                                        })
+                                        this.ref.detectChanges()
+                                        // 
+
+                                        //serveral targets
+                                        x
+                                        .forEach((y,j)=>{
+                                            zChild[y].css["font-size"]  =(
+                                                resize({
+                                                    default:numberParse(   zChild[y].cssDefault["font-size"]   ),
+                                                    containActual:numberParse(   getComputedStyle(   zChild["&#8353"].element   ).width   ),
+                                                    containDefault:540,
+                                                    type:'nonUniform',
+                                                    misc:[.052,.06],
+                                                    mediaQuery:[379,286,0] 
+                                                })      
+                                            ).toString() + "px" 
+                                        })
+                                        this.ref.detectChanges()    
+                                        //                       
+
+                                    stack({
+                                        zChildKeys:x,
+                                        ref: this.ref, 
+                                        zChild,
+                                        spacing:20,
+                                        type:'simpleStack',
+                                        heightInclude:[null,'t',...Array.from(Array(11),(x,i)=> {return "t"})]
+                                    })                                             
+                                    this.ref.detectChanges()                                                              
+
+                                    })                                    
+                                }
+                                
+                            
+
+                            }
+                            //
+
+                            //position 
+                            {
+                                stack({
+                                    type:"yPosition",
+                                    yPosition:{
+                                        zChild,
+                                        moving:{
+                                            top:moving.boardTop,
+                                            height:moving.boardHeight
+                                        },
+                                        ref:this.ref
+                                    }
+                                })
+
+
+                                if(houseMembers !== undefined){
+                                    houseMembers
+                                    .symbols
+                                    .forEach((x,i)=>{
+
+                                        
+                                            
+                                            
+                                            let {delta} = minMaxDelta({
+                                                items:houseMembers.elements[i],
+                                                min:(item)=>{
+                                                    return numberParse(item.css["top"])
+                                                },
+                                                max:(item)=>{
+                                                    return numberParse(item.css["top"]) + 
+                                                    numberParse(item.css["height"])
+                                                }                                                            
+                                            })    
+                                            delta  += 50     
+                                            x.forEach((y,j) => {
+                                                zChild[y].css["top"] = (
+                                                    numberParse(houseMembers.elements[i][j].css["top"]) +
+                                                    (
+                                                        delta *
+                                                        (i +1)
+                                                    )
+                                                ).toString() + "px"
+                                            })
+                                            this.ref.detectChanges() 
+                                            houseMembers.extras[i].positioned = 'true'    
+                                            
+                                            
+                                        
+
+                                    })  
+
+
+                                    let i = (current.intent === 'minus' && current.hook === 'prepare') ?
+                                    houseMembers.symbols.length-2 :
+                                    houseMembers.symbols.length-1 
+
+                                    let x = i !== -1 ? 
+                                    houseMembers.symbols[i]:
+                                    houseMembers.elements[0]
+
+                                    let attach =  (i !== -1 ? x[x.length-1] : "&#8360")
+                                    
+                                    // console.log(x)
+                                    // console.log(i)
+                                    stack({
+                                        zChildKeys:[
+                                            attach,
+                                            ...Array.from(Array(2),(x,i)=> {return "&#" + (8384 + i)}),                                                    
+                                        ],
+                                        ref: this.ref, 
+                                        zChild,
+                                        spacing:[null,40,40], 
+                                        keep: [],                            
+                                        type:'keepSomeAligned',
+                                        heightInclude:[null,...Array.from(Array(14),(x,i)=> {return 't'})]
+                                    })                                            
+                                    this.ref.detectChanges()
+                                    //
+
+                                }                              
+
+                                //modyfying board height
+                                zChild["&#8353"].css["height"] = (
+                                    numberParse(zChild["&#8385"].css["top"]) + 
+                                    numberParse(zChild["&#8385"].css["height"]) + 
+                                    50 -
+                                    numberParse(zChild["&#8353"].css["top"]) 
+                                ).toString() + "px"
+                                this.ref.detectChanges()
+                                //                                   
+                            }
+                            //
+
+                            //moving 
+                            {
+
+                            }
+                            //
+                        }
+                        //
+                        
+                        
+                    }                    
+                    
+
+                    // so you wont have to find the panel
+                    let currentScroll = Object
+                    .keys(zChild)
+                    .reduce((acc,x,i,src)=>{
+                        if(i === src.length-1){
+                            acc = x
+                        }
+                        return acc
+                    })
+                    // scrollTo(0,numberParse(getComputedStyle(zChild[currentScroll].element).top)-30)
+                    scrollTo(0,numberParse(getComputedStyle(zChild["&#8353"].element).top)-30)
+                    // 
+
+                    // this.ryber[this.appTV].metadata.formCO10.next({
+                    //     boardTop:zChild["&#8353"].css["top"],
+                    //     boardHeight:zChild["&#8353"].css["height"]
+                    // })                       
+
+                })
+            })
+            
+            this.ryber.appEvents({
+                typesES:this.typesES,
+                event:'click',
+                of:fromEvent(zChild["&#8384"].element,'click')  
+                .subscribe(()=>{
+                    deltaNode({
+                        intent:'add',
+                        elements: Array.from(Array(6),((x,i)=>{return zChild["&#" +(8355 + i) ]})),
+                        co:this.ryber[this.appTV.valueOf()],
+                        subCO:1, //decide to use the number of the signature
+                        group:"houseMembers",
+                        symbolDeltaStart:8410,
+                    })                    
+                    this.ref.detectChanges()
+                    zChild = this.zChildInit()
+                    eventDispatcher(({
+                        event:'resize',
+                        element:window
+                    }))  
+                    // console.log(zChild)         
+                })              
+            })       
+            
+            this.ryber.appEvents({
+                typesES:this.typesES,
+                event:'click',
+                of:fromEvent(zChild["&#8385"].element,'click')  
+                .subscribe(()=>{
+
+                    
+                    deltaNode({
+                        intent:'minus',
+                        co:this.ryber[this.appTV.valueOf()],
+                        group:"houseMembers",
+                        hook:'prepare'
+                    })       
+
+                    //clean up then take out DOM
+                    eventDispatcher(({
+                        event:'resize',
+                        element:window
+                    }))  
+                    //     
+                    
+                    deltaNode({
+                        intent:'minus',
+                        co:this.ryber[this.appTV.valueOf()],
+                        group:"houseMembers",
+                    })               
+                        
+                    
+                    
+                    this.ref.detectChanges()
+                    zChild = this.zChildInit()                    
+                    // console.log(zChild)         
+                })              
+            })     
+            
+            // eventDispatcher(({
+            //     event:'click',
+            //     element:zChild["&#8384"].element
+            // }))              
+            
+        }            
 
         this.ryber.appViewComplete.next(
             (function(qq){

@@ -56,6 +56,9 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
 
 
 ### Issues
+* for dynamic clean up you mainly wants to take care of things in clean up, what we did in the GNDC project saved us a ton but even for the dynamic elements in lifecycle hook 'done' instead of 'prepare' position doesnt always work, use the lifecycle hooks and place dynaimc code in the clean up block as you go from one media query to another ,
+    * if you do cleanup in the block you only have to worry about position of lifecycle hook 'done', but u can debate this because position of lifecycle hook 'prepare' is still position
+    * try to turn to repitition in position so devs can use the code more easily
 
 ### Tasks
 * make function do more responsively
