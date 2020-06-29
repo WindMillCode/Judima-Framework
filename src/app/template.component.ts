@@ -7,6 +7,7 @@ import {   zChildren,getTextWidth,numberParse,
     eventDispatcher,dropdown,dragElement,stack,xContain,minMaxDelta,
     objectCopy,responsiveMeasure
 } from '../customExports'
+import {environment} from '../../environments/environment' 
 
 
 @Component({
@@ -49,16 +50,10 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
             let zChild = this.zChildInit()
-            let staticZKeys = Object
-                                .entries(zChild)
-                                .filter((x:any,i)=>{ 
-                                    return x[1].quantity === 3
-                                })
-                                .map((x,i)=>{return x[0]})
-                                .slice(2) 
-                                // ugly rename >
-                                // if I need the board I know how to get it            
-            console.log(zChild)
+            let staticZKeys = this.staticZKeysGen(zChild)           
+            if(environment.production === false){
+                console.log(zChild)
+            }
 
             // drags elements for you 
                 //remove when done
@@ -234,16 +229,10 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
             let zChild = this.zChildInit()
-            let staticZKeys = Object
-                                .entries(zChild)
-                                .filter((x:any,i)=>{ 
-                                    return x[1].quantity === 3
-                                })
-                                .map((x,i)=>{return x[0]})
-                                .slice(2) 
-                                // ugly rename >
-                                // if I need the board I know how to get it
-            console.log(zChild)
+            let staticZKeys = this.staticZKeysGen(zChild)
+            if(environment.production === false){
+                console.log(zChild)
+            }
             
 
             // drags elements for you 
@@ -870,7 +859,17 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
                 quantity:'true'
             }
         });
-    }    
+    }
+
+    private staticZKeysGen(staticZChild:zChildren): Array<string>{
+        return Object
+        .entries(staticZChild)
+        .filter((x:any,i)=>{ 
+            return x[1].quantity === 3
+        })
+        .map((x,i)=>{return x[0]})
+        .slice(2) 
+    }        
 
 }
 

@@ -22,6 +22,19 @@ if (!Object.fromEntries) {
     }
 }
 
+if (!Object.entries) {
+  Object.entries = function( obj ){
+    var ownProps = Object.keys( obj ),
+        ownValues = Object.values(obj),
+        i = ownProps.length,
+        resArray = new Array(i); // preallocate the Array
+    while (i--)
+      resArray[i] = [ownProps[i], ownValues[i]];
+    
+    return resArray;
+  };
+}
+
 if( !Array.prototype.includes){
     Array.prototype.includes = function includes(item){
         var included = false

@@ -804,10 +804,11 @@ export function ryberUpdate(
         text?:string,
         val?:string,
         signature?:string,
+        spot?:number,
         symbolStart?:Array<number>
     }
 ){
-    let {co,type,css,extras,bool,text,val,signature,symbolStart}= devObj
+    let {co,type,css,extras,bool,text,val,signature,symbolStart,spot}= devObj
     
     
     let ryber = this
@@ -1016,15 +1017,30 @@ export function ryberUpdate(
 
         // adding the zChild
             subCO.quantity[index].push(3)
-            subCO.text[index].push(text)
-            subCO.val[index].push(val)
-            subCO.bool[index].push(bool)
-            subCO.ngCss[index].push(css)
-            subCO.extras[index].push(extras)
-            subCO.symbol[index].push(
-                "&#" +
-                ryber[co.valueOf()].generator[index].next().value
-            )
+
+            if( spot === undefined   ){
+                subCO.text[index].push(text)
+                subCO.val[index].push(val)
+                subCO.bool[index].push(bool)
+                subCO.ngCss[index].push(css)
+                subCO.extras[index].push(extras)
+                subCO.symbol[index].push(
+                    "&#" +
+                    ryber[co.valueOf()].generator[index].next().value
+                )
+            }
+
+            else{
+                subCO.text[index]  .splice(spot,0,text)
+                subCO.val[index]   .splice(spot,0,val)
+                subCO.bool[index]  .splice(spot,0,bool)
+                subCO.ngCss[index] .splice(spot,0,css)
+                subCO.extras[index].splice(spot,0,extras)
+                subCO.symbol[index].splice(spot,0,
+                    "&#" +
+                    ryber[co.valueOf()].generator[index].next().value
+                )                
+            }
             subCO.signature = signature
         //
         // console.log(bool,index)
@@ -1033,8 +1049,6 @@ export function ryberUpdate(
 
 }
 //
-
-
 
 //Action functions
 
@@ -1539,7 +1553,12 @@ export function responsiveMeasure(
                 y[0]         
             ){
                 // console.log(y)
-                x.css[devObj.item.prop[i].valueOf()] = y[1].toString()+"px"      
+                x.css[
+                    devObj.item.prop[i] === undefined ? 
+                    devObj.item.prop[devObj.item.prop.length-1].valueOf() :
+                    devObj.item.prop[i].valueOf() 
+                    
+                ] = y[1].toString()+"px"      
                 // dont we need change  detection   
             }          
         })
@@ -1606,6 +1625,7 @@ export function deltaNode
         numberParse(getComputedStyle(item).height)
     }
 
+    
     if(   devObj.intent ==='add' && devObj.hook !== 'prepare'   ){
 
 
@@ -1802,7 +1822,11 @@ export function deltaNode
 
     else if(   devObj.hook === 'prepare'   ){
 
+
         let {deltaNodeSite} = devObj.co.metadata
+        if(deltaNodeSite[devObj.group.valueOf()] === undefined){
+            return
+        }        
         let {count,subCO} = deltaNodeSite[devObj.group.valueOf()]
         deltaNodeSite.current ={count}
         deltaNodeSite.current.group = devObj.group

@@ -27,6 +27,7 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
         * __dynamic zChild__
             * its quantity value is 2
             * its element comes in and out of the DOM when its not needed its taken completly out of memory. you interact with  data , functions ,lifecycle hook on the entrance and exit of the dynamic zChild 
+            * __NEVER REFERENCE DIRECTLY THESE zChildren BY USING THEIR SYMBOLS, ALWAYS WORK IN THE DELTANODE SYSTEM AND REFRENCE THEM IN TERMS OF THE ARRAY PROVIDE BY ITS DELTANODE GROUP
 
 ### MVC VS FPM
 * tradtionally we have Model View Controller
@@ -59,6 +60,7 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
 * for dynamic clean up you mainly wants to take care of things in clean up, what we did in the GNDC project saved us a ton but even for the dynamic elements in lifecycle hook 'done' instead of 'prepare' position doesnt always work, use the lifecycle hooks and place dynaimc code in the clean up block as you go from one media query to another ,
     * if you do cleanup in the block you only have to worry about position of lifecycle hook 'done', but u can debate this because position of lifecycle hook 'prepare' is still position
     * try to turn to repitition in position so devs can use the code more easily
+    * the dynamic elements code in features and position are the same, try to turn into a cohesive fn
 
 ### Tasks
 * make function do more responsively
@@ -69,4 +71,21 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
 
 * in deltaNode make group [0] the elements you have copied, makes life soo much easier
     or at least we need those symbols of the static elements, not having them is killing us
+
+* turn repeated code of dynamic code blocks to 1 liners
+
+* textarea and input have form attribute specifiying the form element it belongs to. This is great learn about the HTMLform element , Angular Forms given the green light to add form element to template.html
+
+* give your framework a name 
+Judima
+
+Jumida 
+
+
+#### Misc
+* in educational explain that if that the limit is 30 zSymbols and if you need more, increase the limit when you init the CO
+* in education talk about ryber update, 
+    * talk about how spot allows you to insert an element you forgot into the right spot in the CO (h1,h2,h5)  h3 ???    array.splice(spot,0,h3) so you can keep accesbility and dont have to rewrite your code
+
+
 
