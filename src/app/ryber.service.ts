@@ -128,9 +128,7 @@ export class RyberService {
         }   
         // 
         
-        // formComponent Instances
-        formMyElements :Subject<Array<any[]>> = new Subject<Array<any>>();
-        formMyElementsArray: any[] = [];               
+             
                 
                                  
         //        
@@ -140,6 +138,7 @@ export class RyberService {
     /*overlay*/
 
         // overlayComponent events
+            //deprecated make your own as needed
         overlayLoadEvent$:Observable<Event>
         overlayResizeEvent$:Observable<Event>
         overlayES:any  = {
@@ -153,10 +152,6 @@ export class RyberService {
         overlayClickEvent$:Observable<Event>       
         // 
         
-        // overlayComponent Instances
-            //if overlayCO0 acts up check in formpanelResponsive you might have a bad check to prevent from loading the top
-        overlayMyElements :Subject<Array<any[]>> = new Subject<Array<any>>();
-        overlayMyElementsArray: any[] = [];        
       
               
         //        

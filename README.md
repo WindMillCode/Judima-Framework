@@ -81,6 +81,10 @@ Judima
 
 Jumida 
 
+* Renderer2 setStyle overrides, changing the css objects in zChild fix this 
+* give directives access to the zChildren 
+
+
 
 #### Misc
 * in educational explain that if that the limit is 30 zSymbols and if you need more, increase the limit when you init the CO
