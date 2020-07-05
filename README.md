@@ -58,14 +58,18 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
 
 ### Variable files
 * angular.json
+* tsconfig.base.json
 * template.component.ts
 * template.component.html
 * customExports.ts
-* object.js
+* ryber.service.ts
 * app.componennt.html
 * app.component.ts
-* ryber.service.ts
-
+* backend/
+* src/app/directive
+* app.module.ts
+* styles.css
+* assets/
 
 ### Resources
 

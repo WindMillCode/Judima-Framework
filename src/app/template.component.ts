@@ -43,8 +43,7 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         console.log( this.appTV+ 'ngAfterViewInit fires one remount') 
-        this.ryber.formLoadEvent$ = fromEvent(window,'load')
-        this.ryber.formResizeEvent$ = fromEvent(window,'resize')
+
 
 
 //component with static zChild only
@@ -918,7 +917,7 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
             
             if(type === 'stack' || type === undefined){
                 stack({
-                    zChildMovingKeys,
+                    zChildKeys: zChildMovingKeys,
                     ref: this.ref, 
                     zChild,
                     spacing:[null,40,40], 

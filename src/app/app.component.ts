@@ -33,7 +33,7 @@ export class AppComponent implements OnInit,AfterViewInit,OnDestroy {
     title = 'Template';
 
     // add representations here
-    formCO:  this.ryber.formCO
+    formCO=  this.ryber.formCO
     //
         
 ngOnInit(){
@@ -81,7 +81,7 @@ ngOnInit(){
     }            
           
     this.ryber.appViewComplete.subscribe(()=>{
-        
+
         
         if(   window.name === ''   ){
 
