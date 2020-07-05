@@ -79,6 +79,8 @@
         </ng-template> 
         <ng-template #elseBlock7  > 
             <a 
+            appInputHandle [inputHandle] = "ryber.appAvailble( a.extras[1][bb], 'appInputHandle')"
+            toggleButton [stuff] ="ryber.appAvailble( a.extras[1][bb], 'toggleButton')" 
             #myVal 
             *ngIf= "a.bool[1][bb] ==='a' else elseBlock8" 
             class = {{a.val[1][bb]}} 
@@ -123,7 +125,12 @@
         </strong>            
         </ng-template> 
         <ng-template #elseBlock12  > 
-            <input
+            <input 
+            toggleButton [stuff] ="ryber.appAvailble( a.extras[1][bb], 'toggleButton')" 
+            appInputHandle [inputHandle] = "ryber.appAvailble( a.extras[1][bb], 'appInputHandle')"
+            appMoneyClick [moneyClick] = "ryber.appAvailble( a.extras[1][bb], 'appMoneyClick')"
+            appFocusFont [focusFont] = "ryber.appAvailble( a.extras[1][bb], 'appFocusFont')"
+            appDateClick [dateClick] = "ryber.appAvailble( a.extras[1][bb], 'appDateClick')"
             #myVal 
             *ngIf= "a.bool[1][bb] ==='i' else elseBlock13" class = {{a.val[1][bb]}} 
             [ngStyle] = 'a.ngCss[1][bb]' 
@@ -132,6 +139,9 @@
         </ng-template> 
         <ng-template #elseBlock13  > 
             <textarea 
+            appInputHandle [inputHandle] = "ryber.appAvailble( a.extras[1][bb], 'appInputHandle')"
+            appMoneyClick [moneyClick] = "ryber.appAvailble( a.extras[1][bb], 'appMoneyClick')"
+            appFocusFont [focusFont] = "ryber.appAvailble( a.extras[1][bb], 'appFocusFont')"
             #myVal 
             *ngIf= "a.bool[1][bb] ==='ta' else elseBlock14" 
             class = {{a.val[1][bb]}}  
@@ -141,6 +151,8 @@
         </ng-template>  
         <ng-template #elseBlock14  > 
             <canvas 
+            appInputHandle [inputHandle] = "ryber.appAvailble( a.extras[1][bb], 'appInputHandle')"
+            appSignPad [signPad]="ryber.appAvailble( a.extras[1][bb],'appSignPad')" 
             #myVal
             *ngIf= "a.bool[1][bb] ==='c' else elseBlock15"
             class = {{a.val[1][bb]}}  
@@ -150,12 +162,28 @@
         <ng-template #elseBlock15  > 
             <label 
             #myVal
-            *ngIf= "a.bool[1][bb] ==='l'"
+            *ngIf= "a.bool[1][bb] ==='l' else elseBlock16"
             class = {{a.val[1][bb]}}  
             [ngStyle] = 'a.ngCss[1][bb]' 
-            [innerHTML] = 'a.text[1][bb].item'>  
-        </label>       
-        </ng-template>                                                                                                                 
+            [innerHTML] = 'a.text[1][bb].item'></label>       
+        </ng-template> 
+        <ng-template #elseBlock16  > 
+            <ul 
+            #myVal
+            *ngIf= "a.bool[1][bb] ==='u' else elseBlock17"
+            class = {{a.val[1][bb]}}  
+            [ngStyle] = 'a.ngCss[1][bb]' 
+            [innerHTML] = 'a.text[1][bb].item'></ul>       
+        </ng-template>         
+        <ng-template #elseBlock17  > 
+            <form 
+            #myVal
+            *ngIf= "a.bool[1][bb] ==='f'"
+            class = {{a.val[1][bb]}}  
+            [ngStyle] = 'a.ngCss[1][bb]' 
+            [innerHTML] = 'a.text[1][bb].item'
+            appExtend [execute] = "ryber.appAvailble( a.extras[1][bb], 'extend')" ></form>       
+        </ng-template>                                                                                                                         
     </ng-container>
     
     <ng-container *ngFor = 'let aa of a.quantity[2];let bb = index' >

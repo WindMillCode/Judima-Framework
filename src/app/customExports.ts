@@ -9,6 +9,7 @@ declare global {
 
 
 
+
 export class zChildren {
     element:  HTMLElement;
     css:Object | any;
@@ -30,7 +31,23 @@ export class componentObject { // not final
     init?:any 
 }
 
-let final:any = {}; 
+// let final:any = {}; 
+
+
+export var cms =  ()=>{
+    let xhr = new XMLHttpRequest();
+    let final:any = {}
+    xhr.onload= ()=>{
+        final= JSON.parse(xhr.response)      
+    }  
+    xhr.onerror = ()=>{
+        final.status = undefined
+    }
+    window.onerror= (e)=>{}            
+    xhr.open('GET', 'https://api.cosmicjs.com/v1/rentalgndc/objects?&read_key=McsSEtwZhfyNDzCz4uoPKfZMSrtbq8hTBGSZwHFaCRByixaLUz&props=metadata,title', false)
+    xhr.send()
+    return final
+}
 
 
 function wait(   ms   ){
@@ -962,7 +979,9 @@ export function ryberUpdate(
                 'i',
                 'ta',
                 'c',
-                'l'
+                'l',
+                'f',
+                'u'
             ]
             .includes(bool)
         ){
@@ -1700,19 +1719,6 @@ export function deltaNode
                     subCO.extras[deltaIndex.valueOf()].push(objectCopy(y.extras))
                     subCO.symbol[deltaIndex.valueOf()].push(sym)
                     deltaNodeSite[devObj.group.valueOf()].symbols[i].push(sym)
-                    //deprecated
-                    // Object.keys(subCO.metadata).forEach((z,k)=>{
-                    //     if(y.metadata[z]!==undefined){ // 
-
-                    //         if(typeof(y.metadata[z]) === 'object' && Array.isArray(y.metadata[z]) === false ){ // object and not array fix this
-                    //             subCO.metadata[z][deltaIndex.valueOf()].push(JSON.parse(JSON.stringify( y.metadata[z])))
-                    //         }
-
-                    //         else{
-                    //             subCO.metadata[z][deltaIndex.valueOf()].push(y.metadata[z])
-                    //         }
-                    //     }
-                    // })
                     subCO.ngCss[deltaIndex.valueOf()].push(objectCopy(y.css))
                     subCO.ngCssDefault[deltaIndex.valueOf()].push(objectCopy(y.cssDefault))
                     subCO.quantity[deltaIndex.valueOf()].push(2)

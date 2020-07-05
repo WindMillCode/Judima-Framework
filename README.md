@@ -47,6 +47,26 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
 
 ### Stack
 
+
+| tech stack | name  |
+| :------------ |:---------------:| 
+| cms         | cosmicjs | 
+| e2e |  capybara| 
+| unit |  capybara| 
+| regression |  capybara|
+| visual |  percy |  
+
+### Variable files
+* angular.json
+* template.component.ts
+* template.component.html
+* customExports.ts
+* object.js
+* app.componennt.html
+* app.component.ts
+* ryber.service.ts
+
+
 ### Resources
 
 ### Goals
@@ -54,6 +74,9 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
     * by having controlled condtionals for deltaNode groups and treating the dynamics as part of the zChild by splitting them to the feature position moving logic, we achieve much
     * so the elements that would be considered moving,must be accomodating even if the dynamic elements are not there, we can accomodate this by using the prepare hook
     before the elements come on the DOM. If too difficult we'll take another look
+* customExports
+    *deltaNode
+        * made a lifecycle hook 
 
 
 ### Issues
@@ -69,10 +92,9 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
 
 * use symbol arrays so you can make yr functions more reusable/
 
-* in deltaNode make group [0] the elements you have copied, makes life soo much easier
-    or at least we need those symbols of the static elements, not having them is killing us
 
 * turn repeated code of dynamic code blocks to 1 liners
+* any directive that uses element attr should have its name as its own prop, what if we have to change the attr but the element attr is requried to stay the same uh oh 
 
 * textarea and input have form attribute specifiying the form element it belongs to. This is great learn about the HTMLform element , Angular Forms given the green light to add form element to template.html
 

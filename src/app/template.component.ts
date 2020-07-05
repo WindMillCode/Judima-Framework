@@ -1,6 +1,6 @@
-import {   Component, OnInit,Input,ViewChildren,AfterViewInit,Inject, OnDestroy,ChangeDetectorRef,ChangeDetectionStrategy,AfterContentInit } from '@angular/core';
+import {   Component, OnInit,Input,ViewChildren,AfterViewInit,Inject, OnDestroy,ChangeDetectorRef,ChangeDetectionStrategy, Renderer2} from '@angular/core';
 import {   RyberService   } from '../ryber.service';
-import {   fromEvent,interval, of,from, Observable,merge, Subject, combineLatest } from 'rxjs';
+import {   fromEvent,interval, of,from, Observable,merge, Subject,BehaviorSubject, combineLatest } from 'rxjs';
 import {   catchError,take,timeout,mapTo, debounceTime,distinctUntilChanged, debounce,first, ignoreElements    } from 'rxjs/operators';
 import {   zChildren,getTextWidth,numberParse,
     xPosition,resize,componentBootstrap,deltaNode,
@@ -15,16 +15,18 @@ import {environment} from '../../environments/environment'
   styleUrls: ['./template.component.css'], // useful we dont need to repeat ourcless in ngCss
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
+export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
 
     @ViewChildren('myVal') templateMyElements: any; 
 
     constructor(
         public ryber: RyberService,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        private renderer: Renderer2
     ) { }
     
     @Input() appTV:string | any;
+    foo:any= {}
     typesES:string = 'headingES'
     CONumber:Generator = (function(){
         return function *generator() {
@@ -51,39 +53,24 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
 
             let zChild = this.zChildInit()
             let staticZKeys = this.staticZKeysGen(zChild)           
-            if(environment.production === false){
-                // console.log(zChild)
-            }
+            // console.log(zChild)
+
 
             // drags elements for you 
-                //remove when done
-                let toPlace = Object.keys(zChild)
-                .filter((x,i)=>{  return x.match("&#") !== null })
-                .slice(2)
-                // console.log(toPlace)
-                toPlace
-                .forEach((x,i)=>{
-                    dragElement(zChild[x].element)
-                })
+            // this.toPlace(zChild)
             //
 
             // highlights
-            Array.from(Array(2),(x,i)=> {return "&#" +(8354 + i)})
-            .forEach((x,i)=>{
-                // zChild[x].css["background-color"]= "red"
-            })
-            // this.ref.detectChanges()
+            // this.highlights(zChild,2)
             //            
 
-             
-                        
             this.ryber.appEvents({
                 typesES:this.typesES,
                 event:'resize',
                 of:(
-                    this.ryber.['formCO10'].metadata[this.appTV] !== undefined ? 
-                    this.ryber.['formCO10'].metadata[this.appTV] :
-                    this.ryber.formResizeEvent$ 
+                    this.ryber['formCO10'].metadata[this.appTV] !== undefined ? 
+                    this.ryber['formCO10'].metadata[this.appTV] :
+                    fromEvent(window,'resize')
                 )
                 // .pipe()
                 .subscribe((moving)=>{ 
@@ -110,6 +97,7 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 })
                                 this.ref.detectChanges()
                                 //
+
                                 // zChild["&#8354"].css["left"] = xPosition({
                                 //     target:numberParse(zChild["&#8354"].css["width"]),
                                 //     contain: numberParse(getComputedStyle(zChild["&#8353"].element).width)
@@ -204,6 +192,7 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 //clean up
 
                                 //
+
                                 // same start  
                                 Object
                                 .keys(zChild)
@@ -258,13 +247,13 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 this.ref.detectChanges()   
                                 
                                 //modyfying board height
-                                zChild["&#8353"].css["height"] = (
-                                    numberParse(zChild["&#8356"].css["top"]) + 
-                                    numberParse(zChild["&#8356"].css["height"]) + 
-                                    50 -
-                                    numberParse(zChild["&#8353"].css["top"]) 
-                                ).toString() + "px"
-                                this.ref.detectChanges()
+                                // zChild["&#8353"].css["height"] = (
+                                //     numberParse(zChild["&#8356"].css["top"]) + 
+                                //     numberParse(zChild["&#8356"].css["height"]) + 
+                                //     50 -
+                                //     numberParse(zChild["&#8353"].css["top"]) 
+                                // ).toString() + "px"
+                                // this.ref.detectChanges()
                                 //                                  
 
                             }
@@ -299,22 +288,15 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                     
 
                     // so you wont have to find the panel
-                    let currentScroll = Object
-                    .keys(zChild)
-                    .reduce((acc,x,i,src)=>{
-                        if(i === src.length-1){
-                            acc = x
-                        }
-                        return acc
-                    })
-                    scrollTo(0,numberParse(getComputedStyle(zChild[currentScroll].element).top)-30)
-                    // scrollTo(0,numberParse(getComputedStyle(zChild["&#8353"].element).top)-30)
+                    // this.currentScroll(zChild)
                     // 
 
-                    // this.ryber[this.appTV].metadata.formCO10.next({
-                    //     boardTop:zChild["&#8353"].css["top"],
-                    //     boardHeight:zChild["&#8353"].css["height"]
-                    // })                       
+                    //send moving data to next CO
+                        // this.ryber[this.appTV].metadata.formCO10.next({
+                        //     boardTop:zChild["&#8353"].css["top"],
+                        //     boardHeight:zChild["&#8353"].css["height"]
+                        // })   
+                    //                    
 
                 })
             })
@@ -328,41 +310,25 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
             let zChild = this.zChildInit()
-            let staticZKeys = this.staticZKeysGen(zChild)           
-            if(environment.production === false){
-                // console.log(zChild)
-            }
+            let staticZKeys = this.staticZKeysGen(zChild)
+            // console.log(zChild)
             
 
             // drags elements for you 
-                //remove when done
-                let toPlace = Object.keys(zChild)
-                .filter((x,i)=>{  return x.match("&#") !== null })
-                .slice(2)
-                // console.log(toPlace)
-                toPlace
-                .forEach((x,i)=>{
-                    dragElement(zChild[x].element)
-                })
+            // this.toPlace(zChild)
             //
 
             // highlights
-            Array.from(Array(2),(x,i)=> {return "&#" +(8354 + i)})
-            .forEach((x,i)=>{
-                // zChild[x].css["background-color"]= "red"
-            })
-            // this.ref.detectChanges()
-            //            
-
-            
-                        
+            // this.highlights(zChild,2)
+            //          
+   
             this.ryber.appEvents({
                 typesES:this.typesES,
                 event:'resize',
                 of:(
                     this.ryber['formCO2'].metadata[this.appTV] !== undefined ? 
                     this.ryber['formCO2'].metadata[this.appTV] :
-                    this.ryber.formResizeEvent$ 
+                    fromEvent(window,'resize')
                 )
                 // .pipe()
                 .subscribe((moving)=>{ 
@@ -401,11 +367,13 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 this.ref.detectChanges()
                                 //
 
-                                zChild["&#8354"].css["left"] = xPosition({
-                                    target:numberParse(zChild["&#8354"].css["width"]),
-                                    contain: numberParse(getComputedStyle(zChild["&#8353"].element).width)
-                                }).toString() + "px"
-                                this.ref.detectChanges()
+                                //center title
+                                // zChild["&#8354"].css["left"] = xPosition({
+                                //     target:numberParse(zChild["&#8354"].css["width"]),
+                                //     contain: numberParse(getComputedStyle(zChild["&#8353"].element).width)
+                                // }).toString() + "px"
+                                // this.ref.detectChanges()
+                                //
 
                                 stack({
                                     zChildKeys:[
@@ -433,9 +401,9 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                                 // align options
                                 let align = [
-                                    Array.from(Array(2),(x,i)=> {return "&#" +(8384 + i)}),
-                                    Array.from(Array(3),(x,i)=> {return "&#" +(8355 + i)}),
-                                    Array.from(Array(3),(x,i)=> {return "&#" +(8358 + i)}),
+                                    // Array.from(Array(2),(x,i)=> {return "&#" +(8384 + i)}),
+                                    // Array.from(Array(3),(x,i)=> {return "&#" +(8355 + i)}),
+                                    // Array.from(Array(3),(x,i)=> {return "&#" +(8358 + i)}),
                                 ]
                                 xContain({
                                     preserve:{
@@ -516,85 +484,32 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     }
                                 })
 
-                                if(houseMembers !== undefined){
-                                    houseMembers
-                                    .symbols
-                                    .forEach((x,i)=>{
-                                        // console.group('position houseMembers')
+                                    
+                                // console.log(x)
+                                // console.log(i)
+                                let attach = this.dynamicPosition({
+                                    deltaDiff:50,
+                                    group,
+                                    zChild,
+                                    current,
+                                    attachVal:"&#8360",
+                                    zChildKeys:[
+                                        ...Array.from(Array(2),(x,i)=> {return "&#" + (8384 + i)}),                                                    
+                                    ]
+                                })
 
 
-                                            let {delta} = minMaxDelta({
-                                                items:houseMembers.elements[i],
-                                                min:(item)=>{
-                                                    return numberParse(item.css["top"])
-                                                },
-                                                max:(item)=>{
-                                                    return numberParse(item.css["top"]) + 
-                                                    numberParse(item.css["height"])
-                                                }                                                            
-                                            })    
-                                            delta  += 50     
-                                            x.forEach((y,j) => {
-                                                zChild[y].css["top"] = (
-                                                    numberParse(houseMembers.elements[i][j].css["top"]) +
-                                                    (
-                                                        delta *
-                                                        (i +1)
-                                                    )
-                                                ).toString() + "px"
-                                            })
-                                            this.ref.detectChanges() 
-                                            houseMembers.extras[i].positioned = 'true'    
-                                            
-                                            
-                                        
-                                        
                                 
-                                        // console.groupEnd()
-                                    })
-                                    
-                            
-                                    let i = (current.intent === 'minus' && current.hook === 'prepare') ?
-                                    houseMembers.symbols.length-2 :
-                                    houseMembers.symbols.length-1 
-
-                                    let x = i !== -1 ? 
-                                    houseMembers.symbols[i]:
-                                    houseMembers.elements[0]
-
-                                    let attach =  (i !== -1 ? x[x.length-1] : "&#8360")
-                                    
-                                    // console.log(x)
-                                    // console.log(i)
-                                    stack({
-                                        zChildKeys:[
-                                            attach,
-                                            ...Array.from(Array(2),(x,i)=> {return "&#" + (8384 + i)}),                                                    
-                                        ],
-                                        ref: this.ref, 
-                                        zChild,
-                                        spacing:[null,40,40], 
-                                        keep: [
-                                            ...Array.from(Array(2),(y,j)=> {
-                                                return ["&#" + (8384 + j),attach]
-                                            }),                                                                                                                                                                                                                                                                          
-                                        ],                            
-                                        type:'keepSomeAligned',
-                                        heightInclude:[null,...Array.from(Array(14),(x,i)=> {return 't'})]
-                                    })                                            
-                                    this.ref.detectChanges()
-                                    //
-
-                                }                                
+                                                                 
 
                                 // position board
-                                zChild["&#8353"].css["height"] = (
-                                    numberParse(zChild["&#8385"].css["top"]) + 
-                                    numberParse(zChild["&#8385"].css["height"]) + 
-                                    50 -
-                                    numberParse(zChild["&#8353"].css["top"]) 
-                                ).toString() + "px"
-                                this.ref.detectChanges()    
+                                // zChild["&#8353"].css["height"] = (
+                                //     numberParse(zChild["&#8385"].css["top"]) + 
+                                //     numberParse(zChild["&#8385"].css["height"]) + 
+                                //     50 -
+                                //     numberParse(zChild["&#8353"].css["top"]) 
+                                // ).toString() + "px"
+                                // this.ref.detectChanges()    
                                 //                                        
                                                               
 
@@ -643,24 +558,24 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 this.ref.detectChanges()
                                 // 
 
-                                responsiveMeasure({
-                                    item:{
-                                        target:[zChild["&#8354"]],
-                                        prop:["height"]
-                                    },
-                                    values:[
-                                        [[1200,62],[538,125]],
-                                    ],
-                                    measure:{
-                                        target:zChild["&#8353"].element,
-                                        prop:"width"
-                                    }
-                                })
-                                this.ref.detectChanges()   
+                                // responsiveMeasure({
+                                //     item:{
+                                //         target:[zChild["&#8354"]],
+                                //         prop:["height"]
+                                //     },
+                                //     values:[
+                                //         [[1200,62],[538,125]],
+                                //     ],
+                                //     measure:{
+                                //         target:zChild["&#8353"].element,
+                                //         prop:"width"
+                                //     }
+                                // })
+                                // this.ref.detectChanges()   
 
                                 //serveral targets
                                 let fonts = [
-                                    ...Array.from(Array(6),(x,i)=> {return "&#" +(8355 + i)}),
+                                    // ...Array.from(Array(6),(x,i)=> {return "&#" +(8355 + i)}),
                                 ]
                                 .forEach((x,i)=>{
                                     zChild[x].css["font-size"]  =(
@@ -679,8 +594,9 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 
                                 stack({
                                     zChildKeys:[
-                                        ...Array.from(Array(20),(x,i)=> {return "&#" + (8353 + i)}),
-                                        ...Array.from(Array(20),(x,i)=> {return "&#" + (8384 + i)})
+                                        "&#8353",
+                                        ...this.ryber[this.appTV.valueOf()].quantity[1][1].symbol[1],
+                                        ...this.ryber[this.appTV.valueOf()].quantity[1][1].symbol[2]
                                     ],
                                     ref: this.ref, 
                                     zChild,
@@ -760,80 +676,49 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 })
 
 
-                                if(group !== undefined){
-                                    group
-                                    .symbols
-                                    .forEach((x,i)=>{
+
+                                let attach = this.dynamicPosition({
+                                    deltaDiff:50,
+                                    group,
+                                    zChild,
+                                    current,
+                                    attachVal:"&#8360",
+                                    zChildKeys:[
+                                        ...Array.from(Array(2),(x,i)=> {return "&#" + (8384 + i)}),                                                    
+                                    ],
+                                    customFn:((devObj)=>{
+                                        stack({
+                                            zChildKeys:[
+                                                devObj.attach,
+                                                ...Array.from(Array(2),(x,i)=> {return "&#" + (8384 + i)}),                                                    
+                                            ],
+                                            ref: this.ref, 
+                                            zChild,
+                                            spacing:[null,40,40], 
+                                            keep: [],                            
+                                            type:'keepSomeAligned',
+                                            heightInclude:[null,...Array.from(Array(14),(x,i)=> {return 't'})]
+                                        })                                            
+                                        this.ref.detectChanges()                                        
+                                    })
+                                })
                                 
-                                        
-                                            
-                                            
-                                            let {delta} = minMaxDelta({
-                                                items:group.elements[i],
-                                                min:(item)=>{
-                                                    return numberParse(item.css["top"])
-                                                },
-                                                max:(item)=>{
-                                                    return numberParse(item.css["top"]) + 
-                                                    numberParse(item.css["height"])
-                                                }                                                            
-                                            })    
-                                            delta  += 50     
-                                            x.forEach((y,j) => {
-                                                zChild[y].css["top"] = (
-                                                    numberParse(group.elements[i][j].css["top"]) +
-                                                    (
-                                                        delta *
-                                                        (i +1)
-                                                    )
-                                                ).toString() + "px"
-                                            })
-                                            this.ref.detectChanges() 
-                                            group.extras[i].positioned = 'true'    
-                                            
-                                            
-                                        
-                                
-                                    })  
-                                
-                                
-                                    let i = (current.intent === 'minus' && current.hook === 'prepare') ?
-                                    group.symbols.length-2 :
-                                    group.symbols.length-1 
-                                
-                                    let x = i !== -1 ? 
-                                    group.symbols[i]:
-                                    group.elements[0]
-                                
-                                    let attach =  (i !== -1 ? x[x.length-1] : "&#8360")
                                     
                                     // console.log(x)
                                     // console.log(i)
-                                    stack({
-                                        zChildKeys:[
-                                            attach,
-                                            ...Array.from(Array(2),(x,i)=> {return "&#" + (8384 + i)}),                                                    
-                                        ],
-                                        ref: this.ref, 
-                                        zChild,
-                                        spacing:[null,40,40], 
-                                        keep: [],                            
-                                        type:'keepSomeAligned',
-                                        heightInclude:[null,...Array.from(Array(14),(x,i)=> {return 't'})]
-                                    })                                            
-                                    this.ref.detectChanges()
+
                                     //
                                 
-                                }                              
+                                                             
 
                                 //modyfying board height
-                                zChild["&#8353"].css["height"] = (
-                                    numberParse(zChild["&#8385"].css["top"]) + 
-                                    numberParse(zChild["&#8385"].css["height"]) + 
-                                    50 -
-                                    numberParse(zChild["&#8353"].css["top"]) 
-                                ).toString() + "px"
-                                this.ref.detectChanges()
+                                // zChild["&#8353"].css["height"] = (
+                                //     numberParse(zChild["&#8385"].css["top"]) + 
+                                //     numberParse(zChild["&#8385"].css["height"]) + 
+                                //     50 -
+                                //     numberParse(zChild["&#8353"].css["top"]) 
+                                // ).toString() + "px"
+                                // this.ref.detectChanges()
                                 //                                   
                             }
                             //
@@ -850,17 +735,9 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
                     }                    
                     
 
+
                     // so you wont have to find the panel
-                    let currentScroll = Object
-                    .keys(zChild)
-                    .reduce((acc,x,i,src)=>{
-                        if(i === src.length-1){
-                            acc = x
-                        }
-                        return acc
-                    })
-                    // scrollTo(0,numberParse(getComputedStyle(zChild[currentScroll].element).top)-30)
-                    scrollTo(0,numberParse(getComputedStyle(zChild["&#8353"].element).top)-30)
+                    // this.currentScroll(zChild)
                     // 
 
                     // this.ryber[this.appTV].metadata.formCO10.next({
@@ -946,7 +823,123 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         console.log(this.appTV+ '  ngOnDestroy fires on dismount')
     }
+
+    private inputHandleSendData(devObj:{
+        inputZChild:zChildren,
+        co: any // a CO
+    }):void{
+
+        let {inputZChild,co} = devObj
+        // subjects meeded for input handle to work
+        Object
+        .keys(inputZChild)
+        .forEach((x,i)=>{
+            if(inputZChild[x].extras !== undefined && inputZChild[x].extras !== null ){
+                if(inputZChild[x].extras.appInputHandle !== undefined){
+                    inputZChild[x].extras.appInputHandle.co  = new BehaviorSubject<any>(co)
+                    inputZChild[x].extras.appInputHandle.inputZChild  = new BehaviorSubject<any>([x.valueOf(),inputZChild[x]])                                
+                } 
+            }
+        })       
+        //      
+    }
+
+    private inputHandleModifyName(devObj:{
+        group:any, // part of deltaNODE
+        current:any,
+        inputZChild:zChildren
+    }):void{
+        let {group,current,inputZChild} = devObj
+        if(group !== undefined && current.intent === 'add' && current.hook === 'done'){
+            group.symbols[current.count]
+            .forEach((x,i)=>{
+                if(inputZChild[x].extras.appInputHandle === undefined){
+                    return
+                }
+                else if(inputZChild[x].extras.appInputHandle.name !== group.elements[0][i].extras.appInputHandle.name ){
+                    return
+                }                         
+                inputZChild[x].extras.appInputHandle.name += "_" + current.count
+            })
+        }       
+    }
     
+    private dynamicPosition(devObj:{
+        deltaDiff:number, // spacing between dynamics
+        group:any,// deltaNode group
+        zChild:zChildren,
+        current:any // deltaNode current current
+        attachVal:string //zChildKey
+        zChildKeys:Array<string>
+        type?:string
+        customFn?:Function
+    }):any{
+        let {deltaDiff,group,zChild,current,attachVal,type,zChildKeys,customFn} = devObj
+        let zChildMovingKeys = zChildKeys
+        if(group !== undefined){
+            group
+            .symbols
+            .forEach((x,i)=>{
+                let {delta} = minMaxDelta({
+                    items:group.elements[i],
+                    min:(item)=>{
+                        return numberParse(item.css["top"])
+                    },
+                    max:(item)=>{
+                        return numberParse(item.css["top"]) + 
+                        numberParse(item.css["height"])
+                    }                                                            
+                })    
+                delta  += attachVal     
+                x.forEach((y,j) => {
+                    zChild[y].css["top"] = (
+                        numberParse(group.elements[i][j].css["top"]) +
+                        (
+                            delta *
+                            (i +1)
+                        )
+                    ).toString() + "px"
+                })
+                this.ref.detectChanges() 
+                group.extras[i].positioned = 'true'    
+            })  
+            
+            let i = (current.intent === 'minus' && current.hook === 'prepare') ?
+            group.symbols.length-2 :
+            group.symbols.length-1          
+            
+            let x = i !== -1 ? 
+            group.symbols[i]:
+            group.elements[0]      
+            
+            let attach =  (i !== -1 ? x[x.length-1] : attachVal)  
+            zChildKeys.unshift(attach)
+
+            
+            if(type === 'stack' || type === undefined){
+                stack({
+                    zChildMovingKeys,
+                    ref: this.ref, 
+                    zChild,
+                    spacing:[null,40,40], 
+                    keep: [
+                        ...Array.from(Array(2),(y,j)=> {
+                            return ["&#" + (8384 + j),attach]
+                        }),                                                                                                                                                                                                                                                                          
+                    ],                            
+                    type:'keepSomeAligned',
+                    heightInclude:[null,...Array.from(Array(14),(x,i)=> {return 't'})]
+                })                                            
+                this.ref.detectChanges()
+            }
+
+            else if(type === 'custom'){
+                customFn({
+                    attach
+                })
+            }
+        }   
+    }
     private zChildInit(devObj?): any {
         return componentBootstrap({
             appTV: this.appTV,
@@ -954,7 +947,8 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
             ryber: this.ryber,
             zProps: {
                 extras: 'true',
-                val:'true'
+                val:'true',
+                quantity:'true'
             }
         });
     }    
@@ -969,6 +963,33 @@ export class HeadingComponent implements OnInit  , AfterViewInit, OnDestroy {
         .slice(2) 
     }    
 
+    private toPlace (staticZChild:zChildren) : any{
+        return  Object.keys(staticZChild)
+        .filter((x,i)=>{  return x.match("&#") !== null })
+        .slice(2)
+        .forEach((x,i)=>{
+            dragElement(staticZChild[x].element)
+        })
+    }
+
+    private highlights (staticZChild:zChildren,amount:number): void{
+        Array.from(Array(2),(x,i)=> {return "&#" +(8354 + i)})
+        .forEach((x,i)=>{
+            staticZChild[x].css["background-color"]= "red"
+        })        
+    }
+
+    private currentScroll(staticZChild:zChildren,reverse?:number): void{
+        let current = Object
+        .keys(staticZChild)
+        .reduce((acc,x,i,src)=>{
+            if(i === src.length-1){
+                acc = x
+            }
+            return acc
+        })        
+        scrollTo(0,numberParse(getComputedStyle(staticZChild[current === undefined ? "&#8353" :current].element).top)-30)
+    }
 }
 
 

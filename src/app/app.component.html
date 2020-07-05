@@ -1,5 +1,10 @@
-<ng-container *ngIf ="ryber.appCurrentNav  === '/home' || ryber.appCurrentNav  === '/' || ryber.appCurrentNav  === '/clt' ">
+<ng-container *ngIf ="ryber.appCurrentNav  === '/home' || ryber.appCurrentNav  === '/'  ">
     <ng-container *ngFor="let item of formCO; index as i;">
-        <app-form  [class] = '"formCO" +i' [appTV]= '"formCO" + i'  [ngStyle] = 'ryber["formCO"+i].quantity[0][0].ngCss[0][0]'></app-form>
+        <app-form  [class] = 'item' [appTV]= 'item'  [ngStyle] = 'ryber[item].quantity[0][0].ngCss[0][0]'></app-form>
     </ng-container>
+    <ng-container  *ngIf=" ryber.invalid === 'true'">
+        <ng-container *ngFor="let item of dialogCO; index as i;">
+            <app-dialog  [class] = '"dialogCO" +i' [appTV]= '"dialogCO" + i'  [ngStyle] = 'ryber["dialogCO"+i].quantity[0][0].ngCss[0][0]'></app-dialog>
+        </ng-container>
+    </ng-container>   
 </ng-container>
