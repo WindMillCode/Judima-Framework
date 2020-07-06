@@ -903,7 +903,7 @@ export function ryberUpdate(
                         },                      
                         ...Array.from(Array(1),()=> {
                             return {
-                                signature:"",
+                                signature:(signature !== undefined  ? signature: ""),
                                 quantity:[
                                     [],
                                     [],

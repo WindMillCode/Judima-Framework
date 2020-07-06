@@ -61,6 +61,13 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
 
             // highlights
             // this.highlights(zChild,2)
+            //     
+            
+            // giving inputHandle what it needs
+            this.inputHandleSendData({
+                inputZChild:zChild,
+                co:this.ryber[this.appTV]
+            })
             //            
 
             this.ryber.appEvents({
@@ -77,7 +84,7 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
                 
                     // console.log(numberParse(getComputedStyle(zChild["&#8353"].element).width))
 
-                    if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > 900   ){
+                    if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > 1200   ){
                         
                         //element management
                         {
@@ -319,7 +326,14 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
 
             // highlights
             // this.highlights(zChild,2)
-            //          
+            //     
+            
+            // giving inputHandle what it needs
+            this.inputHandleSendData({
+                inputZChild:zChild,
+                co:this.ryber[this.appTV]
+            })
+            //            
    
             this.ryber.appEvents({
                 typesES:this.typesES,
@@ -982,7 +996,7 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
         let current = Object
         .keys(staticZChild)
         .reduce((acc,x,i,src)=>{
-            if(i === src.length-1){
+            if(i === reverse){
                 acc = x
             }
             return acc
