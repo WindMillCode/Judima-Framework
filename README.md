@@ -110,7 +110,14 @@ Jumida
 * Renderer2 setStyle overrides, changing the css objects in zChild fix this 
 * give directives access to the zChildren 
 
+* reach out to cosmicjs
+    * explain how there should be custom types, so my editors can know what fields to fill out
+    * explain how there should be a helper field for enums
+    * explain how I should have to manually pick each object to make a change if I want to make a change across several I can do so easily
 
+* follow up on the node that makes up the html element
+    * display:table gives you the true height of the element as represented by nodes in the DOM
+    * the text node represents the true height of text elements in the DOM
 
 #### Misc
 * in educational explain that if that the limit is 30 zSymbols and if you need more, increase the limit when you init the CO

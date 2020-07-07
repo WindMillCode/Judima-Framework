@@ -237,6 +237,17 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 })
                                 this.ref.detectChanges()    
                                 //   
+
+
+                                // responsive Height
+                                staticZKeys
+                                .forEach((x,i)=> {
+                                    zChild[x].css["display"] = "table"
+                                    this.ref.detectChanges()
+                                    zChild[x].css["height"] =  (zChild[x].element.getBoundingClientRect().height).toString() + "px"
+                                })
+                                this.ref.detectChanges()
+                                //                                
                                 
                                 stack({
                                     zChildKeys:[
@@ -993,15 +1004,20 @@ export class TemplateComponent implements OnInit  , AfterViewInit, OnDestroy {
     }
 
     private currentScroll(staticZChild:zChildren,reverse?:number): void{
-        let current = Object
-        .keys(staticZChild)
-        .reduce((acc,x,i,src)=>{
-            if(i === reverse){
-                acc = x
-            }
-            return acc
-        })        
-        scrollTo(0,numberParse(getComputedStyle(staticZChild[current === undefined ? "&#8353" :current].element).top)-30)
+        let current = null
+        if( reverse === undefined){
+        }
+        else{
+            Object
+            .keys(staticZChild)
+            .reduce((acc,x,i,src)=>{
+                if(i ===  reverse){
+                    acc = x
+                }
+                return acc
+            })       
+        } 
+        scrollTo(0,numberParse(getComputedStyle(staticZChild[current === null ? "&#8353" :current].element).top)-30)
     }
 }
 
