@@ -57,6 +57,15 @@ Make sure panel borders realign properly on all mediaqueries
 # Components 
 * do we need display table
 
+## top level and formatting
+* by default judima will format all top level zChildren in its components
+* provide a flag, to ignore top level, this means that the elemnts might end up going in the div board
+* provide a flag indicating the zChild should not get considered in formatting
+* if a zChild is not top level it doesn't get formatted as of now, in the future the board will be the contating element, however its highly advised for the logic to have its own formatting scheme as it could break the judima app
+
+* test that with several duplicateGroups things can  work in tandem
+	* works at a basic level root out the specific causes
+
 # Ryber
 *  make sure every element can  get css and attribute support as defined by options in objects
 * consider changing from key to class and having classes support _ in its name
@@ -66,6 +75,7 @@ Make sure panel borders realign properly on all mediaqueries
 	* type
 	* extend
 	* multipleGroup
+	* judima
 * no zChildren contain function with refrences to external data or data types that do such
 * use zSymbolNeeded ="true" to indicate that a directive needs its own zChild symbol
 

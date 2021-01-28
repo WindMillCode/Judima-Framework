@@ -53,10 +53,7 @@ export class WebRTCDirective {
                 error: (error) => {
 
 
-                    eventDispatcher({
-                        event: 'resize',
-                        element: window
-                    })
+
                 },
                 next: (result: any) => {
 
@@ -178,13 +175,7 @@ export class WebRTCDirective {
                     hangupButton.addEventListener('click', hangupAction);
 
 
-                    // request from the end user use of the webcam
-                    from(navigator.mediaDevices.getUserMedia(mediaStreamConstraints))
-                    .subscribe({
-                        next:gotLocalMediaStream,
-                        error:handleLocalMediaStreamError,
-                    })
-                    //
+
                 }
 
                 // rtcDatChannel

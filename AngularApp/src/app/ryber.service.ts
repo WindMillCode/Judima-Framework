@@ -18,11 +18,11 @@ export class RyberService {
     constructor(
         // private router:Router
         public http: HttpClient,
-        private rendererFactory: RendererFactory2
+        private renderer2Factory: RendererFactory2
     ) {
 
         //start renderer2
-        this.renderer2 = rendererFactory.createRenderer(null, null);
+        this.renderer2 = renderer2Factory.createRenderer(null, null);
         //
         // console.log("ryberservice constructor fires")
 
@@ -94,9 +94,13 @@ export class RyberService {
 					width: "100%",
 					top: "0px",
 					//
-					"background-color": background
+					"background-color": background,
+					...options.css
 				}
-				css = {...css,...options.css}
+				let judima = {
+					// formatIgnore:"true"
+					...options.judima
+				}
                 symbol = rUD({
                     co,
                     val:key.split("_").reverse()[0] + ' a_p_p_Board',
@@ -104,6 +108,7 @@ export class RyberService {
                     signature: title,
                     css,
                     extras: {
+						judima,
                         section,
                         type,
                         component,
@@ -150,7 +155,9 @@ export class RyberService {
                 let extend: any = {
                     type: 'text',
                     placeholder: value,
-                    form: 'myForm'
+					form: 'myForm',
+					...options.extend
+
                 }
 
                 form?.required === undefined ? null : ((a) => { a.required = form?.required })(extend)
@@ -166,6 +173,29 @@ export class RyberService {
                 }
 
 				css = {...css,...options.css}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -173,7 +203,8 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_Input',
                     css,
                     extras: {
-                        extend,
+						extend,
+						judima,
                         deltaIndex: 1,
                         appFocusFont: {
                             confirm: 'true',
@@ -322,7 +353,30 @@ export class RyberService {
                     color,
                     "font-family": fonts
                 }
-                css = {...css,...options.css}
+				css = {...css,...options.css}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -330,7 +384,8 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + " a_p_p_Input",
                     css,
                     extras: {
-                        extend,
+						extend,
+						judima,
                         deltaIndex: 1,
                         appFocusFont: {
                             confirm: 'true',
@@ -454,7 +509,30 @@ export class RyberService {
 				css = {...css,...options.css}
 
                 let extend = {
-                }
+				}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -462,6 +540,7 @@ export class RyberService {
                     val: key.split("_").reverse()[0],
                     css,
                     extras: {
+						judima,
                         deltaIndex: 1,
                         component,
                         multipleGroup,
@@ -505,11 +584,23 @@ export class RyberService {
 				}
 
 				let judima ={
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
 						if([nestGroup,nestUnder].includes(undefined)){
 							return "true"
 						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
 						return "false"
 					})(),
 					//
@@ -556,9 +647,32 @@ export class RyberService {
                     "font-weight": italics,
                     "font-family": fonts,
                     "font-size":"30px",
-                    "text-align": mf["text-align"]
+					"text-align": mf["text-align"],
+					...options.css
                 }
-                css = {...css,...options.css}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -567,6 +681,7 @@ export class RyberService {
                     text: value,
                     css,
                     extras: {
+						judima,
                         deltaIndex: 1,
                         component,
                         multipleGroup,
@@ -708,7 +823,30 @@ export class RyberService {
                     "font-family": fonts,
                     "font-weight": italics,
                 }
-                css = {...css,...options.css}
+				css = {...css,...options.css}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -717,7 +855,8 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_Button',
                     css,
                     extras: {
-                        component,
+						judima,
+						component,
                         multipleAdd: multipleGroup,
                         type,
                         appNest: {
@@ -756,9 +895,32 @@ export class RyberService {
                     'background-color': background,
                     color,
                     "font-family": fonts,
-                    "font-weight": italics,
+					"font-weight": italics,
+					...options.css
                 }
-                css = {...css,...options.css}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
+				}
 
                 // component.left = component?.left === undefined ? 900 : component.left
 
@@ -769,6 +931,7 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_Button',
                     css,
                     extras: {
+						judima,
                         component,
                         multipleRemove: multipleGroup,
                         type,
@@ -871,12 +1034,36 @@ export class RyberService {
 
 
                 let css = {
+					...options.css
                 }
-				css = {...css,...options.css}
 
                 let extend = {
-                    src : "./assets/media/" + imageURL
-                }
+					src : "./assets/media/" + imageURL,
+					...options.extend
+				}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
+				}
 
 
                 symbol = rUD({
@@ -885,6 +1072,7 @@ export class RyberService {
                     val: key.split("_").reverse()[0]+ ' a_p_p_Image',
                     css,
                     extras: {
+						judima,
                         deltaIndex: 1,
                         component,
                         multipleGroup,
@@ -905,14 +1093,35 @@ export class RyberService {
             else if (type === "video") { // for now a better use of divs?
 
 
-                let css = {
-                }
-                css = {...css,...options.css}
+                let css = {...options.css}
 
                 let extend = {
                     autoplay:"true",
 					playsinline:"true",
 					...options.extend
+				}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
 				}
 
 
@@ -922,6 +1131,7 @@ export class RyberService {
                     val: key.split("_").reverse()[0]+ ' a_p_p_Video',
                     css,
                     extras: {
+						judima,
                         extend,
                         deltaIndex: 1,
                         component,
@@ -948,14 +1158,37 @@ export class RyberService {
 
 
                 let css = {
+					...options.css
                 }
-				css = {...css,...options.css}
 
                 let extend = {
                     autoplay:"true",
-                    playsinline:"true",
+					playsinline:"true",
+					...options.extend
 				}
-				extend = {...options.extend}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
+				}
 
 
                 symbol = rUD({
@@ -964,7 +1197,8 @@ export class RyberService {
                     val: key.split("_").reverse()[0]+ ' a_p_p_Photo',
                     css,
                     extras: {
-                        extend,
+						extend,
+						judima,
                         deltaIndex: 1,
                         component,
                         multipleGroup,
@@ -1219,6 +1453,30 @@ export class RyberService {
 					...options.css
 				}
 				let extend = {...options.extend}
+				let judima ={
+					topLevelZChild:(()=>{
+
+						// if the zChild is nested
+						if([nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					// figure out whether the zChild should be incoporated into judima formatting logic
+					formatIgnore:(()=>{
+
+						// if the zChild is nested
+						if(![nestGroup,nestUnder].includes(undefined)){
+							return "true"
+						}
+						//
+						return "false"
+					})(),
+					//
+					...options.judima
+				}
+
 
                 symbol = rUD({
                     co,
@@ -1227,6 +1485,7 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_Text a_p_p_Count',
                     css,
                     extras: {
+						judima,
                         component,
                         multipleGroup,
                         deltaIndex: 1,

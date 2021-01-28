@@ -58,12 +58,17 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 }
 
                 let zChild = this.zChildInit()
-                let topLevelZChild = this._topLevelZChildInit()
+				let topLevelZChild = this._topLevelZChildInit()
+				let formatZChild = this._formatZChildInit()
                 let latchZChild
                 let staticZKeys = this.staticZKeysGen(zChild)
                 if(env.component.form.zChild.includes(ii)){
-                    console.log(zChild);
-                }
+                    console.log("zChild for " +this.appTV , zChild);
+				}
+                if(env.component.form.topLevelZChild.includes(ii)){
+                    console.log("topLevel zChild for " +this.appTV ,topLevelZChild);
+				}
+
 
 
                 // drags elements for you
@@ -79,7 +84,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                 //
 
-                // giving inputHandle what it needs
+                // giving directives data about the zChildren
                 this.directivesSendData({
                     directivesZChild:zChild,
                     random:Math.random(),
@@ -93,7 +98,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 so here are 3 options,
                     handle, the framework builds it out for use
                     flex, flex options 1-6 to divy how many elements  on one line
-                        they will be fractions, 1/6 - 6/6 the size of our section
+                        they will be fractions, 1/9 - 6/9 the size of our section
                     custom: not a general options to the line, its specific to an element
                         if the framework sees a  height and width, use those then the browser values
 
@@ -135,18 +140,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 // console.log(section)
 
 
-                //grabbing the values how the browser renders them
+				//grabbing the values how the browser renders them
                 this.ryber[this.appTV.valueOf()].metadata.order = this.ryber[this.appTV.valueOf()].metadata.order
                 .filter((x:any,i)=>{
-                    if(zChild[x].extras.appNest !== undefined){
-                        if( zChild[x].extras.appNest.nestUnder !== undefined &&
-                            zChild[x].extras.appNest.nestGroup !== undefined
-                        ){
-                            return false
-                        }
-                    }
-                    return true
-                })
+
+					return !(zChild[x]?.extras?.judima?.formatIgnore === "true")
+				})
                 // console.log(this.ryber[this.appTV.valueOf()].metadata.order)
                 this.ryber[this.appTV.valueOf()].metadata.order
                 .forEach((x,i)=>{
@@ -162,21 +161,22 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //applying end user values
                 let keep = []
                 let keepCurrent = []
-                let keepLast = Object.keys(zChild).slice(1,2)[0]
+				let keepLast = Object.keys(topLevelZChild).slice(1,2)[0]
                 let align = []
                 let alignCurrent = []
                 let myTotal = 0
                 this.ryber[this.appTV.valueOf()].metadata.order
                 .forEach((x,i)=>{
-                    let {component} = zChild[x].extras
-                    Object.keys(component)
-                    .forEach((y,j)=>{ // if issues look here
-                        let a = component[y]
-                        if( !isNaN(a)){
-                            component[y] = +(component[y])
-                        }
 
-                    })
+					let {component} = zChild[x].extras
+					Object.keys(component)
+					.forEach((y,j)=>{ // if issues look here
+						let a = component[y]
+						if( !isNaN(a)){
+							component[y] = +(component[y])
+						}
+
+					})
 
 
                     zChild[x].css["height"] = (component.height !== undefined) ?  (component.height).toString() + "px" : zChild[x].cssDefault["height"]
@@ -203,7 +203,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         alignCurrent.push(x)
                     //
 
-                    if((zChild[x].bool !== "ta" || zChild[x].bool !== "i" || zChild[x].bool !== "date"  ) && component.height === undefined ){
+
+					// zChild[x].bool !== "ta" || zChild[x].bool !== "i" || zChild[x].bool !== "date"
+                    if((!["date","ta","i"].includes(zChild[x].bool) ) && component.height === undefined ){
                         zChild[x].css["height"] = null
                         this.ref.detectChanges()
                         zChild[x].css["height"] = zChild[x].element.getBoundingClientRect().height.toString() + "px"
@@ -339,54 +341,16 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //
 
                 // refresh (sigs and more in the fture) setup
-                cmsZKeys
-                .forEach((x,i)=>{
-                    if(
-                        zChild[x]?.extras?.refresh?.group !== undefined ||
-                        zChild[x]?.extras?.refresh?.clear !== undefined
-                    ){
-                        let refreshKey =  zChild[x]?.extras?.refresh?.group !== undefined ?  [zChild[x]?.extras?.refresh?.group,"group"] : [zChild[x]?.extras?.refresh?.clear,"clear"]
-
-                        if(refresh[refreshKey[0].valueOf()]=== undefined){
-                            refresh[refreshKey[0].valueOf()] = {
-                                control:refreshKey[1] === "clear" ? [x] : [],
-                                targets:refreshKey[1] === "group" ? [x] : []
-                            }
-                        }
-                        else{
-                            refreshKey[1] === "clear"  ? refresh[refreshKey[0].valueOf()].control.push(x) : null
-                            refreshKey[1] === "group"  ? refresh[refreshKey[0].valueOf()].targets.push(x) : null
-                        }
-                    }
-                })
-                Object
-                .values(refresh)
-                .forEach((x:any,i)=>{
-                    x.control
-                    .forEach((y,j)=>{
-                        this.ryber.appEvents({
-                            typesES:this.typesES,
-                            event:'click',
-                            of:fromEvent(zChild[y].element,'click')
-                            .subscribe(()=>{
-                                x.targets
-                                .forEach((y,j)=>{
-                                    zChild[y].extras.appSignPad?.sPad.clear()
-                                })
-                            })
-                        })
-                    })
-
-                })
+				//  try to use a directive and how we deal with a directive group to deal with the problem
                 //
-
 
 
                 //stack spacing setup
                 // console.log(align)
                 let spacing =  [null,
                     ...Array.from(align[0],(x,i)=> {return 50}),
-                    ...Array.from(align[1] !== undefined && align[0].length <= 1 ? align[1] : Array(0) ,(x,i)=> {return 50}),section.stack
+					...Array.from(align[1] !== undefined && align[0].length <= 1 ? align[1] : Array(0) ,(x,i)=> {return 50}),
+					section.stack
                 ]
                 cmsZKeys
                 .forEach((x:any,i)=>{
@@ -522,13 +486,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     .keys(zChild)
                                     .slice(2)
                                     .forEach((x,i)=>{
-                                        if(zChild[x]?.extras?.judima?.format !== "false"){
 
+                                        zChild[x].css["height"] = zChild[x].cssDefault["height"]
+                                        zChild[x].css["width"] = zChild[x].cssDefault["width"]
+                                        zChild[x].css["font-size"] = zChild[x].cssDefault["font-size"]
 
-                                            zChild[x].css["height"] = zChild[x].cssDefault["height"]
-                                            zChild[x].css["width"] = zChild[x].cssDefault["width"]
-                                            zChild[x].css["font-size"] = zChild[x].cssDefault["font-size"]
-                                        }
                                     })
                                     this.ref.detectChanges()
                                     //
@@ -612,7 +574,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                                     //
 
                                                     // nested zChild have their own formatting scheme
-                                                    // console.log(zChild[y[0]])
                                                     if(zChild[y[0]].extras?.appNest?.confirm ==="true"){
                                                         return
                                                     }
@@ -1267,7 +1228,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 		)
 		//
 
-		
+
     }
 
     ngOnDestroy(): void {
@@ -1337,15 +1298,32 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         let topLevelZChild = this.zChildInit()
         Object.keys(topLevelZChild)
         .forEach((x:any,i)=>{
-            if(topLevelZChild[x]?.extras?.appNest !== undefined){
-                if( topLevelZChild[x].extras.appNest.nestUnder !== undefined &&
-                    topLevelZChild[x].extras.appNest.nestGroup !== undefined
-                ){
-                    delete topLevelZChild[x]
-                }
-            }
+
+
+
+			if(topLevelZChild[x]?.extras?.judima?.topLevelZChild === "false"){
+				// console.log("true")
+				delete topLevelZChild[x]
+			}
+
         })
         return topLevelZChild
+	}
+
+    private _formatZChildInit (){
+        let zChild = this.zChildInit()
+        Object.keys(zChild)
+        .forEach((x:any,i)=>{
+
+
+
+			if (!(zChild[x]?.extras?.judima?.formatIgnore === "true")){
+				// console.log("true")
+				delete zChild[x]
+			}
+
+        })
+        return zChild
     }
 
     private _latchZChildInit(){
@@ -1353,6 +1331,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         Object.keys(latchZChild)
         .filter((x:any,i)=>{
             if(latchZChild[x]?.extras?.judima?.format === "false"){
+				// if(latchZChild[x]?.extras?.judima?.latchZChild === "true"){
                 delete latchZChild[x]
             }
         })
@@ -1364,12 +1343,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
         let {deltaNodeSite,dropDownGroup,zChild} = devObj
         Object
-            .keys(deltaNodeSite)
-            .forEach((x, i) => {
-                if (x.includes("dropDownGroup")) {
-                    dropDownGroup[x] = deltaNodeSite[x];
-                }
-            });
+		.keys(deltaNodeSite)
+		.forEach((x, i) => {
+			if (x.includes("dropDownGroup")) {
+				dropDownGroup[x] = deltaNodeSite[x];
+			}
+		});
         // debugger
         // console.log(Object.keys(zChild).slice(2))
         // making sure we reinit zChild once
@@ -1505,7 +1484,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         customFn?:Function
     }):any{
         let {keep,section,deltaDiff,group,zChild,current,attachVal,type,zChildKeys,customFn,deltaNodeSite} = devObj
-        let zChildMovingKeys = zChildKeys
+		let zChildMovingKeys = zChildKeys
+		console.log(devObj)
         if(group !== undefined && deltaNodeSite !== undefined){
 
             Object.keys(group)
@@ -1520,6 +1500,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         let {delta} = minMaxDelta({
                             items:myGroup.elements[j]
                             .filter((z:any,k)=>{
+
                                 return z.extras?.appNest?.confirm !== "true"
                             }),
                             min:(item)=>{
@@ -1564,7 +1545,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             z[1] = attach
                         }
                     })
-                    // console.log(keep)
+                    console.log(keep)
 
 
                     if(type === 'stack' || type === undefined){
@@ -1572,7 +1553,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                         let zChildKeys =zChildMovingKeys
                         .filter((z:any,k)=>{
-                            return zChild[z].extras?.appNest?.confirm !== "true"
+							return zChild[z].extras?.judima?.formatIgnore !=="true"
                         })
                         // console.log(zChildKeys)
                         // console.log(keep)

@@ -398,7 +398,7 @@ website.convertCMS = [
                 "type": "body",
                 "stack": "60",
                 // "height":"1000",
-                "background": "rgb(255, 179, 204)",
+                "background": "rgb(155, 9, 104)",
 				"googleSheets": {},
 				options:{
 					css:{
