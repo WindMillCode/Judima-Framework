@@ -6,7 +6,7 @@ import {
     zChildren, getTextWidth, numberParse,
     xPosition, resize, componentBootstrap, deltaNode,
     eventDispatcher, dropdown, dragElement, stack, xContain, minMaxDelta,
-    objectCopy, responsiveMeasure, flatDeep, zChildText
+    objectCopy, responsiveMeasure, flatDeep, zChildText,componentConsole
 } from '../customExports'
 import { environment as env } from '../../environments/environment'
 
@@ -30,16 +30,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
     @Input() appTV:string | any;
     foo:any= {}
     typesES:string = 'formES'
-    CONumber:Generator = (function(){
-        return function *generator() {
-            var index = 0;
-            while (true)
-            yield index++;
-        }()
-    })()
+
 
     ngOnInit():void {
-        if(env.lifecycleHooks) console.log(this.appTV+ 'ngOnInit fires on mount')
+		if(env.lifecycleHooks) console.log(this.appTV+ 'ngOnInit fires on mount')
+
     }
 
     ngAfterViewInit(): void {
@@ -190,17 +185,17 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     }
 
                     //determine width
-                        myTotal +=  component.split === undefined ? numberParse(zChild[x].css["width"]) : ((component.split/section.split) *  section.width)
+					myTotal +=  component.split === undefined ? numberParse(zChild[x].css["width"]) : ((component.split/section.split) *  section.width)
 
-                        if(component.split === section.split){
-                            zChild[x].css["width"] = component.split === undefined ? zChild[x].css["width"] : (((component.split/section.split) * section.width)).toString() + "px"
-                        }
-                        else{
-                            zChild[x].css["width"] = component.split === undefined ? zChild[x].css["width"] : (((component.split/section.split) * section.width)-section.gap).toString() + "px"
-                        }
+					if(component.split === section.split){
+						zChild[x].css["width"] = component.split === undefined ? zChild[x].css["width"] : (((component.split/section.split) * section.width)).toString() + "px"
+					}
+					else{
+						zChild[x].css["width"] = component.split === undefined ? zChild[x].css["width"] : (((component.split/section.split) * section.width)-section.gap).toString() + "px"
+					}
 
-                        keepCurrent.push([x,keepLast])
-                        alignCurrent.push(x)
+					keepCurrent.push([x,keepLast])
+					alignCurrent.push(x)
                     //
 
 
@@ -332,7 +327,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //
 
                 //init   buttons
-                let group = this.ryber[this.appTV.valueOf()].metadata.multipleGroup
+                let group = this.ryber[this.appTV.valueOf()].metadata.deltaGroup
                 // console.log(group)
 
                 //more init
@@ -455,7 +450,14 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             });
 
 
+							// componentConsole({
+							// 	appTV:this.appTV,
+							// 	target:["formCO1"],
+							// 	data:deltaNodeSite
+							// })?.()
+
                             if(group !== undefined){
+								// console.log(group)
                                 Object.keys(group)
                                 .forEach((x,i)=>{
                                     this.inputHandleModifyName({
@@ -541,6 +543,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     //
 
 
+
                                     if(group !== undefined && deltaNodeSite !== undefined){
                                         // console.log(group)
                                         Object.keys(group)
@@ -573,8 +576,10 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                                     }
                                                     //
 
-                                                    // nested zChild have their own formatting scheme
-                                                    if(zChild[y[0]].extras?.appNest?.confirm ==="true"){
+
+
+                                                    // ignore if need be
+                                                    if(zChild[y[0]].extras?.judima?.formatIgnore ==="true"){
                                                         return
                                                     }
                                                     //
@@ -606,7 +611,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                                                 })
 
                                                             acc =[mySymbol,myTop]
-                                                            // debugger
                                                         }
                                                         duplicateKeep.push([z,acc[0]])
                                                         return acc
@@ -682,7 +686,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         })
 
 
-                                    }
+									}
+
+
 
 
                                 }
@@ -690,6 +696,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                                 //position
                                 {
+
 
 
                                     // console.log(topLevelZChild)
@@ -703,25 +710,30 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                             },
                                             ref:this.ref
                                         }
-                                    })
+									})
+
+
 
                                     // making sure we setup moving properly
                                     let movingZAttachVal= cmsZKeys
                                     .reduce((acc,x,i)=>{
-                                        if(zChild[x]?.extras?.multipleGroup !== undefined){
+                                        if(zChild[x]?.extras?.deltaGroup !== undefined){
                                             return x
                                         }
                                         return acc
-                                    })
+									})
+
+
                                     let movingZKeys = cmsZKeys.slice(cmsZKeys.indexOf(movingZAttachVal)+1)
                                     let movingFlag = "false"
                                     let movingAttachVal =""
                                     let movingKeep = keep
                                     .reduce((acc,x,i)=>{
+
                                         if(movingZKeys[0] === x[0] ){
                                             movingFlag = "true"
                                             movingAttachVal = x[1]
-                                        }
+										}
                                         if(movingFlag === "true"){
                                             if(movingAttachVal === x[1]){
                                                acc.push([x[0],"replace me"])
@@ -731,7 +743,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                             }
                                         }
                                         return acc
-                                    },[])
+									},[])
+									// console.log(keep)
+
                                     //
 
 
@@ -744,7 +758,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         attachVal:movingZAttachVal,
                                         zChildKeys:movingZKeys,
                                         section,
-                                        keep:movingKeep
+										keep:movingKeep,
+										cmsZKeys,
                                     })
 
                                     // position board
@@ -911,7 +926,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                                     //
 
                                                     // nested zChild have their own formatting scheme
-                                                    if(zChild[y[0]].extras?.appNest?.confirm ==="true"){
+                                                    if(zChild[y[0]].extras?.judima?.formatIgnore ==="true"){
                                                         return
                                                     }
                                                     //
@@ -1008,7 +1023,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     // making sure we setup moving properly
                                     let movingZAttachVal= cmsZKeys
                                         .reduce((acc,x,i)=>{
-                                            if(zChild[x]?.extras?.multipleGroup !== undefined){
+                                            if(zChild[x]?.extras?.deltaGroup !== undefined){
                                                 return x
                                             }
                                             return acc
@@ -1041,7 +1056,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                             .filter((z:any,k)=>{
                                                 // all nested not top level
                                                 return !(
-                                                    zChild[z].extras?.appNest?.confirm === "true" && zChild[z].extras?.appNest?.nestUnder !== undefined
+                                                    zChild[z]?.extras?.appNest?.confirm === "true" && zChild[z].extras?.appNest?.nestUnder !== undefined
                                                 )
                                             })
                                             stack({
@@ -1054,7 +1069,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                                 heightInclude:[null,'t','t']
                                             })
                                             this.ref.detectChanges()
-                                        })
+										}),
+										cmsZKeys
                                     })
 
 
@@ -1100,120 +1116,121 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
                 //duplicates setup
-                if(group !== undefined){
+                // if(group !== undefined){
 
 
-                    Object.keys(group)
-                    .forEach((x,i)=>{
-                        let a = staticZKeys
-                        .filter((y,j)=>{
-                            return zChild[y].extras.multipleGroup === x
-                        })
+                //     Object.keys(group)
+                //     .forEach((x,i)=>{
+                //         let a = staticZKeys
+                //         .filter((y,j)=>{
+                //             return zChild[y].extras.deltaGroup === x
+                //         })
 
-                        // console.log(this.ryber[this.appTV].quantity[1][1])
+                //         // console.log(this.ryber[this.appTV].quantity[1][1])
 
-                        if(group[x].add !== undefined){
-                            this.ryber.appEvents({
-                                typesES:this.typesES,
-                                event:'click',
-                                of:fromEvent(zChild[group[x].add].element,'click')
-                                .subscribe(()=>{
-
-
-                                    if(this.ryber[this.appTV.valueOf()].metadata.coDropDown !== undefined){
-                                        this.ryber[this.appTV.valueOf()].metadata.coDropDown.init = "false";
-                                    }
+                //         if(group[x].add !== undefined){
+                //             this.ryber.appEvents({
+                //                 typesES:this.typesES,
+                //                 event:'click',
+                //                 of:fromEvent(zChild[group[x].add].element,'click')
+                //                 .subscribe(()=>{
 
 
-                                    deltaNode({
-                                        intent:'add',
-                                        elements: a.map((y,j)=>{return zChild[y]}),
-                                        co:this.ryber[this.appTV.valueOf()],
-                                        subCO:1, //decide to use the number of the signature
-                                        group:x,
-                                        symbolDeltaStart:8410,
-                                    })
-                                    this.ref.detectChanges()
-                                    zChild = this.zChildInit()
+                //                     if(this.ryber[this.appTV.valueOf()].metadata.coDropDown !== undefined){
+                //                         this.ryber[this.appTV.valueOf()].metadata.coDropDown.init = "false";
+                //                     }
 
 
-                                    this.directivesSendData({
-                                        directivesZChild:zChild,
-                                        random:Math.random(),
-                                    })
-
-                                    eventDispatcher(({
-                                        event:'resize',
-                                        element:window
-                                    }))
-                                    // console.log(zChild)
-
-
-                                })
-                            })
+                //                     deltaNode({
+                //                         intent:'add',
+                //                         elements: a.map((y,j)=>{return zChild[y]}),
+                //                         co:this.ryber[this.appTV.valueOf()],
+                //                         subCO:1, //decide to use the number of the signature
+                //                         group:x,
+                //                         symbolDeltaStart:8410,
+                //                     })
+                //                     this.ref.detectChanges()
+                //                     zChild = this.zChildInit()
 
 
-                        }
+                //                     this.directivesSendData({
+                //                         directivesZChild:zChild,
+                //                         random:Math.random(),
+                //                     })
 
-                        if(group[x].remove !== undefined){
-                            this.ryber.appEvents({
-                                typesES:this.typesES,
-                                event:'click',
-                                of:fromEvent(zChild[group[x].remove].element,'click')
-                                .subscribe(()=>{
-
-
-                                    if(this.ryber[this.appTV.valueOf()].metadata.deltaNodeSite === undefined){
-                                        return
-                                    }
-
-                                    deltaNode({
-                                        intent:'minus',
-                                        co:this.ryber[this.appTV.valueOf()],
-                                        group:x,
-                                        hook:'prepare'
-                                    })
-
-                                    //remove dropdown elements
-                                    if(this.ryber[this.appTV.valueOf()].metadata.deltaNodeSite[x] !== undefined){
-                                        let {symbols} = this.ryber[this.appTV.valueOf()].metadata.deltaNodeSite[x]
-                                        symbols[symbols.length-1]
-                                        .forEach((y,j)=>{
-                                            if(zChild[y]?.extras?.appDropDown?.change === "ontheDOM"){
-                                                // console.log(zChild[y])
-                                                deltaNode({
-                                                    intent:'minus',
-                                                    group:zChild[y]?.extras?.appDropDown?.group,
-                                                    co:this.ryber[this.appTV.valueOf()],
-                                                })
-                                            }
-                                        })
-                                    }
-                                    //
-
-                                    //clean up then take out DOM
-                                    eventDispatcher(({
-                                        event:'resize',
-                                        element:window
-                                    }))
-                                    //
-
-                                    deltaNode({
-                                        intent:'minus',
-                                        co:this.ryber[this.appTV.valueOf()],
-                                        group:x,
-                                    })
+                //                     eventDispatcher(({
+                //                         event:'resize',
+                //                         element:window
+                //                     }))
+                //                     // console.log(zChild)
 
 
-                                    this.ref.detectChanges()
-                                    zChild = this.zChildInit()
-                                })
-                            })
-                        }
+                //                 })
+                //             })
 
-                    })
 
-                }
+                //         }
+
+                //         if(group[x].remove !== undefined){
+                //             this.ryber.appEvents({
+                //                 typesES:this.typesES,
+                //                 event:'click',
+                //                 of:fromEvent(zChild[group[x].remove].element,'click')
+                //                 .subscribe(()=>{
+
+
+                //                     if(this.ryber[this.appTV.valueOf()].metadata.deltaNodeSite === undefined){
+                //                         return
+                //                     }
+
+				// 					console.log(x)
+                //                     deltaNode({
+                //                         intent:'minus',
+                //                         co:this.ryber[this.appTV.valueOf()],
+                //                         group:x,
+                //                         hook:'prepare'
+                //                     })
+
+                //                     //remove dropdown elements
+                //                     if(this.ryber[this.appTV.valueOf()].metadata.deltaNodeSite[x] !== undefined){
+                //                         let {symbols} = this.ryber[this.appTV.valueOf()].metadata.deltaNodeSite[x]
+                //                         symbols[symbols.length-1]
+                //                         .forEach((y,j)=>{
+                //                             if(zChild[y]?.extras?.appDropDown?.change === "ontheDOM"){
+                //                                 // console.log(zChild[y])
+                //                                 deltaNode({
+                //                                     intent:'minus',
+                //                                     group:zChild[y]?.extras?.appDropDown?.group,
+                //                                     co:this.ryber[this.appTV.valueOf()],
+                //                                 })
+                //                             }
+                //                         })
+                //                     }
+                //                     //
+
+                //                     //clean up then take out DOM
+                //                     eventDispatcher(({
+                //                         event:'resize',
+                //                         element:window
+                //                     }))
+                //                     //
+
+                //                     deltaNode({
+                //                         intent:'minus',
+                //                         co:this.ryber[this.appTV.valueOf()],
+                //                         group:x,
+                //                     })
+
+
+                //                     this.ref.detectChanges()
+                //                     zChild = this.zChildInit()
+                //                 })
+                //             })
+                //         }
+
+                //     })
+
+                // }
                 //
 
         })
@@ -1454,10 +1471,15 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         current:any,
         inputZChild:zChildren
     }):void{
-        let {group,current,inputZChild} = devObj
+		let {group,current,inputZChild} = devObj
+		// componentConsole({
+		// 	appTV:this.appTV,
+		// 	target:["formCO1"],
+		// 	data:devObj
+		// })?.()
         if(group !== undefined && current.intent === 'add' && current.hook === 'done'){
             group.symbols[current.count]
-            .forEach((x,i)=>{
+            ?.forEach((x,i)=>{
                 if(inputZChild[x].extras.appInputHandle === undefined){
                     return
                 }
@@ -1481,11 +1503,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         type?:string,
         section?:any
         keep?:any,
-        customFn?:Function
+		customFn?:Function,
+		cmsZKeys?:any
     }):any{
-        let {keep,section,deltaDiff,group,zChild,current,attachVal,type,zChildKeys,customFn,deltaNodeSite} = devObj
+        let {keep,section,deltaDiff,group,zChild,current,attachVal,type,zChildKeys,customFn,deltaNodeSite,cmsZKeys} = devObj
 		let zChildMovingKeys = zChildKeys
-		console.log(devObj)
+		// console.log(devObj)
         if(group !== undefined && deltaNodeSite !== undefined){
 
             Object.keys(group)
@@ -1537,15 +1560,33 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     myGroup.symbols[j]:
                     myGroup.elements[0]
 
-                    let attach =  (j !== -1 ? y[y.length-1] : attachVal)
-                    zChildKeys.unshift(attach)
+					let attach =  (j !== -1 ? y[y.length-1] : attachVal)
+					if(zChild[attach]?.extras?.judima?.formatIgnore === "true" && cmsZKeys !== undefined){
+						attach = cmsZKeys[cmsZKeys.indexOf(zChildKeys[0])-1]
+					}
+					// prevent non format items from picking up in stack, top level wont go behind nested elements
+					zChildKeys.unshift(attach)
+
+
                     keep
                     .forEach((z,k)=>{
-                        if(z[1] === "replace me"){
-                            z[1] = attach
-                        }
-                    })
-                    console.log(keep)
+						// if( z[1] === "replace me"){
+						// 	if( zChild[attach].extras?.judima?.formatIgnore !== "true"){
+						// 		z[1] = attach
+						// 	}
+						// 	else if(  zChild[attach].extras?.judima?.formatIgnore === "true"){
+						// 		z[1]= keep[0][0] //instead find the proper attachval
+						// 	}
+						// }
+						if( z[1] === "replace me"){
+							z[1] = attach
+						}
+
+					})
+
+
+					//
+                    // console.log(keep)
 
 
                     if(type === 'stack' || type === undefined){
@@ -1553,11 +1594,35 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                         let zChildKeys =zChildMovingKeys
                         .filter((z:any,k)=>{
-							return zChild[z].extras?.judima?.formatIgnore !=="true"
+							return zChild[z]?.extras?.judima?.formatIgnore !=="true"
                         })
-                        // console.log(zChildKeys)
-                        // console.log(keep)
-                        // console.log(zChild)
+
+
+						// let movingAlign = align
+						// .map((z:any,k)=>{
+						// 	return z.map((w:any,h)=>{
+						// 		return [w,k]
+						// 	})
+						// })
+						// .flat()
+						// movingAlign = movingAlign.slice(movingAlign .map((z:any,k)=>{
+						// 	return z[0]
+						// }).indexOf(keep[0][0]))
+
+						let heightInclude = [...Array.from((zChildKeys),(z,k)=> {
+							// componentConsole.call(this,{
+							// 	target:['formCO1'],
+							// 	data:{z,b:movingAlign[k]}
+							// })?.()
+							// if(movingAlign[k][1] === 1 && movingAlign[k][0] === z){
+							// 	return 'f'
+							// }
+							return 't'
+						})]
+						// componentConsole.call(this,{
+						// 	target:['formCO1'],
+						// 	data:{heightInclude,keep}
+						// })?.()
                         stack({
                             zChildKeys,
                             ref: this.ref,
@@ -1574,9 +1639,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             // spacing:[null,section.stack],
                             keep,
                             type:'keepSomeAligned',
-                            heightInclude:[null,...Array.from(Array(zChildKeys.length),(z,k)=> {
-                                return 't'
-                            })]
+                            heightInclude
                         })
                         this.ref.detectChanges()
                     }

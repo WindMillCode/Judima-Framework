@@ -952,35 +952,7 @@ export function ryberUpdate(
             bool = "p"
         }
 
-        else if(
-            ['img','b','embed','video','audio','mat-spinner','ag-grid']
-            .includes(bool)
-        ){
-            index = 2
-        }
-
-        else if(
-            ![
-                ...Array.from(Array(6),(x,i)=>{return 'h'+(i+1)}),
-                'a',
-                'p',
-                'code',
-                'span',
-                'strong',
-                'i',
-                'ta',
-                'date',
-                'c',
-                'l',
-                'f',
-                'u',
-                'div'
-            ]
-            .includes(bool)
-        ){
-            bool = 'p'
-            index = 1
-        }
+		index = 1
         //
 
         //validating val
@@ -1937,4 +1909,14 @@ export function sCG(devObj?):string{
     }
     char += String.fromCharCode(  ((column -"A".charCodeAt(0)) % alphabet) + ( "A".charCodeAt(0) )     )
     return char
+}
+
+
+//  utility fn
+export function componentConsole(devObj?){
+	let {target,data} = devObj
+
+	if(target.includes(this.appTV)){
+		return ()=>{console.log(this.appTV,data)}
+	}
 }

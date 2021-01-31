@@ -48,7 +48,7 @@ export class RyberService {
 
 
             let { mf } = devObj
-            let { webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nestUnder,nest,nestGroup,printGroupType, printGroup, key, type, gap, stack, value, group, count, repeatable, newline, form, multipleGroup, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
+            let { webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nestUnder,nest,nestGroup,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,deltaType, deltaGroup, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
             let { left, top, height, width, split, next } = devObj.mf
             let component = { left, top, height, width, split, next }
 
@@ -74,6 +74,46 @@ export class RyberService {
 			}
 			//
 
+			// feature init
+			let extend:any = {}
+			let judima:any ={
+				topLevelZChild:(()=>{
+
+					// if the zChild is nested
+					if([nestGroup,nestUnder].includes(undefined)){
+						return "true"
+					}
+					//
+					return "false"
+				})(),
+				// figure out whether the zChild should be incoporated into judima formatting logic
+				formatIgnore:(()=>{
+
+					// if the zChild is nested
+					if(![nestGroup,nestUnder].includes(undefined)){
+						return "true"
+					}
+					//
+					return "false"
+				})(),
+				//
+			}
+			let appNest = {
+				confirm:nestGroup === undefined ? "false": "true",
+				co,
+				nestGroup,
+				nestUnder,
+				nest,
+				zSymbolNeeded:"true"
+			}
+			let appDeltaNode ={
+				group:deltaGroup,
+				confirm:"true",
+				type:deltaGroup,
+				co,
+				zSymbolNeeded:"true",
+			}
+			//
 
 
 
@@ -98,7 +138,6 @@ export class RyberService {
 					...options.css
 				}
 				let judima = {
-					// formatIgnore:"true"
 					...options.judima
 				}
                 symbol = rUD({
@@ -115,7 +154,12 @@ export class RyberService {
                         appWebVitals:{
                             confirm:webVitals?.confirm,
                             co,
-                        }
+						},
+						appDeltaNode:{
+							...appDeltaNode,
+							type:"body",
+						},
+                        appNest,
                     }
                 })
             }
@@ -129,10 +173,19 @@ export class RyberService {
                     "font-weight": italics,
                     'background-color': background,
                     color,
-                    "font-family": fonts
-                }
-
-                css = {...css,...options.css}
+					"font-family": fonts,
+					...options.css
+				}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
 
                 symbol = rUD({
@@ -143,24 +196,20 @@ export class RyberService {
                     css,
                     extras: {
                         component,
-                        multipleGroup,
-                        deltaIndex: 1,
-                        type
-                    }
+						type,
+						extend,
+						judima,
+						appDeltaNode,
+                        appNest,
+					},
                 })
 
             }
 
             else if (type === "input") {
-                let extend: any = {
-                    type: 'text',
-                    placeholder: value,
-					form: 'myForm',
-					...options.extend
 
-                }
 
-                form?.required === undefined ? null : ((a) => { a.required = form?.required })(extend)
+                form?.required === undefined ? null : ((a:any) => { a.required = form?.required })(extend)
                 let css = {
                     "z-index": 4,
                     // display:"table",
@@ -169,31 +218,19 @@ export class RyberService {
                     'background-color': background,
                     color,
                     "font-family": fonts,
-                    "text-align": mf["text-align"]
+					"text-align": mf["text-align"],
+					...options.css
                 }
-
-				css = {...css,...options.css}
-				let judima ={
-					topLevelZChild:(()=>{
-
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
-
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
+				extend = {
+					...extend,
+					type: 'text',
+                    placeholder: value,
+					form: 'myForm',
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
 					...options.judima
 				}
 
@@ -205,7 +242,7 @@ export class RyberService {
                     extras: {
 						extend,
 						judima,
-                        deltaIndex: 1,
+						appDeltaNode,
                         appFocusFont: {
                             confirm: 'true',
                             fontSizeDefault: "32px",
@@ -225,40 +262,39 @@ export class RyberService {
 							latch,
 							zSymbolNeeded:"true",
                         },
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        },
+                        appNest,
                         component,
-                        multipleGroup,
+                        deltaGroup,
                         type
                     }
                 })
             }
 
             else if (type === "textbox") {
-                let extend: any = {
-                    type: 'text',
-                    placeholder: value,
-                    form: 'myForm',
 
-                }
 
-                form?.required === undefined ? null : ((a) => { a.required = form?.required })(extend)
+                form?.required === undefined ? null : ((a:any) => { a.required = form?.required })(extend)
                 let css = {
                     "font-size": "27px",
                     "z-index": 4,
                     'background-color': background,
                     color,
-                    "font-family": fonts
+					"font-family": fonts,
+					...options.css
+				}
+				extend = {
+					...extend,
+                    type: 'text',
+                    placeholder: value,
+                    form: 'myForm',
+					...options.extend
                 }
+				judima = {
+					...judima,
+					// your props here
+					...options.judima
+				}
 
-
-				css = {...css,...options.css}
 
                 symbol = rUD({
                     co,
@@ -267,7 +303,6 @@ export class RyberService {
                     css,
                     extras: {
                         extend,
-                        deltaIndex: 1,
                         appFocusFont: {
                             confirm: 'true',
                             fontSizeDefault: "32px",
@@ -277,6 +312,21 @@ export class RyberService {
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
                             webRTC
+						},
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
+                        appNest: {
+                            confirm:nestGroup === undefined ? "false": "true",
+                            co,
+                            nestGroup,
+                            nestUnder,
+							nest,
+							zSymbolNeeded:"true"
                         },
                         appInputHandle: {
                             confirm: 'true',
@@ -287,29 +337,38 @@ export class RyberService {
                             link: form?.link
                         },
                         component,
-                        multipleGroup,
+                        deltaGroup,
                         type
                     }
                 })
             }
 
             else if (type === "email") {
-                let extend: any = {
-                    type: 'email',
-                    placeholder: value,
-                    form: 'myForm',
 
-                }
+
                 form?.required === undefined ? null : ((a) => { a.required = form?.required })(extend)
                 let css = {
                     "font-size": "32px",
                     "z-index": 4,
                     'background-color': background,
                     color,
-                    "font-family": fonts
-                }
+					"font-family": fonts,
+					...options.css
+				}
+				extend = {
+					...extend,
+					type: 'email',
+                    placeholder: value,
+                    form: 'myForm',
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
-				css = {...css,...options.css}
+
 
                 symbol = rUD({
                     co,
@@ -318,11 +377,25 @@ export class RyberService {
                     css,
                     extras: {
                         extend,
-                        deltaIndex: 1,
                         appFocusFont: {
                             confirm: 'true',
                             fontSizeDefault: "32px",
                             mobileShrink: "true"
+						},
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
+						appNest: {
+                            confirm:nestGroup === undefined ? "false": "true",
+                            co,
+                            nestGroup,
+                            nestUnder,
+							nest,
+							zSymbolNeeded:"true"
                         },
                         appInputHandle: {
                             confirm: 'true',
@@ -333,50 +406,36 @@ export class RyberService {
                             link: form?.link
                         },
                         component,
-                        multipleGroup,
+                        deltaGroup,
                         type
                     }
                 })
             }
 
             else if (type === "date") {
-                let extend: any = {
-                    type: 'text',
-                    placeholder: value,
-                    form: 'myForm',
-                }
+
                 form?.required === undefined ? null : ((a) => { a.required = form?.required })(extend)
                 let css = {
                     "font-size": "32px",
                     "z-index": 4,
                     'background-color': background,
                     color,
-                    "font-family": fonts
-                }
-				css = {...css,...options.css}
-				let judima ={
-					topLevelZChild:(()=>{
-
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
-
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
+					"font-family": fonts,
+					...options.css
+				}
+				extend = {
+					...extend,
+					type: 'text',
+                    placeholder: value,
+                    form: 'myForm',
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
 					...options.judima
 				}
+
 
                 symbol = rUD({
                     co,
@@ -386,12 +445,18 @@ export class RyberService {
                     extras: {
 						extend,
 						judima,
-                        deltaIndex: 1,
                         appFocusFont: {
                             confirm: 'true',
                             fontSizeDefault: "32px",
                             mobileShrink: "true"
-                        },
+						},
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appInputHandle: {
                             confirm: 'true',
                             zSymbolNeeded:"true",
@@ -415,7 +480,6 @@ export class RyberService {
 							zSymbolNeeded:"true"
                         },
                         component,
-                        multipleGroup,
                         appDateClick: {
                             confirm: "true"
                         },
@@ -434,9 +498,19 @@ export class RyberService {
                     color,
                     "font-weight": italics,
                     "font-family": fonts,
-                    "text-align": devObj.mf["text-align"]
-                }
-                css = {...css,...options.css}
+					"text-align": devObj.mf["text-align"],
+					...options.css
+				}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -445,18 +519,33 @@ export class RyberService {
                     text: value,
                     css,
                     extras: {
-                        deltaIndex: 1,
                         component,
-                        multipleGroup,
-                        type,
+						type,
+						judima,
+						extend,
                         appPrintFiles: {
                             printGroup,
                             type: printGroupType
-                        },
+						},
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
                             webRTC
+						},
+						appNest: {
+                            confirm:nestGroup === undefined ? "false": "true",
+                            co,
+                            nestGroup,
+                            nestUnder,
+							nest,
+							zSymbolNeeded:"true"
                         },
                     }
                 })
@@ -470,16 +559,19 @@ export class RyberService {
                     // 'background-color':background,
                     // color,
                     stroke: color,
-                    "text-align": devObj.mf["text-align"]
+					"text-align": devObj.mf["text-align"],
+					...options.css
                 }
-
-
-				css = {...css,...options.css}
-
-                let extend = {
-                    // mode:"indeterminate",
-                    // color:"primary"
-                }
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
                 component.height = component?.height === undefined ? 100 : component.height
                 component.width = component?.height === undefined ? 100 : component.height  // widht is not allowed here it will break the mat-spinner
@@ -490,11 +582,25 @@ export class RyberService {
                     val: key.split("_").reverse()[0],
                     css,
                     extras: {
-                        deltaIndex: 1,
                         component,
-                        multipleGroup,
                         type,
-                        extend
+						extend,
+						judima,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
+						appNest: {
+                            confirm:nestGroup === undefined ? "false": "true",
+                            co,
+                            nestGroup,
+                            nestUnder,
+							nest,
+							zSymbolNeeded:"true"
+                        },
                     }
                 })
             }
@@ -504,33 +610,17 @@ export class RyberService {
 
                 let css = {
                     height: "250px",
-                    width: "500px"
+					width: "500px",
+					...options.css
                 }
-				css = {...css,...options.css}
-
-                let extend = {
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
 				}
-				let judima ={
-					topLevelZChild:(()=>{
-
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
-
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
+				judima = {
+					...judima,
+					//your props here
 					...options.judima
 				}
 
@@ -541,9 +631,7 @@ export class RyberService {
                     css,
                     extras: {
 						judima,
-                        deltaIndex: 1,
                         component,
-                        multipleGroup,
                         type,
                         extend,
                         appAgGrid: {
@@ -557,7 +645,14 @@ export class RyberService {
                                 flex: 1,
                                 suppressSizeToFit: true,
                             },
-                        },
+						},
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appNest: {
                             confirm:nestGroup === undefined ? "false": "true",
                             co,
@@ -576,34 +671,18 @@ export class RyberService {
                 let css = {
                     'background-color':background,
                     color,
-                    overflow:"auto"
+					overflow:"auto",
+					...options.css
                 }
-                css = {...css,...options.css}
 
-                let extend = {
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
 				}
-
-				let judima ={
-					topLevelZChild:(()=>{
-
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
-
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
+				judima = {
+					...judima,
+					//your props here
 					...options.judima
 				}
 
@@ -615,11 +694,16 @@ export class RyberService {
                     css,
                     extras: {
 						judima,
-                        deltaIndex: 1,
                         component,
-                        multipleGroup,
                         type,
-                        extend,
+						extend,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appNest: {
                             confirm:nestGroup === undefined ? "false": "true",
                             co,
@@ -650,27 +734,14 @@ export class RyberService {
 					"text-align": mf["text-align"],
 					...options.css
                 }
-				let judima ={
-					topLevelZChild:(()=>{
-
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
-
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
 					...options.judima
 				}
 
@@ -681,11 +752,17 @@ export class RyberService {
                     text: value,
                     css,
                     extras: {
+						extend,
 						judima,
-                        deltaIndex: 1,
                         component,
-                        multipleGroup,
-                        type,
+						type,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appNest: {
                             confirm:nestGroup === undefined ? "false": "true",
                             co,
@@ -721,9 +798,19 @@ export class RyberService {
 					// color,
 
                     "font-weight": italics,
-                    "font-family": fonts
-                }
-                css = {...css,...options.css}
+					"font-family": fonts,
+					...options.css
+				}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -732,6 +819,8 @@ export class RyberService {
                     text: value,
                     css,
                     extras: {
+						extend,
+						judima,
                         toggleButton: {
                             confirm: 'true',
                             onBackgroundColor: 'black',
@@ -740,7 +829,14 @@ export class RyberService {
                             offColor: 'black',
                             selected: this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] === undefined ? 'false' : () => { return this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] },
                             mySelected: this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] === undefined ? undefined : 'false'
-                        },
+						},
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appInputHandle: {
                             confirm: 'true',
                             zSymbol: "",// zChildSymbol goes here
@@ -754,9 +850,7 @@ export class RyberService {
 							link: form?.link,
 							zSymbolNeeded:"true"
                         },
-                        multipleGroup,
                         component,
-                        deltaIndex: 1,
                         type,
                         group
                     }
@@ -770,16 +864,25 @@ export class RyberService {
                     width: '325px',
                     "font-size": "48px",
                     top: "0px",
-                    height: "75px",
+                    // height: "75px",
                     left: '400px',
                     "z-index": 4,
                     'background-color': background,
                     color,
                     "font-family": fonts,
-                    "font-weight": italics
-                }
-                css = {...css,...options.css}
-
+					"font-weight": italics,
+					...options.css
+				}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
 
 
@@ -790,9 +893,17 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_Button',
                     css,
                     extras: {
+						extend,
+						judima,
                         component,
-                        deltaIndex: 1,
-                        type,
+						type,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
@@ -801,6 +912,14 @@ export class RyberService {
                         appPrintFiles: {
                             printGroup,
                             type: 'signOut'
+						},
+						appNest: {
+                            confirm:nestGroup === undefined ? "false": "true",
+                            co,
+                            nestGroup,
+                            nestUnder,
+							nest,
+							zSymbolNeeded:"true"
                         }
                     }
                 })
@@ -857,7 +976,7 @@ export class RyberService {
                     extras: {
 						judima,
 						component,
-                        multipleAdd: multipleGroup,
+                        multipleAdd: deltaGroup,
                         type,
                         appNest: {
                             confirm:nestGroup === undefined ? "false": "true",
@@ -870,15 +989,15 @@ export class RyberService {
                     }
                 })
 
-                if (this[co.valueOf()].metadata.multipleGroup === undefined && multipleGroup !== undefined) {
-                    this[co.valueOf()].metadata.multipleGroup = {}
+                if (this[co.valueOf()].metadata.deltaGroup === undefined && deltaGroup !== undefined) {
+                    this[co.valueOf()].metadata.deltaGroup = {}
                 }
 
-                if (multipleGroup !== undefined) {
-                    if (this[co.valueOf()].metadata.multipleGroup[multipleGroup.valueOf()] === undefined) {
-                        this[co.valueOf()].metadata.multipleGroup[multipleGroup.valueOf()] = {}
+                if (deltaGroup !== undefined) {
+                    if (this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] === undefined) {
+                        this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] = {}
                     }
-                    this[co.valueOf()].metadata.multipleGroup[multipleGroup.valueOf()].add = symbol
+                    this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()].add = symbol
                 }
 
             }
@@ -897,7 +1016,8 @@ export class RyberService {
                     "font-family": fonts,
 					"font-weight": italics,
 					...options.css
-                }
+				}
+				let extend = {...options.extend}
 				let judima ={
 					topLevelZChild:(()=>{
 
@@ -931,10 +1051,26 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_Button',
                     css,
                     extras: {
+						extend,
 						judima,
                         component,
-                        multipleRemove: multipleGroup,
-                        type,
+						type,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
+                        appWebRTC:{
+                            confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
+                            co,
+                            webRTC
+						},
+                        appPrintFiles: {
+                            printGroup,
+                            type: 'signOut'
+						},
                         appNest: {
                             confirm:nestGroup === undefined ? "false": "true",
                             co,
@@ -946,16 +1082,16 @@ export class RyberService {
                     }
                 })
 
-                if (this[co.valueOf()].metadata.multipleGroup === undefined && multipleGroup !== undefined) {
-                    this[co.valueOf()].metadata.multipleGroup = {}
-                }
+                // if (this[co.valueOf()].metadata.deltaGroup === undefined && deltaGroup !== undefined) {
+                //     this[co.valueOf()].metadata.deltaGroup = {}
+                // }
 
-                if (multipleGroup !== undefined) {
-                    if (this[co.valueOf()].metadata.multipleGroup[multipleGroup.valueOf()] === undefined) {
-                        this[co.valueOf()].metadata.multipleGroup[multipleGroup.valueOf()] = {}
-                    }
-                    this[co.valueOf()].metadata.multipleGroup[multipleGroup.valueOf()].remove = symbol
-                }
+                // if (deltaGroup !== undefined) {
+                //     if (this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] === undefined) {
+                //         this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] = {}
+                //     }
+                //     this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()].remove = symbol
+                // }
 
 
             }
@@ -972,9 +1108,19 @@ export class RyberService {
                     'background-color': background,
                     color,
                     "font-family": fonts,
-                    "font-weight": italics
-                }
-				css = {...css,...options.css}
+					"font-weight": italics,
+					...options.css
+				}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -983,6 +1129,15 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_Button',
                     css,
                     extras: {
+						extend,
+						judima,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appFormControl: {
                             confirm: 'true',
                             id: 'myForm',
@@ -1007,9 +1162,19 @@ export class RyberService {
                     'background-color': background,
                     color,
                     "font-family": fonts,
-                    "font-weight": italics
-                }
-                css = {...css,...options.css}
+					"font-weight": italics,
+					...options.css
+				}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -1018,6 +1183,15 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_Maps',
                     css,
                     extras: {
+						extend,
+						judima,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appGoogleMaps: {
                             confirm: 'true',
                             co
@@ -1037,31 +1211,14 @@ export class RyberService {
 					...options.css
                 }
 
-                let extend = {
+				extend = {
+					...extend,
 					src : "./assets/media/" + imageURL,
 					...options.extend
 				}
-				let judima ={
-					topLevelZChild:(()=>{
-
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
-
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
+				judima = {
+					...judima,
+					//your props here
 					...options.judima
 				}
 
@@ -1073,11 +1230,16 @@ export class RyberService {
                     css,
                     extras: {
 						judima,
-                        deltaIndex: 1,
                         component,
-                        multipleGroup,
                         type,
-                        extend,
+						extend,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appNest: {
                             confirm:nestGroup === undefined ? "false": "true",
                             co,
@@ -1094,33 +1256,15 @@ export class RyberService {
 
 
                 let css = {...options.css}
-
-                let extend = {
-                    autoplay:"true",
+				extend = {
+					...extend,
+					autoplay:"true",
 					playsinline:"true",
 					...options.extend
 				}
-				let judima ={
-					topLevelZChild:(()=>{
-
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
-
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
+				judima = {
+					...judima,
+					//your props here
 					...options.judima
 				}
 
@@ -1133,10 +1277,15 @@ export class RyberService {
                     extras: {
 						judima,
                         extend,
-                        deltaIndex: 1,
                         component,
-                        multipleGroup,
-                        type,
+						type,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
@@ -1161,32 +1310,14 @@ export class RyberService {
 					...options.css
                 }
 
-                let extend = {
-                    autoplay:"true",
-					playsinline:"true",
+				extend = {
+					...extend,
+					//your props here
 					...options.extend
 				}
-				let judima ={
-					topLevelZChild:(()=>{
-
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
-
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
+				judima = {
+					...judima,
+					//your props here
 					...options.judima
 				}
 
@@ -1199,10 +1330,15 @@ export class RyberService {
                     extras: {
 						extend,
 						judima,
-                        deltaIndex: 1,
                         component,
-                        multipleGroup,
-                        type,
+						type,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
@@ -1237,7 +1373,16 @@ export class RyberService {
 					...options.css
 				}
 
-                let extend = {...options.extend}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
                 let name = this[co.valueOf()].quantity[1][1].signature + " " + zCTgen.next().value
 
                 symbol = rUD({
@@ -1248,6 +1393,14 @@ export class RyberService {
                     css,
                     extras: {
 						extend,
+						judima,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appFileHandler: {
                             confirm: 'true',
                             name,
@@ -1263,9 +1416,7 @@ export class RyberService {
 							zSymbolNeeded:"true",
                             type: "file button"
                         },
-                        deltaIndex: 1,
                         component,
-                        multipleGroup,
                         type
                     }
                 })
@@ -1283,8 +1434,16 @@ export class RyberService {
 					"background-color": "transparent",
 					...options.css
 				}
-				let extend = {...options.extend}
-
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
                 component.split = component.split === undefined ? this.appCO0.metadata.ryber.sectionDefault.split : component.split
 
@@ -1295,15 +1454,22 @@ export class RyberService {
                     text: value,
                     css,
                     extras: {
-                        deltaIndex: 1,
-                        type,
+						extend,
+                        judima,
+						type,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         appSignPad: {
                             confirm: 'true',
                             width: numberParse(css.width),
                             height: numberParse(css.height),
                         },
                         component,
-                        multipleGroup,
                         refresh: {
                             group: refreshGroup
                         },
@@ -1334,7 +1500,17 @@ export class RyberService {
                     color,
 					"border-radius": Modernizr.borderradius ? "20px 20px 20px 20px" : null,
 					...options.css
-                }
+				}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
 
                 component.height = component?.height === undefined ? 1200 : component.height
@@ -1345,10 +1521,17 @@ export class RyberService {
                     val: key.split("_").reverse()[0],
                     css,
                     extras: {
-                        deltaIndex: 1,
+						extend,
+						judima,
                         component,
-                        multipleGroup,
-                        type
+						type,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                     }
                 })
             }
@@ -1365,7 +1548,16 @@ export class RyberService {
 					"font-weight": italics,
 					...options.css
                 }
-				let extend = {...options.extend}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -1382,10 +1574,17 @@ export class RyberService {
                         )
                     ),
                     extras: {
-                        deltaIndex: 1,
+						extend,
+						judima,
                         component,
-                        multipleGroup,
-                        type
+						type,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                     }
                 })
             }
@@ -1393,7 +1592,7 @@ export class RyberService {
             else if (type === "dropdown") {
 
 
-                let extend= {...options.extend}
+
 				form?.required === undefined ? null : ((a) => { a.required = form?.required })(extend)
 				//  might have to deal with this logic on bootstrap end developer should feel free to make required as their own arg as well as form
                 let css = {
@@ -1406,7 +1605,17 @@ export class RyberService {
                     "font-family": fonts,
 					"font-weight": italics,
 					...options.css
-                }
+				}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -1415,7 +1624,7 @@ export class RyberService {
                     css,
                     text: value,
                     extras: {
-                        deltaIndex: 1,
+						judima,
                         extend,
                         appDropDown: {
                             confirm: 'true',
@@ -1423,9 +1632,15 @@ export class RyberService {
                             co,
                             values: newline,
                             truSelectVal: value
-                        },
+						},
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type:deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                         component,
-                        multipleGroup,
                         type,
                         appInputHandle: {
                             googleSheets,
@@ -1452,28 +1667,14 @@ export class RyberService {
 					"font-size": "54px",
 					...options.css
 				}
-				let extend = {...options.extend}
-				let judima ={
-					topLevelZChild:(()=>{
-
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
-
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
 					...options.judima
 				}
 
@@ -1485,12 +1686,18 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_Text a_p_p_Count',
                     css,
                     extras: {
+						extend,
 						judima,
                         component,
-                        multipleGroup,
-                        deltaIndex: 1,
                         delta: { type: "increment" },
-                        type,
+						type,
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType || "increment",
+							co,
+							zSymbolNeeded:"true",
+						},
                         appNest: {
                             confirm:nestGroup === undefined ? "false": "true",
                             co,
@@ -1516,7 +1723,16 @@ export class RyberService {
 					"text-align": devObj.mf["text-align"],
 					...options.css
                 }
-				let extend = {...options.extend}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
 
                 symbol = rUD({
                     co,
@@ -1525,10 +1741,17 @@ export class RyberService {
                     text: value,
                     css,
                     extras: {
-                        deltaIndex: 1,
+						extend,
+						judima,
                         component,
-                        multipleGroup,
-                        type: "text"
+						type: "text",
+						appDeltaNode:{
+							group:deltaGroup,
+							confirm:"true",
+							type: deltaType,
+							co,
+							zSymbolNeeded:"true",
+						},
                     }
                 })
             }

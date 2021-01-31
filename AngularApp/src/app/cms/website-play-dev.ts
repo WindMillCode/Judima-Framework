@@ -29,7 +29,7 @@ website.convertCMS = [
                 "value":"",
                 "background":"yellow",
                 // "split": "3",
-                "nestGroup":"schemas",
+                "nestGroup":"nesting",
                 "nest":"A1",
                 "width":"1600",
                 "height":"700",
@@ -49,7 +49,7 @@ website.convertCMS = [
                 "type": "sub-heading",
                 "value":"Add me",
                 // "split": "3",
-                "nestGroup":"schemas",
+                "nestGroup":"nesting",
                 "nestUnder":"A1",
                 "nest":"B1",
                 "width":"1600",
@@ -70,7 +70,7 @@ website.convertCMS = [
                 "key": "my-table",
                 "type": "simpleTable",
                 "value":"",
-                "nestGroup":"schemas",
+                "nestGroup":"nesting",
                 "nestUnder":"A1",
                 "nest":"B2",
                 "background":"blue",
@@ -92,8 +92,8 @@ website.convertCMS = [
                 "key": "my-input-counter",
                 "type": "count",
                 "value":"1.",
-                "nestGroup":"schemas",
-                // "multipleGroup":"schemasInput",
+                "nestGroup":"nesting",
+                // "deltaGroup":"schemasInput",
                 "nestUnder":"C1",
                 "nest":"D1",
                 // "split": "3",
@@ -116,10 +116,10 @@ website.convertCMS = [
                 "key": "my-input",
                 "type": "input",
                 "value":"",
-                "nestGroup":"schemas",
+                "nestGroup":"nesting",
                 "nestUnder":"C1",
                 "nest":"D1",
-                // "multipleGroup":"schemasInput",
+                // "deltaGroup":"schemasInput",
                 // "split": "3",
                 // "width":"300",
                 // "height":"250",
@@ -141,8 +141,8 @@ website.convertCMS = [
                 "value":"",
                 // "background":"red",
                 // "split": "3",
-                "multipleGroup":"schemasInput",
-                "nestGroup":"schemas",
+                "deltaGroup":"schemasInput",
+                "nestGroup":"nesting",
                 "nest":"C1",
                 "nestUnder":"B3",
                 // "width":"1200",
@@ -165,10 +165,10 @@ website.convertCMS = [
             },
             {
                 "key": "add-schema",
-                "type": "add button",
+                "type": "button",
                 "value":"Add Another",
-                "nestGroup":"schemas",
-                "multipleGroup":"schemasInput",
+                "nestGroup":"nesting",
+                "deltaGroup":"schemasInput",
                 "nestUnder":"B3",
                 "nest":"C2",
                 "split": "3",
@@ -190,10 +190,10 @@ website.convertCMS = [
             },
             {
                 "key": "remove-schema",
-                "type": "remove button",
+                "type": "button",
                 "value":"Remove Another",
-                "multipleGroup":"schemasInput",
-                "nestGroup":"schemas",
+                "deltaGroup":"schemasInput",
+                "nestGroup":"nesting",
                 "nestUnder":"B3",
                 "nest":"C3",
                 // "split": "3",
@@ -217,7 +217,7 @@ website.convertCMS = [
                 "value":"",
                 "background":"cyan",
                 // "split": "3",
-                "nestGroup":"schemas",
+                "nestGroup":"nesting",
                 "nest":"B3",
                 "nestUnder":"A1",
                 // "width":"1200",
@@ -247,7 +247,7 @@ website.convertCMS = [
                 ],
                 "fontSize":"120",
                 "latch":"",
-                // "multipleGroup":"schemasInput",
+                // "deltaGroup":"schemasInput",
                 "split": "3",
                 // "width":"300",
                 "height":"250",
@@ -269,7 +269,7 @@ website.convertCMS = [
                 "value":"Mode Type",
                 "fontSize":"120",
                 "latch":"",
-                // "multipleGroup":"schemasInput",
+                // "deltaGroup":"schemasInput",
                 "split": "5",
                 // "width":"300",
                 "height":"550",
@@ -289,7 +289,7 @@ website.convertCMS = [
                 "key": "counter",
                 "type": "count",
                 "value":"1.",
-                // "multipleGroup":"view",
+                // "deltaGroup":"view",
                 "next":"true",
                 "split": "1",
                 // "width":"300",
@@ -310,9 +310,9 @@ website.convertCMS = [
             },
             // {
             //     "key": "add",
-            //     "type": "add button",
+            //     "type": "button",
             //     "value":"Add ",
-            //     "multipleGroup":"view",
+            //     "deltaGroup":"view",
             //     "next":"true",
             //     // "nestUnder":"A1",
             //     // "nest":"B3",
@@ -335,9 +335,9 @@ website.convertCMS = [
             // },
             // {
             //     "key": "remove",
-            //     "type": "remove button",
+            //     "type": "button",
             //     "value":"Remove",
-            //     "multipleGroup":"view",
+            //     "deltaGroup":"view",
             //     // "nestGroup":"view",
             //     // "nestUnder":"A1",
             //     // "nest":"B4",
@@ -356,34 +356,34 @@ website.convertCMS = [
             //         }
             //     }
             // },
-            {
-                "key": "schema-dropdown",
-                "type": "dropdown",
-                "value":"Mode Type",
-                "newline":[
-                    "REPEATED",
-                    "REQUIRED",
-                    "NULLABLE"
-                ],
-                "fontSize":"120",
-                "latch":"",
-                "top":-200,
-                // "multipleGroup":"schemasInput",
-                "split": "3",
-                // "width":"300",
-                "height":"250",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        // order:-2,
-                        "background":"blue",
-                        "height":"50px",
-                        // "width":"400px",
-                    }
-                }
-            },
+            // {
+            //     "key": "schema-dropdown",
+            //     "type": "dropdown",
+            //     "value":"Mode Type",
+            //     "newline":[
+            //         "REPEATED",
+            //         "REQUIRED",
+            //         "NULLABLE"
+            //     ],
+            //     "fontSize":"120",
+            //     "latch":"",
+            //     "top":-200,
+            //     // "deltaGroup":"schemasInput",
+            //     "split": "3",
+            //     // "width":"300",
+            //     "height":"250",
+            //     "googleSheets": {},
+            //     "options":{
+            //         "css":{
+            //             // "justify-self":"flex-start",
+            //             // "flex-grow":"1"
+            //             // order:-2,
+            //             "background":"blue",
+            //             "height":"50px",
+            //             // "width":"400px",
+            //         }
+            //     }
+            // },
 
 
         ]
@@ -405,12 +405,34 @@ website.convertCMS = [
 						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
 					}
                 }
-            },
+			},
+            {
+                "key": "some-text",
+                "type": "text",
+                "value":"Items",
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                        // "justify-self":"flex-start",
+                        // "flex-grow":"1"
+                        order:0,
+                        // "background":"white",
+                        // "height":"30px",
+                        // "width":"100%",
+                    }
+                }
+			},
             {
                 "key": "my-input-counter",
                 "type": "count",
                 "value":"1.",
-                "multipleGroup":"view",
+                "deltaGroup":"view",
                 // "split": "3",
                 // "width":"300",
                 // "height":"250",
@@ -429,9 +451,9 @@ website.convertCMS = [
             },
             {
                 "key": "add",
-                "type": "add button",
+                "type": "button",
                 "value":"Add ",
-                "multipleGroup":"view",
+                "deltaGroup":"view",
                 "next":"true",
                 // "nestUnder":"A1",
                 // "nest":"B3",
@@ -454,9 +476,31 @@ website.convertCMS = [
             },
             {
                 "key": "remove",
-                "type": "remove button",
+                "type": "button",
                 "value":"Remove",
-                "multipleGroup":"view",
+                "deltaGroup":"view",
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                        // "justify-self":"flex-start",
+                        // "flex-grow":"1"
+                        order:0,
+                        // "background":"white",
+                        // "height":"30px",
+                        // "width":"100%",
+                    }
+                }
+			},
+            {
+                "key": "more-text",
+                "type": "text",
+                "value":"Items",
                 // "nestGroup":"view",
                 // "nestUnder":"A1",
                 // "nest":"B4",
@@ -642,11 +686,11 @@ website.convertCMS = [
                 }
             },
             {
-                "key": "my-input-counter",
+                "key": "my-counter",
                 "type": "count",
                 "value":"1.",
                 "nestGroup":"schemas",
-                // "multipleGroup":"schemasInput",
+                "deltaGroup":"nestedMultiple",
                 "nestUnder":"C1",
                 "nest":"D1",
                 // "split": "3",
@@ -672,7 +716,7 @@ website.convertCMS = [
                 "nestGroup":"schemas",
                 "nestUnder":"C1",
                 "nest":"D1",
-                // "multipleGroup":"schemasInput",
+                "deltaGroup":"nestedMultiple",
                 // "split": "3",
                 // "width":"300",
                 // "height":"250",
@@ -694,7 +738,7 @@ website.convertCMS = [
                 "value":"",
                 // "background":"red",
                 // "split": "3",
-                "multipleGroup":"schemasInput",
+                "deltaGroup":"nestedMultiple",
                 "nestGroup":"schemas",
                 "nest":"C1",
                 "nestUnder":"B3",
@@ -717,11 +761,11 @@ website.convertCMS = [
                 }
             },
             {
-                "key": "add-schema",
-                "type": "add button",
+                "key": "inner-add",
+                "type": "button",
                 "value":"Add Another",
                 "nestGroup":"schemas",
-                "multipleGroup":"schemasInput",
+                "deltaGroup":"nestedMultiple",
                 "nestUnder":"B3",
                 "nest":"C2",
                 "split": "3",
@@ -742,10 +786,10 @@ website.convertCMS = [
                 }
             },
             {
-                "key": "remove-schema",
-                "type": "remove button",
+                "key": "inner-remove",
+                "type": "button",
                 "value":"Remove Another",
-                "multipleGroup":"schemasInput",
+                "deltaGroup":"nestedMultiple",
                 "nestGroup":"schemas",
                 "nestUnder":"B3",
                 "nest":"C3",
@@ -790,12 +834,10 @@ website.convertCMS = [
                 }
             },
 
-
-
-
-
-
-        ]
+        ] .map((x:any,i)=>{
+			x.key += "-nested-multiple"
+			return x
+		})
     },
 
 ]
