@@ -169,6 +169,7 @@ export class DeltaNodeDirective {
 														co,
 														bool:y[1].bool,
 														css,
+														cssDefault:y[1].cssDefault,
 														text,
 														extras:objectCopy(y[1].extras),
 														val:y[1].val.split("f_o_r_m_")[1]

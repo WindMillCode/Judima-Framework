@@ -407,7 +407,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     .subscribe((result)=>{
                         //fix the component object before continuing
                         let co = this.ryber[this.appTV]
-						ryberPerfect({co});
+						ryberPerfect({co,exclude:["cssDefault"]});
 						this.ref.detectChanges()
                         zChild = this.zChildInit()
                         topLevelZChild = this._topLevelZChildInit()
@@ -495,12 +495,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     })
 									//
 
-									let {finalKeep,finalSpacing} =((devObj)=>{
+									let {finalKeep,finalSpacing,finalAlign} =((devObj)=>{
 										let {current,groups}  =this.ryber[this.appTV].metadata.deltaNode
 										let currentGroup = groups[current?.group]
 										let judimaDeltas = []
 
-										let {finalKeep,finalSpacing} =devObj
+										let {finalKeep,finalSpacing,finalAlign} =devObj
 										if(current !== null && !currentGroup.hooks.directive.includes("done")){
 											console.log(current,currentGroup)
 											currentGroup.hooks.component =currentGroup.hooks.directive
@@ -546,8 +546,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 													type:"identify"
 												})
 												let movingAttach = current.deltas[current.deltas.length-1]
+												//
 
-												// try to rewrite the keep
+												// try to rewrite items for stack
 												finalKeep
 												.forEach((x:any,i)=>{
 													if(x[1]=== box.delta.max.key){
@@ -566,11 +567,41 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 												})
 												finalKeep.splice(      insertIndex.keep+1,0,...keepAdditions)
 												finalZChildKeys.splice(insertIndex.zChildKeys+1,0,...current.deltas)
-												finalSpacing.splice(   insertIndex.keep+2,0,...Array(current.deltas.length).fill(60))
+												// finalSpacing.splice(   insertIndex.keep+2,0,...Array(current.deltas.length).fill(60))
 												// console.log(finalKeep)
 												//
 
-												console.log(currentGroup.hooks)
+												//align setup
+												let targets ={
+													zChildren :currentGroup.targets .map((x:any,i)=>{
+														return x[0]
+													})
+													.filter((x:any,i)=>{
+														return  x[1]?.extras?.judima?.formatIgnore !== "true"
+													}),
+													deltas:current.deltas.filter((x:any,i)=>{
+														return  zChild[x]?.extras?.judima?.formatIgnore !== "true"
+													}),
+													currentCounter:0
+												}
+
+												let addedAlign = finalAlign .map((x:any,i)=>{
+													return x .filter((y:any,j)=>{
+														return targets.zChildren.includes(y)
+													})
+													.map((y:any,j)=>{
+														return targets.deltas[targets.currentCounter++]
+													})
+												})
+												.filter((x:any,i)=>{
+													return x.length !== 0
+												})
+												finalAlign.push(...addedAlign)
+
+												console.log(finalAlign)
+												//
+
+												// console.log(currentGroup.hooks)
 											}
 											//
 											currentGroup.hooks.directive = currentGroup.hooks.component =currentGroup.hooks.component.split(" ")[0] +" done"
@@ -580,7 +611,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 										return{
 											finalKeep,
-											finalSpacing
+											finalSpacing,
+											finalAlign
 										}
 
 
@@ -588,7 +620,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 									})({
 										finalKeep:keep,
 										finalSpacing:spacing,
-
+										finalAlign:align
 									})
 
 									let stackObj = {
@@ -601,7 +633,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         heightInclude:[null,...Array.from(align[0],(x,i)=> {return 'f'}),...Array.from(align.slice(1).flat(),(x,i)=> {return 't'})]
                                     }
 									stack(stackObj)
-									console.log(stackObj)
+									// console.log(stackObj)
                                     this.ref.detectChanges()
 
 
@@ -619,7 +651,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         type:'preserve',
                                     }
 									xContain(xContainObj);
-									console.log(xContainObj)
+									// console.log(xContainObj)
 									//
 
 
@@ -631,7 +663,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                                 }
 								//
-								// return
+								return
 
                                 //position
                                 {

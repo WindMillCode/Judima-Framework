@@ -1013,7 +1013,10 @@ export function ryberUpdate(
                 subCO.text[index].push(text)
                 subCO.val[index].push(val)
                 subCO.bool[index].push(bool)
-                subCO.ngCss[index].push(css)
+				subCO.ngCss[index].push(css)
+				if(cssDefault){
+					subCO.ngCssDefault[index].push(cssDefault)
+				}
                 subCO.extras[index].push(extras)
                 subCO.symbol[index].push(
                     "&#" + symbol
@@ -1024,7 +1027,10 @@ export function ryberUpdate(
                 subCO.text[index]  .splice(spot,0,text)
                 subCO.val[index]   .splice(spot,0,val)
                 subCO.bool[index]  .splice(spot,0,bool)
-                subCO.ngCss[index] .splice(spot,0,css)
+				subCO.ngCss[index] .splice(spot,0,css)
+				if(cssDefault){
+					subCO.ngCssDefault[index].splice(spot,0,cssDefault)
+				}
                 subCO.extras[index].splice(spot,0,extras)
                 subCO.symbol[index].splice(spot,0,
                     "&#" + symbol
@@ -1046,30 +1052,36 @@ export let ryberUpdateFactory = (devObj?) => {
 }
 
 export let  ryberPerfect = (devObj)=> {
-	let {co} = devObj
+	let {co,exclude} = devObj
 	co.quantity
 	.forEach((y, j) => {
 		co.quantity[j]
 		.forEach((z, k) => {
 			z.text
 			.forEach((w, h) => {
-			w.forEach((xx, ii) => {
-				if (!(w[ii]?.hasOwnProperty("item"))) {
-					w[ii] = { item: xx };
-				}
-			});
+				w.forEach((xx, ii) => {
+					if (!(w[ii]?.hasOwnProperty("item"))) {
+						w[ii] = { item: xx };
+					}
+				});
 			});
 			// remember we just cant overwrite the cssDefaults find the missing
 			// cssDefault
-			z.ngCss
-			.forEach((w: any, h) => {
-			w.forEach((xx: any, ii) => {
-				if (z.ngCssDefault[h]?.[ii] === undefined) {
-					z.ngCss[h][ii] = { ...{ left: "0px", top: "0px" }, ...xx };
-					z.ngCssDefault[h].splice(ii, 0, objectCopy(z.ngCss[h][ii]));
-				}
-			});
-		});
+			if(exclude.includes("cssDefault")){
+
+				z.ngCss
+				.forEach((w: any, h) => {
+					w.forEach((xx: any, ii) => {
+						if (z.ngCssDefault[h]?.[ii] === undefined) {
+							z.ngCss[h][ii] = { ...{ left: "0px", top: "0px" }, ...xx };
+							z.ngCssDefault[h].splice(ii, 0, objectCopy(z.ngCss[h][ii]));
+						}
+					});
+				});
+			}
+
+
+
 		});
 	});
 }

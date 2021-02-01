@@ -464,7 +464,7 @@ website.convertCMS = [[
 				delta:{
 					"group":"outerDelta"
 				},
-                // "split": "3",
+                "split": "1",
                 // "width":"300",
                 // "height":"250",
                 "googleSheets": {},
@@ -472,8 +472,8 @@ website.convertCMS = [[
                     "css":{
                         // "justify-self":"flex-start",
                         // "flex-grow":"1"
-                        order:-3,
-                        "width":"10px"
+                        // order:-3,
+                        // "width":"10px"
                         // "background":"white",
                         // "height":"30px",
                         // "width":"400px",
