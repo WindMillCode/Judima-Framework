@@ -1,6 +1,6 @@
 let website:any = {}
 
-website.convertCMS = [
+website.convertCMS = [[
 
     {
         "title": "webRTCVideo",
@@ -12,7 +12,10 @@ website.convertCMS = [
                 "type": "body",
                 "stack": "60",
                 // "height":"1000",
-                "background": "rgb(255, 179, 204)",
+				"background": "rgb(255, 179, 204)",
+				delta:{
+					"group":["schemasInput"],
+				},
                 "googleSheets": {}
             },
             {
@@ -93,7 +96,9 @@ website.convertCMS = [
                 "type": "count",
                 "value":"1.",
                 "nestGroup":"nesting",
-                // "deltaGroup":"schemasInput",
+				delta:{
+					"group":"schemasInput",
+				},
                 "nestUnder":"C1",
                 "nest":"D1",
                 // "split": "3",
@@ -119,7 +124,9 @@ website.convertCMS = [
                 "nestGroup":"nesting",
                 "nestUnder":"C1",
                 "nest":"D1",
-                // "deltaGroup":"schemasInput",
+				delta:{
+					"group":"schemasInput",
+				},
                 // "split": "3",
                 // "width":"300",
                 // "height":"250",
@@ -141,7 +148,9 @@ website.convertCMS = [
                 "value":"",
                 // "background":"red",
                 // "split": "3",
-                "deltaGroup":"schemasInput",
+				delta:{
+					"group":"schemasInput",
+				},
                 "nestGroup":"nesting",
                 "nest":"C1",
                 "nestUnder":"B3",
@@ -167,8 +176,12 @@ website.convertCMS = [
                 "key": "add-schema",
                 "type": "button",
                 "value":"Add Another",
-                "nestGroup":"nesting",
-                "deltaGroup":"schemasInput",
+				"nestGroup":"nesting",
+				delta:{
+					"group":"schemasInput",
+					type:"add",
+					by:"1"
+				},
                 "nestUnder":"B3",
                 "nest":"C2",
                 "split": "3",
@@ -192,7 +205,11 @@ website.convertCMS = [
                 "key": "remove-schema",
                 "type": "button",
                 "value":"Remove Another",
-                "deltaGroup":"schemasInput",
+				delta:{
+					"group":"schemasInput",
+					type:"remove",
+					by:"1"
+				},
                 "nestGroup":"nesting",
                 "nestUnder":"B3",
                 "nest":"C3",
@@ -388,6 +405,7 @@ website.convertCMS = [
 
         ]
 	},
+
     {
         "title": "webRTCVideo",
         "type_slug": "forms",
@@ -397,7 +415,18 @@ website.convertCMS = [
                 "key": "Body",
                 "type": "body",
                 "stack": "60",
-                // "height":"1000",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						},
+						{
+							name:"innerDelta",
+							type:"add_remove_button"
+						}],
+				},
                 "background": "rgb(155, 9, 104)",
 				"googleSheets": {},
 				options:{
@@ -432,7 +461,9 @@ website.convertCMS = [
                 "key": "my-input-counter",
                 "type": "count",
                 "value":"1.",
-                "deltaGroup":"view",
+				delta:{
+					"group":"outerDelta"
+				},
                 // "split": "3",
                 // "width":"300",
                 // "height":"250",
@@ -448,12 +479,29 @@ website.convertCMS = [
                         // "width":"400px",
                     }
                 }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                // "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+
             },
             {
                 "key": "add",
                 "type": "button",
                 "value":"Add ",
-                "deltaGroup":"view",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
                 "next":"true",
                 // "nestUnder":"A1",
                 // "nest":"B3",
@@ -478,7 +526,11 @@ website.convertCMS = [
                 "key": "remove",
                 "type": "button",
                 "value":"Remove",
-                "deltaGroup":"view",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
                 // "nestGroup":"view",
                 // "nestUnder":"A1",
                 // "nest":"B4",
@@ -690,7 +742,9 @@ website.convertCMS = [
                 "type": "count",
                 "value":"1.",
                 "nestGroup":"schemas",
-                "deltaGroup":"nestedMultiple",
+				delta:{
+					"group":"innerDelta",
+				},
                 "nestUnder":"C1",
                 "nest":"D1",
                 // "split": "3",
@@ -716,7 +770,9 @@ website.convertCMS = [
                 "nestGroup":"schemas",
                 "nestUnder":"C1",
                 "nest":"D1",
-                "deltaGroup":"nestedMultiple",
+				delta:{
+					"group":"innerDelta",
+				},
                 // "split": "3",
                 // "width":"300",
                 // "height":"250",
@@ -738,7 +794,9 @@ website.convertCMS = [
                 "value":"",
                 // "background":"red",
                 // "split": "3",
-                "deltaGroup":"nestedMultiple",
+				delta:{
+					"group":"innerDelta",
+				},
                 "nestGroup":"schemas",
                 "nest":"C1",
                 "nestUnder":"B3",
@@ -765,7 +823,11 @@ website.convertCMS = [
                 "type": "button",
                 "value":"Add Another",
                 "nestGroup":"schemas",
-                "deltaGroup":"nestedMultiple",
+				delta:{
+					"group":"innerDelta",
+					type:"add",
+					by:"1"
+				},
                 "nestUnder":"B3",
                 "nest":"C2",
                 "split": "3",
@@ -789,7 +851,11 @@ website.convertCMS = [
                 "key": "inner-remove",
                 "type": "button",
                 "value":"Remove Another",
-                "deltaGroup":"nestedMultiple",
+				delta:{
+					"group":"innerDelta",
+					type:"remove",
+					by:"1"
+				},
                 "nestGroup":"schemas",
                 "nestUnder":"B3",
                 "nest":"C3",
@@ -840,7 +906,7 @@ website.convertCMS = [
 		})
     },
 
-]
+][1]]
 
 
 export default website

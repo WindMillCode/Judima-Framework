@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, ViewChildren, AfterViewInit, Inject, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy, Renderer2, ElementRef } from '@angular/core';
 import { RyberService } from '../ryber.service';
-import { fromEvent, interval, of, from, Observable, merge, Subject, BehaviorSubject, combineLatest } from 'rxjs';
-import { catchError, take, timeout, mapTo, debounceTime, distinctUntilChanged, debounce, first, ignoreElements, tap, delay } from 'rxjs/operators';
+import { fromEvent, interval, of, from, Observable, merge, Subject, BehaviorSubject, combineLatest, forkJoin,concat } from 'rxjs';
+import { catchError, take, timeout, mapTo, debounceTime, distinctUntilChanged, debounce, first, ignoreElements, tap, delay,withLatestFrom, skipUntil, map } from 'rxjs/operators';
 import {
     zChildren, getTextWidth, numberParse,
     xPosition, resize, componentBootstrap, deltaNode,
     eventDispatcher, dropdown, dragElement, stack, xContain, minMaxDelta,
-    objectCopy, responsiveMeasure, flatDeep, zChildText,componentConsole
+    objectCopy, responsiveMeasure, flatDeep, zChildText,componentConsole,ryberPerfect
 } from '../customExports'
 import { environment as env } from '../../environments/environment'
 
@@ -199,7 +199,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     //
 
 
-					// zChild[x].bool !== "ta" || zChild[x].bool !== "i" || zChild[x].bool !== "date"
+
                     if((!["date","ta","i"].includes(zChild[x].bool) ) && component.height === undefined ){
                         zChild[x].css["height"] = null
                         this.ref.detectChanges()
@@ -361,7 +361,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //latch setup
                 this.ryber.appEvents({
                     typesES:this.typesES,
-                    event:'latchUpdate',
+                    event:'zChildUpdate',
                     of:combineLatest([
                         this.ryber[this.appTV].metadata.latch.updateZChild,
                         this.templateMyElements.changes
@@ -370,34 +370,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         delay(2)
                     )
                     .subscribe((a)=>{
+
                         //fix the component object before continuing
                         let co = this.ryber[this.appTV]
-                        co.quantity
-                        .forEach((y,j)=>{
-                            co.quantity[j]
-                            .forEach((z,k)=>{
-                                z.text
-                                .forEach((w,h)=>{
-                                    w.forEach((xx,ii)=>{
-                                        if(!(w[ii]?.hasOwnProperty("item")) ){
-                                            w[ii] = {item:xx}
-                                        }
-                                    })
-                                })
-                                // remember we just cant overwrite the cssDefaults find the missing
-                                // cssDefault
-                                z.ngCss
-                                .forEach((w:any,h)=>{
-                                    w.forEach((xx:any,ii)=>{
-                                        if(z.ngCssDefault[h]?.[ii] === undefined){
-                                            z.ngCss[h][ii] = {...{left:"0px",top:"0px"},...xx}
-                                            z.ngCssDefault[h].splice(ii,0,objectCopy(z.ngCss[h][ii]))
-                                        }
-                                    })
-                                })
-                                //
-                            })
-                        })
+						ryberPerfect({co});
+
                         zChild = this.zChildInit()
                         topLevelZChild = this._topLevelZChildInit()
                         latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
@@ -413,8 +390,46 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         })
                     })
                 })
+				//
 
-                //
+				//deltaNode setup
+					// FIX ME, flicker on the screen because templateMyElements.changes, fires several times
+					// if you put a delay on updateZChild it will not work out well
+
+				this.ryber.appEvents({
+                    typesES:this.typesES,
+                    event:'zChildUpdate',
+                    of:combineLatest([
+
+						// this.templateMyElements.changes,
+						this.ryber[this.appTV].metadata.deltaNode.updateZChild
+					])
+                    .subscribe((result)=>{
+                        //fix the component object before continuing
+                        let co = this.ryber[this.appTV]
+						ryberPerfect({co});
+						this.ref.detectChanges()
+                        zChild = this.zChildInit()
+                        topLevelZChild = this._topLevelZChildInit()
+                        latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
+
+
+
+                        this.directivesSendData({
+                            directivesZChild:zChild,
+                            random:Math.random()
+                        })
+                        eventDispatcher({
+                            event:'resize',
+                            element:window
+                        })
+                    })
+                })
+				//
+				let finalZChildKeys =[
+					"&#8353",
+					...cmsZKeys
+				]
 
                 this.ryber.appEvents({
                     typesES:this.typesES,
@@ -438,38 +453,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         // dynnamic element management bootstrap
                         let  {deltaNodeSite} = this.ryber[this.appTV.valueOf()].metadata
                         let  {current} = deltaNodeSite === undefined ? this.foo :deltaNodeSite
-                        let dropDownGroup = {}
-                        if( deltaNodeSite !== undefined){
 
-
-                            //dropDownGroups
-                            zChild = this.dropDownInit({
-                                deltaNodeSite,
-                                dropDownGroup,
-                                zChild
-                            });
-
-
-							// componentConsole({
-							// 	appTV:this.appTV,
-							// 	target:["formCO1"],
-							// 	data:deltaNodeSite
-							// })?.()
-
-                            if(group !== undefined){
-								// console.log(group)
-                                Object.keys(group)
-                                .forEach((x,i)=>{
-                                    this.inputHandleModifyName({
-                                        group:deltaNodeSite[x.valueOf()],
-                                        inputZChild:zChild,
-                                        current
-                                    })
-                                })
-                            }
-
-
-                        }
                         //
 
                         // console.log(numberParse(getComputedStyle(zChild["&#8353"].element).width))
@@ -509,27 +493,121 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                             zChild[x].css["height"] =  (zChild[x].element.getBoundingClientRect().height).toString() + "px"
                                         }
                                     })
-                                    //
+									//
+
+									let {finalKeep,finalSpacing} =((devObj)=>{
+										let {current,groups}  =this.ryber[this.appTV].metadata.deltaNode
+										let currentGroup = groups[current?.group]
+										let judimaDeltas = []
+
+										let {finalKeep,finalSpacing} =devObj
+										if(current !== null && !currentGroup.hooks.directive.includes("done")){
+											console.log(current,currentGroup)
+											currentGroup.hooks.component =currentGroup.hooks.directive
+											current?.deltas
+											.forEach((x:any,i)=>{
+												// format in the context of the component
+												if(zChild[x]?.extras?.judima?.formatIgnore === "false"){
+
+													judimaDeltas.push(x)
+
+												}
+												//
+											})
+											//figure out the attach
+											let box:any ={
+												targets:(currentGroup.deltas.length > 1  ?
+												currentGroup.deltas[currentGroup.deltas.length-2] .map((x:any,i)=>{
+													return [x,zChild[x]]
+												}) : currentGroup.targets)
+												.filter((x:any,i)=>{
+
+													return x[1]?.extras?.judima?.formatIgnore !== "true"
+												}),
+												delta:null
+											}
+
+											if(box.targets.length !==0){
+												box.delta =minMaxDelta({
+													items: box.targets,
+													min:(item)=>{
+														return {
+															key:item[0],
+															value:numberParse(item[1].css["top"])
+														}
+													},
+													max:(item)=>{
+														return {
+															key:item[0],
+															value:numberParse(item[1].css["top"]) +
+															numberParse(item[1].css["height"])
+														}
+													},
+													type:"identify"
+												})
+												let movingAttach = current.deltas[current.deltas.length-1]
+
+												// try to rewrite the keep
+												finalKeep
+												.forEach((x:any,i)=>{
+													if(x[1]=== box.delta.max.key){
+														x[1] = movingAttach
+													}
+												})
+
+												let insertIndex = {
+													keep:(finalKeep .map((x:any,i)=>{
+														return x[0]
+													}).indexOf(box.delta.max.key)),
+													zChildKeys:finalZChildKeys.indexOf(box.delta.max.key)
+												}
+												let keepAdditions = current.deltas .map((x:any,i)=>{
+													return [x,box.delta.max.key]
+												})
+												finalKeep.splice(      insertIndex.keep+1,0,...keepAdditions)
+												finalZChildKeys.splice(insertIndex.zChildKeys+1,0,...current.deltas)
+												finalSpacing.splice(   insertIndex.keep+2,0,...Array(current.deltas.length).fill(60))
+												// console.log(finalKeep)
+												//
+
+												console.log(currentGroup.hooks)
+											}
+											//
+											currentGroup.hooks.directive = currentGroup.hooks.component =currentGroup.hooks.component.split(" ")[0] +" done"
+											//
+										}
 
 
-                                    stack({
-                                        zChildKeys:[
-                                            "&#8353",
-                                            ...cmsZKeys
-                                        ],
+										return{
+											finalKeep,
+											finalSpacing
+										}
+
+
+
+									})({
+										finalKeep:keep,
+										finalSpacing:spacing,
+
+									})
+
+									let stackObj = {
+                                        zChildKeys:finalZChildKeys,
                                         ref: this.ref,
                                         zChild,
-                                        spacing,
-                                        keep,
+                                        spacing:finalSpacing,
+                                        keep:finalKeep,
                                         type:'keepSomeAligned',
-                                        heightInclude:[null,...Array.from(align[0],(x,i)=> {return 'f'}),'t']
-                                    })
+                                        heightInclude:[null,...Array.from(align[0],(x,i)=> {return 'f'}),...Array.from(align.slice(1).flat(),(x,i)=> {return 't'})]
+                                    }
+									stack(stackObj)
+									console.log(stackObj)
                                     this.ref.detectChanges()
 
 
 
-                                    // align options
-                                    xContain({
+									// align options
+									let xContainObj = {
                                         preserve:{
                                             align,
                                             // zChild,
@@ -539,160 +617,21 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                             left:section.left
                                         },
                                         type:'preserve',
-                                    })
-                                    //
+                                    }
+									xContain(xContainObj);
+									console.log(xContainObj)
+									//
 
 
 
-                                    if(group !== undefined && deltaNodeSite !== undefined){
-                                        // console.log(group)
-                                        Object.keys(group)
-                                        .forEach((x,i)=>{
 
-                                            if( deltaNodeSite[x.valueOf()] !== undefined){
-                                                deltaNodeSite[x.valueOf()]
-                                                .symbols
-                                                .forEach((y,j) => {
-
-
-                                                    // modifying according to increment
-                                                    if(zChild[y[0]]?.extras?.delta?.type === "increment" && j === deltaNodeSite[x.valueOf()].symbols.length -1){
-
-                                                        try{
-                                                            let counterString = zChild[y[0]].innerText.item.split("")
-                                                            zChild[y[0]].innerText.item.split("")
-                                                            .forEach((z,k)=>{
-                                                                if(+z !== NaN){
-                                                                    counterString.splice(k,1,+z +j+1)
-                                                                    zChild[y[0]].innerText.item = counterString.join("")
-                                                                    throw('e')
-                                                                }
-                                                            })
-                                                        }
-                                                        catch(e){
-                                                            this.ref.detectChanges()
-                                                            zChild[y[0]].extras.delta.type = "incrementDone"
-                                                        }
-                                                    }
-                                                    //
-
-
-
-                                                    // ignore if need be
-                                                    if(zChild[y[0]].extras?.judima?.formatIgnore ==="true"){
-                                                        return
-                                                    }
-                                                    //
-
-                                                    //stack and xAlign Setup
-                                                    let keepRef = y[0]
-                                                    let duplicateKeep = []
-                                                    y
-                                                    .reduce((acc,z,k,src)=>{
-                                                        let myTop = parseInt(numberParse(deltaNodeSite[x.valueOf()].elements[j][k].css.top))
-                                                        // console.log(
-                                                        //     myTop,
-                                                        //     z
-                                                        // )
-                                                        if(myTop !== acc[1]){
-                                                                let max = 0
-                                                                let mySymbol = src[k-1]
-                                                                duplicateKeep
-                                                                .forEach((w,l)=>{
-                                                                    if(w[1] === acc[0]){
-                                                                        let larger = numberParse(zChild[w[0]].css.top) +
-                                                                        numberParse(zChild[w[0]].css.height)
-                                                                        if(max < larger){
-                                                                            max = larger
-                                                                            mySymbol = w[0]
-                                                                        }
-                                                                    }
-
-                                                                })
-
-                                                            acc =[mySymbol,myTop]
-                                                        }
-                                                        duplicateKeep.push([z,acc[0]])
-                                                        return acc
-
-                                                    },[keepRef,parseInt(numberParse(deltaNodeSite[x.valueOf()].elements[j][0].css.top))])
-
-                                                    let duplicateAlign = []
-                                                    let duplicateAlignCurrent = []
-                                                    duplicateKeep
-                                                    .reduce((acc,z,k,src)=>{
-                                                        // console.log(z,acc)
-                                                        if(z[1] !== acc){
-                                                            acc = z[1]
-                                                            duplicateAlign.push(duplicateAlignCurrent)
-                                                            duplicateAlignCurrent = []
-                                                        }
-                                                        duplicateAlignCurrent.push(z[0])
-                                                        if(k === src.length-1){
-                                                            duplicateAlign.push(duplicateAlignCurrent)
-                                                        }
-                                                        return acc
-                                                    },"")
-                                                    duplicateAlign.splice(0,1)
-                                                    //
-
-                                                    //stack spacing setup
-                                                    let duplicateSpacing =
-                                                    y
-                                                    .map((z:any,k)=>{
-                                                        if(zChild[z].extras?.component?.top !== undefined){
-                                                            return zChild[z].extras.component.top
-                                                        }
-                                                        else{
-                                                            return section.stack
-                                                        }
-                                                    })
-                                                    duplicateSpacing.unshift(null)
-                                                    //
-
-
-                                                    // stack
-                                                    stack({
-                                                        zChildKeys:y,
-                                                        ref: this.ref,
-                                                        zChild,
-                                                        start:400,
-                                                        spacing:duplicateSpacing,
-                                                        keep: duplicateKeep,
-                                                        type:'keepSomeAligned',
-                                                        heightInclude:[...Array.from(duplicateAlign[0],(x,i)=> {return 'f'}),'t']
-                                                    })
-                                                    //
-
-
-                                                    // xAlign
-                                                    xContain({
-                                                        preserve:{
-                                                            align:duplicateAlign,
-                                                            zChild,
-                                                            ref:this.ref,
-                                                            width:section.area,
-                                                            left:section.left
-                                                        },
-                                                        type:'preserve'
-                                                    })
-                                                    this.ref.detectChanges()
-                                                    // console.log(duplicateAlign,duplicateKeep,duplicateSpacing)
-                                                    //
-
-                                                });
-                                            }
-
-                                        })
-
-
-									}
 
 
 
 
                                 }
-                                //
+								//
+								// return
 
                                 //position
                                 {
@@ -715,56 +654,56 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
                                     // making sure we setup moving properly
-                                    let movingZAttachVal= cmsZKeys
-                                    .reduce((acc,x,i)=>{
-                                        if(zChild[x]?.extras?.deltaGroup !== undefined){
-                                            return x
-                                        }
-                                        return acc
-									})
+                                    // let movingZAttachVal= cmsZKeys
+                                    // .reduce((acc,x,i)=>{
+                                    //     if(zChild[x]?.extras?.deltaGroup !== undefined){
+                                    //         return x
+                                    //     }
+                                    //     return acc
+									// })
 
 
-                                    let movingZKeys = cmsZKeys.slice(cmsZKeys.indexOf(movingZAttachVal)+1)
-                                    let movingFlag = "false"
-                                    let movingAttachVal =""
-                                    let movingKeep = keep
-                                    .reduce((acc,x,i)=>{
+                                    // let movingZKeys = cmsZKeys.slice(cmsZKeys.indexOf(movingZAttachVal)+1)
+                                    // let movingFlag = "false"
+                                    // let movingAttachVal =""
+                                    // let movingKeep = keep
+                                    // .reduce((acc,x,i)=>{
 
-                                        if(movingZKeys[0] === x[0] ){
-                                            movingFlag = "true"
-                                            movingAttachVal = x[1]
-										}
-                                        if(movingFlag === "true"){
-                                            if(movingAttachVal === x[1]){
-                                               acc.push([x[0],"replace me"])
-                                            }
-                                            else {
-                                                acc.push(x)
-                                            }
-                                        }
-                                        return acc
-									},[])
+                                    //     if(movingZKeys[0] === x[0] ){
+                                    //         movingFlag = "true"
+                                    //         movingAttachVal = x[1]
+									// 	}
+                                    //     if(movingFlag === "true"){
+                                    //         if(movingAttachVal === x[1]){
+                                    //            acc.push([x[0],"replace me"])
+                                    //         }
+                                    //         else {
+                                    //             acc.push(x)
+                                    //         }
+                                    //     }
+                                    //     return acc
+									// },[])
 									// console.log(keep)
 
                                     //
 
 
-                                    let attach = this.dynamicPosition({
-                                        deltaDiff:50,
-                                        group,
-                                        deltaNodeSite,
-                                        zChild,
-                                        current,
-                                        attachVal:movingZAttachVal,
-                                        zChildKeys:movingZKeys,
-                                        section,
-										keep:movingKeep,
-										cmsZKeys,
-                                    })
+                                    // let attach = this.dynamicPosition({
+                                    //     deltaDiff:50,
+                                    //     group,
+                                    //     deltaNodeSite,
+                                    //     zChild,
+                                    //     current,
+                                    //     attachVal:movingZAttachVal,
+                                    //     zChildKeys:movingZKeys,
+                                    //     section,
+									// 	keep:movingKeep,
+									// 	cmsZKeys,
+                                    // })
 
                                     // position board
                                     this.ryber[this.appTV].metadata.ngAfterViewInitFinished.next("")
-                                    this.positionBoard({zChild:topLevelZChild,current,deltaNodeSite});
+                                    // this.positionBoard({zChild:topLevelZChild,current,deltaNodeSite});
                                     //
 
 
@@ -1115,123 +1054,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 })
 
 
-                //duplicates setup
-                // if(group !== undefined){
 
-
-                //     Object.keys(group)
-                //     .forEach((x,i)=>{
-                //         let a = staticZKeys
-                //         .filter((y,j)=>{
-                //             return zChild[y].extras.deltaGroup === x
-                //         })
-
-                //         // console.log(this.ryber[this.appTV].quantity[1][1])
-
-                //         if(group[x].add !== undefined){
-                //             this.ryber.appEvents({
-                //                 typesES:this.typesES,
-                //                 event:'click',
-                //                 of:fromEvent(zChild[group[x].add].element,'click')
-                //                 .subscribe(()=>{
-
-
-                //                     if(this.ryber[this.appTV.valueOf()].metadata.coDropDown !== undefined){
-                //                         this.ryber[this.appTV.valueOf()].metadata.coDropDown.init = "false";
-                //                     }
-
-
-                //                     deltaNode({
-                //                         intent:'add',
-                //                         elements: a.map((y,j)=>{return zChild[y]}),
-                //                         co:this.ryber[this.appTV.valueOf()],
-                //                         subCO:1, //decide to use the number of the signature
-                //                         group:x,
-                //                         symbolDeltaStart:8410,
-                //                     })
-                //                     this.ref.detectChanges()
-                //                     zChild = this.zChildInit()
-
-
-                //                     this.directivesSendData({
-                //                         directivesZChild:zChild,
-                //                         random:Math.random(),
-                //                     })
-
-                //                     eventDispatcher(({
-                //                         event:'resize',
-                //                         element:window
-                //                     }))
-                //                     // console.log(zChild)
-
-
-                //                 })
-                //             })
-
-
-                //         }
-
-                //         if(group[x].remove !== undefined){
-                //             this.ryber.appEvents({
-                //                 typesES:this.typesES,
-                //                 event:'click',
-                //                 of:fromEvent(zChild[group[x].remove].element,'click')
-                //                 .subscribe(()=>{
-
-
-                //                     if(this.ryber[this.appTV.valueOf()].metadata.deltaNodeSite === undefined){
-                //                         return
-                //                     }
-
-				// 					console.log(x)
-                //                     deltaNode({
-                //                         intent:'minus',
-                //                         co:this.ryber[this.appTV.valueOf()],
-                //                         group:x,
-                //                         hook:'prepare'
-                //                     })
-
-                //                     //remove dropdown elements
-                //                     if(this.ryber[this.appTV.valueOf()].metadata.deltaNodeSite[x] !== undefined){
-                //                         let {symbols} = this.ryber[this.appTV.valueOf()].metadata.deltaNodeSite[x]
-                //                         symbols[symbols.length-1]
-                //                         .forEach((y,j)=>{
-                //                             if(zChild[y]?.extras?.appDropDown?.change === "ontheDOM"){
-                //                                 // console.log(zChild[y])
-                //                                 deltaNode({
-                //                                     intent:'minus',
-                //                                     group:zChild[y]?.extras?.appDropDown?.group,
-                //                                     co:this.ryber[this.appTV.valueOf()],
-                //                                 })
-                //                             }
-                //                         })
-                //                     }
-                //                     //
-
-                //                     //clean up then take out DOM
-                //                     eventDispatcher(({
-                //                         event:'resize',
-                //                         element:window
-                //                     }))
-                //                     //
-
-                //                     deltaNode({
-                //                         intent:'minus',
-                //                         co:this.ryber[this.appTV.valueOf()],
-                //                         group:x,
-                //                     })
-
-
-                //                     this.ref.detectChanges()
-                //                     zChild = this.zChildInit()
-                //                 })
-                //             })
-                //         }
-
-                //     })
-
-                // }
-                //
 
         })
         //
@@ -1712,3 +1535,4 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         scrollTo(0,numberParse(getComputedStyle(staticZChild[current === null ? "&#8353" :current].element).top)-30)
     }
 }
+

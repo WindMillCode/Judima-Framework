@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren, Host,ChangeDetectorRef } from '@angular/core';
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest, Observable } from 'rxjs';
-import { deltaNode, eventDispatcher, numberParse, objectCopy,ryberUpdate,xContain,stack, zChildren } from '../customExports'
+import { deltaNode, eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren } from '../customExports'
 import { catchError, delay } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -20,7 +20,8 @@ export class LatchDirective {
     zSymbols:Array<string /*zSymbol*/>
     newZChildren:Subscription
     moveWithTarget:Subscription
-    templateMyElements:any
+	templateMyElements:any
+	subscriptions:Array<Subscription> = []
     ref:ChangeDetectorRef
 
     constructor(
@@ -33,14 +34,15 @@ export class LatchDirective {
     @HostListener('blur',['$event']) onBlur(event){
         if(this.extras?.confirm === "true"){
             let {zChildren,co} = this
-            let zChild = zChildren[this.extras.zSymbol]
+			let zChild = zChildren[this.extras.zSymbol]
+			let rUD = ryberUpdateFactory({ryber:this.ryber})
             if(zChild.element.value === "REPEAT"){
 
                 if(this.zSymbols === undefined){
                     // try to add elements to the dom
                         //  the first element, should be the element we want to toggle out
                     this.zSymbols = [
-                        ryberUpdate.call(this.ryber,{
+                        rUD({
                             co,
                             bool: 'div',
                             val: 'mode-handler a_p_p_Nester',
@@ -64,7 +66,7 @@ export class LatchDirective {
                                 }
                             }
                         }),
-                        ryberUpdate.call(this.ryber,{
+                        rUD({
                             co,
                             bool: 'b',
                             text:'Add Input',
@@ -87,7 +89,7 @@ export class LatchDirective {
                                 }
                             }
                         }),
-                        ryberUpdate.call(this.ryber,{
+                        rUD({
                             co,
                             bool: 'b',
                             text:'Remove Input',
@@ -178,7 +180,8 @@ export class LatchDirective {
 
                 }
                 //
-            })
+			})
+			this.subscriptions.push(this.newZChildren)
             this.moveWithTarget = this.ryber[this.co].metadata.ngAfterViewInitFinished
             .pipe(
                 catchError((error)=>{
@@ -199,20 +202,19 @@ export class LatchDirective {
 
                 }
                 //
-            })
+			})
+			this.subscriptions.push(this.moveWithTarget)
         }
     }
 
 
     ngOnDestroy() {
         if (this.extras?.confirm === 'true') {
-            Object.values(this)
-            .forEach((x: any, i) => {
-                if(x instanceof Subscriber){
-                    x.unsubscribe?.()
-                }
-
-            })
+			this.subscriptions
+			.forEach((x: any, i) => {
+				x.unsubscribe()
+			})
+			delete this.subscriptions
         }
     }
 }

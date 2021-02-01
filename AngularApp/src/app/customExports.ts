@@ -604,7 +604,26 @@ export function include (devObj){
 }
 
 export function minMaxDelta(devObj){
-    /*calculates the 1d dimenensions of an entry of objects */
+	/*calculates the 1d dimenensions of an entry of objects */
+	let {type } =devObj
+	if(type === "identify"){
+		let delta:any = {
+			min:{value:Infinity,key:null},
+			max:{value:0,key:null},
+		}
+		devObj.items.forEach((x,i)=>{
+			let myMin = devObj.min(x)
+			let myMax = devObj.max(x)
+			if( myMin.value < delta.min.value){
+				delta.min = myMin
+			}
+			if( myMax.value > delta.max.value){
+				delta.max = myMax
+			}
+		})
+		delta.delta ={value: delta.max.value-delta.min.value}
+		return delta
+	}
     let delta:any = {
         min:Infinity,
         max:0,
@@ -622,6 +641,7 @@ export function minMaxDelta(devObj){
     delta.delta = delta.max-delta.min
     return delta
 }
+
 
 function appGenerateSelector(   devObj   ){
     var a = 0;
@@ -739,18 +759,7 @@ export function coInit (a,componentObjects,additional?) {
                             []
                     ],
                     symbol:[["&#8352"]],
-                    metadata:{// deprecated use directives and the subCO extras instead
-                        mouseover:[
-                            [],
-                            [],
-                            []
-                        ],
-                        mouseout:[
-                            [],
-                            [],
-                            []
-                        ]
-                    },
+
                     ngCss:[
                         [
                             {
@@ -763,8 +772,6 @@ export function coInit (a,componentObjects,additional?) {
                     ],
                     extras:[
                         [],
-                        [],
-                        []
                     ]
                 }
             )
@@ -888,8 +895,6 @@ export function ryberUpdate(
                                         extras !== undefined ? extras: {}
                                     ),
                                 ],
-                                [],
-                                []
                             ]
                         },
                         ...Array.from(Array(1),()=> {
@@ -898,37 +903,30 @@ export function ryberUpdate(
                                 quantity:[
                                     [],
                                     [],
-                                    []
                                 ],
                                 bool:[
                                     [],
                                     [],
-                                    []
                                 ],
                                 val:[
                                     [],
                                     [],
-                                    []
                                 ],
                                 text:[
                                     [],
                                     [],
-                                    []
                                 ],
                                 symbol:[
                                     [],
                                     [],
-                                    []
                                 ],
                                 ngCss:[
                                     [],
                                     [],
-                                    []
                                 ],
                                 extras:[
                                     [],
                                     [],
-                                    []
                                 ]
                         }})
                     ]
@@ -1020,9 +1018,6 @@ export function ryberUpdate(
                 subCO.symbol[index].push(
                     "&#" + symbol
                 )
-                // if(cssDefault !== undefined){
-                //     subCO.ngCssDefault[index].push(cssDefault)
-                // }
             }
 
             else{
@@ -1034,9 +1029,6 @@ export function ryberUpdate(
                 subCO.symbol[index].splice(spot,0,
                     "&#" + symbol
                 )
-                // if(cssDefault !== undefined){
-                //     subCO.ngCssDefault[index].splice(spot,0,cssDefault)
-                // }
             }
             subCO.signature = signature
         //
@@ -1046,6 +1038,42 @@ export function ryberUpdate(
     }
 
 }
+
+export let ryberUpdateFactory = (devObj?) => {
+	return (zConsist) => {
+		return ryberUpdate.call(devObj.ryber, zConsist)
+	}
+}
+
+export let  ryberPerfect = (devObj)=> {
+	let {co} = devObj
+	co.quantity
+	.forEach((y, j) => {
+		co.quantity[j]
+		.forEach((z, k) => {
+			z.text
+			.forEach((w, h) => {
+			w.forEach((xx, ii) => {
+				if (!(w[ii]?.hasOwnProperty("item"))) {
+					w[ii] = { item: xx };
+				}
+			});
+			});
+			// remember we just cant overwrite the cssDefaults find the missing
+			// cssDefault
+			z.ngCss
+			.forEach((w: any, h) => {
+			w.forEach((xx: any, ii) => {
+				if (z.ngCssDefault[h]?.[ii] === undefined) {
+					z.ngCss[h][ii] = { ...{ left: "0px", top: "0px" }, ...xx };
+					z.ngCssDefault[h].splice(ii, 0, objectCopy(z.ngCss[h][ii]));
+				}
+			});
+		});
+		});
+	});
+}
+
 //
 
 //Action functions

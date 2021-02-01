@@ -1,7 +1,7 @@
 import { Injectable, VERSION,Renderer2,RendererFactory2 } from "@angular/core";
 import { Observable, of, Subject, Subscription, BehaviorSubject, ReplaySubject, merge, combineLatest } from "rxjs";
 // import { Router,RouterEvent } from "@angular/router";
-import { zChildren, componentObject, numberParse, ryberUpdate, objectCopy } from "./customExports";
+import { zChildren, componentObject, numberParse, ryberUpdate,ryberUpdateFactory, objectCopy } from "./customExports";
 import { HttpClient } from "@angular/common/http";
 import website from './website';
 import { tap, last, catchError } from 'rxjs/operators'
@@ -26,11 +26,7 @@ export class RyberService {
         //
         // console.log("ryberservice constructor fires")
 
-        let rUD = ((a) => {
-            return (zConsist) => {
-                return ryberUpdate.call(a, zConsist)
-            }
-        })(this)
+        let rUD = ryberUpdateFactory({ryber:this})
 
         let zCTgen = function* generator() {
             var index = 0;
@@ -48,10 +44,14 @@ export class RyberService {
 
 
             let { mf } = devObj
-            let { webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nestUnder,nest,nestGroup,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,deltaType, deltaGroup, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
+            let { webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nestUnder,nest,nestGroup,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
             let { left, top, height, width, split, next } = devObj.mf
-            let component = { left, top, height, width, split, next }
+			let component = { left, top, height, width, split, next }
 
+
+
+
+			// console.log(deltaGroup,deltaType,deltaNode)
 			// support for custom attribute,property and css additons
             if (options === undefined) {
                 options = {
@@ -107,11 +107,10 @@ export class RyberService {
 				zSymbolNeeded:"true"
 			}
 			let appDeltaNode ={
-				group:deltaGroup,
-				confirm:"true",
-				type:deltaGroup,
+				confirm:delta?.group === undefined ? "false": "true",
 				co,
 				zSymbolNeeded:"true",
+				...delta
 			}
 			//
 
@@ -264,7 +263,7 @@ export class RyberService {
                         },
                         appNest,
                         component,
-                        deltaGroup,
+
                         type
                     }
                 })
@@ -302,7 +301,8 @@ export class RyberService {
                     val: key.split("_").reverse()[0] + ' a_p_p_TextArea',
                     css,
                     extras: {
-                        extend,
+						extend,
+						judima,
                         appFocusFont: {
                             confirm: 'true',
                             fontSizeDefault: "32px",
@@ -313,21 +313,8 @@ export class RyberService {
                             co,
                             webRTC
 						},
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        },
+						appDeltaNode,
+                        appNest,
                         appInputHandle: {
                             confirm: 'true',
                             zSymbolNeeded:"true",
@@ -337,7 +324,6 @@ export class RyberService {
                             link: form?.link
                         },
                         component,
-                        deltaGroup,
                         type
                     }
                 })
@@ -382,21 +368,8 @@ export class RyberService {
                             fontSizeDefault: "32px",
                             mobileShrink: "true"
 						},
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
-						appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        },
+						appDeltaNode,
+						appNest,
                         appInputHandle: {
                             confirm: 'true',
                             zSymbolNeeded:"true",
@@ -406,7 +379,6 @@ export class RyberService {
                             link: form?.link
                         },
                         component,
-                        deltaGroup,
                         type
                     }
                 })
@@ -450,13 +422,7 @@ export class RyberService {
                             fontSizeDefault: "32px",
                             mobileShrink: "true"
 						},
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
                         appInputHandle: {
                             confirm: 'true',
                             zSymbolNeeded:"true",
@@ -471,14 +437,7 @@ export class RyberService {
 							latch,
 							zSymbolNeeded:"true",
                         },
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        },
+                        appNest,
                         component,
                         appDateClick: {
                             confirm: "true"
@@ -527,26 +486,13 @@ export class RyberService {
                             printGroup,
                             type: printGroupType
 						},
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
                             webRTC
 						},
-						appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        },
+						appNest
                     }
                 })
             }
@@ -586,21 +532,8 @@ export class RyberService {
                         type,
 						extend,
 						judima,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
-						appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        },
+						appDeltaNode,
+						appNest
                     }
                 })
             }
@@ -646,21 +579,8 @@ export class RyberService {
                                 suppressSizeToFit: true,
                             },
 						},
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        }
+						appDeltaNode,
+                        appNest
                     }
                 })
             }
@@ -697,21 +617,8 @@ export class RyberService {
                         component,
                         type,
 						extend,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        },
+						appDeltaNode,
+                        appNest,
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
@@ -756,21 +663,8 @@ export class RyberService {
 						judima,
                         component,
 						type,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        }
+						appDeltaNode,
+                        appNest,
                     }
                 })
             }
@@ -830,13 +724,8 @@ export class RyberService {
                             selected: this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] === undefined ? 'false' : () => { return this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] },
                             mySelected: this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] === undefined ? undefined : 'false'
 						},
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                         appInputHandle: {
                             confirm: 'true',
                             zSymbol: "",// zChildSymbol goes here
@@ -897,13 +786,8 @@ export class RyberService {
 						judima,
                         component,
 						type,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
@@ -912,15 +796,7 @@ export class RyberService {
                         appPrintFiles: {
                             printGroup,
                             type: 'signOut'
-						},
-						appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        }
+						}
                     }
                 })
 
@@ -928,173 +804,167 @@ export class RyberService {
 
             }
 
-            else if (type === "add button") {
+            // else if (type === "add button") {
 
-                let css = {
-                    width: '325px',
-                    "font-size": "48px",
-                    top: "0px",
-                    // height:"75px",
-                    // left: '400px',
-                    "z-index": 4,
-                    'background-color': background,
-                    color,
-                    "font-family": fonts,
-                    "font-weight": italics,
-                }
-				css = {...css,...options.css}
-				let judima ={
-					topLevelZChild:(()=>{
+            //     let css = {
+            //         width: '325px',
+            //         "font-size": "48px",
+            //         top: "0px",
+            //         // height:"75px",
+            //         // left: '400px',
+            //         "z-index": 4,
+            //         'background-color': background,
+            //         color,
+            //         "font-family": fonts,
+            //         "font-weight": italics,
+            //     }
+			// 	css = {...css,...options.css}
+			// 	let judima ={
+			// 		topLevelZChild:(()=>{
 
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
+			// 			// if the zChild is nested
+			// 			if([nestGroup,nestUnder].includes(undefined)){
+			// 				return "true"
+			// 			}
+			// 			//
+			// 			return "false"
+			// 		})(),
+			// 		// figure out whether the zChild should be incoporated into judima formatting logic
+			// 		formatIgnore:(()=>{
 
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
-					...options.judima
-				}
+			// 			// if the zChild is nested
+			// 			if(![nestGroup,nestUnder].includes(undefined)){
+			// 				return "true"
+			// 			}
+			// 			//
+			// 			return "false"
+			// 		})(),
+			// 		//
+			// 		...options.judima
+			// 	}
 
-                symbol = rUD({
-                    co,
-                    bool: 'b',
-                    text: value,
-                    val: key.split("_").reverse()[0] + ' a_p_p_Button',
-                    css,
-                    extras: {
-						judima,
-						component,
-                        multipleAdd: deltaGroup,
-                        type,
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        }
-                    }
-                })
+            //     symbol = rUD({
+            //         co,
+            //         bool: 'b',
+            //         text: value,
+            //         val: key.split("_").reverse()[0] + ' a_p_p_Button',
+            //         css,
+            //         extras: {
+			// 			judima,
+			// 			component,
+            //             multipleAdd: deltaGroup,
+            //             type,
+            //             appNest: {
+            //                 confirm:nestGroup === undefined ? "false": "true",
+            //                 co,
+            //                 nestGroup,
+            //                 nestUnder,
+			// 				nest,
+			// 				zSymbolNeeded:"true"
+            //             }
+            //         }
+            //     })
 
-                if (this[co.valueOf()].metadata.deltaGroup === undefined && deltaGroup !== undefined) {
-                    this[co.valueOf()].metadata.deltaGroup = {}
-                }
+            //     if (this[co.valueOf()].metadata.deltaGroup === undefined && deltaGroup !== undefined) {
+            //         this[co.valueOf()].metadata.deltaGroup = {}
+            //     }
 
-                if (deltaGroup !== undefined) {
-                    if (this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] === undefined) {
-                        this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] = {}
-                    }
-                    this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()].add = symbol
-                }
+            //     if (deltaGroup !== undefined) {
+            //         if (this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] === undefined) {
+            //             this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] = {}
+            //         }
+            //         this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()].add = symbol
+            //     }
 
-            }
+            // }
 
-            else if (type === "remove button") {
+            // else if (type === "remove button") {
 
-                let css = {
-                    width: '325px',
-                    "font-size": "48px",
-                    top: "0px",
-                    // height:"75px",
-                    // left:'800px',
-                    "z-index": 4,
-                    'background-color': background,
-                    color,
-                    "font-family": fonts,
-					"font-weight": italics,
-					...options.css
-				}
-				let extend = {...options.extend}
-				let judima ={
-					topLevelZChild:(()=>{
+            //     let css = {
+            //         width: '325px',
+            //         "font-size": "48px",
+            //         top: "0px",
+            //         // height:"75px",
+            //         // left:'800px',
+            //         "z-index": 4,
+            //         'background-color': background,
+            //         color,
+            //         "font-family": fonts,
+			// 		"font-weight": italics,
+			// 		...options.css
+			// 	}
+			// 	let extend = {...options.extend}
+			// 	let judima ={
+			// 		topLevelZChild:(()=>{
 
-						// if the zChild is nested
-						if([nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					// figure out whether the zChild should be incoporated into judima formatting logic
-					formatIgnore:(()=>{
+			// 			// if the zChild is nested
+			// 			if([nestGroup,nestUnder].includes(undefined)){
+			// 				return "true"
+			// 			}
+			// 			//
+			// 			return "false"
+			// 		})(),
+			// 		// figure out whether the zChild should be incoporated into judima formatting logic
+			// 		formatIgnore:(()=>{
 
-						// if the zChild is nested
-						if(![nestGroup,nestUnder].includes(undefined)){
-							return "true"
-						}
-						//
-						return "false"
-					})(),
-					//
-					...options.judima
-				}
+			// 			// if the zChild is nested
+			// 			if(![nestGroup,nestUnder].includes(undefined)){
+			// 				return "true"
+			// 			}
+			// 			//
+			// 			return "false"
+			// 		})(),
+			// 		//
+			// 		...options.judima
+			// 	}
 
-                // component.left = component?.left === undefined ? 900 : component.left
+            //     // component.left = component?.left === undefined ? 900 : component.left
 
-                symbol = rUD({
-                    co,
-                    bool: 'b',
-                    text: value,
-                    val: key.split("_").reverse()[0] + ' a_p_p_Button',
-                    css,
-                    extras: {
-						extend,
-						judima,
-                        component,
-						type,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
-                        appWebRTC:{
-                            confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
-                            co,
-                            webRTC
-						},
-                        appPrintFiles: {
-                            printGroup,
-                            type: 'signOut'
-						},
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        }
-                    }
-                })
+            //     symbol = rUD({
+            //         co,
+            //         bool: 'b',
+            //         text: value,
+            //         val: key.split("_").reverse()[0] + ' a_p_p_Button',
+            //         css,
+            //         extras: {
+			// 			extend,
+			// 			judima,
+            //             component,
+			// 			type,
+			// 			appDeltaNode,
+            //             appWebRTC:{
+            //                 confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
+            //                 co,
+            //                 webRTC
+			// 			},
+            //             appPrintFiles: {
+            //                 printGroup,
+            //                 type: 'signOut'
+			// 			},
+            //             appNest: {
+            //                 confirm:nestGroup === undefined ? "false": "true",
+            //                 co,
+            //                 nestGroup,
+            //                 nestUnder,
+			// 				nest,
+			// 				zSymbolNeeded:"true"
+            //             }
+            //         }
+            //     })
 
-                // if (this[co.valueOf()].metadata.deltaGroup === undefined && deltaGroup !== undefined) {
-                //     this[co.valueOf()].metadata.deltaGroup = {}
-                // }
+            //     // if (this[co.valueOf()].metadata.deltaGroup === undefined && deltaGroup !== undefined) {
+            //     //     this[co.valueOf()].metadata.deltaGroup = {}
+            //     // }
 
-                // if (deltaGroup !== undefined) {
-                //     if (this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] === undefined) {
-                //         this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] = {}
-                //     }
-                //     this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()].remove = symbol
-                // }
+            //     // if (deltaGroup !== undefined) {
+            //     //     if (this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] === undefined) {
+            //     //         this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] = {}
+            //     //     }
+            //     //     this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()].remove = symbol
+            //     // }
 
 
-            }
+            // }
 
             else if (type === "submit button") {
 
@@ -1131,13 +1001,8 @@ export class RyberService {
                     extras: {
 						extend,
 						judima,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                         appFormControl: {
                             confirm: 'true',
                             id: 'myForm',
@@ -1185,13 +1050,8 @@ export class RyberService {
                     extras: {
 						extend,
 						judima,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                         appGoogleMaps: {
                             confirm: 'true',
                             co
@@ -1233,21 +1093,8 @@ export class RyberService {
                         component,
                         type,
 						extend,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        }
+						appDeltaNode,
+                        appNest,
                     }
                 })
             }
@@ -1279,26 +1126,14 @@ export class RyberService {
                         extend,
                         component,
 						type,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
                             webRTC
                         },
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        }
+
                     }
                 })
             }
@@ -1332,26 +1167,14 @@ export class RyberService {
 						judima,
                         component,
 						type,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
                             webRTC
                         },
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        }
+
                     }
                 })
             }
@@ -1394,13 +1217,8 @@ export class RyberService {
                     extras: {
 						extend,
 						judima,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                         appFileHandler: {
                             confirm: 'true',
                             name,
@@ -1457,13 +1275,8 @@ export class RyberService {
 						extend,
                         judima,
 						type,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                         appSignPad: {
                             confirm: 'true',
                             width: numberParse(css.width),
@@ -1525,13 +1338,8 @@ export class RyberService {
 						judima,
                         component,
 						type,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                     }
                 })
             }
@@ -1578,13 +1386,8 @@ export class RyberService {
 						judima,
                         component,
 						type,
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                     }
                 })
             }
@@ -1633,13 +1436,8 @@ export class RyberService {
                             values: newline,
                             truSelectVal: value
 						},
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type:deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+                        appNest,
                         component,
                         type,
                         appInputHandle: {
@@ -1691,21 +1489,12 @@ export class RyberService {
                         component,
                         delta: { type: "increment" },
 						type,
+
 						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType || "increment",
-							co,
-							zSymbolNeeded:"true",
+							...appDeltaNode,
+							type: delta?.type || "increment",
 						},
-                        appNest: {
-                            confirm:nestGroup === undefined ? "false": "true",
-                            co,
-                            nestGroup,
-                            nestUnder,
-							nest,
-							zSymbolNeeded:"true"
-                        },
+                        appNest,
                     }
                 })
 
@@ -1745,13 +1534,8 @@ export class RyberService {
 						judima,
                         component,
 						type: "text",
-						appDeltaNode:{
-							group:deltaGroup,
-							confirm:"true",
-							type: deltaType,
-							co,
-							zSymbolNeeded:"true",
-						},
+						appDeltaNode,
+						appNest
                     }
                 })
             }
@@ -2061,7 +1845,7 @@ export class RyberService {
         },
         input: {
         },
-        latchUpdate:{}
+		zChildUpdate:{}
     }
     appSubscriptionArray: Subscription[] = []
     appViewComplete: Subject<any> = new Subject<any>()

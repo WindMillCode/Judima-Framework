@@ -103,6 +103,11 @@ export class AppComponent implements OnInit, OnDestroy {
                     co.metadata.latch = {
                         updateZChild : new Subject<any>(),
                         zChild:{}
+					}
+                    co.metadata.deltaNode = {
+						updateZChild : new Subject<any>(),
+						groups:{},
+						current:null,
                     }
                     co.metadata.agGrid = {
                         zSymbol: new Subject<any>(),
@@ -110,7 +115,9 @@ export class AppComponent implements OnInit, OnDestroy {
                     co.metadata.zChildrenSubject = new Subject<any>()
                     .pipe(
                         tap((val) => {
-                            co.metadata.zChildren = val.directivesZChild
+							co.metadata.zChildren = val.directivesZChild
+							co.metadata.templateMyElements = val.templateMyElements
+							co.metadata.ref = val.ref
                             co.metadata.zChildren$ = of(val.directivesZChild)
                         }),
                     )
