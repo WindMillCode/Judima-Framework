@@ -49,6 +49,12 @@ Make sure panel borders realign properly on all mediaqueries
 # Duplicates
 
 * when the add and remove button are on the same line as the items to duplicates, the items to be moved dont know how to react properly this can be seen from movingKeep in desktop mediaQuery fix this
+* only supports, when the add/remove buttons are not on the same line as the target 
+	* we insert between last item that have 0 and first item that has 1
+	* the items that get duplicated are the items that have 0
+	* the top for each item that has only 0 is the top from the first item that has 1
+	* items with  and 1 get replaced according to the mapping
+	* items with 0 and 1 get replaced according
 
 # Directives
 * for each logic that requires several elements, have an id which indicates the element thats in control, then subscribe to the zChildrenSub=ject to gather ids from all the zChildren the directives  need to express the feature. the group should have its group id bearing the directive is used several times in the same component

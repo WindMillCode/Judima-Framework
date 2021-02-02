@@ -460,23 +460,14 @@ website.convertCMS = [[
             {
                 "key": "my-input-counter",
                 "type": "count",
-                "value":"1.",
+                "value":"3.",
 				delta:{
 					"group":"outerDelta"
 				},
                 "split": "1",
-                // "width":"300",
-                // "height":"250",
                 "googleSheets": {},
                 "options":{
                     "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        // order:-3,
-                        // "width":"10px"
-                        // "background":"white",
-                        // "height":"30px",
-                        // "width":"400px",
                     }
                 }
 			},
@@ -487,9 +478,42 @@ website.convertCMS = [[
 				delta:{
 					"group":"outerDelta"
 				},
-                // "split": "3",
-                // "width":"300",
-                // "height":"250",
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
                 "googleSheets": {},
 
             },
@@ -549,28 +573,82 @@ website.convertCMS = [[
                     }
                 }
 			},
+
             {
                 "key": "more-text",
                 "type": "text",
-                "value":"Items",
-                // "nestGroup":"view",
-                // "nestUnder":"A1",
-                // "nest":"B4",
+                "value":"More Items",
                 "split": "3",
                 // "width":"300",
-                // "height":"250",
+				"height":"250",
+				"fontSize":72,
+                "googleSheets": {},
+			},
+
+            {
+                "key": "my-input-counter",
+                "type": "count",
+                "value":"3.",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
                 "googleSheets": {},
                 "options":{
                     "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        order:0,
-                        // "background":"white",
-                        // "height":"30px",
-                        // "width":"100%",
                     }
                 }
 			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(54,104,254)"
+					}
+				},
+				"next":"true",
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(176,167,79)"
+					}
+				},
+
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+
             {
                 "key": "localVideo",
                 "value": "",
@@ -581,7 +659,8 @@ website.convertCMS = [[
                         // filter:"hue-rotate(180deg) saturate(200%);"
                     }
                 },
-                "split": "5",
+				"split": "5",
+				"next":"true",
                 // "width":"420",
                 "height":500,
                 "googleSheets": {},
@@ -715,28 +794,28 @@ website.convertCMS = [[
                     }
                 }
             },
-            {
-                "key": "my-table",
-                "type": "simpleTable",
-                "value":"",
-                "nestGroup":"schemas",
-                "nestUnder":"A1",
-                "nest":"B2",
-                "background":"blue",
-                // "split": "3",
-                // "width":"300",
-                // "height":"250",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        "height":"300px",
-                        "width":"400px",
-                        "order":1
-                    }
-                }
-            },
+            // {
+            //     "key": "my-table",
+            //     "type": "simpleTable",
+            //     "value":"",
+            //     "nestGroup":"schemas",
+            //     "nestUnder":"A1",
+            //     "nest":"B2",
+            //     "background":"blue",
+            //     // "split": "3",
+            //     // "width":"300",
+            //     // "height":"250",
+            //     "googleSheets": {},
+            //     "options":{
+            //         "css":{
+            //             // "justify-self":"flex-start",
+            //             // "flex-grow":"1"
+            //             "height":"300px",
+            //             "width":"400px",
+            //             "order":1
+            //         }
+            //     }
+            // },
             {
                 "key": "my-counter",
                 "type": "count",

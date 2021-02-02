@@ -108,6 +108,9 @@ export class AppComponent implements OnInit, OnDestroy {
 						updateZChild : new Subject<any>(),
 						groups:{},
 						current:null,
+						component:{
+							
+						}
                     }
                     co.metadata.agGrid = {
                         zSymbol: new Subject<any>(),

@@ -18,8 +18,8 @@ export const environment: any = {
         form: {
             panelView:-1, //should be a number use a positive number to view it
             lifecycleHooks: false,
-            zChildView:-1,
-			zChild:[-1],
+            zChildView:0,
+			zChild:[0],
 			topLevelZChild:[-1],
             drag:[-1],
         },

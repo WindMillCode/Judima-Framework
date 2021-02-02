@@ -819,7 +819,8 @@ export function ryberUpdate(
         val?:string,
         signature?:string,
         spot?:number,
-        symbolStart?:Array<number>
+		symbolStart?:Array<number>,
+		symbol:string
     }
 ){
     let {co,type,css,cssDefault,extras,bool,text,val,signature,symbolStart,spot}= devObj
@@ -949,8 +950,6 @@ export function ryberUpdate(
         if(bool === undefined){
             bool = "p"
         }
-
-		index = 1
         //
 
         //validating val
@@ -997,13 +996,6 @@ export function ryberUpdate(
         }
         //
 
-        //validating text
-        // if(!("item" in text) ){
-        //     text = {item:text}
-        // }
-        //
-
-
 
         // adding the zChild
             subCO.quantity[index].push(3)
@@ -1041,7 +1033,15 @@ export function ryberUpdate(
         // console.log(bool,index)
         // console.log(subCO)
         return "&#" + symbol
-    }
+	}
+
+	if(type === "remove"){
+		let {symbol} = devObj
+		let subCO = ryber[co.valueOf()].quantity[1][1]
+		let targetIndex = subCO.symbol[1].indexOf(symbol)
+		subCO.quantity[1][targetIndex] = null
+
+	}
 
 }
 

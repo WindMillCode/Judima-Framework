@@ -45,15 +45,20 @@
     </ng-container>
 
     <ng-container *ngFor = 'let aa of a.quantity[1];let bb = index;' >
-        <h1
-		#myVal
-		appNest [nest] = "ryber.appAvailble( a.extras[1][bb], 'appNest')"
-		appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[1][bb], 'appDeltaNode')"
-        *ngIf= "a.bool[1][bb] ==='h1' else elseBlock2"
-        class = {{a.val[1][bb]}}
-        [ngStyle] = 'a.ngCss[1][bb]'
-        [innerHTML] = 'a.text[1][bb].item'>
-        </h1>
+		<ng-template *ngIf= "aa ===null else elseBlock1">
+
+		</ng-template>
+		<ng-template #elseBlock1  >
+			<h1
+			#myVal
+			appNest [nest] = "ryber.appAvailble( a.extras[1][bb], 'appNest')"
+			appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[1][bb], 'appDeltaNode')"
+			*ngIf= "a.bool[1][bb] ==='h1' else elseBlock2"
+			class = {{a.val[1][bb]}}
+			[ngStyle] = 'a.ngCss[1][bb]'
+			[innerHTML] = 'a.text[1][bb].item'>
+			</h1>
+		</ng-template>
         <ng-template #elseBlock2  >
             <h2
 			#myVal

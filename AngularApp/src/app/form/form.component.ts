@@ -452,12 +452,39 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                         // dynnamic element management bootstrap
                         let  {deltaNodeSite} = this.ryber[this.appTV.valueOf()].metadata
-                        let  {current} = deltaNodeSite === undefined ? this.foo :deltaNodeSite
-
                         //
 
-                        // console.log(numberParse(getComputedStyle(zChild["&#8353"].element).width))
-                        // console.log(section.area)
+
+						// dynnamic element management bootstrap
+						{
+							let {current,groups,component}  =this.ryber[this.appTV].metadata.deltaNode
+							let currentGroup = groups[current?.group]
+							if(current !== null && currentGroup.hooks.directive.includes("prepare")){
+								// convert needed data in to usable form
+								component.deltas = current?.deltas.filter((x:any,i)=>{
+									return zChild[x]?.extras?.judima?.formatIgnore !== "true"
+								})
+								component.target = currentGroup?.targets.filter((x:any,i)=>{
+									return zChild[x[0]]?.extras?.judima?.formatIgnore !== "true"
+								})
+								.map((x:any,i)=>{
+									return x[0]
+								})
+								component.targetMap = Object.fromEntries(
+									component.deltas.map((x:any,i)=>{
+										return [x,component.target[i]]
+									})
+								)
+								component.deltasMap = Object.fromEntries(
+									component.target.map((x:any,i)=>{
+										return [x,component.deltas[i]]
+									})
+								)
+
+								//
+							}
+						}
+						//
 
                         if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.area   ){
 
@@ -496,114 +523,146 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 									//
 
 									let {finalKeep,finalSpacing,finalAlign} =((devObj)=>{
-										let {current,groups}  =this.ryber[this.appTV].metadata.deltaNode
+										let {current,groups,component}  =this.ryber[this.appTV].metadata.deltaNode
 										let currentGroup = groups[current?.group]
-										let judimaDeltas = []
+										let judimaDeltas
 
 										let {finalKeep,finalSpacing,finalAlign} =devObj
-										if(current !== null && !currentGroup.hooks.directive.includes("done")){
-											console.log(current,currentGroup)
+
+
+										if(current !== null && currentGroup.hooks.directive.includes("prepare")){
+
 											currentGroup.hooks.component =currentGroup.hooks.directive
-											current?.deltas
-											.forEach((x:any,i)=>{
-												// format in the context of the component
-												if(zChild[x]?.extras?.judima?.formatIgnore === "false"){
+											// determine if deltas were added/removed
+											console.log(
+												component,
+												Object.keys(zChild).includes(component.deltas[0]),
 
-													judimaDeltas.push(x)
+												objectCopy(finalSpacing),
+												objectCopy(finalAlign)
+											)
+											//
 
-												}
-												//
-											})
-											//figure out the attach
-											let box:any ={
-												targets:(currentGroup.deltas.length > 1  ?
-												currentGroup.deltas[currentGroup.deltas.length-2] .map((x:any,i)=>{
-													return [x,zChild[x]]
-												}) : currentGroup.targets)
-												.filter((x:any,i)=>{
+											// deterimine new spacing
+												component.keep = {groups:[{items:[],index:[]}]}
+												// inspect the keep
+												component.keep.inspect = objectCopy(
+													finalKeep
+													.map((x:any,i)=>{
+														let locations =
+															x .reduce((acc,y:any,j)=>{
+																if(component.target.includes(y)){
+																	acc.push(j)
+																}
+																return acc
+															},[])
 
-													return x[1]?.extras?.judima?.formatIgnore !== "true"
-												}),
-												delta:null
-											}
-
-											if(box.targets.length !==0){
-												box.delta =minMaxDelta({
-													items: box.targets,
-													min:(item)=>{
-														return {
-															key:item[0],
-															value:numberParse(item[1].css["top"])
-														}
-													},
-													max:(item)=>{
-														return {
-															key:item[0],
-															value:numberParse(item[1].css["top"]) +
-															numberParse(item[1].css["height"])
-														}
-													},
-													type:"identify"
-												})
-												let movingAttach = current.deltas[current.deltas.length-1]
+														return [...x,...locations]
+													})
+												)
 												//
 
-												// try to rewrite items for stack
-												finalKeep
+												// determine groups to be duplicated and placed in different parts of keep
+												let flag = "fixed"
+												component.keep.inspect
 												.forEach((x:any,i)=>{
-													if(x[1]=== box.delta.max.key){
-														x[1] = movingAttach
+													let last =component.keep.groups.length-1
+
+													if(x.includes(0)){
+
+														if(flag === "push"){
+															component.keep.groups.push({items:[],index:[]})
+															flag = "fixed"
+															last += 1
+														}
+														component.keep.groups[last].items.push(x)
+													}
+													else if(x.includes(1)){
+														component.keep.groups[last].index.push(i)
+														flag = "push"
+
 													}
 												})
-
-												let insertIndex = {
-													keep:(finalKeep .map((x:any,i)=>{
-														return x[0]
-													}).indexOf(box.delta.max.key)),
-													zChildKeys:finalZChildKeys.indexOf(box.delta.max.key)
-												}
-												let keepAdditions = current.deltas .map((x:any,i)=>{
-													return [x,box.delta.max.key]
+												component.keep.groups =
+												component.keep.groups.filter((x:any,i)=>{
+													return x.items.length !== 0
 												})
-												finalKeep.splice(      insertIndex.keep+1,0,...keepAdditions)
-												finalZChildKeys.splice(insertIndex.zChildKeys+1,0,...current.deltas)
-												// finalSpacing.splice(   insertIndex.keep+2,0,...Array(current.deltas.length).fill(60))
-												// console.log(finalKeep)
 												//
 
-												//align setup
-												let targets ={
-													zChildren :currentGroup.targets .map((x:any,i)=>{
-														return x[0]
-													})
-													.filter((x:any,i)=>{
-														return  x[1]?.extras?.judima?.formatIgnore !== "true"
-													}),
-													deltas:current.deltas.filter((x:any,i)=>{
-														return  zChild[x]?.extras?.judima?.formatIgnore !== "true"
-													}),
-													currentCounter:0
-												}
-
-												let addedAlign = finalAlign .map((x:any,i)=>{
-													return x .filter((y:any,j)=>{
-														return targets.zChildren.includes(y)
-													})
+												console.log(objectCopy(component.keep))
+												// create the logic for the new groups
+												// length = 1 only means it has 0 and needs a new attach
+												// length = 2 means replace both per guidance of mapping
+												component.keep.groups
+												.forEach((x:any,i)=>{
+													let attach = component.keep.inspect[x.index[0]][1] // attach for that item group
+													x.newItems = x.items
 													.map((y:any,j)=>{
-														return targets.deltas[targets.currentCounter++]
-													})
-												})
-												.filter((x:any,i)=>{
-													return x.length !== 0
-												})
-												finalAlign.push(...addedAlign)
+														let newY = y
+														newY[0] =component.deltasMap[newY[0]]
+														if(y.slice(2).length == 1){
 
-												console.log(finalAlign)
+															newY[1] = attach
+														}
+														else{
+															newY[1] =component.deltasMap[newY[1]]
+														}
+
+														return newY.slice(0,2)
+													})
+
+													// update the finalKeep
+													x.index
+													.forEach((y:any,k)=>{
+														finalKeep[y][1] = component.deltasMap[finalKeep[y][1]]
+													})
+
+
+
+
+
+												})
+												component.keep.groups.reverse()
+												.forEach((x:any,i)=>{
+													// update the finalKeep and zChildKeys
+
+													finalZChildKeys.splice(
+														x.index[0],0,
+														...x.newItems
+														.map((y:any,j)=>{
+															return y[0]
+														})
+													)
+													finalKeep.splice(
+														x.index[0],0,
+														...x.newItems
+													)
+													//
+
+												})
 												//
 
-												// console.log(currentGroup.hooks)
-											}
 											//
+
+											//align setup
+											finalAlign .map((x:any,i)=>{
+												return x.map((y:any,j)=>{
+													return component.deltasMap[y]
+												})
+												.filter((y:any,j)=>{
+													return y !== undefined
+												})
+											})
+											.filter((x:any,i)=>{
+												return x.length !== 0
+											})
+											.forEach((x:any,i)=>{
+												finalAlign.push(x)
+											})
+											//
+
+
+
 											currentGroup.hooks.directive = currentGroup.hooks.component =currentGroup.hooks.component.split(" ")[0] +" done"
 											//
 										}
@@ -627,13 +686,18 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         zChildKeys:finalZChildKeys,
                                         ref: this.ref,
                                         zChild,
-                                        spacing:finalSpacing,
+                                        spacing: [null,
+											// ...Array.from(align[0],(x,i)=> {return 50}),
+											...Array.from(align.flat(),(x,i)=> {return section.stack}),
+										],
                                         keep:finalKeep,
                                         type:'keepSomeAligned',
                                         heightInclude:[null,...Array.from(align[0],(x,i)=> {return 'f'}),...Array.from(align.slice(1).flat(),(x,i)=> {return 't'})]
-                                    }
+									}
+									// debugger
 									stack(stackObj)
-									// console.log(stackObj)
+									console.log(stackObj)
+
                                     this.ref.detectChanges()
 
 
@@ -1012,7 +1076,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         deltaDiff:50,
                                         group,
                                         zChild,
-                                        current,
+                                        current:null,
                                         deltaNodeSite,
                                         attachVal:movingZAttachVal,
                                         section,
@@ -1048,7 +1112,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                                     // position board
                                     this.ryber[this.appTV].metadata.ngAfterViewInitFinished.next("")
-                                    this.positionBoard({zChild:topLevelZChild,current,deltaNodeSite});
+                                    // this.positionBoard({zChild:topLevelZChild,current,deltaNodeSite});
                                     //
 
 

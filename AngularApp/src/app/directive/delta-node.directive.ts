@@ -145,7 +145,7 @@ export class DeltaNodeDirective {
 									)
 									.subscribe((result:any)=>{
 
-
+										// add the deltas by val.add.by times
 										Array(val.add.by).fill(null)
 										.forEach(()=>{
 											let addedDeltas =[]
@@ -188,14 +188,10 @@ export class DeltaNodeDirective {
 											}
 											val.hooks.directive  ="add prepare"
 											val.deltas.push(addedDeltas)
-											// console.log("why I freeze")
 											ryber[co].metadata.deltaNode.updateZChild.next()
 
 										})
-
-
-
-
+										//
 
 									})
 								)
@@ -206,6 +202,37 @@ export class DeltaNodeDirective {
 								this.subscriptions.push(
 									fromEvent(val.remove.target[1].element,"click")
 									.subscribe((result:any)=>{
+
+										// remove the deltas by val.remove.by times
+										Array(val.remove.by).fill(null)
+										.forEach(()=>{
+
+											// console.log(key,val,deltaNode)
+											let removeDeltas = val.deltas.splice(-1).flat()
+											removeDeltas
+											.forEach((x:any,i)=>{
+												// remove the elements from the DOM
+													// we decide it will be the last index in deltas
+												rUD({
+													symbol:x,
+													type:"remove",
+													co
+												})
+												//
+											})
+											this.ref.detectChanges()
+											deltaNode.current = {
+												deltas:removeDeltas,
+												group:key
+											}
+											val.hooks.directive  ="remove prepare"
+											ryber[co].metadata.deltaNode.updateZChild.next()
+
+
+
+
+										})
+										//
 
 									})
 								)
