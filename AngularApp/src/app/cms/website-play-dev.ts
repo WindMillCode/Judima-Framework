@@ -219,12 +219,7 @@ website.convertCMS = [[
                 "googleSheets": {},
                 "options":{
                     "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
                         order:0,
-                        // "background":"white",
-                        // "height":"30px",
-                        // "width":"400px",
                     }
                 }
             },
@@ -309,98 +304,12 @@ website.convertCMS = [[
                 // "deltaGroup":"view",
                 "next":"true",
                 "split": "1",
-                // "width":"300",
+                "width":"10",
                 "top":-200,
                 // "height":"250",
                 "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        // order:-3,
-                        "width":"10px"
-                        // "background":"white",
-                        // "height":"30px",
-                        // "width":"400px",
-                    }
-                }
             },
-            // {
-            //     "key": "add",
-            //     "type": "button",
-            //     "value":"Add ",
-            //     "deltaGroup":"view",
-            //     "next":"true",
-            //     // "nestUnder":"A1",
-            //     // "nest":"B3",
-            //     "split": "3",
-            //     // "left":"0",
-            //     // "width":"300",
-            //     // "height":"250",
-            //     "googleSheets": {},
-            //     "options":{
-            //         "css":{
-            //             // "justify-self":"flex-start",
-            //             // "flex-grow":"1"
-            //             // order:-1,
 
-            //             // "background":"white",
-            //             // "height":"30px",
-            //             // "width":"100%",
-            //         }
-            //     }
-            // },
-            // {
-            //     "key": "remove",
-            //     "type": "button",
-            //     "value":"Remove",
-            //     "deltaGroup":"view",
-            //     // "nestGroup":"view",
-            //     // "nestUnder":"A1",
-            //     // "nest":"B4",
-            //     "split": "3",
-            //     // "width":"300",
-            //     // "height":"250",
-            //     "googleSheets": {},
-            //     "options":{
-            //         "css":{
-            //             // "justify-self":"flex-start",
-            //             // "flex-grow":"1"
-            //             order:0,
-            //             // "background":"white",
-            //             // "height":"30px",
-            //             // "width":"100%",
-            //         }
-            //     }
-            // },
-            // {
-            //     "key": "schema-dropdown",
-            //     "type": "dropdown",
-            //     "value":"Mode Type",
-            //     "newline":[
-            //         "REPEATED",
-            //         "REQUIRED",
-            //         "NULLABLE"
-            //     ],
-            //     "fontSize":"120",
-            //     "latch":"",
-            //     "top":-200,
-            //     // "deltaGroup":"schemasInput",
-            //     "split": "3",
-            //     // "width":"300",
-            //     "height":"250",
-            //     "googleSheets": {},
-            //     "options":{
-            //         "css":{
-            //             // "justify-self":"flex-start",
-            //             // "flex-grow":"1"
-            //             // order:-2,
-            //             "background":"blue",
-            //             "height":"50px",
-            //             // "width":"400px",
-            //         }
-            //     }
-            // },
 
 
         ]
@@ -423,9 +332,14 @@ website.convertCMS = [[
 							type:"add_remove_button"
 						},
 						{
+							name:"secondOuterDelta",
+							type:"add_remove_button"
+						},
+						{
 							name:"innerDelta",
 							type:"add_remove_button"
-						}],
+						}
+					],
 				},
                 "background": "rgb(155, 9, 104)",
 				"googleSheets": {},
@@ -439,23 +353,8 @@ website.convertCMS = [[
                 "key": "some-text",
                 "type": "text",
                 "value":"Items",
-                // "nestGroup":"view",
-                // "nestUnder":"A1",
-                // "nest":"B4",
                 "split": "3",
-                // "width":"300",
-                // "height":"250",
                 "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        order:0,
-                        // "background":"white",
-                        // "height":"30px",
-                        // "width":"100%",
-                    }
-                }
 			},
             {
                 "key": "my-input-counter",
@@ -516,7 +415,8 @@ website.convertCMS = [[
                 "height":"150",
                 "googleSheets": {},
 
-            },
+			},
+
             {
                 "key": "add",
                 "type": "button",
@@ -527,24 +427,8 @@ website.convertCMS = [[
 					"by":"1"
 				},
                 "next":"true",
-                // "nestUnder":"A1",
-                // "nest":"B3",
                 "split": "3",
-                // "left":"0",
-                // "width":"300",
-                // "height":"250",
                 "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        // order:-1,
-
-                        // "background":"white",
-                        // "height":"30px",
-                        // "width":"100%",
-                    }
-                }
             },
             {
                 "key": "remove",
@@ -562,18 +446,7 @@ website.convertCMS = [[
                 // "width":"300",
                 // "height":"250",
                 "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        order:0,
-                        // "background":"white",
-                        // "height":"30px",
-                        // "width":"100%",
-                    }
-                }
 			},
-
             {
                 "key": "more-text",
                 "type": "text",
@@ -649,16 +522,11 @@ website.convertCMS = [[
 			},
 
 
+
             {
                 "key": "localVideo",
                 "value": "",
                 "type": "video",
-                "options":{
-                    "css":{
-                        // filter: "blur(20px) invert(1) opacity(0.5)"
-                        // filter:"hue-rotate(180deg) saturate(200%);"
-                    }
-                },
 				"split": "5",
 				"next":"true",
                 // "width":"420",
@@ -701,8 +569,6 @@ website.convertCMS = [[
                     "css":{
                         background:"purple",
                         overflow:"hidden"
-                        // filter: "blur(20px) invert(1) opacity(0.5)"
-                        // filter:"hue-rotate(180deg) saturate(200%);"
                     }
                 },
                 "split": "4",
@@ -712,7 +578,96 @@ website.convertCMS = [[
                 webRTC:{
                     item:"remoteVideo"
                 }
-            },
+			},
+
+			{
+				"key": "my-input-counter",
+				"type": "count",
+				"value":"1.",
+				delta:{
+					"group":"secondOuterDelta"
+				},
+				"split": "1",
+				"googleSheets": {},
+				"options":{
+					"css":{
+					}
+				}
+			},
+			{
+				"key": "my-input",
+				"type": "textbox",
+				"value":"setup",
+				delta:{
+					"group":"secondOuterDelta"
+				},
+				"googleSheets": {},
+
+			},
+			{
+				"key": "my-div",
+				"type": "div",
+				"value":"",
+				delta:{
+					"group":"secondOuterDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"next":"true",
+				"left":"400",
+				"split": "3",
+				"height":"250",
+				"googleSheets": {},
+
+			},
+			{
+				"key": "my-div",
+				"type": "div",
+				"value":"",
+				delta:{
+					"group":"secondOuterDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+				"split": "2",
+				"height":"150",
+				"googleSheets": {},
+
+			},
+
+			{
+				"key": "add",
+				"type": "button",
+				"value":"Add ",
+				delta:{
+					"group":"secondOuterDelta",
+					"type":"add",
+					"by":"1"
+				},
+				"next":"true",
+				"split": "3",
+				"googleSheets": {},
+
+			},
+			{
+				"key": "remove",
+				"type": "button",
+				"value":"Remove",
+				delta:{
+					"group":"secondOuterDelta",
+					"type":"remove",
+					"by":"1"
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
 
 
             {
@@ -721,7 +676,6 @@ website.convertCMS = [[
                 "type": "button",
 
                 "split": "3",
-                // "width":"420",
                 "googleSheets": {},
                 webRTC:{
                     item:"startButton"
@@ -733,7 +687,6 @@ website.convertCMS = [[
                 "type": "button",
 
                 "split": "3",
-                // "width":"420",
                 "googleSheets": {},
                 webRTC:{
                     item:"callButton"
@@ -745,7 +698,6 @@ website.convertCMS = [[
                 "type": "button",
 
                 "split": "3",
-                // "width":"420",
                 "googleSheets": {},
                 webRTC:{
                     item:"hangupButton"
@@ -756,7 +708,6 @@ website.convertCMS = [[
                 "type": "div",
                 "value":"",
                 "background":"yellow",
-                // "split": "3",
                 "nestGroup":"schemas",
                 "nest":"A1",
                 "width":"1600",

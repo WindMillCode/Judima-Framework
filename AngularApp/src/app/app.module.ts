@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { HammerModule} from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { FormComponent } from './form/form.component';
-import { DropDownDirective } from './directive/dropdown.directive';
 // import { FormControlDirective } from './directive/form-control.directive';
 
 
@@ -27,7 +26,6 @@ import { DeltaNodeDirective } from './directive/delta-node.directive';
   declarations: [
     AppComponent,
     FormComponent,
-    DropDownDirective,
     NestDirective,
     LatchDirective,
     InputHandleDirective,

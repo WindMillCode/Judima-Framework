@@ -4,9 +4,10 @@ import { fromEvent, interval, of, from, Observable, merge, Subject, BehaviorSubj
 import { catchError, take, timeout, mapTo, debounceTime, distinctUntilChanged, debounce, first, ignoreElements, tap, delay,withLatestFrom, skipUntil, map } from 'rxjs/operators';
 import {
     zChildren, getTextWidth, numberParse,
-    xPosition, resize, componentBootstrap, deltaNode,
+    xPosition, resize, componentBootstrap,
     eventDispatcher, dropdown, dragElement, stack, xContain, minMaxDelta,
-    objectCopy, responsiveMeasure, flatDeep, zChildText,componentConsole,ryberPerfect
+	objectCopy, responsiveMeasure, flatDeep, zChildText,componentConsole,ryberPerfect,
+	deltaNode
 } from '../customExports'
 import { environment as env } from '../../environments/environment'
 
@@ -456,34 +457,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
 						// dynnamic element management bootstrap
-						{
-							let {current,groups,component}  =this.ryber[this.appTV].metadata.deltaNode
-							let currentGroup = groups[current?.group]
-							if(current !== null && currentGroup.hooks.directive.includes("prepare")){
-								// convert needed data in to usable form
-								component.deltas = current?.deltas.filter((x:any,i)=>{
-									return zChild[x]?.extras?.judima?.formatIgnore !== "true"
-								})
-								component.target = currentGroup?.targets.filter((x:any,i)=>{
-									return zChild[x[0]]?.extras?.judima?.formatIgnore !== "true"
-								})
-								.map((x:any,i)=>{
-									return x[0]
-								})
-								component.targetMap = Object.fromEntries(
-									component.deltas.map((x:any,i)=>{
-										return [x,component.target[i]]
-									})
-								)
-								component.deltasMap = Object.fromEntries(
-									component.target.map((x:any,i)=>{
-										return [x,component.deltas[i]]
-									})
-								)
-
-								//
-							}
-						}
+						this._deltaNodeBootstrap({zChild});
 						//
 
                         if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.area   ){
@@ -525,109 +499,48 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 									let {finalKeep,finalSpacing,finalAlign} =((devObj)=>{
 										let {current,groups,component}  =this.ryber[this.appTV].metadata.deltaNode
 										let currentGroup = groups[current?.group]
-										let judimaDeltas
 
 										let {finalKeep,finalSpacing,finalAlign} =devObj
+										let {determineKeepGroups,inspectKeep,logicKeep} = deltaNode
 
 
-										if(current !== null && currentGroup.hooks.directive.includes("prepare")){
 
+										if(current !== null && currentGroup.hooks.directive.includes("add prepare")){
+
+											// set the component hook to "add prepare"
 											currentGroup.hooks.component =currentGroup.hooks.directive
-											// determine if deltas were added/removed
-											console.log(
-												component,
-												Object.keys(zChild).includes(component.deltas[0]),
-
-												objectCopy(finalSpacing),
-												objectCopy(finalAlign)
-											)
 											//
 
 											// deterimine new spacing
 												component.keep = {groups:[{items:[],index:[]}]}
 												// inspect the keep
-												component.keep.inspect = objectCopy(
+												inspectKeep({
+													zSymbols:"target",
+													component,
 													finalKeep
-													.map((x:any,i)=>{
-														let locations =
-															x .reduce((acc,y:any,j)=>{
-																if(component.target.includes(y)){
-																	acc.push(j)
-																}
-																return acc
-															},[])
-
-														return [...x,...locations]
-													})
-												)
+												})
 												//
 
 												// determine groups to be duplicated and placed in different parts of keep
-												let flag = "fixed"
-												component.keep.inspect
-												.forEach((x:any,i)=>{
-													let last =component.keep.groups.length-1
-
-													if(x.includes(0)){
-
-														if(flag === "push"){
-															component.keep.groups.push({items:[],index:[]})
-															flag = "fixed"
-															last += 1
-														}
-														component.keep.groups[last].items.push(x)
-													}
-													else if(x.includes(1)){
-														component.keep.groups[last].index.push(i)
-														flag = "push"
-
-													}
-												})
-												component.keep.groups =
-												component.keep.groups.filter((x:any,i)=>{
-													return x.items.length !== 0
-												})
+												determineKeepGroups({component})
 												//
 
-												console.log(objectCopy(component.keep))
+
 												// create the logic for the new groups
 												// length = 1 only means it has 0 and needs a new attach
 												// length = 2 means replace both per guidance of mapping
-												component.keep.groups
-												.forEach((x:any,i)=>{
-													let attach = component.keep.inspect[x.index[0]][1] // attach for that item group
-													x.newItems = x.items
-													.map((y:any,j)=>{
-														let newY = y
-														newY[0] =component.deltasMap[newY[0]]
-														if(y.slice(2).length == 1){
-
-															newY[1] = attach
-														}
-														else{
-															newY[1] =component.deltasMap[newY[1]]
-														}
-
-														return newY.slice(0,2)
-													})
-
-													// update the finalKeep
-													x.index
-													.forEach((y:any,k)=>{
-														finalKeep[y][1] = component.deltasMap[finalKeep[y][1]]
-													})
-
-
-
-
-
+												logicKeep({
+													hook:currentGroup.hooks.component,
+													zSymbolsMap:"deltasMap",
+													component,
+													finalKeep
 												})
 												component.keep.groups.reverse()
 												.forEach((x:any,i)=>{
 													// update the finalKeep and zChildKeys
-
+													// finalKeep has one less then the others rmbr to add 1
 													finalZChildKeys.splice(
-														x.index[0],0,
+														x.index[0]+1,0,
 														...x.newItems
 														.map((y:any,j)=>{
 															return y[0]
@@ -662,11 +575,86 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 											//
 
 
+											// set the component and directive hooks to "add done"
+											currentGroup.hooks.directive = currentGroup.hooks.component =currentGroup.hooks.component.split(" ")[0] +" done"
+											//
 
+											//
+										}
+
+
+										else if(current !== null && currentGroup.hooks.directive.includes("remove prepare")){
+
+											// set the component hook
+											currentGroup.hooks.component =currentGroup.hooks.directive
+											//
+
+
+											// deterimine new spacing
+											component.keep = {groups:[{items:[],index:[]}]}
+												// inspect the keep
+
+												inspectKeep({
+													zSymbols:"deltas",
+													component,
+													finalKeep
+												})
+												//
+
+												// determine groups to be removed which are in different pats of the keep
+												determineKeepGroups({
+													component
+												})
+												//
+
+												// remove the logic for the groups
+												logicKeep({
+													hook:currentGroup.hooks.component,
+													zSymbolsMap:"targetMap",
+													component,
+													finalKeep
+												})
+												component.keep.groups.reverse()
+												.forEach((x:any,i)=>{
+													// update the finalKeep and zChildKeys
+													// finalKeep has one less then the others rmbr to add 1
+													// x.index should start where the 0 start but they start between
+														// 0,1 like add, simply subtract x.items.length to get the correct result
+
+													finalZChildKeys.splice(
+														x.index[0]+1-x.items.length,
+														x.items.length
+													)
+													finalKeep.splice(
+														x.index[0]-x.items.length,
+														x.items.length,
+													)
+													//
+
+												})
+												//
+
+											//
+
+											// align setup
+											finalAlign = finalAlign
+											.filter((x:any,i)=>{
+
+												return x
+												.map((y:any,j)=>{
+													return component.targetMap[y]
+												}).includes(undefined)
+
+
+											})
+											//
+
+											// set the component and directive hooks to "add done"
 											currentGroup.hooks.directive = currentGroup.hooks.component =currentGroup.hooks.component.split(" ")[0] +" done"
 											//
 										}
 
+										// console.log(component,currentGroup)
 
 										return{
 											finalKeep,
@@ -682,22 +670,23 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 										finalAlign:align
 									})
 
+
+									// console.log(zChild)
 									let stackObj = {
                                         zChildKeys:finalZChildKeys,
                                         ref: this.ref,
                                         zChild,
                                         spacing: [null,
 											// ...Array.from(align[0],(x,i)=> {return 50}),
-											...Array.from(align.flat(),(x,i)=> {return section.stack}),
+											...Array.from(finalAlign.flat(),(x,i)=> {return section.stack}),
 										],
                                         keep:finalKeep,
                                         type:'keepSomeAligned',
-                                        heightInclude:[null,...Array.from(align[0],(x,i)=> {return 'f'}),...Array.from(align.slice(1).flat(),(x,i)=> {return 't'})]
+                                        heightInclude:[null,...Array.from(finalAlign[0],(x,i)=> {return 'f'}),...Array.from(finalAlign.slice(1).flat(),(x,i)=> {return 't'})]
 									}
 									// debugger
+									// console.log(stackObj)
 									stack(stackObj)
-									console.log(stackObj)
-
                                     this.ref.detectChanges()
 
 
@@ -705,7 +694,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 									// align options
 									let xContainObj = {
                                         preserve:{
-                                            align,
+                                            align:finalAlign,
                                             // zChild,
                                             zChild:latchZChild === undefined ? zChild:latchZChild,
                                             ref:this.ref,
@@ -713,26 +702,16 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                             left:section.left
                                         },
                                         type:'preserve',
-                                    }
-									xContain(xContainObj);
-									// console.log(xContainObj)
+									}
+									;( {align } = xContain(xContainObj))
 									//
-
-
-
-
-
-
-
 
                                 }
 								//
-								return
+
 
                                 //position
                                 {
-
-
 
                                     // console.log(topLevelZChild)
                                     stack({
@@ -747,62 +726,10 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         }
 									})
 
-
-
-                                    // making sure we setup moving properly
-                                    // let movingZAttachVal= cmsZKeys
-                                    // .reduce((acc,x,i)=>{
-                                    //     if(zChild[x]?.extras?.deltaGroup !== undefined){
-                                    //         return x
-                                    //     }
-                                    //     return acc
-									// })
-
-
-                                    // let movingZKeys = cmsZKeys.slice(cmsZKeys.indexOf(movingZAttachVal)+1)
-                                    // let movingFlag = "false"
-                                    // let movingAttachVal =""
-                                    // let movingKeep = keep
-                                    // .reduce((acc,x,i)=>{
-
-                                    //     if(movingZKeys[0] === x[0] ){
-                                    //         movingFlag = "true"
-                                    //         movingAttachVal = x[1]
-									// 	}
-                                    //     if(movingFlag === "true"){
-                                    //         if(movingAttachVal === x[1]){
-                                    //            acc.push([x[0],"replace me"])
-                                    //         }
-                                    //         else {
-                                    //             acc.push(x)
-                                    //         }
-                                    //     }
-                                    //     return acc
-									// },[])
-									// console.log(keep)
-
-                                    //
-
-
-                                    // let attach = this.dynamicPosition({
-                                    //     deltaDiff:50,
-                                    //     group,
-                                    //     deltaNodeSite,
-                                    //     zChild,
-                                    //     current,
-                                    //     attachVal:movingZAttachVal,
-                                    //     zChildKeys:movingZKeys,
-                                    //     section,
-									// 	keep:movingKeep,
-									// 	cmsZKeys,
-                                    // })
-
                                     // position board
                                     this.ryber[this.appTV].metadata.ngAfterViewInitFinished.next("")
-                                    // this.positionBoard({zChild:topLevelZChild,current,deltaNodeSite});
+                                    this.positionBoard({zChild:topLevelZChild});
                                     //
-
-
                                 }
                                 //
 
@@ -1072,47 +999,13 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
 
-                                    let attach = this.dynamicPosition({
-                                        deltaDiff:50,
-                                        group,
-                                        zChild,
-                                        current:null,
-                                        deltaNodeSite,
-                                        attachVal:movingZAttachVal,
-                                        section,
-                                        keep:[],
-                                        zChildKeys:movingZKeys,
-                                        type:'custom',
-                                        customFn:((devObj)=>{
-                                            let zChildKeys =[
-                                                // devObj.attach, //mabye a good fix idek man
-                                                ...movingZKeys,
-                                            ]
-                                            .filter((z:any,k)=>{
-                                                // all nested not top level
-                                                return !(
-                                                    zChild[z]?.extras?.appNest?.confirm === "true" && zChild[z].extras?.appNest?.nestUnder !== undefined
-                                                )
-                                            })
-                                            stack({
-                                                zChildKeys,
-                                                ref: this.ref,
-                                                zChild,
-                                                spacing:[null,section.stack],
-                                                keep: [],
-                                                type:'simpleStack',
-                                                heightInclude:[null,'t','t']
-                                            })
-                                            this.ref.detectChanges()
-										}),
-										cmsZKeys
-                                    })
+
 
 
 
                                     // position board
                                     this.ryber[this.appTV].metadata.ngAfterViewInitFinished.next("")
-                                    // this.positionBoard({zChild:topLevelZChild,current,deltaNodeSite});
+                                    this.positionBoard({zChild:topLevelZChild});
                                     //
 
 
@@ -1167,6 +1060,55 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
     }
 
+	private _deltaNodeBootstrap(devObj: any) {
+
+		let {zChild} = devObj
+		let { current, groups, component } = this.ryber[this.appTV].metadata.deltaNode;
+		let currentGroup = groups[current?.group];
+		if (current !== null && currentGroup.hooks.directive.includes("prepare")) {
+			// convert needed data in to usable form
+
+			component.deltas = current?.deltas.filter((x: any, i) => {
+				return zChild[x]?.extras?.judima?.formatIgnore !== "true";
+			});
+			let deltasIndex = 0
+			// this is because in the directive, minus removes the directive before
+			// the component has proper chance to analyze
+			if(currentGroup.hooks.directive.includes("add prepare")){
+
+				deltasIndex += 1
+			}
+			if (currentGroup.deltas.length <= deltasIndex) {
+				component.target = currentGroup?.targets.filter((x: any, i) => {
+					return zChild[x[0]]?.extras?.judima?.formatIgnore !== "true";
+				})
+					.map((x: any, i) => {
+						return x[0];
+					});
+			}
+			else {
+				// rememeber the target should be the previous even though the copy is the first
+				let last = currentGroup.deltas.length - (deltasIndex+1);
+				component.target = currentGroup.deltas[last].filter((x: any, i) => {
+					return zChild[x]?.extras?.judima?.formatIgnore !== "true";
+				});
+			}
+
+			component.targetMap = Object.fromEntries(
+				component.deltas.map((x: any, i) => {
+					return [x, component.target[i]];
+				})
+			);
+			component.deltasMap = Object.fromEntries(
+				component.target.map((x: any, i) => {
+					return [x, component.deltas[i]];
+				})
+			);
+			//
+		}
+
+	}
+
     ngOnDestroy(): void {
         if(env.lifecycleHooks) console.log(this.appTV+ '  ngOnDestroy fires on dismount')
         Object
@@ -1183,21 +1125,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
     }
 
     private positionBoard(devObj?:any) {
-        let {zChild,current,deltaNodeSite}= devObj
+        let {zChild}= devObj
         let max:any = Object.keys(zChild)
             .slice(2)
 
-            if(current?.intent === "minus" && current.hook === "prepare"){
-                let leftJoin = deltaNodeSite?.[current.group].symbols[current.count]
-                let mySet = new Set([...leftJoin,...max])
-                const toRemoveMap = leftJoin.reduce((memo, item) => ({
-                    ...memo,
-                    [item]: true
-                  }), {});
 
-                max = max.filter(x => !toRemoveMap[x]);
-
-            }
 
             max = max
             .reduce((acc: any, x, i) => {
@@ -1274,82 +1206,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         return latchZChild
     }
 
-    private dropDownInit(devObj) {
 
-
-        let {deltaNodeSite,dropDownGroup,zChild} = devObj
-        Object
-		.keys(deltaNodeSite)
-		.forEach((x, i) => {
-			if (x.includes("dropDownGroup")) {
-				dropDownGroup[x] = deltaNodeSite[x];
-			}
-		});
-        // debugger
-        // console.log(Object.keys(zChild).slice(2))
-        // making sure we reinit zChild once
-        if (this.ryber[this.appTV.valueOf()].metadata.coDropDown?.init === "false") {
-
-            Object
-                .keys(zChild)
-                .slice(2)
-                .forEach((x, i) => {
-                    // console.log(zChild[x].extras.appDropDown)
-                    // console.log(x)
-                    if (zChild[x].extras?.appDropDown !== undefined) {
-                        // this memans there are new elements on the DOM , update the zChild
-                        if (zChild[x].extras.appDropDown.change === 'modified'){
-                            this.ref.detectChanges();
-                            zChild = this.zChildInit();
-                            // debugger
-                            zChild[x].extras.appDropDown.change = 'ontheDOM';
-                            zChild[x].extras.appDropDown.options = {
-                                symbols: deltaNodeSite[zChild[x].extras.appDropDown.group.valueOf()].symbols[0]
-                            };
-
-                            // modifiying the options as appropriate
-                            zChild[x].extras.appDropDown.options.symbols
-                            .forEach((y,j)=>{
-
-                                zChild[y].innerText.item =  zChild[x].extras.appDropDown.values[j]
-                                zChild[y].css["height"] = "0px"
-                                zChild[y].css["width"] = "0px"
-                                zChild[y].css["z-index"] =   -1
-                                zChild[y].css["opacity"] =   0
-                                zChild[y].css["top"] =  "0px"
-                                // if issues look at top
-                                zChild[y].css["left"] =  "0px"
-                                zChild[y].extras.appDropDown.mySymbol = y
-                                if(j === zChild[x].extras.appDropDown.options.symbols.length - 1){
-                                    this.renderer
-                                    .removeClass(
-                                        zChild[y].element,
-                                        "a_p_p_DropDownMiddle"
-                                    )
-                                    this.renderer
-                                    .addClass(
-                                        zChild[y].element,
-                                        "a_p_p_DropDownLast"
-                                    )
-                                    return
-                                }
-                            })
-                            this.ref.detectChanges()
-                            //
-
-                            zChild[x].extras.appDropDown.confirm = "true";
-                        }
-                    }
-                });
-            this.ryber[this.appTV.valueOf()].metadata.coDropDown.init = "true";
-            this.ryber[this.appTV.valueOf()].metadata.zChildren = zChild;
-            this.ref.detectChanges();
-
-        }
-        // making sure we do reinit the zChild too many
-        // console.log(zChild);
-        return zChild;
-    }
 
     private directivesSendData(devObj?:{
         directivesZChild:zChildren,
@@ -1385,195 +1242,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
     }
 
-    private inputHandleModifyName(devObj:{
-        group:any, // part of deltaNODE
-        current:any,
-        inputZChild:zChildren
-    }):void{
-		let {group,current,inputZChild} = devObj
-		// componentConsole({
-		// 	appTV:this.appTV,
-		// 	target:["formCO1"],
-		// 	data:devObj
-		// })?.()
-        if(group !== undefined && current.intent === 'add' && current.hook === 'done'){
-            group.symbols[current.count]
-            ?.forEach((x,i)=>{
-                if(inputZChild[x].extras.appInputHandle === undefined){
-                    return
-                }
-                else if(inputZChild[x].extras.appInputHandle.name !== group.elements[0][i].extras.appInputHandle.name ){
-                    return
-                }
-                inputZChild[x].extras.appInputHandle.name += "_" + current.count
-            })
-        }
-    }
-
-    private dynamicPosition(
-    devObj:{
-        deltaDiff:number, // spacing between dynamics
-        group:any,// deltaNode group
-        zChild:zChildren,
-        deltaNodeSite?:any
-        current:any // deltaNode current current
-        attachVal:string //zChildKey
-        zChildKeys:Array<string>
-        type?:string,
-        section?:any
-        keep?:any,
-		customFn?:Function,
-		cmsZKeys?:any
-    }):any{
-        let {keep,section,deltaDiff,group,zChild,current,attachVal,type,zChildKeys,customFn,deltaNodeSite,cmsZKeys} = devObj
-		let zChildMovingKeys = zChildKeys
-		// console.log(devObj)
-        if(group !== undefined && deltaNodeSite !== undefined){
-
-            Object.keys(group)
-            .forEach((x,i)=>{
-                let myGroup = deltaNodeSite[x.valueOf()]
-
-                if( myGroup !== undefined){
-                    myGroup
-                    .symbols
-                    .forEach((y,j)=>{
-
-                        let {delta} = minMaxDelta({
-                            items:myGroup.elements[j]
-                            .filter((z:any,k)=>{
-
-                                return z.extras?.appNest?.confirm !== "true"
-                            }),
-                            min:(item)=>{
-                                return numberParse(item.css["top"])
-                            },
-                            max:(item)=>{
-                                return numberParse(item.css["top"]) +
-                                numberParse(item.css["height"])
-                            }
-                        })
-                        delta  += deltaDiff
-                        y.forEach((z,k) => {
-                            if(zChild[z].extras?.appNest?.confirm === "true"){
-                                return
-                            }
-                            zChild[z].css["top"] = (
-                                numberParse(myGroup.elements[j][k].css["top"]) +
-                                (
-                                    delta *
-                                    (j +1)
-                                )
-                            ).toString() + "px"
-                        })
-                        this.ref.detectChanges()
-                        myGroup.extras[j].positioned = 'true'
-                    })
-
-                    let j = (myGroup.intent[myGroup.intent.length-1] === 'minus' && myGroup.hook[myGroup.hook.length-1] === 'prepare') ?
-                    myGroup.symbols.length-2 :
-                    myGroup.symbols.length-1
 
 
-                    let y = j !== -1 ?
-                    myGroup.symbols[j]:
-                    myGroup.elements[0]
 
-					let attach =  (j !== -1 ? y[y.length-1] : attachVal)
-					if(zChild[attach]?.extras?.judima?.formatIgnore === "true" && cmsZKeys !== undefined){
-						attach = cmsZKeys[cmsZKeys.indexOf(zChildKeys[0])-1]
-					}
-					// prevent non format items from picking up in stack, top level wont go behind nested elements
-					zChildKeys.unshift(attach)
-
-
-                    keep
-                    .forEach((z,k)=>{
-						// if( z[1] === "replace me"){
-						// 	if( zChild[attach].extras?.judima?.formatIgnore !== "true"){
-						// 		z[1] = attach
-						// 	}
-						// 	else if(  zChild[attach].extras?.judima?.formatIgnore === "true"){
-						// 		z[1]= keep[0][0] //instead find the proper attachval
-						// 	}
-						// }
-						if( z[1] === "replace me"){
-							z[1] = attach
-						}
-
-					})
-
-
-					//
-                    // console.log(keep)
-
-
-                    if(type === 'stack' || type === undefined){
-
-
-                        let zChildKeys =zChildMovingKeys
-                        .filter((z:any,k)=>{
-							return zChild[z]?.extras?.judima?.formatIgnore !=="true"
-                        })
-
-
-						// let movingAlign = align
-						// .map((z:any,k)=>{
-						// 	return z.map((w:any,h)=>{
-						// 		return [w,k]
-						// 	})
-						// })
-						// .flat()
-						// movingAlign = movingAlign.slice(movingAlign .map((z:any,k)=>{
-						// 	return z[0]
-						// }).indexOf(keep[0][0]))
-
-						let heightInclude = [...Array.from((zChildKeys),(z,k)=> {
-							// componentConsole.call(this,{
-							// 	target:['formCO1'],
-							// 	data:{z,b:movingAlign[k]}
-							// })?.()
-							// if(movingAlign[k][1] === 1 && movingAlign[k][0] === z){
-							// 	return 'f'
-							// }
-							return 't'
-						})]
-						// componentConsole.call(this,{
-						// 	target:['formCO1'],
-						// 	data:{heightInclude,keep}
-						// })?.()
-                        stack({
-                            zChildKeys,
-                            ref: this.ref,
-                            zChild,
-                            spacing:[null,...Array.from(Array(zChildKeys.length),(z,k)=> {
-                                if(
-                                    zChild[zChildKeys[k+1]]?.cssDefault?.top !== "0px" &&
-                                    zChild[zChildKeys[k+1]]?.cssDefault?.top !== undefined
-                                ){
-                                    return numberParse(zChild[zChildKeys[k+1]]?.cssDefault?.top)
-                                }
-                                return section.stack
-                            })],
-                            // spacing:[null,section.stack],
-                            keep,
-                            type:'keepSomeAligned',
-                            heightInclude
-                        })
-                        this.ref.detectChanges()
-                    }
-
-                    else if(type === 'custom'){
-                        customFn({
-                            attach
-                        })
-                    }
-                }
-            })
-
-
-        }
-    }
 
     private zChildInit(devObj?): any {
         return componentBootstrap({

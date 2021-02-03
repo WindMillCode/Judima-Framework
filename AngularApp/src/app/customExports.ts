@@ -94,223 +94,68 @@ export function componentBootstrap(
     }
 ){
 
+	let {ryber,appTV,zProps} = devObj
 
-    if(   devObj.zProps === undefined   ){
+
+    if(   zProps === undefined   ){
 
 
-        devObj.zProps = {}
+        zProps = {}
 
 
     }
 
 
-    devObj.classes = devObj.ryber[devObj.appTV].quantity[1].map((x,i) => {
+    devObj.classes = ryber[appTV].quantity[1].map((x,i) => {
         // return x.val.flat(Infinity)[0]
         return flatDeep(x.val,Infinity)[0]
     })
 
-    let appZChild = {
-        element: document.querySelector('[class=' + devObj.appTV + '],[id^="root"]') as HTMLElement,
-        css: devObj.ryber[devObj.appTV].quantity[0][0].ngCss[0][0],
-        bool: devObj.ryber[devObj.appTV].quantity[0][0].bool[0][0],
-        cssDefault: devObj.ryber[devObj.appTV].quantity[0][0].ngCssDefault[0][0],
-        symbol: devObj.ryber[devObj.appTV].quantity[0][0].symbol[0][0],
-        // metadata:appMetadata,
-        extras: devObj.zProps.extras === 'true' ?
-        ( devObj.ryber[devObj.appTV].quantity[0][0].extras !== undefined  ?
-            devObj.ryber[devObj.appTV].quantity[0][0].extras[0][0]
-            : undefined)
-        : undefined,
-        val: devObj.zProps.val === 'true' ?
-            ( devObj.ryber[devObj.appTV].quantity[0][0].val !== undefined  ?
-                devObj.ryber[devObj.appTV].quantity[0][0].val[0][0]
-                : undefined)
-            : undefined,
-        quantity: devObj.zProps.quantity === 'true' ?
-            ( devObj.ryber[devObj.appTV].quantity[0][0].quantity !== undefined  ?
-                devObj.ryber[devObj.appTV].quantity[0][0].quantity[0][0]
-                : undefined)
-            : undefined,
-    }
-    let zChild = {"&#8352":appZChild}
+
+    let zChild = {}
 
     let zGrid = {
         a:0,
         b:0,
-    }
-    let zCheckpoint = devObj.myElements.length === 1 ? [0] : [0,1]
-    zCheckpoint.map((y:any,j:any)=>{
-        zGrid.a = 0;
-        // console.log(devObj.myElements.length === 1 ? devObj.myElements : devObj.myElements.slice(y,zCheckpoint[j+1]));
-        (function(){
-            return devObj.myElements.length === 1 ? devObj.myElements : devObj.myElements.slice(y,zCheckpoint[j+1])
-        })().map((x:any,i:any)=>{
-            while(
-                devObj.ryber[devObj.appTV].quantity[1][j].quantity[zGrid.a][zGrid.b] === undefined &&
-                zGrid.b +1 > devObj.ryber[devObj.appTV].quantity[1][j].quantity[zGrid.a].length
-            ){
-                zGrid.a +=1
+	}
+
+	ryber[appTV].quantity
+	.forEach((x:any,i)=>{
+		x
+		.forEach((y:any,j)=>{
+			y.symbol
+			.forEach((z:any,k)=>{
+				z
+				.forEach((w:any,h)=>{
+					if(y.quantity[k][h] === null){
+						return
+					}
+					let utf8Symbol = String.fromCharCode(+w.split("&#")[1])
+
+					zChild[w] ={
+						element:(
+							w === "&#8352"?
+							document.querySelector('[class=' + appTV + '],[id^="root"]') as HTMLElement:
+							document.querySelector(`.${appTV} .${utf8Symbol}`)
+						),
+						css:y.ngCss[k][h],
+						cssDefault:y.ngCssDefault[k][h],
+						bool:y.bool[k][h],
+						innerText: y.text[k][h],
+						symbol:w,
+						extras:zProps.extras === 'true' ? y.extras[k][h] : null,
+						val:zProps.val === 'true' ? y.val[k][h] : null,
+						quantity:zProps.quantity === 'true' ? y.quantity[k][h] : null,
+
+					}
+				})
+			})
+
+		})
+	})
+	return zChild
 
 
-                if(   devObj.ryber[devObj.appTV].quantity[1][j].quantity[zGrid.a][zGrid.b] === undefined   ){
-
-
-                    zGrid.b = 0
-
-
-                }
-
-
-            }
-            // console.log(zGrid,j,i)
-            // console.log(devObj.ryber[devObj.appTV].quantity[1][j].bool[zGrid.a][zGrid.b] )
-            // console.log(x.nativeElement.className.split(" ")[0] === devObj.ryber[devObj.appTV].quantity[1][j].val[zGrid.a][zGrid.b] )
-            let zClassTarget = devObj.ryber[devObj.appTV].quantity[1][j].val[zGrid.a][zGrid.b].split(" ")[0]
-
-            while(
-                x.nativeElement.className.split(" ")
-                .reduce((acc,x,i)=>{
-                    // console.log(x,zClassTarget)
-                    if(x === zClassTarget ){
-                        acc = false
-                    }
-                    return acc
-                },true)  &&
-                devObj.ryber[devObj.appTV].quantity[1][j].val[zGrid.a][zGrid.b] !== undefined
-            ){
-
-                // console.log(zClassTarget)
-                zGrid.b += 1
-
-                if(
-                    devObj.ryber[devObj.appTV].quantity[1][j].val[zGrid.a+1] !== undefined
-                ){
-
-
-                    for(   let i in devObj.ryber[devObj.appTV].quantity[1][j].val[zGrid.a+1]   ){
-
-
-                        if(   x.nativeElement.className.split(" ")[0] === devObj.ryber[devObj.appTV].quantity[1][j].val[zGrid.a+1][i]   ){
-
-
-                            zGrid.a += 1
-                            zGrid.b = parseInt(i)
-                            break
-
-
-                        }
-
-
-                    }
-
-
-                }
-
-            }
-
-
-            if(
-                x.nativeElement.className.split(" ")
-                .reduce((acc,x,i)=>{
-                    if(x === zClassTarget ){
-                        acc = true
-                    }
-                    return acc
-                },false)  &&
-                (
-                    devObj.ryber[devObj.appTV].quantity[1][j].bool[zGrid.a][zGrid.b] !== 'false'
-                    // true
-                )
-            ){
-
-
-
-                zChild[devObj.ryber[devObj.appTV].quantity[1][j].symbol[zGrid.a][zGrid.b]] = {
-                    element:x.nativeElement as HTMLElement,
-                    css:devObj.ryber[devObj.appTV].quantity[1][j].ngCss[zGrid.a][zGrid.b],
-                    innerText: devObj.ryber[devObj.appTV].quantity[1][j].text[zGrid.a][zGrid.b],
-                    bool:devObj.ryber[devObj.appTV].quantity[1][j].bool[zGrid.a][zGrid.b],
-                    cssDefault:devObj.ryber[devObj.appTV].quantity[1][j].ngCssDefault[zGrid.a][zGrid.b],
-                    extras: devObj.zProps.extras === 'true' ?
-                        ( devObj.ryber[devObj.appTV].quantity[1][j].extras !== undefined  ?
-                            devObj.ryber[devObj.appTV].quantity[1][j].extras[zGrid.a][zGrid.b]
-                            : undefined)
-                        : undefined,
-                    val: devObj.zProps.val === 'true' ?
-                        ( devObj.ryber[devObj.appTV].quantity[1][j].val !== undefined  ?
-                            devObj.ryber[devObj.appTV].quantity[1][j].val[zGrid.a][zGrid.b]
-                            : undefined)
-                        : undefined,
-                    quantity: devObj.zProps.quantity === 'true' ?
-                        ( devObj.ryber[devObj.appTV].quantity[1][j].quantity !== undefined  ?
-                            devObj.ryber[devObj.appTV].quantity[1][j].quantity[zGrid.a][zGrid.b]
-                            : undefined)
-                        : undefined,
-                }
-                // console.log(zChild)
-
-
-                if(
-                    devObj.ryber[devObj.appTV].quantity[1][j].quantity[zGrid.a][zGrid.b+1] === undefined
-
-                ){
-
-
-                    zGrid.a += 1
-                    zGrid.b = 0
-
-
-                }
-
-
-
-                else if(   true   ){
-
-
-                    zGrid.b += 1
-
-
-                }
-
-
-            }
-
-
-            else if(
-                devObj.ryber[devObj.appTV].quantity[1][j].bool[zGrid.a][zGrid.b] === 'false'
-            ){
-
-
-                if(   devObj.ryber[devObj.appTV].quantity[1][j].quantity[zGrid.a][zGrid.b+1] === undefined   ){
-
-
-                    zGrid.a += 1
-                    zGrid.b = 0
-
-
-                }
-
-
-
-                else if(   true   ){
-
-
-                    zGrid.b += 1
-                    //
-
-                }
-
-
-            }
-
-
-        })
-
-    })
-    // zChild.forEach((x,i)=>{
-    //     console.log(x.symbol)
-    // })
-    return zChild
 }
 /* test
 1. if I can take anything away from the middle
@@ -643,15 +488,7 @@ export function minMaxDelta(devObj){
 }
 
 
-function appGenerateSelector(   devObj   ){
-    var a = 0;
-    var string = '';
-    while(   a!==devObj.times   ){
-        string += devObj.val +a+','
-        a+=1
-    }
-    return string.slice(0,-1)
-}
+
 
 export function numDigits(
     devObj:{
@@ -727,7 +564,6 @@ export function esInit (qq,eventSubscriptions){
     })
 }
 
-
 export function coInit (a,componentObjects,additional?) {
 
     componentObjects.forEach((x,i)=>{
@@ -752,7 +588,7 @@ export function coInit (a,componentObjects,additional?) {
                             .valueOf()
                             .split("CO")[0]
                             .split("")
-                            .join("_")+"_App"
+							.join("_")+"_App"
                         ]
                     ],
                     text:[
@@ -823,29 +659,29 @@ export function ryberUpdate(
 		symbol:string
     }
 ){
-    let {co,type,css,cssDefault,extras,bool,text,val,signature,symbolStart,spot}= devObj
+    let {symbol,co,type,css,cssDefault,extras,bool,text,val,signature,spot}= devObj
 
 
     let ryber = this
     if(ryber[co.valueOf()] === undefined){
-        let bodySymbol = "&#8353"
-        if(   symbolStart === undefined){
-            symbolStart = [8354,8384]
-        }
+		let bodySymbol = "&#8353"
+		let utf8Symbol = String.fromCharCode(+bodySymbol.split("&#")[1])
 
-        else if(   symbolStart[1] === undefined){
-            symbolStart[1] = 8384
-        }
+            let symbolStart = [8354,8448,8592,9472]
+			let symbolEnd = [8383,8526,8702,10174]
+
+
         let generator = {
             1:function *generator() {
-                var index = symbolStart[0];
-                while (true)
-                yield index++;
-            }(),
-            2:function *generator() {
-                var index = symbolStart[1];
-                while (true)
-                yield index++;
+				var index = symbolStart[0];
+
+				while (true){
+					if(symbolEnd.indexOf(index)!== -1){
+						index = symbolStart[symbolEnd.indexOf(index)+1]
+
+					}
+					yield index++;
+				}
             }()
         }
         ryber[co.valueOf()] = objectCopy(
@@ -865,7 +701,8 @@ export function ryberUpdate(
                                     .valueOf()
                                     .split("CO")[0]
                                     .split("")
-                                    .join("_")+"_Board a_p_p_Board",
+									.join("_")+"_Board a_p_p_Board " +
+									utf8Symbol,
                                 ],
                             ],
                             text:[
@@ -952,13 +789,14 @@ export function ryberUpdate(
         }
         //
 
-        //validating val
+		//validating val
+		let judimaCssIdentifier = co
+		.valueOf()
+		.split("CO")[0]
+		.split("")
+		.join("_")
         if(val === undefined){
-            val = co
-                .valueOf()
-                .split("CO")[0]
-                .split("")
-                .join("_")
+            val = judimaCssIdentifier
 
             if(subCO.val[index].length === 0){
                 val += "_Heading"
@@ -970,11 +808,22 @@ export function ryberUpdate(
         }
 
         else{
-            val = co
-            .valueOf()
-            .split("CO")[0]
-            .split("")
-            .join("_") + "_" + val
+
+			if(symbol !== undefined){
+				let utf8Symbol = String.fromCharCode(+symbol.split("&#")[1])
+
+				val = val.replace(
+					new RegExp(utf8Symbol),
+					""
+				)
+			}
+
+
+			val = val.replace(
+				new RegExp(judimaCssIdentifier+ "_" ),
+				""
+			)
+            val = judimaCssIdentifier + "_" + val
 
         }
         //
@@ -1000,10 +849,11 @@ export function ryberUpdate(
         // adding the zChild
             subCO.quantity[index].push(3)
 
-            let symbol = ryber[co.valueOf()].generator[index].next().value
+			symbol = "&#" + ryber[co.valueOf()].generator[index].next().value
+			let utf8Symbol = String.fromCharCode(+symbol.split("&#")[1])
             if( spot === undefined   ){
                 subCO.text[index].push(text)
-                subCO.val[index].push(val)
+                subCO.val[index].push(val + " " + utf8Symbol)
                 subCO.bool[index].push(bool)
 				subCO.ngCss[index].push(css)
 				if(cssDefault){
@@ -1011,13 +861,13 @@ export function ryberUpdate(
 				}
                 subCO.extras[index].push(extras)
                 subCO.symbol[index].push(
-                    "&#" + symbol
+                     symbol
                 )
             }
 
             else{
                 subCO.text[index]  .splice(spot,0,text)
-                subCO.val[index]   .splice(spot,0,val)
+                subCO.val[index]   .splice(spot,0,val + " " + utf8Symbol)
                 subCO.bool[index]  .splice(spot,0,bool)
 				subCO.ngCss[index] .splice(spot,0,css)
 				if(cssDefault){
@@ -1025,14 +875,14 @@ export function ryberUpdate(
 				}
                 subCO.extras[index].splice(spot,0,extras)
                 subCO.symbol[index].splice(spot,0,
-                    "&#" + symbol
+                    symbol
                 )
             }
             subCO.signature = signature
         //
         // console.log(bool,index)
         // console.log(subCO)
-        return "&#" + symbol
+        return  symbol
 	}
 
 	if(type === "remove"){
@@ -1040,6 +890,13 @@ export function ryberUpdate(
 		let subCO = ryber[co.valueOf()].quantity[1][1]
 		let targetIndex = subCO.symbol[1].indexOf(symbol)
 		subCO.quantity[1][targetIndex] = null
+		subCO.ngCss[1][targetIndex] = null
+		subCO.ngCssDefault[1][targetIndex] = null
+		subCO.extras[1][targetIndex] = null
+		subCO.symbol[1][targetIndex] = null
+		subCO.val[1][targetIndex] = null
+		subCO.text[1][targetIndex] = null
+		subCO.bool[1][targetIndex] = "false"
 
 	}
 
@@ -1516,7 +1373,9 @@ export function xContain(
 
 
 
-            return
+            return {align:devObj
+				.preserve
+				.align}
         }
 
         //getting the approriate ratios
@@ -1665,278 +1524,6 @@ export function responsiveMeasure(
 */
 
 
-export function deltaNode
-(
-    devObj?:{
-        intent:string,
-        type?:any,
-        group?:string | any, //name of delta setup I got going
-        elements?:zChildren[], // entries of elements to be added
-        moving?:{
-            entry:zChildren[],
-            type: string,
-            distance?:number
-        },
-        co?:Partial<componentObject>,
-        subCO?: number | string,
-        symbolDeltaStart?:number,
-        hook?:string
-
-        position?:{
-            group:any,
-            symbols:string[],
-            index:number,
-            stackSpacing:number,
-            zChild:zChildren[],
-            positionFn:(value: string, index: number, array: string[]) => void
-        },
-        features?:any,
-        move?:{
-            group:any,
-            zChild:zChildren[],
-            toMove:Function | zChildren[] |  any
-            // (any) => Array<zChildren> when we understand this better
-            moveFn:(value: string, index: number, array: string[]) => void,
-            moveFnPost?:Function,
-            heightGetter? : Function
-        }
-    }
-){
-    // console.log(devObj.intent + " an entry")
-
-    let min= (item)=>{
-        return numberParse(getComputedStyle(item).top)
-    }
-    let max =(item)=>{
-        return numberParse(getComputedStyle(item).top) +
-        numberParse(getComputedStyle(item).height)
-    }
-
-
-    if(   devObj.intent ==='add' && devObj.hook !== 'prepare'   ){
-
-
-        //make a storage facility for the management of added and removed elements once
-        if(devObj.co.metadata.deltaNodeSite === undefined){
-            devObj.co.metadata.deltaNodeSite = {
-                symOpt : function *generator(a) {
-                    var index = a
-                    while (true)
-                    yield index++;
-                }(devObj.symbolDeltaStart)
-            }
-        }
-        let {deltaNodeSite} = devObj.co.metadata
-        //
-
-        //access the right subCO
-        let subCO = devObj.co.quantity[1][devObj.subCO.valueOf()]
-        //
-
-        // specify the amnt of times addded in totol, the group of elements to add mabye the action
-        // we might need to get them on the DOM first
-        if(   deltaNodeSite[devObj.group.valueOf()] === undefined){
-            deltaNodeSite[devObj.group.valueOf()] = {
-                elements:[devObj.elements],
-                intent:[devObj.intent],
-                hook:['done'],
-                subCO:[devObj.subCO],
-                count:0,
-                display:['no'],
-                symbols:[[]],
-                extras:[{}]
-            }
-        }
-        else if(   deltaNodeSite[devObj.group.valueOf()] !== undefined){
-            deltaNodeSite[devObj.group.valueOf()].elements.push(devObj.elements)
-            deltaNodeSite[devObj.group.valueOf()].intent.push(devObj.intent)
-            deltaNodeSite[devObj.group.valueOf()].hook.push('done')
-            deltaNodeSite[devObj.group.valueOf()].subCO.push(devObj.subCO)
-            deltaNodeSite[devObj.group.valueOf()].count += 1
-            deltaNodeSite[devObj.group.valueOf()].display.push('no')
-            deltaNodeSite[devObj.group.valueOf()].symbols.push([])
-            deltaNodeSite[devObj.group.valueOf()].extras.push({})
-        }
-        // console.log(deltaNodeSite)
-        let {count} = deltaNodeSite[devObj.group.valueOf()]
-        deltaNodeSite.current ={count}
-        deltaNodeSite.current.group = devObj.group
-        deltaNodeSite.current.intent = devObj.intent
-        deltaNodeSite.current.hook = 'done'
-        //
-
-        //get the items on the DOM
-        /*
-            the val must be modifed because of the way componentBootStrap is set up, if it sees val[0]
-            again, catastrophe
-            we use _[x], it should work, if we split by _ we can still get the meaningful name for data assortment
-        */
-        deltaNodeSite[devObj.group.valueOf()].elements.forEach((x,i)=>{
-            // console.log(
-            //     x,
-            //     deltaNodeSite[devObj.group.valueOf()].display[i]
-            // )
-            // adding each element one by one to the DOM
-                // block represent the whole group elements to be added at one time
-                    // say one click event or one loop
-            if(deltaNodeSite[devObj.group.valueOf()].display[i] !== 'yes'){
-                x.forEach((y,j)=>{
-                    let sym = "&#"+ deltaNodeSite.symOpt.next().value
-                    let deltaIndex = y.extras.deltaIndex
-                    subCO.bool[deltaIndex.valueOf()].push(y.bool)
-                    let  myExtras = objectCopy(y.extras)
-                    if(myExtras.delta  === undefined){
-                        myExtras.delta = {}
-                    }
-                    myExtras.delta.duplicate = "true"
-                    myExtras.delta.index = i
-                    subCO.extras[deltaIndex.valueOf()].push(objectCopy(myExtras))
-                    subCO.symbol[deltaIndex.valueOf()].push(sym)
-                    deltaNodeSite[devObj.group.valueOf()].symbols[i].push(sym)
-                    subCO.ngCss[deltaIndex.valueOf()].push(objectCopy(y.css))
-                    subCO.ngCssDefault[deltaIndex.valueOf()].push(objectCopy(y.cssDefault))
-                    subCO.quantity[deltaIndex.valueOf()].push(2)
-                    subCO.text[deltaIndex.valueOf()].push(objectCopy(y.innerText))
-                    subCO.val[deltaIndex.valueOf()].push(
-                        y.val.split(" ")
-                        .reduce((acc,z,k,src)=>{
-                            if(k === 0){
-                                acc += z+"_"+i+ " "
-                            }
-                            else if(k === src.length -1){
-                                acc += z
-                            }
-                            else{
-                                acc += z + " "
-                            }
-                            return acc
-                        },"")
-                    )
-                })
-            }
-            deltaNodeSite[devObj.group.valueOf()].display[i] = 'yes'
-            //
-            // console.log(subCO)
-        })
-        //
-
-    }
-
-    else if(   devObj.intent === 'minus' && devObj.hook !== 'prepare'   ){
-
-
-        //check for deltaManagement  and needed tools
-        if(devObj.co.metadata.deltaNodeSite === undefined){
-            return
-        }
-        if(devObj.co.metadata.deltaNodeSite[devObj.group.valueOf()] === undefined){
-            return
-        }
-        let {deltaNodeSite} = devObj.co.metadata
-        let {count,subCO} = deltaNodeSite[devObj.group.valueOf()]
-        deltaNodeSite.current ={
-            count,
-            group:devObj.group,
-            intent:devObj.intent,
-            hook:'done'
-        }
-        // deltaNodeSite.current.group = devObj.group
-        // deltaNodeSite.current.intent = devObj.intent
-        // deltaNodeSite.current.hook = 'done'
-        //
-
-        //access the right subCO
-        let deltaSubCO = devObj.co.quantity[1][subCO[count.valueOf()]]
-        //
-
-        //take the items from the subCO and the DOM
-        deltaNodeSite[devObj.group.valueOf()].symbols[count]
-        .forEach((x,i)=>{
-            //find where the symbol and all of its data is and properly remove it
-            let sub0 = null
-            let sub1 = null
-            // find the right index
-            try{
-                deltaSubCO.symbol.forEach((y,j)=>{
-                    if(y.indexOf(x)!== -1){
-                        sub0 = j,
-                        sub1 = y.indexOf(x)
-                        throw('e')
-                    }
-                })
-            }
-            //
-
-            //remove from subCO
-                // not a straightfoward subCO so inspect here if removing elements go wrong
-                // should be a whole other function for adding and removing
-            catch(e){
-                Object.keys(deltaSubCO).forEach((z,k)=>{
-                    try{
-                        if(z !== "quantity"){
-                            deltaSubCO[z.valueOf()][sub0].splice(sub1,1)
-                        }
-                    }
-                    catch(e){
-                    }
-                })
-                deltaSubCO.quantity[sub0].splice(sub1,1)
-            }
-            //
-        })
-        //
-
-        // take the items out of deltaMangement
-        deltaNodeSite[devObj.group.valueOf()].hook[count] = "done"
-        deltaNodeSite[devObj.group.valueOf()].intent[count] = "minus"
-        deltaNodeSite[devObj.group.valueOf()].display[count] = "no"
-
-        if(count === 0 ){
-            delete deltaNodeSite[devObj.group.valueOf()]
-        }
-        else if(count !== 0){
-
-            Object.keys(deltaNodeSite[devObj.group.valueOf()]).forEach((x,i)=>{
-                try{
-                    deltaNodeSite[devObj.group.valueOf()][x.valueOf()].splice(count,1)
-                    // deltaNodeSite[devObj.group.valueOf()][x.valueOf()] =
-                    // deltaNodeSite[devObj.group.valueOf()][x.valueOf()].slice(0,count)
-                    // .concat(deltaNodeSite[devObj.group.valueOf()][x.valueOf()].slice(count+1))
-                }
-                catch(e){}
-            })
-            deltaNodeSite[devObj.group.valueOf()].count -= 1
-        }
-        //
-
-    }
-
-    else if(   devObj.hook === 'prepare'   ){
-
-
-        let {deltaNodeSite} = devObj.co.metadata
-        if(deltaNodeSite[devObj.group.valueOf()] === undefined){
-            return
-        }
-        let {count,subCO} = deltaNodeSite[devObj.group.valueOf()]
-        deltaNodeSite.current ={count}
-        deltaNodeSite.current.group = devObj.group
-        deltaNodeSite.current.intent = devObj.intent
-        deltaNodeSite.current.hook = devObj.hook
-        //
-
-        //access the right subCO
-        let deltaSubCO = devObj.co.quantity[1][subCO[count.valueOf()]]
-        //
-
-        deltaNodeSite[devObj.group.valueOf()].hook[count] = devObj.hook
-        deltaNodeSite[devObj.group.valueOf()].intent[count] = devObj.intent
-
-
-    }
-
-
-}
 
 
 export function sCG(devObj?):string{
@@ -1960,3 +1547,92 @@ export function componentConsole(devObj?){
 		return ()=>{console.log(this.appTV,data)}
 	}
 }
+
+
+
+// deltaNode fn
+
+let determineKeepGroups = (devObj)=>{
+
+	let {component} = devObj
+	let flag = "fixed"
+	component.keep.inspect
+	.forEach((x:any,i)=>{
+		let last =component.keep.groups.length-1
+
+		if(x.includes(0)){
+
+			if(flag === "push"){
+				component.keep.groups.push({items:[],index:[]})
+				flag = "fixed"
+				last += 1
+			}
+			component.keep.groups[last].items.push(x)
+		}
+		else if(x.includes(1)){
+			component.keep.groups[last].index.push(i)
+			flag = "push"
+
+		}
+	})
+	component.keep.groups =
+	component.keep.groups.filter((x:any,i)=>{
+		return x.items.length !== 0
+	})
+}
+let inspectKeep = (devObj)=>{
+	let {zSymbols,component,finalKeep} = devObj
+	component.keep.inspect = objectCopy(
+		finalKeep
+		.map((x:any,i)=>{
+			let locations =
+				x .reduce((acc,y:any,j)=>{
+					if(component[zSymbols].includes(y)){
+						acc.push(j)
+					}
+					return acc
+				},[])
+
+			return [...x,...locations]
+		})
+	)
+}
+let logicKeep = (devObj) =>{
+
+	let {hook,zSymbolsMap,component,finalKeep} = devObj
+	component.keep.groups
+	.forEach((x:any,i)=>{
+
+		if(hook === "add prepare"){
+			let attach = component.keep.inspect[x.index[0]][1] // attach for that item group
+			x.newItems = x.items
+			.map((y:any,j)=>{
+				let newY = y
+				newY[0] =component.deltasMap[newY[0]]
+				if(y.slice(2).length == 1){ //locations [0]
+
+					newY[1] = attach
+				}
+				else{ //locations [0,1]
+					newY[1] =component.deltasMap[newY[1]]
+				}
+
+				return newY.slice(0,2)
+			})
+		}
+
+		// update the finalKeep
+		x.index
+		.forEach((y:any,k)=>{
+			finalKeep[y][1] = component[zSymbolsMap][finalKeep[y][1]]
+		})
+		//
+
+	})
+}
+export let deltaNode ={
+	determineKeepGroups,
+	inspectKeep,
+	logicKeep,
+}
+//

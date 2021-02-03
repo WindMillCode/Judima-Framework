@@ -55,6 +55,60 @@ Make sure panel borders realign properly on all mediaqueries
 	* the top for each item that has only 0 is the top from the first item that has 1
 	* items with  and 1 get replaced according to the mapping
 	* items with 0 and 1 get replaced according
+* on add one line group elements get duplicated and positioned properly
+* on multi line group elements get duplicated properly
+* on one line group around buttons elements get duplicated properly
+
+
+
+|position|one line|multi line|
+|:------|:------:|------:|
+|before controls                                                           |         |       |            |
+|around controls                                                           |         |       |            |
+|after controls                                                            |         |       |            |
+|before controls with items in betwewen                                    |         |       |            |
+|after controls with items in betwewen                                     |         |       |            |
+|around controls with items in betwewen                                    |         |       |            |
+|before controls with items in betwewen and before                         |         |       |            |
+|before controls with items in betwewen and after                          |         |       |            |
+|before controls with items in betwewen and around                         |         |       |            |
+|after controls with items in betwewen and before                          |         |       |            |
+|after controls with items in betwewen and after                           |         |       |            |
+|after controls with items in betwewen and around                          |         |       |            |
+
+
+duplicates with nesting
+
+|a|b|c|
+|:------|:------:|------:|
+|2 or more deltas in same component inner            |         |       |            |
+|2 or more deltas in same component outer            |         |       |            |
+|2 or more deltas in same component in or out        |         |       |            |
+* might just do random to table out the first table is exhausting
+
+controls
+|a|b|c|
+|:------|:------:|------:|
+|controls are not coupled standalone and can control from anywhere in the app  |         |       |            |
+|several controls for an add/remove action  |         |       |            |
+|disable buttons if pressed to quickly to prevent corruption|||
+|hooks moved to "remove done" if there are no more elements to remove
+
+
+duplicates with groups
+|a|b|c|
+|:------|:------:|------:|
+|when we duplicate groups is there a uniqueness to indicate each duplicated group so they are not conflicting  |         |       |            |
+
+
+removal 
+|a|b|c|
+|:------|:------:|------:|
+|make sure the componentObject and zChild dont get ruined |         |       |            |
+|for add remove button make sure increment is modified properly |         |       |            |
+
+
+
 
 # Directives
 * for each logic that requires several elements, have an id which indicates the element thats in control, then subscribe to the zChildrenSub=ject to gather ids from all the zChildren the directives  need to express the feature. the group should have its group id bearing the directive is used several times in the same component

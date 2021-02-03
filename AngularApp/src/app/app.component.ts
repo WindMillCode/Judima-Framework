@@ -109,7 +109,7 @@ export class AppComponent implements OnInit, OnDestroy {
 						groups:{},
 						current:null,
 						component:{
-							
+
 						}
                     }
                     co.metadata.agGrid = {
@@ -198,9 +198,7 @@ export class AppComponent implements OnInit, OnDestroy {
         // console.log(location.pathname)
 	}
 
-	ngAfterViewInit(){
-		console.log(this.ryber)
-	}
+
 
     routeDispatch(
         devObj: {

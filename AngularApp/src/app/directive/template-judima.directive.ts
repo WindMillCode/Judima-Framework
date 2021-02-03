@@ -22,7 +22,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
     constructor(
         private el: ElementRef,
         private http: HttpClient,
-        private renderer: Renderer2,
+        private renderer2: Renderer2,
         private ryber: RyberService
     ) { }
 
