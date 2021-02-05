@@ -20,6 +20,7 @@ import { GoogleMapsDirective } from './directive/google-maps.directive';
 import { WebRTCDirective } from './directive/web-rtc.directive';
 import { WebVitalsDirective } from './directive/web-vitals.directive';
 import { DeltaNodeDirective } from './directive/delta-node.directive';
+import { GsapCursorDirective } from './directive/gsap-cursor.directive';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { DeltaNodeDirective } from './directive/delta-node.directive';
     WebRTCDirective,
     WebVitalsDirective,
     DeltaNodeDirective,
+    GsapCursorDirective,
     // FormControlDirective,
 
   ],

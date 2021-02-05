@@ -2,7 +2,7 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren } from '@angular/core';
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest,timer, Subject } from 'rxjs';
-import { ryberUpdate,ryberUpdateFactory,deltaNode, eventDispatcher, numberParse, objectCopy } from '../customExports'
+import { ryberUpdate,ryberUpdateFactory,deltaNode, eventDispatcher, numberParse, objectCopy,flatDeep } from '../customExports'
 import { catchError, delay,first,repeat,map } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -170,6 +170,7 @@ export class DeltaNodeDirective {
 											// can properly receive the next symbol
 											addedDeltas.push(
 												rUD({
+													quantity:2,
 													symbol:y[1].symbol,
 													co,
 													bool:y[1].bool,
@@ -231,7 +232,7 @@ export class DeltaNodeDirective {
 											return
 										}
 										//
-										let removeDeltas = val.deltas.pop().flat()
+										let removeDeltas = flatDeep(val.deltas.pop(),Infinity)
 										val.targets
 										.forEach((y:any,j)=>{
 
@@ -305,32 +306,32 @@ export class DeltaNodeDirective {
 						//
 
 							// testing trigger click
-							of([])
-							.pipe(
-								delay(1),
-								// first(),
-								repeat(2)
-							)
-							.subscribe((result:any)=>{
+							// of([])
+							// .pipe(
+							// 	delay(1),
+							// 	// first(),
+							// 	repeat(2)
+							// )
+							// .subscribe((result:any)=>{
 
 
-								let outerDeltaAddButton = groups["outerDelta"].add[0].target[1].element
-								let innerDeltaAddButton = groups["innerDelta"].add[0].target[1].element
-								eventDispatcher({
-									event:'click',
-									element:outerDeltaAddButton
-								})
-								// of([])
-								// .pipe(
-								// 	repeat(10)
-								// )
-								// .subscribe(()=>{
-								// 	eventDispatcher({
-								// 		event:'click',
-								// 		element:innerDeltaAddButton
-								// 	})
-								// })
-							})
+							// 	let outerDeltaAddButton = groups["outerDelta"].add[0].target[1].element
+							// 	let innerDeltaAddButton = groups["innerDelta"].add[0].target[1].element
+							// 	eventDispatcher({
+							// 		event:'click',
+							// 		element:outerDeltaAddButton
+							// 	})
+							// 	// of([])
+							// 	// .pipe(
+							// 	// 	repeat(10)
+							// 	// )
+							// 	// .subscribe(()=>{
+							// 	// 	eventDispatcher({
+							// 	// 		event:'click',
+							// 	// 		element:innerDeltaAddButton
+							// 	// 	})
+							// 	// })
+							// })
 
 							// of([])
 							// .pipe(
@@ -390,7 +391,11 @@ export class DeltaNodeDirective {
 		if (this.extras?.confirm === 'true') {
 			this.subscriptions
 			.forEach((x: any, i) => {
-				x.unsubscribe()
+				try{
+					x.unsubscribe()
+				}
+				catch(e){}
+
 			})
 			delete this.subscriptions
 		}

@@ -1,322 +1,9 @@
 let website:any = {}
 
-website.convertCMS = [[
+website.convertCMS = [
 
     {
-        "title": "webRTCVideo",
-        "type_slug": "forms",
-        "metafields": [
-
-            {
-                "key": "Body",
-                "type": "body",
-                "stack": "60",
-                // "height":"1000",
-				"background": "rgb(255, 179, 204)",
-				delta:{
-					"group":["schemasInput"],
-				},
-                "googleSheets": {}
-            },
-            {
-                "key": "Heading",
-                "value": "Welcome to the BigQuery Management Page",
-                "type": "title",
-                "split": "9",
-                // "width":"420",
-                "googleSheets": {}
-            },
-            {
-                "key": "Choose-Schema",
-                "type": "div",
-                "value":"",
-                "background":"yellow",
-                // "split": "3",
-                "nestGroup":"nesting",
-                "nest":"A1",
-                "width":"1600",
-                "height":"700",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        display:"flex",
-                        "flex-direction":"row",
-                        "justify-content":"space-around",
-                        "align-items":"flex-start",
-                        "flex-wrap":"wrap"
-                    }
-                }
-            },
-            {
-                "key": "add-me",
-                "type": "sub-heading",
-                "value":"Add me",
-                // "split": "3",
-                "nestGroup":"nesting",
-                "nestUnder":"A1",
-                "nest":"B1",
-                "width":"1600",
-                // "height":"250",
-                "googleSheets": {},
-                "text-align":"center",
-                "options":{
-                    "css":{
-                        "justify-self":"center",
-
-                        // "flex-grow":"10",
-                        "width":"100%"
-                        // "flex-basis":"500px"
-                    }
-                }
-            },
-            {
-                "key": "my-table",
-                "type": "simpleTable",
-                "value":"",
-                "nestGroup":"nesting",
-                "nestUnder":"A1",
-                "nest":"B2",
-                "background":"blue",
-                // "split": "3",
-                // "width":"300",
-                // "height":"250",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        "height":"300px",
-                        "width":"400px",
-                        "order":1
-                    }
-                }
-            },
-            {
-                "key": "my-input-counter",
-                "type": "count",
-                "value":"1.",
-                "nestGroup":"nesting",
-				delta:{
-					"group":"schemasInput",
-				},
-                "nestUnder":"C1",
-                "nest":"D1",
-                // "split": "3",
-                // "width":"300",
-                // "height":"250",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        order:-3,
-                        "width":"10px"
-                        // "background":"white",
-                        // "height":"30px",
-                        // "width":"400px",
-                    }
-                }
-            },
-            {
-                "key": "my-input",
-                "type": "input",
-                "value":"",
-                "nestGroup":"nesting",
-                "nestUnder":"C1",
-                "nest":"D1",
-				delta:{
-					"group":"schemasInput",
-				},
-                // "split": "3",
-                // "width":"300",
-                // "height":"250",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        order:-2,
-                        "background":"white",
-                        "height":"50px",
-                        "width":"400px",
-                    }
-                }
-            },
-            {
-                "key": "form-item-container",
-                "type": "div",
-                "value":"",
-                // "background":"red",
-                // "split": "3",
-				delta:{
-					"group":"schemasInput",
-				},
-                "nestGroup":"nesting",
-                "nest":"C1",
-                "nestUnder":"B3",
-                // "width":"1200",
-                "height":"350",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        order:-2,
-                        // "width":"75%",
-                        "border":"1px solid red",
-                        "width":"400px",
-                        "height":"50px",
-                        display:"flex",
-                        "flex-direction":"row",
-                        "overflow":"none"
-                        // "justify-content":"space-between",
-                        // "flex-wrap":"wrap"
-                    }
-                }
-            },
-            {
-                "key": "add-schema",
-                "type": "button",
-                "value":"Add Another",
-				"nestGroup":"nesting",
-				delta:{
-					"group":"schemasInput",
-					type:"add",
-					by:"1"
-				},
-                "nestUnder":"B3",
-                "nest":"C2",
-                "split": "3",
-                // "left":"0",
-                // "width":"300",
-                // "height":"250",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        // order:-1,
-
-                        // "background":"white",
-                        // "height":"30px",
-                        // "width":"400px",
-                    }
-                }
-            },
-            {
-                "key": "remove-schema",
-                "type": "button",
-                "value":"Remove Another",
-				delta:{
-					"group":"schemasInput",
-					type:"remove",
-					by:"1"
-				},
-                "nestGroup":"nesting",
-                "nestUnder":"B3",
-                "nest":"C3",
-                // "split": "3",
-                // "width":"300",
-                // "height":"250",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        order:0,
-                    }
-                }
-            },
-            {
-                "key": "input-container",
-                "type": "div",
-                "value":"",
-                "background":"cyan",
-                // "split": "3",
-                "nestGroup":"nesting",
-                "nest":"B3",
-                "nestUnder":"A1",
-                // "width":"1200",
-                "height":"350",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        order:2,
-                        // "width":"75%",
-                        "width":"800px",
-                        "height":"300px",
-                        display:"flex",
-                        "flex-direction":"column",
-                        "justify-content":"space-between",
-                        // "flex-wrap":"wrap"
-                    }
-                }
-            },
-            {
-                "key": "schema-mode",
-                "type": "input",
-                "value":"Mode Type",
-                "newline":[
-                    "REPEATED",
-                    "REQUIRED",
-                    "NULLABLE"
-                ],
-                "fontSize":"120",
-                "latch":"",
-                // "deltaGroup":"schemasInput",
-                "split": "3",
-                // "width":"300",
-                "height":"250",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        order:-2,
-                        "background":"white",
-                        "height":"50px",
-                        // "width":"400px",
-                    }
-                }
-            },
-            {
-                "key": "schema-mode-1",
-                "type": "input",
-                "value":"Mode Type",
-                "fontSize":"120",
-                "latch":"",
-                // "deltaGroup":"schemasInput",
-                "split": "5",
-                // "width":"300",
-                "height":"550",
-                "googleSheets": {},
-                "options":{
-                    "css":{
-                        // "justify-self":"flex-start",
-                        // "flex-grow":"1"
-                        order:-2,
-                        "background":"white",
-                        "height":"50px",
-                        // "width":"400px",
-                    }
-                }
-            },
-            {
-                "key": "counter",
-                "type": "count",
-                "value":"1.",
-                // "deltaGroup":"view",
-                "next":"true",
-                "split": "1",
-                "width":"10",
-                "top":-200,
-                // "height":"250",
-                "googleSheets": {},
-            },
-
-
-
-        ]
-	},
-
-    {
-        "title": "webRTCVideo",
+        "title": "development",
         "type_slug": "forms",
         "metafields": [
 
@@ -350,16 +37,25 @@ website.convertCMS = [[
                 }
 			},
             {
-                "key": "some-text",
-                "type": "text",
-                "value":"Items",
-                "split": "3",
+                "key": "my-cursor",
+				// "type": "gsap-cursor",
+				type:"text",
+                // "value":"Items",
+				// "split": "3",
+				"height":"1",
+				"width":"1",
+				options:{
+					css:{
+						height:"200px"
+					}
+				},
                 "googleSheets": {},
 			},
             {
                 "key": "my-input-counter",
                 "type": "count",
-                "value":"3.",
+				"value":"3.",
+				"next":"true",
 				delta:{
 					"group":"outerDelta"
 				},
@@ -383,7 +79,8 @@ website.convertCMS = [[
             {
                 "key": "my-div",
                 "type": "div",
-                "value":"",
+				"value":"",
+				"next":"true",
 				delta:{
 					"group":"outerDelta"
 				},
@@ -936,7 +633,477 @@ website.convertCMS = [[
 		})
     },
 
-][1]]
+    {
+        "title": "before controls",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+                // "background": "rgb(155, 9, 104)",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+            // {
+            //     "key": "my-cursor",
+			// 	// "type": "gsap-cursor",
+			// 	type:"text",
+            //     // "value":"Items",
+			// 	// "split": "3",
+			// 	"height":"1",
+			// 	"width":"1",
+			// 	options:{
+			// 		css:{
+			// 			height:"200px"
+			// 		}
+			// 	},
+            //     "googleSheets": {},
+			// },
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "next":"true",
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+            // {
+            //     "key": "more-text",
+            //     "type": "text",
+            //     "value":"More Items",
+            //     "split": "3",
+            //     // "width":"300",
+			// 	"height":"250",
+			// 	"fontSize":72,
+            //     "googleSheets": {},
+			// },
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-before-controls"
+			return x
+		})
+	},
+    {
+        "title": "around controls",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"1.",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(21,121,227)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(221,161,217)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+				next:"true",
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-around-controls"
+			return x
+		})
+    },
+    {
+        "title": "after controls",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-after-controls"
+			return x
+		})
+    },
+
+].slice(1)
 
 
 export default website

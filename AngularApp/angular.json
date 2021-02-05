@@ -121,7 +121,8 @@
                         "browserTarget": "AngularApp:judima:play",
                         "port": 8000,
                         "liveReload": true,
-                        "hmr": false
+						"hmr": false,
+						"proxyConfig": "src/proxy.conf.json"
                     },
                     "configurations": {
                         "production": {

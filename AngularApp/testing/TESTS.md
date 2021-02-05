@@ -1,19 +1,8 @@
 # UNIT TESTS
 
 
-    ryberUpdate
-    
-    make sure if the CO doesnt exist generate a new CO
-    make sure if the signature is not set to "" to leave it alone if the option is undefined
-    make sure bools got to the right index and if there is no bool or an invalid bool return p
-    make sure quanitiy is pushed and gets a value of 3
-    make sure different CO get handled the way they are supposed to
-    dont have the dev use this to get the ryber
-    update the formCO so the dev does not have to do it
-        but for route control the dev might have to do it, its not every sencod
-        the dev is adding a CO
-    make sure for css there is an object with z-index 3 provided if creds are not met
-    make sure that the right generator is used to added the symbol for the zChild
+## website.ts
+* make sure next is only used if there is room to spare on the previous line
 
 # E2E TESTS 
 
@@ -23,7 +12,7 @@ Make sure them components dont overflow
 Make sure panel borders realign properly on all mediaqueries
 
 
-# Nesting
+## Nesting
 
 * refer to  [here](C:\Users\oluod\My_Notebook\Google\API\bigquery\AngularApp\testing\e2e)
 * make sure that elements can go inside one another
@@ -46,7 +35,7 @@ Make sure panel borders realign properly on all mediaqueries
 * when items are added in multpleGroup make sure moving is properly done, sending the right data to dynamicPosition
 * multipleGroup inside does not disrupt mutlipleGroup outside
 
-# Duplicates
+## Duplicates
 
 * when the add and remove button are on the same line as the items to duplicates, the items to be moved dont know how to react properly this can be seen from movingKeep in desktop mediaQuery fix this
 * only supports, when the add/remove buttons are not on the same line as the target 
@@ -63,9 +52,15 @@ Make sure panel borders realign properly on all mediaqueries
 
 |position|one line|multi line|
 |:------|:------:|------:|
-|before controls                                                           |         |       |            |
+|before contols                                                            |         |       |            |
 |around controls                                                           |         |       |            |
 |after controls                                                            |         |       |            |
+|before contols  with items before                                         |         |       |            |
+|around controls    with items before                                      |         |       |            |
+|after controls  with items before                                         |         |       |            |
+|before contols  with items after                                          |         |       |            |
+|around controls with items after                                          |         |       |            |
+|after controls  with items after                                          |         |       |            |
 |before controls with items in betwewen                                    |         |       |            |
 |after controls with items in betwewen                                     |         |       |            |
 |around controls with items in betwewen                                    |         |       |            |
@@ -106,18 +101,19 @@ removal
 |:------|:------:|------:|
 |make sure the componentObject and zChild dont get ruined |         |       |            |
 |for add remove button make sure increment is modified properly |         |       |            |
+|make sure things are working|||
 
 
 
 
-# Directives
-* for each logic that requires several elements, have an id which indicates the element thats in control, then subscribe to the zChildrenSub=ject to gather ids from all the zChildren the directives  need to express the feature. the group should have its group id bearing the directive is used several times in the same component
+## Directives
+* for each logic that requires several elements, have an id which indicates the element thats in control, then subscribe to the zChildrenSubject to gather ids from all the zChildren the directives  need to express the feature. the group should have its group id bearing the directive is used several times in the same component
 
 
-# Components 
+## Components 
 * do we need display table
 
-## top level and formatting
+### top level and formatting
 * by default judima will format all top level zChildren in its components
 * provide a flag, to ignore top level, this means that the elemnts might end up going in the div board
 * provide a flag indicating the zChild should not get considered in formatting
@@ -133,7 +129,7 @@ removal
 
 	
 
-# Ryber
+## Ryber
 *  make sure every element can  get css and attribute support as defined by options in objects
 * consider changing from key to class and having classes support _ in its name
 * every zChild.extras needs 
@@ -146,14 +142,14 @@ removal
 * no zChildren contain function with refrences to external data or data types that do such
 * use zSymbolNeeded ="true" to indicate that a directive needs its own zChild symbol
 
-## judima object
+### judima object
 * indicates to the judima framework how to specifcally deal with this element
 * make sure you use formatIgnore to indicate to judima
 
-## cms
+### cms
 
 * all cms transformations should conform to the standards provided in cms/website*.ts
-## button
+### button
 
 * should more directives go on button, on  just more zChildren for different features
 * try to abstract all required logic to the directive 

@@ -352,8 +352,7 @@
 			appNest [nest] = "ryber.appAvailble( a.extras[1][bb], 'appNest')"
 			appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[1][bb], 'appDeltaNode')"
             appAgGrid [agGrid] = "ryber.appAvailble( a.extras[1][bb], 'appAgGrid')"
-            appNest [nest] = "ryber.appAvailble( a.extras[1][bb], 'appNest')"
-            *ngIf= "a.bool[1][bb] ==='ag-grid'"
+            *ngIf= "a.bool[1][bb] ==='ag-grid' else elseBlock27"
             class = {{a.val[1][bb]}}
             [ngStyle] ='a.ngCss[1][bb]'
             appExtend [extend] = "ryber.appAvailble( a.extras[1][bb], 'extend')"
@@ -368,7 +367,23 @@
                 </ag-grid-angular>
 
             </div>
-        </ng-template>
+		</ng-template>
+		<ng-template #elseBlock27  >
+            <div
+			#myVal
+			appNest [nest] = "ryber.appAvailble( a.extras[1][bb], 'appNest')"
+			appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[1][bb], 'appDeltaNode')"
+			appGsapCursor [gsapCursor] = "ryber.appAvailble( a.extras[1][bb], 'appGsapCursor')"
+            *ngIf= "a.bool[1][bb] ==='gsap-cursor' else elseBlock27"
+            class = {{a.val[1][bb]}}
+            [ngStyle] ='a.ngCss[1][bb]'
+            appExtend [extend] = "ryber.appAvailble( a.extras[1][bb], 'extend')"
+			>
+				<div class = "a_p_p_Gsap-Cursor" *ngFor = 'let xx of a.extras[1][bb].appGsapCursor.amnt'>
+
+				</div>
+			</div>
+		</ng-template>
     </ng-container>
 
 

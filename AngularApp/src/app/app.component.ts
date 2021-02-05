@@ -35,7 +35,11 @@ declare global {
     var getCLS:any
     var getFID:any
     var getLCP:any
-    //
+	//
+
+	// globals for gsap
+	var gsap:any
+	//
 }
 
 @Component({
@@ -52,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private http: HttpClient
     ) { }
 
-    title = 'AngularBigquery';
+    title = 'Judima';
     CO$: Subscription
 
     ngOnInit() {
@@ -71,7 +75,13 @@ export class AppComponent implements OnInit, OnDestroy {
                     {
                         src:"https://apis.google.com/js/api.js",
                         name:"google api"
-                    },
+					},
+					{
+						src:"https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js",
+						name:"gsap",
+						// integrity:"sha512-D5D6A51C3906F44B5C3A60A7A028E2C10FC7101E520CDAB0F1DE06D8C2A83708E2C0C35E04092E76C04299294C9D776C1FC066D2639DDED97FEA72F9CB46CC69",
+						defer:"true"
+					},
                     (false ?{
                         src: "https://cdn.rawgit.com/Marak/faker.js/master/examples/browser/js/faker.js"
                     } : null)
@@ -240,7 +250,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
         }
 
-    }
+	}
+
+	ngAfterViewInit(){
+		console.log(this.ryber)
+	}
 
     ngOnDestroy() {
         if (env.lifecycleHooks) console.log('app ngOnDestroy fires on dismount')

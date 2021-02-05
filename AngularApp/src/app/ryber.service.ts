@@ -1487,12 +1487,56 @@ export class RyberService {
 						extend,
 						judima,
                         component,
-                        delta: { type: "increment" },
 						type,
 
 						appDeltaNode:{
 							...appDeltaNode,
 							type: delta?.type || "increment",
+						},
+                        appNest,
+                    }
+                })
+
+			}
+
+            else if (type === "gsap-cursor") {
+
+                let css = {
+                    "z-index": 4,
+					display: "table",
+					"backgroud-color":"blue",
+					...options.css
+				}
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
+
+
+                symbol = rUD({
+                    co,
+                    bool: 'gsap-cursor',
+                    text: value,
+                    val: key.split("_").reverse()[0],
+                    css,
+                    extras: {
+						extend,
+						judima,
+                        component,
+						type,
+
+						appDeltaNode:{
+							...appDeltaNode,
+						},
+						appGsapCursor:{
+							confirm:"true",
+							amnt:Array(20).fill(null)
 						},
                         appNest,
                     }
@@ -1896,7 +1940,9 @@ export class RyberService {
             x.src ? this.renderer2.setAttribute(s,"src",x.src) : null
             x.innerText ? this.renderer2.setProperty(s,"innerText",x.innerText) : null
             x.innerText ? this.renderer2.setProperty(s,"innerHTML",x.innerText) : null
-            x.async  ? this.renderer2.setAttribute(s,"async",x.async) : null
+			x.async  ? this.renderer2.setAttribute(s,"async",x.async) : null
+			x.defer  ? this.renderer2.setAttribute(s,"async",x.defer) : null
+			x.integrity  ? this.renderer2.setAttribute(s,"integrity",x.integrity) : null
             if(x.placement){
                 if(x.placement?.appendChild){
                     this.renderer2.appendChild(x.placement.appendChild, s)
@@ -1918,7 +1964,7 @@ export class RyberService {
     appCO0: Partial<componentObject> = {
         metadata: {
             component:{
-                responsiveHeightExclude:["mat-spinner","ta","c","div","ag-grid","i","b","video"]
+                responsiveHeightExclude:["mat-spinner","ta","c","div","ag-grid","i","b","video","gsap-cursor"]
                 // should be if the item is nested
             },
             ES: [], //eventSubscriptions

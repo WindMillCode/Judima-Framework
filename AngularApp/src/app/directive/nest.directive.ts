@@ -15,7 +15,8 @@ export class NestDirective {
     @Input() nest: any;
     extras: any;
     zChildren: any;
-    nestZChildren:any ={}
+	nestZChildren:any ={}
+	subscriptions:Array<any> = []
 
     constructor(
         private el: ElementRef,
@@ -30,17 +31,16 @@ export class NestDirective {
         if (this.extras?.confirm === 'true' ) {
             // console.log("nested ngOnInit")
             let nestInit = () => {
-                // console.log('fire')
+
 
                 //gather all elements involved in the nesting operation
                 this.zChildren = this.ryber[this.extras.co.valueOf()].metadata.zChildren
                 Object.entries(this.zChildren)
                 .forEach((x:any,i)=>{
+
                     if(x[1].extras?.appNest?.nestGroup ===this.extras.nestGroup ){
-                        // this.nestZChildren[x[0]] = {
-                        //     zChild:x[1],
-                        //     appNest:x[1].extras.appNest
-                        // }
+						// console.log(this.extras,x)
+
 
                         //actual nesting
                             // this happens only once, should continue to happen if application
@@ -71,12 +71,6 @@ export class NestDirective {
                                 "position",
                                 "static"
                             )
-                            // this.renderer2.setStyle(
-                            //     this.el.nativeElement,
-                            //     "order",
-                            //     this.extras.nestCount
-                            // )
-
                             this.extras.newBoard= x[0]
                         }
                         //
@@ -90,9 +84,11 @@ export class NestDirective {
 
             }
 
-            this.ryber[this.extras.co.valueOf()].metadata.zChildrenSubject
-            .pipe(take(1))
-			.subscribe(nestInit)
+            this.subscriptions.push(
+				this.ryber[this.extras.co.valueOf()].metadata.zChildrenSubject
+            	.pipe(first())
+				.subscribe(nestInit)
+			)
 
 
         }

@@ -141,7 +141,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 .filter((x:any,i)=>{
 
 					return !(zChild[x]?.extras?.judima?.formatIgnore === "true")
+					// return true
 				})
+
                 // console.log(this.ryber[this.appTV.valueOf()].metadata.order)
                 this.ryber[this.appTV.valueOf()].metadata.order
                 .forEach((x,i)=>{
@@ -158,6 +160,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 let keep = []
                 let keepCurrent = []
 				let keepLast = Object.keys(topLevelZChild).slice(1,2)[0]
+
                 let align = []
                 let alignCurrent = []
                 let myTotal = 0
@@ -211,23 +214,23 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
 
-                    //stacking context
+					//stacking context
+						// dont use next === true when there is no need for it
                     if((myTotal  > section.width && i !== Object.keys(topLevelZChild).slice(2).length -1) || (component.next === "true" && i !== Object.keys(topLevelZChild).slice(2).length -1 )){
                         // console.log('a')
-                        // mySplit = 0
-                        myTotal =  numberParse(topLevelZChild[x].css["width"])
+						myTotal =  numberParse(topLevelZChild[x].css["width"])
+
                         let a = keepCurrent.pop()
-                        keep.push(...keepCurrent)
+						keep.push(...keepCurrent)
                         keepLast = keepCurrent
                         .reduce((acc,y,j)=>{
-                            // console.log(y[0],topLevelZChild[y[0]].css["height"],acc)
+							// console.log(y[0],topLevelZChild[y[0]].css["height"],acc)
+
                             if(numberParse(topLevelZChild[y[0]].css["height"])   > acc[1]){
                                 acc = [y[0],numberParse(topLevelZChild[y[0]].css["height"])]
                             }
                             return acc
                         },["",0])[0]
-                        // console.log(keepCurrent)
-                        // console.log(keepLast)
                         keepCurrent = [[a[0],keepLast]]
                         let b = alignCurrent.pop()
                         align.push(alignCurrent)
@@ -235,7 +238,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     }
 
                     else if( (myTotal  < section.width  && i === Object.keys(topLevelZChild).slice(2).length -1) && ( component.next !== "true"  )  ){
-                        // mySplit = 0
+
                         // console.log('b')
                         myTotal =   numberParse(topLevelZChild[x].css["width"])
                         keep.push(...keepCurrent)
@@ -268,11 +271,16 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         align.push(alignCurrent)
                         alignCurrent = [b]
                         align.push(alignCurrent)
-                    }
+					}
+
+
+
                     //
 
 
-                })
+				})
+				// console.log(keep)
+
 
                 align
                 .forEach((x,i)=>{
@@ -512,7 +520,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 											//
 
 											// deterimine new spacing
-												component.keep = {groups:[{items:[],index:[]}]}
+												component.keep = {groups:[{items:[],index:[],oneExists:"false"}]}
 												// inspect the keep
 												inspectKeep({
 													zSymbols:"target",
@@ -529,31 +537,41 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 												// create the logic for the new groups
 												// length = 1 only means it has 0 and needs a new attach
 												// length = 2 means replace both per guidance of mapping
-												logicKeep({
+												console.log(component)
+												 logicKeep({
 													hook:currentGroup.hooks.component,
 													zSymbolsMap:"deltasMap",
 													component,
-													finalKeep
+													finalKeep,
+													zChild,
+
 												})
 												component.keep.groups.reverse()
 												.forEach((x:any,i)=>{
 													// update the finalKeep and zChildKeys
 													// finalKeep has one less then the others rmbr to add 1
+													let position = x.index[0]  || finalZChildKeys.length
+
 													finalZChildKeys.splice(
-														x.index[0]+1,0,
+														(position+1),0,
 														...x.newItems
 														.map((y:any,j)=>{
 															return y[0]
 														})
 													)
+													position = x.index[0] || finalKeep.length
 													finalKeep.splice(
-														x.index[0],0,
+														position,0,
 														...x.newItems
 													)
 													//
 
 												})
 												//
+												componentConsole.call(this,{
+													target:['formCO1'],
+													data:[component,finalKeep]
+												})?.()
 
 											//
 
@@ -621,12 +639,14 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 													// x.index should start where the 0 start but they start between
 														// 0,1 like add, simply subtract x.items.length to get the correct result
 
+													let position = x.index[0]  || finalZChildKeys.length
 													finalZChildKeys.splice(
-														x.index[0]+1-x.items.length,
+														(position+1)-x.items.length,
 														x.items.length
 													)
+													position = x.index[0] || finalKeep.length
 													finalKeep.splice(
-														x.index[0]-x.items.length,
+														position-x.items.length,
 														x.items.length,
 													)
 													//
@@ -678,11 +698,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         zChild,
                                         spacing: [null,
 											// ...Array.from(align[0],(x,i)=> {return 50}),
-											...Array.from(finalAlign.flat(),(x,i)=> {return section.stack}),
+											...Array.from(flatDeep(finalAlign,Infinity),(x,i)=> {return section.stack}),
 										],
                                         keep:finalKeep,
                                         type:'keepSomeAligned',
-                                        heightInclude:[null,...Array.from(finalAlign[0],(x,i)=> {return 'f'}),...Array.from(finalAlign.slice(1).flat(),(x,i)=> {return 't'})]
+                                        heightInclude:[null,...Array.from(finalAlign[0],(x,i)=> {return 'f'}),...Array.from( flatDeep(finalAlign.slice(1),Infinity),(x,i)=> {return 't'})]
 									}
 									// debugger
 									// console.log(stackObj)
@@ -853,114 +873,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     this.ref.detectChanges()
 
 
-                                    if(group !== undefined && deltaNodeSite !== undefined){
-
-                                        Object.keys(group)
-                                        .forEach((x,i)=>{
-
-
-                                            let myGroup = deltaNodeSite[x.valueOf()]
-                                            if(     myGroup !== undefined){
-
-                                                myGroup
-                                                .symbols
-                                                .forEach((y,j) => {
-
-
-                                                    // modifying according to increment
-                                                    if(zChild[y[0]]?.extras?.delta?.type === "increment" && j === deltaNodeSite[x.valueOf()].symbols.length -1){
-                                                        try{
-                                                            let counterString = zChild[y[0]].innerText.item.split("")
-                                                            zChild[y[0]].innerText.item.split("")
-                                                            .forEach((z,k)=>{
-                                                                if(+z !== NaN){
-                                                                    counterString.splice(k,1,+z +j+1)
-                                                                    zChild[y[0]].innerText.item = counterString.join("")
-                                                                    throw('e')
-                                                                }
-                                                            })
-                                                        }
-                                                        catch(e){
-                                                            this.ref.detectChanges()
-                                                            zChild[y[0]].extras.delta.type = "incrementDone"
-                                                        }
-                                                    }
-                                                    //
-
-                                                    // nested zChild have their own formatting scheme
-                                                    if(zChild[y[0]].extras?.judima?.formatIgnore ==="true"){
-                                                        return
-                                                    }
-                                                    //
-
-
-                                                    // same start
-                                                    y
-                                                    .forEach((z,k)=>{
-                                                        zChild[z].css["width"] = (
-                                                            .9 * numberParse(getComputedStyle(zChild["&#8353"].element).width)
-                                                        ).toString() + "px"
-                                                        this.ref.detectChanges()
-                                                        zChild[z].css["left"] = xPosition({
-                                                            target:numberParse(zChild[z].css["width"]),
-                                                            contain: numberParse(getComputedStyle(zChild["&#8353"].element).width)
-                                                        }).toString() + "px"
-                                                    })
-                                                    this.ref.detectChanges()
-                                                    //
-
-                                                    //serveral font shrink targets
-                                                    let dynamicMobileShrinkFonts =   y
-                                                    .reduce((acc,z,k)=>{
-                                                        if(zChild[z]?.extras?.appFocusFont?.mobileShrink  ==="true"){
-                                                            acc.push(z)
-                                                        }
-                                                        return acc
-                                                    },[])
-                                                    dynamicMobileShrinkFonts
-                                                    .forEach((z,k)=>{
-                                                        zChild[z].css["font-size"]  =(
-                                                            resize({
-                                                                default:numberParse(   zChild[z].cssDefault["font-size"]   ),
-                                                                containActual:numberParse(   getComputedStyle(   zChild["&#8353"].element   ).width   ),
-                                                                containDefault:540,
-                                                                type:'nonUniform',
-                                                                misc:[.052,.06],
-                                                                mediaQuery:[379,286,0]
-                                                            })
-                                                        ).toString() + "px"
-                                                    })
-                                                    this.ref.detectChanges()
-                                                    //
-
-                                                    //responsive height
-                                                    y
-                                                    .forEach((z,k)=> {
-                                                        if(!this.ryber.appCO0.metadata.component.responsiveHeightExclude.includes(zChild[z].bool )){
-                                                            zChild[z].css["height"] = null
-                                                            zChild[z].css["display"] = "table"
-                                                            this.ref.detectChanges()
-                                                            zChild[z].css["height"] =  (zChild[z].element.getBoundingClientRect().height).toString() + "px"
-                                                        }
-                                                    })
-                                                    //
-
-                                                stack({
-                                                    zChildKeys:y,
-                                                    ref: this.ref,
-                                                    zChild,
-                                                    spacing:section.stack,
-                                                    type:'simpleStack',
-                                                    heightInclude:[null,'t']
-                                                })
-                                                this.ref.detectChanges()
-
-                                                })
-
-                                            }
-
-                                        })
-                                    }
 
 
                                 }
@@ -980,26 +892,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                             ref:this.ref
                                         }
                                     })
-
-
-                                    // making sure we setup moving properly
-                                    let movingZAttachVal= cmsZKeys
-                                        .reduce((acc,x,i)=>{
-                                            if(zChild[x]?.extras?.deltaGroup !== undefined){
-                                                return x
-                                            }
-                                            return acc
-                                        })
-                                    let movingZKeys = cmsZKeys.slice(cmsZKeys.indexOf(movingZAttachVal)+1)
-                                    if(ii == 3){
-                                        // console.log(zChild)
-                                        // console.log(movingZAttachVal,movingZKeys)
-                                    }
-                                    //
-
-
-
-
 
 
 

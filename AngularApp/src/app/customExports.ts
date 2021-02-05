@@ -450,13 +450,13 @@ export function include (devObj){
 
 export function minMaxDelta(devObj){
 	/*calculates the 1d dimenensions of an entry of objects */
-	let {type } =devObj
+	let {type,items } =devObj
 	if(type === "identify"){
 		let delta:any = {
 			min:{value:Infinity,key:null},
 			max:{value:0,key:null},
 		}
-		devObj.items.forEach((x,i)=>{
+		items.forEach((x,i)=>{
 			let myMin = devObj.min(x)
 			let myMax = devObj.max(x)
 			if( myMin.value < delta.min.value){
@@ -656,11 +656,12 @@ export function ryberUpdate(
         signature?:string,
         spot?:number,
 		symbolStart?:Array<number>,
-		symbol:string
+		symbol:string,
+		quantity?:number
     }
-){
-    let {symbol,co,type,css,cssDefault,extras,bool,text,val,signature,spot}= devObj
-
+):string {
+	let {symbol,co,type,css,cssDefault,extras,bool,text,val,signature,spot,quantity}= devObj
+	quantity = quantity ?? 3
 
     let ryber = this
     if(ryber[co.valueOf()] === undefined){
@@ -847,11 +848,12 @@ export function ryberUpdate(
 
 
         // adding the zChild
-            subCO.quantity[index].push(3)
+
 
 			symbol = "&#" + ryber[co.valueOf()].generator[index].next().value
 			let utf8Symbol = String.fromCharCode(+symbol.split("&#")[1])
             if( spot === undefined   ){
+				subCO.quantity[index].push(quantity)
                 subCO.text[index].push(text)
                 subCO.val[index].push(val + " " + utf8Symbol)
                 subCO.bool[index].push(bool)
@@ -866,6 +868,7 @@ export function ryberUpdate(
             }
 
             else{
+				subCO.quantity[index].splice(spot,0,quantity)
                 subCO.text[index]  .splice(spot,0,text)
                 subCO.val[index]   .splice(spot,0,val + " " + utf8Symbol)
                 subCO.bool[index]  .splice(spot,0,bool)
@@ -1599,12 +1602,33 @@ let inspectKeep = (devObj)=>{
 }
 let logicKeep = (devObj) =>{
 
-	let {hook,zSymbolsMap,component,finalKeep} = devObj
+	let {hook,zSymbolsMap,component,finalKeep,zChild} = devObj
 	component.keep.groups
 	.forEach((x:any,i)=>{
 
 		if(hook === "add prepare"){
-			let attach = component.keep.inspect[x.index[0]][1] // attach for that item group
+			let attach = component.keep.inspect[x.index[0]]?.[1] // attach for that item group
+			if(attach === undefined){
+				let delta = minMaxDelta({
+					type:"identify",
+					items:component.target,
+					min:(item)=>{
+						return {
+							key:item,
+							value:numberParse(zChild[item].css["top"])
+						}
+					},
+					max:(item)=>{
+						return {
+							key:item,
+							value:numberParse(zChild[item].css["top"]) +
+							numberParse(zChild[item].css["height"])
+						}
+					}
+				})
+				attach =delta.max.key
+
+			}
 			x.newItems = x.items
 			.map((y:any,j)=>{
 				let newY = y
