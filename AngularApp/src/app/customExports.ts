@@ -1157,12 +1157,21 @@ export function stack(
             ).toString() + "px"
 			if(options?.overlapFix?.confirm === "true" && zChild[x]?.extras?.judima?.stack?.overlapFix !== "false"){
 
+				// determine all zChildren of the previous row
+					// the while loop finds when keep[x-n] !== keep[x], giving us the
+					// indictor for all the keys reverseLookup needs in order to work
+				let ii = i
+				while(keep[zChildKeys[i]] === keep[zChildKeys[ii--]]){
 
+				}
 				let reverseLookup = zChildKeys.slice(0,i+1).reverse()
 				reverseLookup = reverseLookup
 				.filter((y,j)=>{
-					return keep[zChildKeys[i-2]] === keep[reverseLookup[j]]
+					return keep[zChildKeys[ii]] === keep[reverseLookup[j]]
 				})
+				//
+
+
 				// console.log(x,keep[x],reverseLookup)
 
 
@@ -1182,6 +1191,7 @@ export function stack(
 
 				// replace the keep[x] and devObj with the one that clears the highest gap
 				if(overlapping.length > 0 && !reverseLookup.includes("&#8353")){
+					// console.log(x,keep[x],reverseLookup)
 					let delta = minMaxDelta({
 						type:"identify",
 						items:reverseLookup,

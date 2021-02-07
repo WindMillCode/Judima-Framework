@@ -731,16 +731,19 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 									// 	target:['formCO2'],
 									// 	data:[stackObj,finalZChildKeys]
 									// })?.()
+									// console.log(this.appTV)
+									// console.log(zChild)
 									let overlapFixFlag
 									;({keep,overlapFixFlag}=stack(stackObj))
-									if(overlapFixFlag === "true"){
+									// console.log("next")
+									this.ref.detectChanges()
+									while(overlapFixFlag === "true"){
 										stackObj.keep = keep
+										stackObj.options.overlapFix.flag = "false"
 										;({keep,overlapFixFlag}=stack(stackObj))
+										// console.log("next")
 										this.ref.detectChanges()
 									}
-
-
-
 
 									// align options
 									let xContainObj = {
@@ -754,13 +757,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         },
                                         type:'preserve',
 									}
-									// componentConsole.call(this,{
-									// 	target:['formCO2'],
-									// 	data:finalAlign
-									// })?.()
-									// if(this.appTV === "formCO2"){
-									// 	debugger
-									// }
+
 
 									;( {align } = xContain(xContainObj))
 									//

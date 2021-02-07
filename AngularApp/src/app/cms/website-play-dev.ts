@@ -278,7 +278,7 @@ let controls = [            {
 	"googleSheets": {},
 },]
 
-website.convertCMS = [ [
+website.convertCMS = [
 
     {
         "title": "development",
@@ -3262,7 +3262,7 @@ website.convertCMS = [ [
 		})
 	},
 
-][3] ]
+]
 
 
 export default website

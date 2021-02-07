@@ -37,6 +37,8 @@ Make sure panel borders realign properly on all mediaqueries
 
 ## Duplicates
 
+* MAJOR UPDATE, use overlayFix in stack, when you cant modify the keep by anything the browsers knows, such as the possible position in desktop mode, here when the app goes to desktop will determine which elements should be stacked after by seeing an overlap, determine which is the is the topmost on the previous line the next elements should follow and fix accordingly
+
 
 * the component.hook is a Set
 	* make sure mobile and desktop hooks are fired before saying add done, but fire once

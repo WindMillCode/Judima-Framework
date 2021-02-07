@@ -628,7 +628,7 @@ def stagingTest
 			end
 			add_button = add_button.concat add_button
 			add_button = add_button.concat remove_button
-			click_amnt = rand(250..300)
+			click_amnt = rand(1250..1300)
 			p click_amnt
 
 			click_amnt.times do |x|
@@ -644,7 +644,7 @@ def stagingTest
 				expect(error_indicator.text).not_to eq %{An error occured}
 			end
 
-			sleep 60000
+			sleep 600000000000
 		end
 
 	end
