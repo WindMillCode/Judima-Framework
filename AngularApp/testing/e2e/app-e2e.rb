@@ -611,11 +611,14 @@ def stagingTest
 		end
 	end
 	RSpec.feature %{staging}  do
-		scenario %{add and remove in all states desktop looks fine} do
+		scenario %{add and remove in all states desktop and mobile looks fine} do
 
+
+			widths = %w{300  1020  1510}.collect &:to_i
 			add_button = []
 			remove_button =  []
 			error_indicator = first %{.f_o_r_m_my-indicator}
+			error_message = first %{.f_o_r_m_my-indicator-message}
 
 			(all %{[class*="f_o_r_m_add"]}).each do |x|
 				add_button.push(x)
@@ -625,16 +628,23 @@ def stagingTest
 			end
 			add_button = add_button.concat add_button
 			add_button = add_button.concat remove_button
-			click_amnt = rand(550..600)
+			click_amnt = rand(250..300)
 			p click_amnt
 
 			click_amnt.times do |x|
 				p x
-				(add_button.sample).click
+				target_button = add_button.sample
+				width = widths.sample
+				p target_button[:class]
+				p target_button.find(:xpath, '..')[:class]
+				p error_message.text
+				p width
+				target_button.click
+				media_query :width => width
 				expect(error_indicator.text).not_to eq %{An error occured}
 			end
 
-			sleep 6000000
+			sleep 60000
 		end
 
 	end

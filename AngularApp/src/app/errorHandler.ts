@@ -18,11 +18,17 @@ export class MyErrorHandler implements ErrorHandler {
 	handleError(error) {
 		// do something with the exception
 		this.renderer2.setProperty(
+			document.querySelector(".f_o_r_m_my-indicator-message"),
+			"innerText",
+			error
+		)
+		this.renderer2.setProperty(
 			document.querySelector(".f_o_r_m_my-indicator"),
 			"innerText",
 			"An error occured"
 		)
 		console.error(error)
+
 
 	}
 }

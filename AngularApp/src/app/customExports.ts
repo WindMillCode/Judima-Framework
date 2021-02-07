@@ -962,6 +962,7 @@ export function stack(
         zChildCss?:string,
         heightInclude?: Array<string> | string,
         start?: number,
+		options?:any,
         yPosition?:{
             zChild:any,
             moving:{
@@ -974,21 +975,21 @@ export function stack(
     }
 ){
 
-    let {ref}= devObj
+    let {ref,options,zChild}= devObj
 
     if(devObj.zChildCss === undefined){
         devObj.zChildCss = 'true'
     }
 
-    if(devObj.zChildKeys !== undefined){
-        devObj
-        .zChildKeys = devObj
-        .zChildKeys
-        .filter((x,i)=>{
-            return devObj.zChild[x] !== undefined
-        })
-        // return
-    }
+    // if(devObj.zChildKeys !== undefined){
+    //     devObj
+    //     .zChildKeys = devObj
+    //     .zChildKeys
+    //     .filter((x,i)=>{
+    //         return devObj.zChild[x] !== undefined
+    //     })
+    //     // return
+    // }
 
     if(devObj.type === 'simpleStack'){
 
@@ -1066,14 +1067,14 @@ export function stack(
         if( devObj.keep === undefined){
             devObj.keep = []
         }
-        // devObj.keep = Object.fromEntries(devObj.keep)
+        let keep = Object.fromEntries(devObj.keep)
         // console.log(devObj.keep)
-        let keep  = {}
-        devObj
-        .keep
-        .forEach((x,i)=>{
-            keep[x[0].valueOf()] = x[1]
-        })
+        // let keep  = {}
+        // devObj
+        // .keep
+        // .forEach((x,i)=>{
+        //     keep[x[0].valueOf()] = x[1]
+        // })
         devObj
         .zChildKeys
         .forEach((x,i)=>{
@@ -1092,10 +1093,8 @@ export function stack(
             }
 
             let prev = devObj.zChildKeys[i-1]
-            // devObj.zChild[x].css['top'] = devObj.zChild[x].cssDefault['top']
-            // ref.detectChanges()
 
-            devObj.zChild[x].css['top'] = (
+            zChild[x].css['top'] = (
 
                 (
                     devObj.zChildCss === 'true' ?(()=>{
@@ -1151,15 +1150,69 @@ export function stack(
                         )
                     })()
                 )
-                +
-                (
-                    0
-                    // numberParse(devObj.zChild[x].cssDefault['top'])
-                )
+
 
 
 
             ).toString() + "px"
+			if(options?.overlapFix?.confirm === "true" && zChild[x]?.extras?.judima?.stack?.overlapFix !== "false"){
+
+
+				let reverseLookup = zChildKeys.slice(0,i+1).reverse()
+				reverseLookup = reverseLookup
+				.filter((y,j)=>{
+					return keep[zChildKeys[i-2]] === keep[reverseLookup[j]]
+				})
+				// console.log(x,keep[x],reverseLookup)
+
+
+
+				//determine if there is any overlapping occuring
+				let overlapping = reverseLookup
+				.filter((y:any,j)=>{
+					return (
+						numberParse(zChild[x].css.top) -
+						(
+							numberParse(zChild[y].css.top) +
+							numberParse(zChild [y].css.height)
+						)
+					)<= 0
+				})
+				//
+
+				// replace the keep[x] and devObj with the one that clears the highest gap
+				if(overlapping.length > 0 && !reverseLookup.includes("&#8353")){
+					let delta = minMaxDelta({
+						type:"identify",
+						items:reverseLookup,
+						min:(item)=>{
+							return {
+								key:item,
+								value:
+								(numberParse(zChild[item].css.top) +
+								numberParse(zChild [item].css.height) )
+							}
+						},
+						max:(item)=>{
+							return {
+								key:item,
+								value:
+								(numberParse(zChild[item].css.top) +
+								numberParse(zChild [item].css.height) )
+							}
+						}
+					})
+					keep[x] = delta.max.key
+					options.overlapFix.flag= "true"
+					// console.log(delta,keep[x])
+				}
+				//
+
+
+
+				//
+
+			}
             if(   devObj.xAlign !== undefined   ){
                 devObj.zChild[x].css['left'] = typeof(devObj.xAlign) === 'string' ?
                 devObj.xAlign :
@@ -1171,9 +1224,13 @@ export function stack(
             }
 
             // console.log(devObj)
-            devObj.ref.detectChanges()
+            ref.detectChanges()
 
         })
+		return {
+			keep:Object.entries(keep),
+			overlapFixFlag:options.overlapFix.flag
+		}
 
 
     }
@@ -1609,6 +1666,8 @@ let logicKeep = (devObj) =>{
 		if(hook.has("add prepare")){
 			let attach = component.keep.inspect[x.index[0]]?.[1] // attach for that item group
 			if(attach === undefined){
+
+
 				let delta = minMaxDelta({
 					type:"identify",
 					items:component.target,
@@ -1627,8 +1686,9 @@ let logicKeep = (devObj) =>{
 					}
 				})
 				attach =delta.max.key
-
+				console.log(attach)
 			}
+
 			x.newItems = x.items
 			.map((y:any,j)=>{
 				let newY = y

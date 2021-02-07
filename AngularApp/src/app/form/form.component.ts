@@ -608,9 +608,10 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 										// x.index should start where the 0 start but they start between
 											// 0,1 like add, simply subtract x.items.length to get the correct result
 
-										let position = x.index[0]  || finalZChildKeys.length
+										let position = x.index[0]+1  || finalZChildKeys.length
 										finalZChildKeys.splice(
-											(position+1)-x.items.length,
+											(position)-x.items.length,
+											// (position)-x.items.length,
 											x.items.length
 										)
 										position = x.index[0] || finalKeep.length
@@ -636,6 +637,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
 								})
+
 								//
 
 								// set the component and directive hooks to "remove done"
@@ -645,6 +647,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 								currentGroup.hooks.component.add("remove mobile done")
 								//
 							}
+							// fixes the craziness that is xContain
+							align = finalAlign
+							//
 
 							// console.log(this.ryber[this.appTV].metadata.deltaNode)
 							// console.log(component,currentGroup)
@@ -664,7 +669,10 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 						})
 
 
-
+						// componentConsole.call(this,{
+						// 	target:['formCO1','formCO2','formCO3'],
+						// 	data:[finalZChildKeys,zChild]
+						// })?.()
                         if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.area   ){
 
                             // element management
@@ -701,25 +709,36 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     // })
 									//
 
-
-
-									// console.log(zChild)
 									let stackObj = {
                                         zChildKeys:finalZChildKeys,
                                         ref: this.ref,
                                         zChild,
                                         spacing: [null,
-											// ...Array.from(align[0],(x,i)=> {return 50}),
 											...Array.from(flatDeep(finalAlign,Infinity),(x,i)=> {return section.stack}),
 										],
+										options:{
+											overlapFix:{
+												confirm:"true",
+												flag:"false"
+											}
+										},
                                         keep:finalKeep,
                                         type:'keepSomeAligned',
                                         heightInclude:[null,...Array.from(finalAlign[0],(x,i)=> {return 'f'}),...Array.from( flatDeep(finalAlign.slice(1),Infinity),(x,i)=> {return 't'})]
 									}
-									// debugger
-									// console.log(stackObj)
-									stack(stackObj)
-                                    this.ref.detectChanges()
+
+									// componentConsole.call(this,{
+									// 	target:['formCO2'],
+									// 	data:[stackObj,finalZChildKeys]
+									// })?.()
+									let overlapFixFlag
+									;({keep,overlapFixFlag}=stack(stackObj))
+									if(overlapFixFlag === "true"){
+										stackObj.keep = keep
+										;({keep,overlapFixFlag}=stack(stackObj))
+										this.ref.detectChanges()
+									}
+
 
 
 
@@ -735,6 +754,14 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         },
                                         type:'preserve',
 									}
+									// componentConsole.call(this,{
+									// 	target:['formCO2'],
+									// 	data:finalAlign
+									// })?.()
+									// if(this.appTV === "formCO2"){
+									// 	debugger
+									// }
+
 									;( {align } = xContain(xContainObj))
 									//
 
@@ -821,7 +848,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                             return acc
                                         },[])
 
-									console.log(zChild)
                                     mobileShrinkFonts
                                     .forEach((x,i)=>{
                                         zChild[x].css["font-size"]  =(

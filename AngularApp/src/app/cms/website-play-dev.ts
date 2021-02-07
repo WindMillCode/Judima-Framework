@@ -278,7 +278,7 @@ let controls = [            {
 	"googleSheets": {},
 },]
 
-website.convertCMS = [[
+website.convertCMS = [ [
 
     {
         "title": "development",
@@ -950,6 +950,20 @@ website.convertCMS = [[
 				},
                 "googleSheets": {},
 			},
+			{
+                "key": "my-indicator-message",
+				type:"text",
+                "value":"UPDATE",
+				"split": "9",
+				options:{
+					css:{
+						height:"200px",
+						color:"black"
+					}
+				},
+                "googleSheets": {},
+			},
+
 
 
 
@@ -3248,7 +3262,7 @@ website.convertCMS = [[
 		})
 	},
 
-][0]]
+][3] ]
 
 
 export default website

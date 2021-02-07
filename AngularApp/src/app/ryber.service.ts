@@ -97,6 +97,12 @@ export class RyberService {
 					return "false"
 				})(),
 				//
+				stack:{
+					// when false when an element below overlaps an element above stack will do  nothing to fix it
+						// when options.overlapFix === "true"
+					overlapFix:"true"
+					//
+				}
 			}
 			let appNest = {
 				confirm:nestGroup === undefined ? "false": "true",

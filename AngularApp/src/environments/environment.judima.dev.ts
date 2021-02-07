@@ -43,7 +43,7 @@ export const environment: any = {
         }
     },
     testingAcct:{
-		confirm:"false", //true for hubspot false for drive
+		confirm:"true", //true for hubspot false for drive
 		capybara: { // remove this if not doing unit or e2e tests impt
 			main:"true",
 			url:"gdp",

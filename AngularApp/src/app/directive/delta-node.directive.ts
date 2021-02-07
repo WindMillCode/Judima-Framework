@@ -148,7 +148,7 @@ export class DeltaNodeDirective {
 								let addEvent = (result:any)=>{
 
 									// clear this so the component can reset and format properly
-									console.log(val.hooks.component)
+									// console.log(val.hooks.component)
 									val.hooks.component.clear()
 									//
 
