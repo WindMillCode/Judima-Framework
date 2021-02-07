@@ -1606,7 +1606,7 @@ let logicKeep = (devObj) =>{
 	component.keep.groups
 	.forEach((x:any,i)=>{
 
-		if(hook === "add prepare"){
+		if(hook.has("add prepare")){
 			let attach = component.keep.inspect[x.index[0]]?.[1] // attach for that item group
 			if(attach === undefined){
 				let delta = minMaxDelta({

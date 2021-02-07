@@ -72,7 +72,7 @@ export class DeltaNodeDirective {
 								targets:[],
 								hooks:{
 									directive:"prepare",
-									component:"prepare",
+									component:new Set(),
 								},
 								add:[],
 								remove:[]
@@ -147,6 +147,11 @@ export class DeltaNodeDirective {
 								//
 								let addEvent = (result:any)=>{
 
+									// clear this so the component can reset and format properly
+									console.log(val.hooks.component)
+									val.hooks.component.clear()
+									//
+
 									// add the deltas by val.add.by times
 									Array(val.add.by).fill(null)
 									.forEach(()=>{
@@ -220,6 +225,9 @@ export class DeltaNodeDirective {
 								// remove concept logic
 								let removeEvent = (result:any)=>{
 
+									// clear this so the component can reset and format properly
+									val.hooks.component.clear()
+									//
 
 									// remove the deltas by val.remove.by times
 									Array(val.remove.by).fill(null)
@@ -228,7 +236,7 @@ export class DeltaNodeDirective {
 										// if there are no deltas to remove return and enable the button
 										if(val.deltas.length === 0){
 											this._enableButton()
-											val.hooks.component =val.hooks.directive = "remove done"
+											val.hooks.directive = "remove done"
 											return
 										}
 										//

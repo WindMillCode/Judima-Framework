@@ -16,10 +16,10 @@ export const environment: any = {
     component: {
 
         form: {
-            panelView:1, //should be a number use a positive number to view it
+            panelView:-1, //should be a number use a positive number to view it
             lifecycleHooks: false,
-            zChildView:1,
-			zChild:[1],
+            zChildView:-1,
+			zChild:[-1],
 			topLevelZChild:[-1],
             drag:[-1],
         },
@@ -46,7 +46,7 @@ export const environment: any = {
 		confirm:"false", //true for hubspot false for drive
 		capybara: { // remove this if not doing unit or e2e tests impt
 			main:"true",
-			url:"gdp"
+			url:"gdp",
 		}
     },
     sentry:{
@@ -72,7 +72,6 @@ export const environment: any = {
         gtag:"YOUR GTAG HERE"
     }
     //
-
 
 
 };

@@ -129,8 +129,8 @@ RSpec.configure do |config|
 
 	# my_drivers = %i{ edgeBrowser internetExplorer selenium }
 	# my_drivers = %i{ edgeBrowser }
-			# my_drivers = %i{ selenium_billy }
-			my_drivers = %i{ selenium}
+	# my_drivers = %i{ selenium_billy }
+	my_drivers = %i{ selenium}
 	# my_drivers = %i{ internetExplorer }
 	hosts = Hash.new
 	hosts[:dev] =  %{http://localhost:8000}
@@ -547,7 +547,7 @@ def stagingTest
 		end
 	end
 
-	RSpec.feature %{nested duplicates}  do
+	RSpec.feature %{nested duplicates}, :skip =>true  do
 		scenario %{when outside_duplicates >= 2 and inside_duplicates >  outside_duplicates app doesnt snap} do
 			# grab and click add buttons
 			outer_add_button = first %{.f_o_r_m_add}
@@ -611,7 +611,31 @@ def stagingTest
 		end
 	end
 	RSpec.feature %{staging}  do
+		scenario %{add and remove in all states desktop looks fine} do
 
+			add_button = []
+			remove_button =  []
+			error_indicator = first %{.f_o_r_m_my-indicator}
+
+			(all %{[class*="f_o_r_m_add"]}).each do |x|
+				add_button.push(x)
+			end
+			(all %{[class*="f_o_r_m_remove"]}).each do |x|
+				remove_button.push(x)
+			end
+			add_button = add_button.concat add_button
+			add_button = add_button.concat remove_button
+			click_amnt = rand(550..600)
+			p click_amnt
+
+			click_amnt.times do |x|
+				p x
+				(add_button.sample).click
+				expect(error_indicator.text).not_to eq %{An error occured}
+			end
+
+			sleep 6000000
+		end
 
 	end
 end

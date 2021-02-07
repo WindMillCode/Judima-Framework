@@ -37,6 +37,10 @@ Make sure panel borders realign properly on all mediaqueries
 
 ## Duplicates
 
+
+* the component.hook is a Set
+	* make sure mobile and desktop hooks are fired before saying add done, but fire once
+	* make sure on add and remove component hooks are properly reset
 * when the add and remove button are on the same line as the items to duplicates, the items to be moved dont know how to react properly this can be seen from movingKeep in desktop mediaQuery fix this
 * only supports, when the add/remove buttons are not on the same line as the target 
 	* we insert between last item that have 0 and first item that has 1
@@ -56,20 +60,25 @@ Make sure panel borders realign properly on all mediaqueries
 |around controls                                                           |         |       |            |
 |after controls                                                            |         |       |            |
 |before contols  with items before                                         |         |       |            |
+	 //works with items before on the same line
 |around controls    with items before                                      |         |       |            |
 |after controls  with items before                                         |         |       |            |
+	// works with items on same line
 |before contols  with items after                                          |         |       |            |
 |around controls with items after                                          |         |       |            |
 |after controls  with items after                                          |         |       |            |
+
 |before controls with items in betwewen                                    |         |       |            |
 |after controls with items in betwewen                                     |         |       |            |
-|around controls with items in betwewen                                    |         |       |            |
+|around controls with items in betwewen top                                |         |       |            |
+|around controls with items in betwewen bottom                             |         |       |            |
+|around controls with items in betwewen both                               |         |       |            |
+
 |before controls with items in betwewen and before                         |         |       |            |
 |before controls with items in betwewen and after                          |         |       |            |
-|before controls with items in betwewen and around                         |         |       |            |
+
 |after controls with items in betwewen and before                          |         |       |            |
 |after controls with items in betwewen and after                           |         |       |            |
-|after controls with items in betwewen and around                          |         |       |            |
 
 
 duplicates with nesting

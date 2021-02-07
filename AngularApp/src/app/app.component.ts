@@ -253,7 +253,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	ngAfterViewInit(){
-		console.log(this.ryber)
+		// console.log(this.ryber)
 	}
 
     ngOnDestroy() {

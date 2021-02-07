@@ -1,6 +1,284 @@
 let website:any = {}
 
-website.convertCMS = [
+let beforeItems  = [{
+	"key": "before-text",
+	type:"div",
+	"value":"Before Items",
+	"split": "3",
+	"height":"100",
+	options:{
+		css:{
+			"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
+		}
+	},
+	"googleSheets": {},
+},
+{
+	"key": "before-text",
+	type:"date",
+	"value":"Before Items",
+	"split": "3",
+	// "height":"1",
+	"googleSheets": {},
+},
+{
+	"key": "before-text",
+	type:"input",
+	"value":"Before Items",
+	"split": "3",
+	options:{
+		css:{
+			"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
+		}
+	},
+	// "height":"1",
+	"googleSheets": {},
+},
+{
+	"key": "before-text",
+	// "type": "gsap-cursor",
+	type:"bullet point",
+	"value":"Before Items",
+	"split": "3",
+	// "height":"1",
+	"googleSheets": {},
+}].slice((Math.random()*3)+1)
+let afterItems  = [{
+	"key": "after-text",
+	type:"div",
+	"value":"after Items",
+	"split": "3",
+	"next":"true",
+	"height":"100",
+	options:{
+		css:{
+			"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
+		}
+	},
+	"googleSheets": {},
+},
+{
+	"key": "after-text",
+	type:"date",
+	"value":"after Items",
+	"split": "3",
+	// "height":"1",
+	"googleSheets": {},
+},
+{
+	"key": "after-text",
+	type:"input",
+	"value":"after Items",
+	"split": "3",
+	options:{
+		css:{
+			"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
+		}
+	},
+	// "height":"1",
+	"googleSheets": {},
+},
+{
+	"key": "after-text",
+	// "type": "gsap-cursor",
+	type:"bullet point",
+	"value":"after Items",
+	"split": "3",
+	// "height":"1",
+	"googleSheets": {},
+}]
+let betweenItems  = [{
+	"key": "between-text",
+	type:"div",
+	"value":"between Items",
+	"split": "3",
+	"next":"true",
+	"height":"100",
+	options:{
+		css:{
+			"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
+		}
+	},
+	"googleSheets": {},
+},
+{
+	"key": "between-text",
+	type:"date",
+	"value":"between Items",
+	"split": "3",
+	// "height":"1",
+	"googleSheets": {},
+},
+{
+	"key": "between-text",
+	type:"input",
+	"value":"between Items",
+	"split": "3",
+	options:{
+		css:{
+			"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
+		}
+	},
+	// "height":"1",
+	"googleSheets": {},
+},
+{
+	"key": "between-text",
+	// "type": "gsap-cursor",
+	type:"bullet point",
+	"value":"between Items",
+	"split": "3",
+	// "height":"1",
+	"googleSheets": {},
+}]
+let group1 = [
+	{
+		"key": "my-input-counter",
+		"type": "count",
+		"value":"3.",
+		delta:{
+			"group":"outerDelta"
+		},
+		"split": "1",
+		"googleSheets": {},
+	},
+	{
+		"key": "my-input",
+		"type": "textbox",
+		"value":"setup",
+		delta:{
+			"group":"outerDelta"
+		},
+		"googleSheets": {},
+
+	},
+	{
+		"key": "my-div",
+		"type": "div",
+		"value":"",
+		"next":"true",
+		delta:{
+			"group":"outerDelta"
+		},
+		options:{
+			css:{
+				border:"30px dotted rgb(221,101,7)"
+			}
+		},
+		"left":"400",
+		"split": "3",
+		"height":"250",
+		"googleSheets": {},
+
+	},
+	{
+		"key": "my-div",
+		"type": "div",
+		"value":"",
+		delta:{
+			"group":"outerDelta"
+		},
+		options:{
+			css:{
+				border:"30px dotted rgb(121,101,117)"
+			}
+		},
+		"left":"800",
+		"split": "5",
+		"height":"150",
+		"googleSheets": {},
+
+	},
+]
+let group2 = [
+	{
+		"key": "my-input-counter",
+		"type": "count",
+		"value":"1.",
+		delta:{
+			"group":"outerDelta"
+		},
+		"split": "1",
+		"googleSheets": {},
+		"options":{
+			"css":{
+			}
+		}
+	},
+	{
+		"key": "my-input",
+		"type": "textbox",
+		"value":"setup",
+		delta:{
+			"group":"outerDelta"
+		},
+		"googleSheets": {},
+
+	},
+	{
+		"key": "my-div",
+		"type": "div",
+		"value":"",
+		"next":"true",
+		delta:{
+			"group":"outerDelta"
+		},
+		options:{
+			css:{
+				border:"20px dashed rgb(21,121,227)"
+			}
+		},
+		"left":"400",
+		"split": "3",
+		"height":"250",
+		"googleSheets": {},
+
+	},
+	{
+		"key": "my-div",
+		"type": "div",
+		"value":"",
+		delta:{
+			"group":"outerDelta"
+		},
+		options:{
+			css:{
+				border:"20px dashed rgb(221,161,217)"
+			}
+		},
+		"left":"800",
+		"split": "2",
+		"height":"150",
+		"googleSheets": {},
+
+	},
+]
+let controls = [            {
+	"key": "add",
+	"type": "button",
+	"value":"Add ",
+	delta:{
+		"group":"outerDelta",
+		"type":"add",
+		"by":"1"
+	},
+	"split": "3",
+	"googleSheets": {},
+},
+{
+	"key": "remove",
+	"type": "button",
+	"value":"Remove",
+	delta:{
+		"group":"outerDelta",
+		"type":"remove",
+		"by":"1"
+	},
+	"split": "6",
+	"googleSheets": {},
+},]
+
+website.convertCMS = [[
 
     {
         "title": "development",
@@ -42,6 +320,11 @@ website.convertCMS = [
 				type:"text",
                 // "value":"Items",
 				// "split": "3",
+				gsapCusor:{
+					"group":"a",
+					"copyPath":"true",
+
+				},
 				"height":"1",
 				"width":"1",
 				options:{
@@ -634,6 +917,45 @@ website.convertCMS = [
     },
 
     {
+        "title": "error indicator",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+				},
+                // "background": "rgb(155, 9, 104)",
+				"googleSheets": {},
+				options:{
+					css:{
+						// "background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						// "clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+            {
+                "key": "my-indicator",
+				type:"text",
+                "value":"No errors",
+				"split": "3",
+				options:{
+					css:{
+						height:"200px",
+						color:"black"
+					}
+				},
+                "googleSheets": {},
+			},
+
+
+
+        ]
+	},
+    {
         "title": "before controls",
         "type_slug": "forms",
         "metafields": [
@@ -660,24 +982,534 @@ website.convertCMS = [
 					}
                 }
 			},
-            // {
-            //     "key": "my-cursor",
-			// 	// "type": "gsap-cursor",
-			// 	type:"text",
-            //     // "value":"Items",
-			// 	// "split": "3",
-			// 	"height":"1",
-			// 	"width":"1",
-			// 	options:{
-			// 		css:{
-			// 			height:"200px"
-			// 		}
-			// 	},
-            //     "googleSheets": {},
-			// },
+
+            ...group1,
+
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "next":"true",
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+			},
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-before-controls"
+			return x
+		})
+	},
+    {
+        "title": "around controls",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+			...group1,
+
+			...controls,
+			...group2
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-around-controls"
+			return x
+		})
+    },
+    {
+        "title": "after controls",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+
+           ...controls,
+		   ...group1
+
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-after-controls"
+			return x
+		})
+	},
+
+    {
+        "title": "before contols  with items before",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+                // "background": "rgb(155, 9, 104)",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+			...beforeItems,
+            {
+                "key": "my-input-counter",
+                "type": "text",
+				"value":"1.",
+				"next":"true", //mabye math.random see what it can do
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "9",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            ...group1,
+			...controls
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-before-controls-items-before"
+			return x
+		})
+	},
+    {
+        "title": "around controls with items before",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+			...beforeItems,
             {
                 "key": "my-input-counter",
                 "type": "count",
+				"value":"1.",
+				"next":"true", //mabye math.random see what it can do
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(21,121,227)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(221,161,217)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+				next:"true",
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-around-controls-items-before"
+			return x
+		})
+	},
+	{
+        "title": "after controls items before",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+			...beforeItems,
+            {
+                "key": "add",
+                "type": "button",
+				"value":"Add ",
+				"next":"true",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-after-controls-items-before"
+			return x
+		})
+	},
+
+    {
+        "title": "before contols  with items after",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+                // "background": "rgb(155, 9, 104)",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+
+            {
+                "key": "my-input-counter",
+				"type": "count",
 				"value":"3.",
 				delta:{
 					"group":"outerDelta"
@@ -755,33 +1587,19 @@ website.convertCMS = [
 					"type":"remove",
 					"by":"1"
 				},
-                // "nestGroup":"view",
-                // "nestUnder":"A1",
-                // "nest":"B4",
                 "split": "3",
-                // "width":"300",
-                // "height":"250",
                 "googleSheets": {},
 			},
-            // {
-            //     "key": "more-text",
-            //     "type": "text",
-            //     "value":"More Items",
-            //     "split": "3",
-            //     // "width":"300",
-			// 	"height":"250",
-			// 	"fontSize":72,
-            //     "googleSheets": {},
-			// },
+			...afterItems,
 
 
         ] .map((x:any,i)=>{
-			x.key += "-before-controls"
+			x.key += "-before-controls-items-after"
 			return x
 		})
 	},
     {
-        "title": "around controls",
+        "title": "around controls with items after",
         "type_slug": "forms",
         "metafields": [
 
@@ -962,18 +1780,19 @@ website.convertCMS = [
                 "googleSheets": {},
 
 			},
+			...afterItems,
 
 
 
 
 
         ] .map((x:any,i)=>{
-			x.key += "-around-controls"
+			x.key += "-around-controls-items-after"
 			return x
 		})
-    },
-    {
-        "title": "after controls",
+	},
+	{
+        "title": "after controls items after",
         "type_slug": "forms",
         "metafields": [
 
@@ -999,7 +1818,196 @@ website.convertCMS = [
 					}
                 }
 			},
+            {
+                "key": "add",
+                "type": "button",
+				"value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
 
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+			...afterItems,
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-after-controls-items-after"
+			return x
+		})
+	},
+
+    {
+        "title": "before contols  with items between",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+                // "background": "rgb(155, 9, 104)",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+
+            {
+                "key": "my-input-counter",
+				"type": "count",
+				"value":"3.",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+			...betweenItems,
             {
                 "key": "add",
                 "type": "button",
@@ -1009,6 +2017,129 @@ website.convertCMS = [
 					"type":"add",
 					"by":"1"
 				},
+                "next":"true",
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+			},
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-before-controls-items-between"
+			return x
+		})
+	},
+    {
+        "title": "around controls with items between top",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"1.",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(21,121,227)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(221,161,217)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+			...betweenItems,
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+				next:"true",
                 "split": "3",
                 "googleSheets": {},
             },
@@ -1098,12 +2229,1026 @@ website.convertCMS = [
 
 
         ] .map((x:any,i)=>{
-			x.key += "-after-controls"
+			x.key += "-around-controls-items-after"
 			return x
 		})
-    },
+	},
+    {
+        "title": "around controls with items between bottom",
+        "type_slug": "forms",
+        "metafields": [
 
-].slice(1)
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"1.",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(21,121,227)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(221,161,217)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+				next:"true",
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+			...betweenItems,
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-around-controls-items-after"
+			return x
+		})
+	},
+    {
+        "title": "around controls with items between both",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"1.",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(21,121,227)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"20px dashed rgb(221,161,217)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+			...betweenItems,
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+				next:"true",
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+			...betweenItems,
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-around-controls-items-after"
+			return x
+		})
+	},
+	{
+        "title": "after controls items between",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+            {
+                "key": "add",
+                "type": "button",
+				"value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+			...betweenItems,
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-after-controls-items-after"
+			return x
+		})
+	},
+
+    {
+        "title": "before contols  with items between before",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+                // "background": "rgb(155, 9, 104)",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+			...beforeItems,
+            {
+                "key": "my-input-counter",
+				"type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+			...betweenItems,
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "next":"true",
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+			},
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-before-controls-items-between-before"
+			return x
+		})
+	},
+    {
+        "title": "before contols  with items between after",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+                // "background": "rgb(155, 9, 104)",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+            {
+                "key": "my-input-counter",
+				"type": "count",
+				"value":"3.",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+			...betweenItems,
+            {
+                "key": "add",
+                "type": "button",
+                "value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "next":"true",
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+			},
+			...afterItems
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-before-controls-items-between-after"
+			return x
+		})
+	},
+
+	{
+        "title": "after controls items between before",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+			...beforeItems,
+            {
+                "key": "add",
+                "type": "button",
+				"value":"Add ",
+				"next":"true",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+			...betweenItems,
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-after-controls-items-after"
+			return x
+		})
+	},
+	{
+        "title": "after controls items between after",
+        "type_slug": "forms",
+        "metafields": [
+
+            {
+                "key": "Body",
+                "type": "body",
+                "stack": "60",
+				// "height":"1000",
+				delta:{
+					"group":[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					],
+				},
+
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+					}
+                }
+			},
+            {
+                "key": "add",
+                "type": "button",
+				"value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+                "split": "3",
+                "googleSheets": {},
+            },
+            {
+                "key": "remove",
+                "type": "button",
+                "value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+                // "nestGroup":"view",
+                // "nestUnder":"A1",
+                // "nest":"B4",
+                "split": "3",
+                // "width":"300",
+                // "height":"250",
+                "googleSheets": {},
+			},
+			...betweenItems,
+            {
+                "key": "my-input-counter",
+                "type": "count",
+				"value":"3.",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+                "split": "1",
+                "googleSheets": {},
+                "options":{
+                    "css":{
+                    }
+                }
+			},
+            {
+                "key": "my-input",
+                "type": "textbox",
+                "value":"setup",
+				delta:{
+					"group":"outerDelta"
+				},
+                "googleSheets": {},
+
+			},
+            {
+                "key": "my-div",
+                "type": "div",
+				"value":"",
+				"next":"true",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(221,101,7)"
+					}
+				},
+				"left":"400",
+                "split": "3",
+                "height":"250",
+                "googleSheets": {},
+
+			},
+			{
+                "key": "my-div",
+                "type": "div",
+                "value":"",
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						border:"30px dotted rgb(121,101,117)"
+					}
+				},
+				"left":"800",
+                "split": "2",
+                "height":"150",
+                "googleSheets": {},
+
+			},
+			...afterItems
+
+
+
+
+
+        ] .map((x:any,i)=>{
+			x.key += "-after-controls-items-after"
+			return x
+		})
+	},
+
+][0]]
 
 
 export default website

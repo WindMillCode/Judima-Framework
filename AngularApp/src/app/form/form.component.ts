@@ -336,12 +336,10 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //
 
                 //init   buttons
-                let group = this.ryber[this.appTV.valueOf()].metadata.deltaGroup
                 // console.log(group)
 
                 //more init
                 let cmsZKeys = this.ryber[this.appTV.valueOf()].metadata.order
-                let {refresh} = this.ryber[this.appTV.valueOf()].metadata
                 //
 
                 // refresh (sigs and more in the fture) setup
@@ -428,6 +426,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             directivesZChild:zChild,
                             random:Math.random()
                         })
+
+						// dynnamic element management bootstrap
+						this._deltaNodeBootstrap({zChild});
+						//
+
                         eventDispatcher({
                             event:'resize',
                             element:window
@@ -458,15 +461,209 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             }
                         }
 
+						let {finalKeep,finalSpacing,finalAlign} =((devObj)=>{
+							let {current,groups,component}  =this.ryber[this.appTV].metadata.deltaNode
+							let currentGroup = groups[current?.group]
 
-                        // dynnamic element management bootstrap
-                        let  {deltaNodeSite} = this.ryber[this.appTV.valueOf()].metadata
-                        //
+							let {finalKeep,finalSpacing,finalAlign} =devObj
+							let {determineKeepGroups,inspectKeep,logicKeep} = deltaNode
 
 
-						// dynnamic element management bootstrap
-						this._deltaNodeBootstrap({zChild});
-						//
+
+							if(
+								current !== null &&
+								currentGroup.hooks.directive === "add prepare"
+							){
+
+								// set the component hook to "add prepare"
+								if(currentGroup.hooks.component.has("remove prepare")){
+									currentGroup.hooks.component.clear()
+								}
+								currentGroup.hooks.component.add("add prepare")
+								//
+
+								// deterimine new spacing
+									component.keep = {groups:[{items:[],index:[],oneExists:"false"}]}
+									// inspect the keep
+									inspectKeep({
+										zSymbols:"target",
+										component,
+										finalKeep
+									})
+									//
+
+									// determine groups to be duplicated and placed in different parts of keep
+									determineKeepGroups({component})
+									//
+
+
+									// create the logic for the new groups
+									// length = 1 only means it has 0 and needs a new attach
+									// length = 2 means replace both per guidance of mapping
+									// console.log(component)
+									logicKeep({
+										hook:currentGroup.hooks.component,
+										zSymbolsMap:"deltasMap",
+										component,
+										finalKeep,
+										zChild,
+
+									})
+									component.keep.groups.reverse()
+									.forEach((x:any,i)=>{
+										// update the finalKeep and zChildKeys
+										// finalKeep has one less then the others rmbr to add 1
+										let position = x.index[0]  || finalZChildKeys.length
+
+										finalZChildKeys.splice(
+											(position+1),0,
+											...x.newItems
+											.map((y:any,j)=>{
+												return y[0]
+											})
+										)
+										position = x.index[0] || finalKeep.length
+										finalKeep.splice(
+											position,0,
+											...x.newItems
+										)
+										//
+
+									})
+									//
+
+								//
+
+								//align setup
+								finalAlign .map((x:any,i)=>{
+									return x.map((y:any,j)=>{
+										return component.deltasMap[y]
+									})
+									.filter((y:any,j)=>{
+										return y !== undefined
+									})
+								})
+								.filter((x:any,i)=>{
+									return x.length !== 0
+								})
+								.forEach((x:any,i)=>{
+									finalAlign.push(x)
+								})
+								//
+
+
+								// set the component and directive hooks to "add done"
+								currentGroup.hooks.component.delete("add prepare")
+								currentGroup.hooks.directive = "add done"
+								currentGroup.hooks.component.add("add desktop done")
+								currentGroup.hooks.component.add("add mobile done")
+								//
+
+								//
+							}
+
+
+							else if(
+								current !== null &&
+								// !currentGroup.hooks.component.has("remove desktop done") &&
+								currentGroup.hooks.directive === "remove prepare"
+							){
+
+								// set the component hook
+								if(currentGroup.hooks.component.has("add prepare")){
+									currentGroup.hooks.component.clear()
+								}
+								currentGroup.hooks.component.add("remove prepare")
+								//
+
+
+								// deterimine new spacing
+								component.keep = {groups:[{items:[],index:[]}]}
+									// inspect the keep
+
+									inspectKeep({
+										zSymbols:"deltas",
+										component,
+										finalKeep
+									})
+									//
+
+									// determine groups to be removed which are in different pats of the keep
+									determineKeepGroups({
+										component
+									})
+									//
+
+									// remove the logic for the groups
+									logicKeep({
+										hook:currentGroup.hooks.component,
+										zSymbolsMap:"targetMap",
+										component,
+										finalKeep
+									})
+									component.keep.groups.reverse()
+									.forEach((x:any,i)=>{
+										// update the finalKeep and zChildKeys
+										// finalKeep has one less then the others rmbr to add 1
+										// x.index should start where the 0 start but they start between
+											// 0,1 like add, simply subtract x.items.length to get the correct result
+
+										let position = x.index[0]  || finalZChildKeys.length
+										finalZChildKeys.splice(
+											(position+1)-x.items.length,
+											x.items.length
+										)
+										position = x.index[0] || finalKeep.length
+										finalKeep.splice(
+											position-x.items.length,
+											x.items.length,
+										)
+										//
+
+									})
+									//
+
+								//
+
+								// align setup
+								finalAlign = finalAlign
+								.filter((x:any,i)=>{
+
+									return x
+									.map((y:any,j)=>{
+										return component.targetMap[y]
+									}).includes(undefined)
+
+
+								})
+								//
+
+								// set the component and directive hooks to "remove done"
+								currentGroup.hooks.component.delete("remove prepare")
+								currentGroup.hooks.directive = "remove done"
+								currentGroup.hooks.component.add("remove desktop done")
+								currentGroup.hooks.component.add("remove mobile done")
+								//
+							}
+
+							// console.log(this.ryber[this.appTV].metadata.deltaNode)
+							// console.log(component,currentGroup)
+
+							return{
+								finalKeep,
+								finalSpacing,
+								finalAlign
+							}
+
+
+
+						})({
+							finalKeep:keep,
+							finalSpacing:spacing,
+							finalAlign:align
+						})
+
+
 
                         if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.area   ){
 
@@ -493,202 +690,17 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
                                     //responsive height
-                                    staticZKeys
-                                    .forEach((x,i)=> {
-                                        if(!this.ryber.appCO0.metadata.component.responsiveHeightExclude.includes(zChild[x].bool )){
-                                            zChild[x].css["height"] = null
-                                            zChild[x].css["display"] = "table"
-                                            this.ref.detectChanges()
-                                            zChild[x].css["height"] =  (zChild[x].element.getBoundingClientRect().height).toString() + "px"
-                                        }
-                                    })
+                                    // staticZKeys
+                                    // .forEach((x,i)=> {
+                                    //     if(!this.ryber.appCO0.metadata.component.responsiveHeightExclude.includes(zChild[x].bool )){
+                                    //         zChild[x].css["height"] = null
+                                    //         zChild[x].css["display"] = "table"
+                                    //         this.ref.detectChanges()
+                                    //         zChild[x].css["height"] =  (zChild[x].element.getBoundingClientRect().height).toString() + "px"
+                                    //     }
+                                    // })
 									//
 
-									let {finalKeep,finalSpacing,finalAlign} =((devObj)=>{
-										let {current,groups,component}  =this.ryber[this.appTV].metadata.deltaNode
-										let currentGroup = groups[current?.group]
-
-										let {finalKeep,finalSpacing,finalAlign} =devObj
-										let {determineKeepGroups,inspectKeep,logicKeep} = deltaNode
-
-
-
-										if(current !== null && currentGroup.hooks.directive.includes("add prepare")){
-
-											// set the component hook to "add prepare"
-											currentGroup.hooks.component =currentGroup.hooks.directive
-											//
-
-											// deterimine new spacing
-												component.keep = {groups:[{items:[],index:[],oneExists:"false"}]}
-												// inspect the keep
-												inspectKeep({
-													zSymbols:"target",
-													component,
-													finalKeep
-												})
-												//
-
-												// determine groups to be duplicated and placed in different parts of keep
-												determineKeepGroups({component})
-												//
-
-
-												// create the logic for the new groups
-												// length = 1 only means it has 0 and needs a new attach
-												// length = 2 means replace both per guidance of mapping
-												console.log(component)
-												 logicKeep({
-													hook:currentGroup.hooks.component,
-													zSymbolsMap:"deltasMap",
-													component,
-													finalKeep,
-													zChild,
-
-												})
-												component.keep.groups.reverse()
-												.forEach((x:any,i)=>{
-													// update the finalKeep and zChildKeys
-													// finalKeep has one less then the others rmbr to add 1
-													let position = x.index[0]  || finalZChildKeys.length
-
-													finalZChildKeys.splice(
-														(position+1),0,
-														...x.newItems
-														.map((y:any,j)=>{
-															return y[0]
-														})
-													)
-													position = x.index[0] || finalKeep.length
-													finalKeep.splice(
-														position,0,
-														...x.newItems
-													)
-													//
-
-												})
-												//
-												componentConsole.call(this,{
-													target:['formCO1'],
-													data:[component,finalKeep]
-												})?.()
-
-											//
-
-											//align setup
-											finalAlign .map((x:any,i)=>{
-												return x.map((y:any,j)=>{
-													return component.deltasMap[y]
-												})
-												.filter((y:any,j)=>{
-													return y !== undefined
-												})
-											})
-											.filter((x:any,i)=>{
-												return x.length !== 0
-											})
-											.forEach((x:any,i)=>{
-												finalAlign.push(x)
-											})
-											//
-
-
-											// set the component and directive hooks to "add done"
-											currentGroup.hooks.directive = currentGroup.hooks.component =currentGroup.hooks.component.split(" ")[0] +" done"
-											//
-
-											//
-										}
-
-
-										else if(current !== null && currentGroup.hooks.directive.includes("remove prepare")){
-
-											// set the component hook
-											currentGroup.hooks.component =currentGroup.hooks.directive
-											//
-
-
-											// deterimine new spacing
-											component.keep = {groups:[{items:[],index:[]}]}
-												// inspect the keep
-
-												inspectKeep({
-													zSymbols:"deltas",
-													component,
-													finalKeep
-												})
-												//
-
-												// determine groups to be removed which are in different pats of the keep
-												determineKeepGroups({
-													component
-												})
-												//
-
-												// remove the logic for the groups
-												logicKeep({
-													hook:currentGroup.hooks.component,
-													zSymbolsMap:"targetMap",
-													component,
-													finalKeep
-												})
-												component.keep.groups.reverse()
-												.forEach((x:any,i)=>{
-													// update the finalKeep and zChildKeys
-													// finalKeep has one less then the others rmbr to add 1
-													// x.index should start where the 0 start but they start between
-														// 0,1 like add, simply subtract x.items.length to get the correct result
-
-													let position = x.index[0]  || finalZChildKeys.length
-													finalZChildKeys.splice(
-														(position+1)-x.items.length,
-														x.items.length
-													)
-													position = x.index[0] || finalKeep.length
-													finalKeep.splice(
-														position-x.items.length,
-														x.items.length,
-													)
-													//
-
-												})
-												//
-
-											//
-
-											// align setup
-											finalAlign = finalAlign
-											.filter((x:any,i)=>{
-
-												return x
-												.map((y:any,j)=>{
-													return component.targetMap[y]
-												}).includes(undefined)
-
-
-											})
-											//
-
-											// set the component and directive hooks to "add done"
-											currentGroup.hooks.directive = currentGroup.hooks.component =currentGroup.hooks.component.split(" ")[0] +" done"
-											//
-										}
-
-										// console.log(component,currentGroup)
-
-										return{
-											finalKeep,
-											finalSpacing,
-											finalAlign
-										}
-
-
-
-									})({
-										finalKeep:keep,
-										finalSpacing:spacing,
-										finalAlign:align
-									})
 
 
 									// console.log(zChild)
@@ -778,9 +790,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     //
 
 
+
+
                                     // same start
                                     // staticZKeys
-                                    cmsZKeys
+                                    finalZChildKeys
+									.slice(1)
                                     .forEach((x,i)=>{
                                         zChild[x].css["width"] = (
                                             .9 * numberParse(getComputedStyle(zChild["&#8353"].element).width)
@@ -798,7 +813,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     //serveral targets
 
 
-                                    let mobileShrinkFonts =   cmsZKeys
+                                    let mobileShrinkFonts =   finalZChildKeys
                                         .reduce((acc,x,i)=>{
                                             if(zChild[x]?.extras?.appFocusFont?.mobileShrink  ==="true"){
                                                 acc.push(x)
@@ -806,7 +821,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                             return acc
                                         },[])
 
-
+									console.log(zChild)
                                     mobileShrinkFonts
                                     .forEach((x,i)=>{
                                         zChild[x].css["font-size"]  =(
@@ -824,21 +839,21 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     //
 
                                     //responsive height
-                                    staticZKeys
-                                    .forEach((x,i)=> {
-                                        if(!this.ryber.appCO0.metadata.component.responsiveHeightExclude.includes(zChild[x].bool )){
-                                            zChild[x].css["height"] = null
-                                            zChild[x].css["display"] = "table"
-                                            this.ref.detectChanges()
-                                            zChild[x].css["height"] =  (zChild[x].element.getBoundingClientRect().height).toString() + "px"
-                                        }
-                                    })
+                                    // staticZKeys
+                                    // .forEach((x,i)=> {
+                                    //     if(!this.ryber.appCO0.metadata.component.responsiveHeightExclude.includes(zChild[x].bool )){
+                                    //         zChild[x].css["height"] = null
+                                    //         zChild[x].css["display"] = "table"
+                                    //         this.ref.detectChanges()
+                                    //         zChild[x].css["height"] =  (zChild[x].element.getBoundingClientRect().height).toString() + "px"
+                                    //     }
+                                    // })
                                     //
 
-                                    let responsiveMeasureTargets =cmsZKeys
+                                    let responsiveMeasureTargets =finalZChildKeys
                                     .reduce((acc,x,i)=>{
 
-                                        if(zChild[x].bool === "ta" || zChild[x].bool === "c"){
+                                        if( ["ta","c"].includes(zChild[x].bool)){
                                             acc.push(zChild[x])
                                         }
                                         return acc
@@ -860,10 +875,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     this.ref.detectChanges()
 
                                     stack({
-                                        zChildKeys:[
-                                            "&#8353",
-                                            ...cmsZKeys
-                                        ],
+                                        zChildKeys:finalZChildKeys,
                                         ref: this.ref,
                                         zChild,
                                         spacing:[null,100,section.stack],
@@ -938,6 +950,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
         })
+
         //
 
 		// help app.component.ts trigger and make the website using the FPM for each component

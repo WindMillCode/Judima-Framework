@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule,ErrorHandler } from '@angular/core';
+import {MyErrorHandler} from './errorHandler'
 import { HttpClientModule   }    from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { HammerModule} from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { FormComponent } from './form/form.component';
 // import { FormControlDirective } from './directive/form-control.directive';
-
+import {environment as env } from '../environments/environment'
 
 import { AgGridModule } from 'ag-grid-angular';
 import { NestDirective } from './directive/nest.directive';
@@ -22,6 +23,12 @@ import { WebVitalsDirective } from './directive/web-vitals.directive';
 import { DeltaNodeDirective } from './directive/delta-node.directive';
 import { GsapCursorDirective } from './directive/gsap-cursor.directive';
 
+
+let providers = []
+if(env.testingAcct.confirm === "true"){
+
+	providers = [{provide: ErrorHandler, useClass: MyErrorHandler}]
+}
 
 @NgModule({
   declarations: [
@@ -49,7 +56,7 @@ import { GsapCursorDirective } from './directive/gsap-cursor.directive';
     HttpClientModule,
     AgGridModule.withComponents([FormComponent])
   ],
-  providers: [],
+  providers,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -44,7 +44,7 @@ export class RyberService {
 
 
             let { mf } = devObj
-            let { webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nestUnder,nest,nestGroup,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
+            let { gsapCursor,webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nestUnder,nest,nestGroup,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
             let { left, top, height, width, split, next } = devObj.mf
 			let component = { left, top, height, width, split, next }
 
@@ -112,6 +112,11 @@ export class RyberService {
 				zSymbolNeeded:"true",
 				...delta
 			}
+            let appGsapCursor = {
+                confirm:gsapCursor?.group === undefined ? "false": "true",
+                ...gsapCursor,
+                co
+            }
 			//
 
 
@@ -796,7 +801,11 @@ export class RyberService {
                         appPrintFiles: {
                             printGroup,
                             type: 'signOut'
-						}
+						},
+						appGsapCursor:{
+                            ...appGsapCursor,
+							type:"button"
+                        }
                     }
                 })
 
@@ -804,167 +813,7 @@ export class RyberService {
 
             }
 
-            // else if (type === "add button") {
 
-            //     let css = {
-            //         width: '325px',
-            //         "font-size": "48px",
-            //         top: "0px",
-            //         // height:"75px",
-            //         // left: '400px',
-            //         "z-index": 4,
-            //         'background-color': background,
-            //         color,
-            //         "font-family": fonts,
-            //         "font-weight": italics,
-            //     }
-			// 	css = {...css,...options.css}
-			// 	let judima ={
-			// 		topLevelZChild:(()=>{
-
-			// 			// if the zChild is nested
-			// 			if([nestGroup,nestUnder].includes(undefined)){
-			// 				return "true"
-			// 			}
-			// 			//
-			// 			return "false"
-			// 		})(),
-			// 		// figure out whether the zChild should be incoporated into judima formatting logic
-			// 		formatIgnore:(()=>{
-
-			// 			// if the zChild is nested
-			// 			if(![nestGroup,nestUnder].includes(undefined)){
-			// 				return "true"
-			// 			}
-			// 			//
-			// 			return "false"
-			// 		})(),
-			// 		//
-			// 		...options.judima
-			// 	}
-
-            //     symbol = rUD({
-            //         co,
-            //         bool: 'b',
-            //         text: value,
-            //         val: key.split("_").reverse()[0] + ' a_p_p_Button',
-            //         css,
-            //         extras: {
-			// 			judima,
-			// 			component,
-            //             multipleAdd: deltaGroup,
-            //             type,
-            //             appNest: {
-            //                 confirm:nestGroup === undefined ? "false": "true",
-            //                 co,
-            //                 nestGroup,
-            //                 nestUnder,
-			// 				nest,
-			// 				zSymbolNeeded:"true"
-            //             }
-            //         }
-            //     })
-
-            //     if (this[co.valueOf()].metadata.deltaGroup === undefined && deltaGroup !== undefined) {
-            //         this[co.valueOf()].metadata.deltaGroup = {}
-            //     }
-
-            //     if (deltaGroup !== undefined) {
-            //         if (this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] === undefined) {
-            //             this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] = {}
-            //         }
-            //         this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()].add = symbol
-            //     }
-
-            // }
-
-            // else if (type === "remove button") {
-
-            //     let css = {
-            //         width: '325px',
-            //         "font-size": "48px",
-            //         top: "0px",
-            //         // height:"75px",
-            //         // left:'800px',
-            //         "z-index": 4,
-            //         'background-color': background,
-            //         color,
-            //         "font-family": fonts,
-			// 		"font-weight": italics,
-			// 		...options.css
-			// 	}
-			// 	let extend = {...options.extend}
-			// 	let judima ={
-			// 		topLevelZChild:(()=>{
-
-			// 			// if the zChild is nested
-			// 			if([nestGroup,nestUnder].includes(undefined)){
-			// 				return "true"
-			// 			}
-			// 			//
-			// 			return "false"
-			// 		})(),
-			// 		// figure out whether the zChild should be incoporated into judima formatting logic
-			// 		formatIgnore:(()=>{
-
-			// 			// if the zChild is nested
-			// 			if(![nestGroup,nestUnder].includes(undefined)){
-			// 				return "true"
-			// 			}
-			// 			//
-			// 			return "false"
-			// 		})(),
-			// 		//
-			// 		...options.judima
-			// 	}
-
-            //     // component.left = component?.left === undefined ? 900 : component.left
-
-            //     symbol = rUD({
-            //         co,
-            //         bool: 'b',
-            //         text: value,
-            //         val: key.split("_").reverse()[0] + ' a_p_p_Button',
-            //         css,
-            //         extras: {
-			// 			extend,
-			// 			judima,
-            //             component,
-			// 			type,
-			// 			appDeltaNode,
-            //             appWebRTC:{
-            //                 confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
-            //                 co,
-            //                 webRTC
-			// 			},
-            //             appPrintFiles: {
-            //                 printGroup,
-            //                 type: 'signOut'
-			// 			},
-            //             appNest: {
-            //                 confirm:nestGroup === undefined ? "false": "true",
-            //                 co,
-            //                 nestGroup,
-            //                 nestUnder,
-			// 				nest,
-			// 				zSymbolNeeded:"true"
-            //             }
-            //         }
-            //     })
-
-            //     // if (this[co.valueOf()].metadata.deltaGroup === undefined && deltaGroup !== undefined) {
-            //     //     this[co.valueOf()].metadata.deltaGroup = {}
-            //     // }
-
-            //     // if (deltaGroup !== undefined) {
-            //     //     if (this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] === undefined) {
-            //     //         this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()] = {}
-            //     //     }
-            //     //     this[co.valueOf()].metadata.deltaGroup[deltaGroup.valueOf()].remove = symbol
-            //     // }
-
-
-            // }
 
             else if (type === "submit button") {
 
@@ -1535,8 +1384,9 @@ export class RyberService {
 							...appDeltaNode,
 						},
 						appGsapCursor:{
-							confirm:"true",
-							amnt:Array(20).fill(null)
+							...appGsapCursor,
+							amnt:Array(20).fill(null),
+							type:"cursor"
 						},
                         appNest,
                     }
@@ -1964,7 +1814,7 @@ export class RyberService {
     appCO0: Partial<componentObject> = {
         metadata: {
             component:{
-                responsiveHeightExclude:["mat-spinner","ta","c","div","ag-grid","i","b","video","gsap-cursor"]
+                responsiveHeightExclude:["mat-spinner","ta","c","div","ag-grid","i","b","video","gsap-cursor","img"]
                 // should be if the item is nested
             },
             ES: [], //eventSubscriptions
