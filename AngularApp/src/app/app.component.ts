@@ -122,6 +122,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
 						}
                     }
+					co.metadata.nest= {
+						groups:{}
+					}
                     co.metadata.agGrid = {
                         zSymbol: new Subject<any>(),
                     }

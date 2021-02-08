@@ -627,6 +627,7 @@ def stagingTest
 				remove_button.push(x)
 			end
 			add_button = add_button.concat add_button
+			add_button = add_button.concat add_button
 			add_button = add_button.concat remove_button
 			click_amnt = rand(1250..1300)
 			p click_amnt

@@ -44,7 +44,7 @@ export class RyberService {
 
 
             let { mf } = devObj
-            let { gsapCursor,webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nestUnder,nest,nestGroup,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
+            let { gsapCursor,webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nest,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
             let { left, top, height, width, split, next } = devObj.mf
 			let component = { left, top, height, width, split, next }
 
@@ -80,7 +80,7 @@ export class RyberService {
 				topLevelZChild:(()=>{
 
 					// if the zChild is nested
-					if([nestGroup,nestUnder].includes(undefined)){
+					if([nest?.group ,nest?.under].includes(undefined)){
 						return "true"
 					}
 					//
@@ -90,7 +90,7 @@ export class RyberService {
 				formatIgnore:(()=>{
 
 					// if the zChild is nested
-					if(![nestGroup,nestUnder].includes(undefined)){
+					if(![nest?.group ,nest?.under].includes(undefined)){
 						return "true"
 					}
 					//
@@ -105,12 +105,9 @@ export class RyberService {
 				}
 			}
 			let appNest = {
-				confirm:nestGroup === undefined ? "false": "true",
+				confirm:nest?.group === undefined ? "false": "true",
 				co,
-				nestGroup,
-				nestUnder,
-				nest,
-				zSymbolNeeded:"true"
+				...nest,
 			}
 			let appDeltaNode ={
 				confirm:delta?.group === undefined ? "false": "true",
@@ -169,7 +166,11 @@ export class RyberService {
 							...appDeltaNode,
 							type:"body",
 						},
-                        appNest,
+                        appNest:{
+							type:"body",
+							...appNest,
+							confirm:"true"
+						},
                     }
                 })
             }

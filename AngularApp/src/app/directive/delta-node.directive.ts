@@ -47,20 +47,18 @@ export class DeltaNodeDirective {
 
 
 
-
-
 				this.subscriptions.push(
 					combineLatest([
-						this.ryber[this.extras.co.valueOf()].metadata.zChildrenSubject
+						ryber[co].metadata.zChildrenSubject
 					])
 					.pipe(first())
 					.subscribe((result) => {
 
 
 
-						this.zChildren = this.ryber[this.extras.co.valueOf()].metadata.zChildren
-						this.templateMyElements = this.ryber[this.extras.co.valueOf()].metadata.templateMyElements
-						this.ref =this.ryber[this.extras.co.valueOf()].metadata.ref
+						this.zChildren = ryber[co].metadata.zChildren
+						this.templateMyElements = ryber[co].metadata.templateMyElements
+						this.ref =ryber[co].metadata.ref
 
 
 
