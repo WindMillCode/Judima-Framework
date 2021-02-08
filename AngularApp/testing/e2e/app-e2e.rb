@@ -41,8 +41,7 @@ def select_option(wait: nil)
 end
 end
 Selenium::WebDriver.logger.level = :debug
-Selenium::WebDriver.logger.output = %{selenium.log}
-# Selenium::WebDriver.logger.output = 'C:\Users\oluod\My_Notebook\angular\v10\GNDC\CLT-GNDC\testing\issues\geckodriver_vv_option\default_profile_84_reset_vv_option.log'
+# Selenium::WebDriver.logger.output = %{selenium.log}
 Capybara.raise_server_errors = false
 Capybara.run_server = false
 Capybara.default_max_wait_time = 5
