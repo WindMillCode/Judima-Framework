@@ -278,6 +278,97 @@ let controls = [            {
 	"googleSheets": {},
 },]
 
+let secondOuterDelta = [
+	{
+		"key": "my-input-counter",
+		"type": "count",
+		"value":"3.",
+		"next":"true",
+		delta:{
+			"group":"secondOuterDelta"
+		},
+		"split": "1",
+		"googleSheets": {},
+		"options":{
+			"css":{
+			}
+		}
+	},
+	{
+		"key": "my-input",
+		"type": "textbox",
+		"value":"setup",
+		delta:{
+			"group":"secondOuterDelta"
+		},
+		"googleSheets": {},
+
+	},
+	{
+		"key": "my-div",
+		"type": "div",
+		"value":"",
+		"next":"true",
+		delta:{
+			"group":"secondOuterDelta"
+		},
+		options:{
+			css:{
+				border:"30px dotted rgb(221,101,7)"
+			}
+		},
+		"left":"400",
+		"split": "3",
+		"height":"250",
+		"googleSheets": {},
+
+	},
+	{
+		"key": "my-div",
+		"type": "div",
+		"value":"",
+		delta:{
+			"group":"secondOuterDelta"
+		},
+		options:{
+			css:{
+				border:"30px dotted rgb(121,101,117)"
+			}
+		},
+		"left":"800",
+		"split": "2",
+		"height":"150",
+		"googleSheets": {},
+
+	},
+
+	{
+		"key": "add",
+		"type": "button",
+		"value":"Add ",
+		delta:{
+			"group":"secondOuterDelta",
+			"type":"add",
+			"by":"1"
+		},
+		"next":"true",
+		"split": "2",
+		"googleSheets": {},
+	},
+	{
+		"key": "remove",
+		"type": "button",
+		"value":"Remove",
+		delta:{
+			"group":"secondOuterDelta",
+			"type":"remove",
+			"by":"1"
+		},
+		"split": "3",
+		"googleSheets": {},
+	},
+]
+
 
 let nesting_development =  {
 	"title": "nesting_development",
@@ -684,6 +775,18 @@ let  nesting_and_duplicate_development =     {
 					}
 				],
 			},
+			nest:{
+				"group":[
+					{
+						name:"webRTC",
+						type:"regular"
+					},
+					{
+						name:"schemas",
+						type:"regular"
+					}
+				],
+			},
 			"background": "rgb(155, 9, 104)",
 			"googleSheets": {},
 			options:{
@@ -873,15 +976,11 @@ let  nesting_and_duplicate_development =     {
 			"googleSheets": {},
 
 		},
-
-
-
 		{
 			"key": "localVideo",
 			"value": "",
 			"type": "video",
 			"split": "5",
-			"next":"true",
 			// "width":"420",
 			"height":500,
 			"googleSheets": {},
@@ -893,9 +992,11 @@ let  nesting_and_duplicate_development =     {
 			"key": "remoteVideo",
 			"value": "",
 			"type": "video",
-			"nestGroup":"webRTC",
-			"nestUnder":"A1",
-			"nest":"B1",
+			"nest":{
+				group:"webRTC",
+				name:"B1",
+				under:"A1"
+			},
 			"options":{
 				"css":{
 					width:"inherit",
@@ -916,8 +1017,11 @@ let  nesting_and_duplicate_development =     {
 			"key": "remoteVideoContainer",
 			"value": "",
 			"type": "div",
-			"nestGroup":"webRTC",
-			"nest":"A1",
+			"nest":{
+				group:"webRTC",
+				name:"A1",
+				// under:null
+			},
 			"options":{
 				"css":{
 					background:"purple",
@@ -932,97 +1036,7 @@ let  nesting_and_duplicate_development =     {
 				item:"remoteVideo"
 			}
 		},
-
-		{
-			"key": "my-input-counter",
-			"type": "count",
-			"value":"1.",
-			delta:{
-				"group":"secondOuterDelta"
-			},
-			"split": "1",
-			"googleSheets": {},
-			"options":{
-				"css":{
-				}
-			}
-		},
-		{
-			"key": "my-input",
-			"type": "textbox",
-			"value":"setup",
-			delta:{
-				"group":"secondOuterDelta"
-			},
-			"googleSheets": {},
-
-		},
-		{
-			"key": "my-div",
-			"type": "div",
-			"value":"",
-			delta:{
-				"group":"secondOuterDelta"
-			},
-			options:{
-				css:{
-					border:"30px dotted rgb(221,101,7)"
-				}
-			},
-			"next":"true",
-			"left":"400",
-			"split": "3",
-			"height":"250",
-			"googleSheets": {},
-
-		},
-		{
-			"key": "my-div",
-			"type": "div",
-			"value":"",
-			delta:{
-				"group":"secondOuterDelta"
-			},
-			options:{
-				css:{
-					border:"30px dotted rgb(121,101,117)"
-				}
-			},
-			"left":"800",
-			"split": "2",
-			"height":"150",
-			"googleSheets": {},
-
-		},
-
-		{
-			"key": "add",
-			"type": "button",
-			"value":"Add ",
-			delta:{
-				"group":"secondOuterDelta",
-				"type":"add",
-				"by":"1"
-			},
-			"next":"true",
-			"split": "3",
-			"googleSheets": {},
-
-		},
-		{
-			"key": "remove",
-			"type": "button",
-			"value":"Remove",
-			delta:{
-				"group":"secondOuterDelta",
-				"type":"remove",
-				"by":"1"
-			},
-			"split": "3",
-			"googleSheets": {},
-		},
-
-
+		...secondOuterDelta,
 		{
 			"key": "startButton",
 			"value": "Start",
@@ -1060,8 +1074,11 @@ let  nesting_and_duplicate_development =     {
 			"type": "div",
 			"value":"",
 			"background":"yellow",
-			"nestGroup":"schemas",
-			"nest":"A1",
+			"nest":{
+				group:"schemas",
+				name:"A1",
+				// under:null
+			},
 			"width":"1600",
 			"height":"700",
 			"googleSheets": {},
@@ -1080,10 +1097,11 @@ let  nesting_and_duplicate_development =     {
 			"type": "sub-heading",
 			"value":"Add me",
 			// "split": "3",
-			"nestGroup":"schemas",
-			"nestUnder":"A1",
-			"nest":"B1",
-			"width":"1600",
+			"nest":{
+				group:"schemas",
+				name:"B1",
+				under:"A1"
+			},
 			// "height":"250",
 			"googleSheets": {},
 			"text-align":"center",
@@ -1097,41 +1115,45 @@ let  nesting_and_duplicate_development =     {
 				}
 			}
 		},
-		// {
-		//     "key": "my-table",
-		//     "type": "simpleTable",
-		//     "value":"",
-		//     "nestGroup":"schemas",
-		//     "nestUnder":"A1",
-		//     "nest":"B2",
-		//     "background":"blue",
-		//     // "split": "3",
-		//     // "width":"300",
-		//     // "height":"250",
-		//     "googleSheets": {},
-		//     "options":{
-		//         "css":{
-		//             // "justify-self":"flex-start",
-		//             // "flex-grow":"1"
-		//             "height":"300px",
-		//             "width":"400px",
-		//             "order":1
-		//         }
-		//     }
-		// },
+		{
+		    "key": "my-table",
+		    "type": "simpleTable",
+		    "value":"",
+			"nest":{
+				group:"schemas",
+				name:"B1",
+				under:"A1"
+				// under:null
+			},
+		    "background":"blue",
+		    // "split": "3",
+		    // "width":"300",
+		    // "height":"250",
+		    "googleSheets": {},
+		    "options":{
+		        "css":{
+		            // "justify-self":"flex-start",
+		            // "flex-grow":"1"
+		            "height":"300px",
+		            "width":"400px",
+		            "order":1
+		        }
+		    }
+		},
 		{
 			"key": "my-counter",
 			"type": "count",
 			"value":"1.",
-			"nestGroup":"schemas",
+
 			delta:{
 				"group":"innerDelta",
 			},
-			"nestUnder":"C1",
-			"nest":"D1",
-			// "split": "3",
-			// "width":"300",
-			// "height":"250",
+			nest:{
+				group:"schemas",
+				name:"D1",
+				under:"C1"
+			},
+
 			"googleSheets": {},
 			"options":{
 				"css":{
@@ -1149,9 +1171,11 @@ let  nesting_and_duplicate_development =     {
 			"key": "my-input",
 			"type": "input",
 			"value":"",
-			"nestGroup":"schemas",
-			"nestUnder":"C1",
-			"nest":"D1",
+			nest:{
+				group:"schemas",
+				name:"D2",
+				under:"C1"
+			},
 			delta:{
 				"group":"innerDelta",
 			},
@@ -1174,15 +1198,14 @@ let  nesting_and_duplicate_development =     {
 			"key": "form-item-container",
 			"type": "div",
 			"value":"",
-			// "background":"red",
-			// "split": "3",
 			delta:{
 				"group":"innerDelta",
 			},
-			"nestGroup":"schemas",
-			"nest":"C1",
-			"nestUnder":"B3",
-			// "width":"1200",
+			nest:{
+				group:"schemas",
+				name:"C1",
+				under:"B3"
+			},
 			"height":"350",
 			"googleSheets": {},
 			"options":{
@@ -1194,7 +1217,7 @@ let  nesting_and_duplicate_development =     {
 					"height":"50px",
 					display:"flex",
 					"flex-direction":"row",
-					"overflow":"none"
+					"overflow":"visible"
 					// "justify-content":"space-between",
 					// "flex-wrap":"wrap"
 				}
@@ -1204,18 +1227,19 @@ let  nesting_and_duplicate_development =     {
 			"key": "inner-add",
 			"type": "button",
 			"value":"Add Another",
-			"nestGroup":"schemas",
+
 			delta:{
 				"group":"innerDelta",
 				type:"add",
 				by:"1"
 			},
-			"nestUnder":"B3",
-			"nest":"C2",
+			nest:{
+				group:"schemas",
+				name:"C2",
+				under:"B3"
+			},
+
 			"split": "3",
-			// "left":"0",
-			// "width":"300",
-			// "height":"250",
 			"googleSheets": {},
 			"options":{
 				"css":{
@@ -1238,12 +1262,11 @@ let  nesting_and_duplicate_development =     {
 				type:"remove",
 				by:"1"
 			},
-			"nestGroup":"schemas",
-			"nestUnder":"B3",
-			"nest":"C3",
-			// "split": "3",
-			// "width":"300",
-			// "height":"250",
+			nest:{
+				group:"schemas",
+				name:"C3",
+				under:"B3"
+			},
 			"googleSheets": {},
 			"options":{
 				"css":{
@@ -1262,9 +1285,11 @@ let  nesting_and_duplicate_development =     {
 			"value":"",
 			"background":"cyan",
 			// "split": "3",
-			"nestGroup":"schemas",
-			"nest":"B3",
-			"nestUnder":"A1",
+			nest:{
+				group:"schemas",
+				name:"B3",
+				under:"A1"
+			},
 			// "width":"1200",
 			"height":"350",
 			"googleSheets": {},
@@ -1280,17 +1305,23 @@ let  nesting_and_duplicate_development =     {
 					// "flex-wrap":"wrap"
 				}
 			}
-		},
+		}
+
+
+
+
 
 	] .map((x:any,i)=>{
-		x.key += "-nested-multiple"
+		x.key += "-nested-duplicate-multiple"
 		return x
 	})
 }
 
-website.convertCMS = [
 
-    nesting_development,
+
+let nesting_and_duplicate_testing =  [
+
+    nesting_and_duplicate_development,
     {
         "title": "error indicator",
         "type_slug": "forms",
@@ -3637,7 +3668,95 @@ website.convertCMS = [
 		})
 	},
 
-].slice(0,1)
+]
+
+
+let latch_dropdown_development = {
+	"title": "development",
+	"type_slug": "forms",
+	"metafields": [
+
+		{
+			"key": "Body",
+			"type": "body",
+			"stack": "60",
+			// "height":"1000",
+			delta:{
+
+			},
+			nest:{
+
+			},
+			"background": "rgb(155, 9, 104)",
+			"googleSheets": {},
+			options:{
+				css:{
+					"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+				}
+			}
+		},
+		{
+			"key": "my-cursor",
+			// "type": "gsap-cursor",
+			type:"text",
+			// "value":"Items",
+			// "split": "3",
+			gsapCusor:{
+				"group":"a",
+				"copyPath":"true",
+
+			},
+			"height":"1",
+			"width":"1",
+			options:{
+				css:{
+					height:"200px"
+				}
+			},
+			"googleSheets": {},
+		},
+		{
+			"key": "my-dropdown",
+			type:"dropdown",
+			value:"Select Item",
+			latch:{
+				type:"dropdown",
+				values:[
+					"Toronto",
+					"Anaheim",
+					"Minneapolis",
+					"Contregan"
+				]
+			},
+			"split": "3",
+			gsapCusor:{
+				"group":"a",
+				"copyPath":"true",
+
+			},
+			options:{
+				css:{
+					// height:"200px"
+				}
+			},
+			"googleSheets": {},
+		},
+
+
+
+
+
+
+	] .map((x:any,i)=>{
+		x.key += "-latch-dropdown"
+		return x
+	})
+}
+
+let latch_testing = [
+	latch_dropdown_development
+]
+website.convertCMS =  latch_testing
 
 
 export default website

@@ -120,6 +120,13 @@ export class RyberService {
                 ...gsapCursor,
                 co
             }
+			let appLatch = {
+				confirm: latch?.type === undefined ? 'false':'true',
+				zSymbolNeeded: "true",// zChildSymbol goes here
+				co,
+				...latch,
+				truSelectVal: value
+			}
 			//
 
 
@@ -443,12 +450,7 @@ export class RyberService {
                             googleSheets,
                             link: form?.link
                         },
-                        appLatch:{
-                            confirm:latch === undefined ?"false":"true",
-                            co,
-							latch,
-							zSymbolNeeded:"true",
-                        },
+						appLatch,
                         appNest,
                         component,
                         appDateClick: {
@@ -603,7 +605,7 @@ export class RyberService {
                 let css = {
                     'background-color':background,
                     color,
-					overflow:"auto",
+					overflow:"auto",  //has side effects turn to none if necessary
 					...options.css
                 }
 
@@ -820,8 +822,6 @@ export class RyberService {
 
             }
 
-
-
             else if (type === "submit button") {
 
                 let css = {
@@ -917,7 +917,6 @@ export class RyberService {
                     }
                 })
             }
-
             //
 
             else if (type === "image") { // for now a better use of divs?
@@ -1285,27 +1284,21 @@ export class RyberService {
                     extras: {
 						judima,
                         extend,
-                        appDropDown: {
-                            confirm: 'true',
-                            zSymbol: "",// zChildSymbol goes here
-                            co,
-                            values: newline,
-                            truSelectVal: value
-						},
+                        appLatch,
 						appDeltaNode,
                         appNest,
                         component,
                         type,
-                        appInputHandle: {
-                            googleSheets,
-                            confirm: 'true',
-                            type,
-                            zSymbolNeeded:"true",
-                            co,
-                            name: this[co.valueOf()].quantity[1][1].signature + " " + zCTgen.next().value,
-                            link: form?.link,
-                            required: form?.required !== undefined ? "dropdown" : "false",
-                        }
+                        // appInputHandle: {
+                        //     googleSheets,
+                        //     confirm: 'true',
+                        //     type,
+                        //     zSymbolNeeded:"true",
+                        //     co,
+                        //     name: this[co.valueOf()].quantity[1][1].signature + " " + zCTgen.next().value,
+                        //     link: form?.link,
+                        //     required: form?.required !== undefined ? "dropdown" : "false",
+                        // }
                     },
 
                 })

@@ -927,7 +927,7 @@ export let  ryberPerfect = (devObj)=> {
 			});
 			// remember we just cant overwrite the cssDefaults find the missing
 			// cssDefault
-			if(exclude.includes("cssDefault")){
+			if(exclude?.includes("cssDefault")){
 
 				z.ngCss
 				.forEach((w: any, h) => {
@@ -1696,7 +1696,6 @@ let logicKeep = (devObj) =>{
 					}
 				})
 				attach =delta.max.key
-				console.log(attach)
 			}
 
 			x.newItems = x.items

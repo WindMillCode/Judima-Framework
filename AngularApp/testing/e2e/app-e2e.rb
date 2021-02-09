@@ -40,7 +40,7 @@ def select_option(wait: nil)
     end
 end
 end
-Selenium::WebDriver.logger.level = :debug
+# Selenium::WebDriver.logger.level = :debug
 # Selenium::WebDriver.logger.output = %{selenium.log}
 Capybara.raise_server_errors = false
 Capybara.run_server = false
@@ -54,41 +54,40 @@ $client = nil
 
 Capybara.register_driver :internetExplorer do |app|
 
-
-Capybara::Selenium::Driver.new(
-    app,
-    :browser => :internet_explorer,
-    :options =>   Selenium::WebDriver::IE::Options.new({
-	:ignore_zoom_levels => true,
-	:ignore_zoom_setting => true,
-	# :browser_attach_timeout => 1,
-	:javascript_enabled => true,
-	:persistent_hover => true,
-	# :require_window_focus => true,
-	:ignore_protected_mode_settings =>true,
-	:ignore_zoom_level => false
-    })
-)
+	Capybara::Selenium::Driver.new(
+		app,
+		:browser => :internet_explorer,
+		:options =>   Selenium::WebDriver::IE::Options.new({
+		:ignore_zoom_levels => true,
+		:ignore_zoom_setting => true,
+		# :browser_attach_timeout => 1,
+		:javascript_enabled => true,
+		:persistent_hover => true,
+		# :require_window_focus => true,
+		:ignore_protected_mode_settings =>true,
+		:ignore_zoom_level => false
+			})
+	)
 
 end
 
 Capybara.register_driver :firefox_profile do |app|
-desired_caps = Selenium::WebDriver::Remote::Capabilities.firefox
-# desired_caps[:firefox_profile] = %{file:///C:/Users/oluod/My_Notebook/angular/v10/GNDC/CLT-GNDC/testing/e2e/firefox_profile}
-# desired_caps[:firefox_profile] = %{C:/Users/oluod/My_Notebook/angular/v10/GNDC/CLT-GNDC/testing/e2e/firefox_profile}
-# desired_caps[:firefox_profile] = %{capybara}
-service = Selenium::WebDriver::Service.firefox :args => [%{-vv}]
-options = Selenium::WebDriver::Firefox::Options.new :args => [%{-profile=C:\\Users\\oluod\\My_Notebook\\angular\\v10\\GNDC\\CLT-GNDC\\testing\\e2e\\firefox_profile}]
-# options.profile = Selenium::WebDriver::Firefox::Profile.new %{C:\\Users\\oluod\\My_Notebook\\angular\\v10\\GNDC\\CLT-GNDC\\testing\\e2e\\firefox_profile}
+	desired_caps = Selenium::WebDriver::Remote::Capabilities.firefox
+	# desired_caps[:firefox_profile] = %{file:///C:/Users/oluod/My_Notebook/angular/v10/GNDC/CLT-GNDC/testing/e2e/firefox_profile}
+	# desired_caps[:firefox_profile] = %{C:/Users/oluod/My_Notebook/angular/v10/GNDC/CLT-GNDC/testing/e2e/firefox_profile}
+	# desired_caps[:firefox_profile] = %{capybara}
+	service = Selenium::WebDriver::Service.firefox :args => [%{-vv}]
+	options = Selenium::WebDriver::Firefox::Options.new :args => [%{-profile=C:\\Users\\oluod\\My_Notebook\\angular\\v10\\GNDC\\CLT-GNDC\\testing\\e2e\\firefox_profile}]
+	# options.profile = Selenium::WebDriver::Firefox::Profile.new %{C:\\Users\\oluod\\My_Notebook\\angular\\v10\\GNDC\\CLT-GNDC\\testing\\e2e\\firefox_profile}
 
-options.log_level = %{trace}
-Capybara::Selenium::Driver.new(
-    app,
-    :browser => :ff,
-    :desired_capabilities => desired_caps,
-    :options =>   options,
-    :service => service
-)
+	options.log_level = %{trace}
+	Capybara::Selenium::Driver.new(
+			app,
+			:browser => :ff,
+			:desired_capabilities => desired_caps,
+			:options =>   options,
+			:service => service
+	)
 
 end
 
@@ -609,7 +608,7 @@ def stagingTest
 
 		end
 	end
-	RSpec.feature %{staging}  do
+	RSpec.feature %{duplicates}  do
 		scenario %{add and remove in all states desktop and mobile looks fine} do
 
 
@@ -646,6 +645,10 @@ def stagingTest
 
 			sleep 600000000000
 		end
+
+	end
+
+	RSpec.feature %{staging}  do
 
 	end
 end

@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, Vie
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest, Observable } from 'rxjs';
 import { deltaNode, eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren } from '../customExports'
-import { catchError, delay } from 'rxjs/operators'
+import { catchError, delay,first } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -18,119 +18,42 @@ export class LatchDirective {
     co:any;
     zChildren: any;
     zSymbols:Array<string /*zSymbol*/>
-    newZChildren:Subscription
-    moveWithTarget:Subscription
 	templateMyElements:any
 	subscriptions:Array<Subscription> = []
-    ref:ChangeDetectorRef
 
     constructor(
         private el: ElementRef,
         private http: HttpClient,
         private renderer: Renderer2,
-        private ryber: RyberService
+        private ryber: RyberService,
+		private ref:ChangeDetectorRef
     ) { }
 
-    @HostListener('blur',['$event']) onBlur(event){
+    @HostListener('click',['$event']) onBlur(event){
         if(this.extras?.confirm === "true"){
-            let {zChildren,co} = this
-			let zChild = zChildren[this.extras.zSymbol]
-			let rUD = ryberUpdateFactory({ryber:this.ryber})
-            if(zChild.element.value === "REPEAT"){
 
-                if(this.zSymbols === undefined){
-                    // try to add elements to the dom
-                        //  the first element, should be the element we want to toggle out
-                    this.zSymbols = [
-                        rUD({
-                            co,
-                            bool: 'div',
-                            val: 'mode-handler a_p_p_Nester',
-                            css:{
-                                height:"600px",
-                                width: "1200px",
-                                // background:"yellow",
-                                border:"10px dotted blue",
-                                "z-index":zChildren[this.extras.zSymbol].css["z-index"] + 1,
-                                "display":"flex"
-                            },
-                            extras:{
-                                judima:{
-                                    format:"false"
-                                },
-                                appNest: {
-                                    confirm:"true",
-                                    co,
-                                    nestGroup:"modeQuestions" + this.extras.zSymbol,
-                                    nest:"A1",
-                                }
-                            }
-                        }),
-                        rUD({
-                            co,
-                            bool: 'b',
-                            text:'Add Input',
-                            val: 'add-value a_p_p_Button',
-                            css:{
-                                "z-index":zChildren[this.extras.zSymbol].css["z-index"] + 1,
-                                "height":"100px",
-                                "width":"200px"
-                            },
-                            extras:{
-                                judima:{
-                                    format:"false"
-                                },
-                                appNest: {
-                                    confirm:"true",
-                                    co,
-                                    nestGroup:"modeQuestions" + this.extras.zSymbol,
-                                    nestUnder:"A1",
-                                    nest:"B1",
-                                }
-                            }
-                        }),
-                        rUD({
-                            co,
-                            bool: 'b',
-                            text:'Remove Input',
-                            val: 'remove-value a_p_p_Button',
-                            css:{
-                                "z-index":zChildren[this.extras.zSymbol].css["z-index"] + 1,
-                                "height":"100px",
-                                "width":"200px"
-                            },
-                            extras:{
-                                judima:{
-                                    format:"false"
-                                },
-                                appNest: {
-                                    confirm:"true",
-                                    co,
-                                    nestGroup:"modeQuestions" + this.extras.zSymbol,
-                                    nestUnder:"A1",
-                                    nest:"B1",
-                                }
-                            }
-                        })
-                    ]
-                    // console.log(this.zSymbols,this.ryber[co])
 
-                }
+			if(this.extras.type === "dropdown"){
 
-            }
+				let {zSymbols,zChildren,ref} = this
 
-            //FIXME, ViewChildren has not changed yet it somehow manages to fire
-            else{
-                // console.log("trying to trigger")
-                // this.templateMyElements.notifyOnChanges()
-            }
-            //trigger directivesSendData
-            //let component.ts know that we have a new zChild
-            this.ryber[co].metadata.latch.updateZChild.next({
-                zSymbol:this.zSymbols
-            })
-            //
-            //
+
+				if(this.extras.state === "open"){
+					this._dropdownStateClosed({zSymbols, zChildren, ref});
+				}
+
+				if(this.extras.state === "closed"){
+
+					this._dropdownStateOpened({zSymbols, zChildren,ref});
+
+				}
+
+				// toggle between different states
+				this.extras.state = this.extras.state === "open" ? "closed":"open"
+				//
+
+			}
+
 
         }
     }
@@ -142,71 +65,147 @@ export class LatchDirective {
         if (this.extras?.confirm === 'true') {
             // console.log(this.extras)
             // console.log(this.ryber)
-            this.co = this.extras.co
-            this.newZChildren = this.ryber[this.extras.co.valueOf()].metadata.zChildrenSubject
-            .subscribe((devObj)=>{
-                if(devObj.templateMyElements !== undefined){
-                    this.templateMyElements = devObj.templateMyElements
-                }
-                if(devObj.ref !== undefined){
-                    this.ref = devObj.ref
-                }
-                this.zChildren = this.ryber[this.extras.co.valueOf()].metadata.zChildren
-                // console.log(this.zChildren)
+			let {ryber,ref,zChildren} = this
+			let rUD = ryberUpdateFactory({ryber})
+            let co = this.co = this.extras.co
+
+            this.subscriptions.push(
+				ryber[co].metadata.zChildrenSubject
+				.pipe(first())
+				.subscribe((devObj)=>{
+
+					let {templateMyElements} = devObj
+					zChildren = ryber[co].metadata.zChildren
 
 
-                //FIX ME css and cssDefault keep getting updated
-                if(this.zSymbols !== undefined){
-                    if(this.zChildren[this.extras.zSymbol].element.value === "REPEAT"){
-                        this.zSymbols
-                        .forEach((x:any,i)=>{
-                            this.zChildren[x].css.display =
-                            this.zChildren[x].cssDefault.display === undefined ?
-                            "block":
-                            this.zChildren[x].cssDefault.display
-                        })
-                    }
+					if(this.extras.type === "dropdown"){
+						let zChild = zChildren[this.extras.zSymbol]
+						this.zSymbols = this.extras.values
+						.map((x:any,i)=>{
+							let extras = objectCopy(zChild.extras)
+							let css = objectCopy(zChild.css)
 
-                    //hide the item from the dom
-                        //FIX ME for nested, get the TLD
-                    else if(this.zSymbols !== undefined){
-                        this.zSymbols
-                        .forEach((x:any,i)=>{
-                            this.zChildren[x].css.display = "none"
-                        })
+							// we can also use spread syntax to copy function, but make sure all object they work on are parameters
+							extras.judima.formatIgnore = "true"
+							extras.judima.topLevelZChild = "false"
+							extras.appLatch.confirm = "false"
+							css["background-color"] = "blue"
 
-                    }
-                    //
+							// there is no additional latching that needs to be done
+								// these options are not to be duplicated
+								// they will latch after the select element is nested
+							delete extras.appDeltaNode
+							delete extras.appNest
+							//
 
-                }
-                //
-			})
-			this.subscriptions.push(this.newZChildren)
-            this.moveWithTarget = this.ryber[this.co].metadata.ngAfterViewInitFinished
-            .pipe(
-                catchError((error)=>{
-                    return of(error)
-                }),
-            ).subscribe((result:any)=>{
-                // attempt to place element in stack
-                if(this.zSymbols !== undefined){
-                    let align = [[this.extras.zSymbol,this.zSymbols[0]]]
-                    //FIX ME, make more responsive for several TLD
-                    this.zChildren[this.zSymbols[0]].css.top =(
-                        numberParse(this.zChildren[this.extras.zSymbol].css.top) +
-                        numberParse(this.zChildren[this.extras.zSymbol].css.height)
-                    ).toString() + "px"
-                    this.zChildren[this.zSymbols[0]].css.left =this.zChildren[this.extras.zSymbol].css.left
-                    this.ref.detectChanges()
-                    //
+							return rUD({
+								quantity:4,
+								symbol:this.extras.zSymbol,
+								co,
+								bool:zChild.bool,
+								css,
+								cssDefault:objectCopy(zChild.cssDefault),
+								text:x,
+								extras:extras,
+								val:zChild.val
+							})
 
-                }
-                //
-			})
-			this.subscriptions.push(this.moveWithTarget)
+						})
+						ref.detectChanges()
+						this.extras.state = this.extras.state  || "closed"
+
+
+						// let the component know we have new elements on the DOM
+						ryber[co].metadata.latch.updateZChild.next({
+						})
+						//
+					}
+
+					// anyway to destructure this?
+					this.zChildren = zChildren
+					//
+				})
+			)
+			// move with target
+            this.subscriptions.push(
+				combineLatest([
+					// if this causes issue seperate the observables and
+					// use one to refresh the zChildren
+					ryber[co].metadata.zChildrenSubject,
+					this.ryber[this.co].metadata.ngAfterViewInitFinished
+				])
+				.pipe(
+					catchError((error)=>{
+						return of(error)
+					}),
+				)
+				.subscribe((result:any)=>{
+
+					this.zChildren = result[0].directivesZChild
+					let {zSymbols,zChildren} = this
+
+					if(this.extras.type === "dropdown"){
+
+						if(this.extras.state === "closed"){
+
+							// place options behind select element
+							this._dropdownStateClosed({zSymbols, zChildren, ref});
+							//
+						}
+
+						else if(this.extras.state === "open"){
+							this._dropdownStateOpened({zSymbols, zChildren,ref});
+						}
+
+					}
+				})
+			)
+			//
+
         }
     }
 
+
+	private _dropdownStateOpened(devObj:{zSymbols: string[], zChildren: any,ref:ChangeDetectorRef}) {
+		let {zSymbols, zChildren,ref} = devObj
+		zSymbols
+		.forEach((x: any, i) => {
+			zChildren[x].css.height = zChildren[this.extras.zSymbol].css.height;
+			zChildren[x].css.width = zChildren[this.extras.zSymbol].css.width;
+			zChildren[x].css.left = zChildren[this.extras.zSymbol].css.left;
+		});
+		stack({
+			zChildKeys:[
+				this.extras.zSymbol,
+				...zSymbols],
+			ref,
+			zChild:zChildren,
+			spacing:[null,0],
+			type:'simpleStack',
+			heightInclude:['t']
+		})
+		ref.detectChanges
+	}
+
+	private _dropdownStateClosed(devObj:{zSymbols: string[], zChildren: any,ref:ChangeDetectorRef}) {
+
+		let {zSymbols, zChildren, ref} = devObj
+		let greatestZIndex = -Infinity;
+		zSymbols
+		.forEach((x: any, i) => {
+			zChildren[x].css.height = zChildren[this.extras.zSymbol].css.height;
+			zChildren[x].css.width = zChildren[this.extras.zSymbol].css.width;
+			zChildren[x].css.top = zChildren[this.extras.zSymbol].css.top;
+			zChildren[x].css.left = zChildren[this.extras.zSymbol].css.left;
+			if (zChildren[x].css["z-index"] > greatestZIndex) {
+				greatestZIndex = zChildren[x].css["z-index"];
+			}
+
+		});
+
+		zChildren[this.extras.zSymbol].css["z-index"] = greatestZIndex + 1;
+		ref.detectChanges();
+	}
 
     ngOnDestroy() {
         if (this.extras?.confirm === 'true') {

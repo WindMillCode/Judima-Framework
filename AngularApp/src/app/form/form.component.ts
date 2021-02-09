@@ -66,7 +66,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 				}
 
 
-
                 // drags elements for you
                 if(env.component.form?.drag?.includes( ii)){
                     this.toPlace(zChild)
@@ -371,16 +370,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     event:'zChildUpdate',
                     of:combineLatest([
                         this.ryber[this.appTV].metadata.latch.updateZChild,
-                        this.templateMyElements.changes
                     ])
-                    .pipe(
-                        delay(2)
-                    )
-                    .subscribe((a)=>{
+                    .subscribe((result)=>{
 
                         //fix the component object before continuing
                         let co = this.ryber[this.appTV]
-						ryberPerfect({co});
+						ryberPerfect({co,...result});
 
                         zChild = this.zChildInit()
                         topLevelZChild = this._topLevelZChildInit()
@@ -407,8 +402,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     typesES:this.typesES,
                     event:'zChildUpdate',
                     of:combineLatest([
-
-						// this.templateMyElements.changes,
 						this.ryber[this.appTV].metadata.deltaNode.updateZChild
 					])
                     .subscribe((result)=>{
@@ -708,7 +701,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     //     }
                                     // })
 									//
-
+									keep = finalKeep
 									let stackObj = {
                                         zChildKeys:finalZChildKeys,
                                         ref: this.ref,
@@ -727,16 +720,10 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         heightInclude:[null,...Array.from(finalAlign[0],(x,i)=> {return 'f'}),...Array.from( flatDeep(finalAlign.slice(1),Infinity),(x,i)=> {return 't'})]
 									}
 
-									// componentConsole.call(this,{
-									// 	target:['formCO2'],
-									// 	data:[stackObj,finalZChildKeys]
-									// })?.()
-									// console.log(this.appTV)
-									// console.log(zChild)
-									let overlapFixFlag
-									;({keep,overlapFixFlag}=stack(stackObj))
-									// console.log("next")
-									this.ref.detectChanges()
+									// just in case another feature cant properly configure the stack
+									// overlapFix will help fix whats broken
+									//  if issues doe the first call outside the while loop and deinitalize overlapFixFlag
+									let overlapFixFlag = "true"
 									while(overlapFixFlag === "true"){
 										stackObj.keep = keep
 										stackObj.options.overlapFix.flag = "false"
@@ -744,13 +731,14 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 										// console.log("next")
 										this.ref.detectChanges()
 									}
+									//
 
 									// align options
 									let xContainObj = {
                                         preserve:{
                                             align:finalAlign,
                                             // zChild,
-                                            zChild:latchZChild === undefined ? zChild:latchZChild,
+                                            zChild:zChild,
                                             ref:this.ref,
                                             width:section.width,
                                             left:section.left
@@ -1152,11 +1140,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         .forEach((x,i)=>{
             if(directivesZChild[x].extras !== undefined && directivesZChild[x].extras !== null ){
 
-                if( directivesZChild[x].extras.appDropDown !== undefined){
-                    if(   directivesZChild[x].extras.appDropDown.change !== "dropdowns"){
-                        directivesZChild[x].extras.appDropDown.zSymbol = x
-                    }
-                }
+
                 // if zSymbolNeeded is "true" provide the zSymbol
                     // above is deprecated
                 Object.values(directivesZChild[x].extras)

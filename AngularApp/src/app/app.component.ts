@@ -111,7 +111,7 @@ export class AppComponent implements OnInit, OnDestroy {
                     co.metadata.formData = {}
                     co.metadata.refresh = {}
                     co.metadata.latch = {
-                        updateZChild : new Subject<any>(),
+                        updateZChild : new ReplaySubject<any>(),
                         zChild:{}
 					}
                     co.metadata.deltaNode = {

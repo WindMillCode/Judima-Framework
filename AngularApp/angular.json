@@ -122,7 +122,7 @@
                         "port": 8000,
                         "liveReload": true,
 						"hmr": false,
-						"proxyConfig": "src/proxy.conf.json"
+						// "proxyConfig": "src/proxy.conf.json"
                     },
                     "configurations": {
                         "production": {

@@ -21,7 +21,7 @@ export const environment: any = {
             zChildView:-1,
 			zChild:[-1],
 			topLevelZChild:[-1],
-            drag:[-1],
+            drag:[0],
         },
         dialog: {
             panelView: -1,

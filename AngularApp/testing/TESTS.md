@@ -23,17 +23,17 @@ Make sure panel borders realign properly on all mediaqueries
 * things work in tandem
 * formmatting for multipleGroup top leve zChild and nested might not be supported, avoid having nested and top level in the same multipleGroup
 
+* for nesting to work the directive is placed on the body as the management system
+* there is a group, name and suffix, type is for the body which means it the only directive that fires
+* make sure elements go to the correct group
+* we have a suffix for the final name in case there are duplicates caused by an event such as delta node or others events. the suffix is used to help the nest directive identify which elements belong to which,
+	* the end developer can also specify a suffix if they desire to manipulate how nest directive nest items
 
-* when items are added in multiple Group and they have an item inside another, make sure only the proper items are properly duplicated
-* latching items, should be positioned as intented and contain items as intended, mabye not going along with the formatting from component.ts
-    * toggle, 
-    * move with targetzChild
-    * populate like nest    
-    * make sure board moves if nest extends the page, and collaspes if necessary
-    * multiple should be supported
-
-* when items are added in multpleGroup make sure moving is properly done, sending the right data to dynamicPosition
-* multipleGroup inside does not disrupt mutlipleGroup outside
+* with overflow issues, set to 
+	visible,
+	scroll when using flexbox so the container doesnt break
+	*avoid this will break the format
+		none,hidden
 
 ## Duplicates
 
@@ -116,6 +116,15 @@ removal
 
 
 
+## Latching 
+* dropdown is considered latching 
+* latching is any extension of a DOM element which requires the use of another DOM element
+
+quantity enum
+* 3 - static DOM element
+* 2 - duplicated DOM element
+* 1 - dynamic DOM element
+* 4 - DOM element latched onto a main DOM element
 
 ## Directives
 * for each logic that requires several elements, have an id which indicates the element thats in control, then subscribe to the zChildrenSubject to gather ids from all the zChildren the directives  need to express the feature. the group should have its group id bearing the directive is used several times in the same component
