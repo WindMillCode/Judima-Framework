@@ -369,7 +369,7 @@ let secondOuterDelta = [
 	},
 ]
 
-
+//
 let nesting_development =  {
 	"title": "nesting_development",
 	"type_slug": "forms",
@@ -3669,7 +3669,9 @@ let nesting_and_duplicate_testing =  [
 	},
 
 ]
+//
 
+//
 
 let latch_dropdown_development = {
 	"title": "development",
@@ -3687,10 +3689,10 @@ let latch_dropdown_development = {
 			nest:{
 
 			},
-			"background": "rgb(155, 9, 104)",
 			"googleSheets": {},
 			options:{
 				css:{
+					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
 					"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
 				}
 			}
@@ -3716,33 +3718,56 @@ let latch_dropdown_development = {
 			"googleSheets": {},
 		},
 		{
+		    "key": "my-table",
+		    "type": "simpleTable",
+		    "value":"",
+		    "background":"blue",
+		    "googleSheets": {},
+			"split":"4",
+			"height":"300"
+		},
+		{
 			"key": "my-dropdown",
 			type:"dropdown",
 			value:"Select Item",
 			latch:{
-				type:"dropdown",
-				values:[
-					"Toronto",
-					"Anaheim",
-					"Minneapolis",
-					"Contregan"
-				]
+				options:[ //look to changes this to options
+					"Boston",
+					"St. Paul",
+					"Bungalese",
+					"Artic",
+					"Oceania",
+					"Paciic",
+					"Canada"
+				],
+
 			},
 			"split": "3",
-			gsapCusor:{
-				"group":"a",
-				"copyPath":"true",
-
-			},
-			options:{
-				css:{
-					// height:"200px"
-				}
-			},
 			"googleSheets": {},
 		},
+		{
+			"key": "localVideo",
+			"value": "",
+			"type": "video",
+			"split": "5",
+			// "width":"420",
+			"height":500,
+			"googleSheets": {},
+		},
+		{
+			"key": "my-dropdown",
+			type:"dropdown",
+			value:"Select Item",
+			latch:{
+				options:[ //look to changes this to options
+					"Toronto",
+					"Suriya"
+				],
 
-
+			},
+			"split": "3",
+			"googleSheets": {},
+		},
 
 
 
@@ -3752,10 +3777,83 @@ let latch_dropdown_development = {
 		return x
 	})
 }
+let latch_dropdown_at_base_development = {
+	"title": "development",
+	"type_slug": "forms",
+	"metafields": [
+
+		{
+			"key": "Body",
+			"type": "body",
+			"stack": "60",
+			// "height":"1000",
+			delta:{
+
+			},
+			nest:{
+
+			},
+			"googleSheets": {},
+			options:{
+				css:{
+					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+					// "clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+				}
+			}
+		},
+		{
+			"key": "my-cursor",
+			// "type": "gsap-cursor",
+			type:"text",
+			// "value":"Items",
+			// "split": "3",
+			gsapCusor:{
+				"group":"a",
+				"copyPath":"true",
+
+			},
+			"height":"1",
+			"width":"1",
+			options:{
+				css:{
+					height:"200px"
+				}
+			},
+			"googleSheets": {},
+		},
+
+		{
+			"key": "my-dropdown",
+			type:"dropdown",
+			value:"Select Item",
+			latch:{
+				options:[ //look to changes this to options
+					"Toronto",
+					"Anaheim",
+					"Minneapolis",
+					"Contregan"
+				],
+
+			},
+			"split": "3",
+			"googleSheets": {},
+		},
+
+
+
+
+	] .map((x:any,i)=>{
+		x.key += "-latch-dropdown-base"
+		return x
+	})
+}
+
 
 let latch_testing = [
+	latch_dropdown_at_base_development,
 	latch_dropdown_development
 ]
+//
 website.convertCMS =  latch_testing
 
 

@@ -121,11 +121,10 @@ export class RyberService {
                 co
             }
 			let appLatch = {
-				confirm: latch?.type === undefined ? 'false':'true',
+				confirm: 'true',
 				zSymbolNeeded: "true",// zChildSymbol goes here
 				co,
 				...latch,
-				truSelectVal: value
 			}
 			//
 
@@ -1284,7 +1283,13 @@ export class RyberService {
                     extras: {
 						judima,
                         extend,
-                        appLatch,
+                        appLatch:{
+							...appLatch,
+							select:{
+								value
+							},
+							type:"dropdown"
+						},
 						appDeltaNode,
                         appNest,
                         component,

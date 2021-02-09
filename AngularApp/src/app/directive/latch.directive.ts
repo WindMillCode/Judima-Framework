@@ -62,9 +62,8 @@ export class LatchDirective {
 
     ngOnInit() {
         this.extras = this.latch
+
         if (this.extras?.confirm === 'true') {
-            // console.log(this.extras)
-            // console.log(this.ryber)
 			let {ryber,ref,zChildren} = this
 			let rUD = ryberUpdateFactory({ryber})
             let co = this.co = this.extras.co
@@ -80,34 +79,36 @@ export class LatchDirective {
 
 					if(this.extras.type === "dropdown"){
 						let zChild = zChildren[this.extras.zSymbol]
-						this.zSymbols = this.extras.values
+						this.zSymbols = this.extras.options
 						.map((x:any,i)=>{
 							let extras = objectCopy(zChild.extras)
-							let css = objectCopy(zChild.css)
+							let val = zChild.val
 
 							// we can also use spread syntax to copy function, but make sure all object they work on are parameters
 							extras.judima.formatIgnore = "true"
 							extras.judima.topLevelZChild = "false"
 							extras.appLatch.confirm = "false"
-							css["background-color"] = "blue"
 
 							// there is no additional latching that needs to be done
 								// these options are not to be duplicated
 								// they will latch after the select element is nested
-							delete extras.appDeltaNode
-							delete extras.appNest
+							// delete extras.appDeltaNode
+							// delete extras.appNest
 							//
 
+							if(this.extras.options.length -1  === i){
+								val = val.split("a_p_p_DropDownMiddle").join("a_p_p_DropDownLast")
+							}
 							return rUD({
 								quantity:4,
 								symbol:this.extras.zSymbol,
 								co,
 								bool:zChild.bool,
-								css,
+								css:objectCopy(zChild.css),
 								cssDefault:objectCopy(zChild.cssDefault),
 								text:x,
 								extras:extras,
-								val:zChild.val
+								val
 							})
 
 						})
@@ -121,9 +122,7 @@ export class LatchDirective {
 						//
 					}
 
-					// anyway to destructure this?
-					this.zChildren = zChildren
-					//
+
 				})
 			)
 			// move with target
@@ -132,7 +131,7 @@ export class LatchDirective {
 					// if this causes issue seperate the observables and
 					// use one to refresh the zChildren
 					ryber[co].metadata.zChildrenSubject,
-					this.ryber[this.co].metadata.ngAfterViewInitFinished
+					ryber[co].metadata.ngAfterViewInitFinished
 				])
 				.pipe(
 					catchError((error)=>{
@@ -145,6 +144,35 @@ export class LatchDirective {
 					let {zSymbols,zChildren} = this
 
 					if(this.extras.type === "dropdown"){
+
+						// attach listeneners to the options
+						if(this.extras.optionsSetup !== "true"){
+
+
+							this.subscriptions.push(
+								...zSymbols
+								.map((x:any,i)=>{
+									return fromEvent(zChildren[x].element,"click")
+									.subscribe((result:any)=>{
+										// choose the choosen value, if the item was chosen go back to the default value
+										zChildren[this.extras.zSymbol].innerText.item =
+										zChildren[this.extras.zSymbol].innerText.item ===
+										zChildren[x].innerText.item ?
+										this.extras.select.value : zChildren[x].innerText.item
+										ref.detectChanges()
+										//
+
+										// ?? option to disable this and only fire when select is clicked
+										this._dropdownStateClosed({zSymbols, zChildren, ref});
+										this.extras.state = "closed"
+										//
+
+									})
+								})
+							)
+							this.extras.optionsSetup = "true"
+						}
+						//
 
 						if(this.extras.state === "closed"){
 
@@ -173,6 +201,8 @@ export class LatchDirective {
 			zChildren[x].css.height = zChildren[this.extras.zSymbol].css.height;
 			zChildren[x].css.width = zChildren[this.extras.zSymbol].css.width;
 			zChildren[x].css.left = zChildren[this.extras.zSymbol].css.left;
+			zChildren[x].css["z-index"] = zChildren[this.extras.zSymbol].css["z-index"]
+			
 		});
 		stack({
 			zChildKeys:[
@@ -197,6 +227,7 @@ export class LatchDirective {
 			zChildren[x].css.width = zChildren[this.extras.zSymbol].css.width;
 			zChildren[x].css.top = zChildren[this.extras.zSymbol].css.top;
 			zChildren[x].css.left = zChildren[this.extras.zSymbol].css.left;
+			zChildren[x].css["z-index"] -= 1
 			if (zChildren[x].css["z-index"] > greatestZIndex) {
 				greatestZIndex = zChildren[x].css["z-index"];
 			}

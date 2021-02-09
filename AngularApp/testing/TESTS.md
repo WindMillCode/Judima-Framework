@@ -126,8 +126,28 @@ quantity enum
 * 1 - dynamic DOM element
 * 4 - DOM element latched onto a main DOM element
 
+
+### Dropdown
+
+- test that the select value is above the other options when open [DONE]
+- test that when you click an option, 
+	- the select element get updated
+	- the dropdown closes
+- test that when you click the select option
+	- options are displayed below as needed
+	- there are no gaps between the options,
+	- the options are the same with 
+	- on toggle click the dropdown folds and reappears
+- test with other elements
+	- if the dropdown is open, its at the front most of the screen none of the elements are covering it
+		- solution have a directive on the board/body that deals with z-index issues
+	- when dealing with other components, it goes over the other components to display as needed
+
+
+
 ## Directives
-* for each logic that requires several elements, have an id which indicates the element thats in control, then subscribe to the zChildrenSubject to gather ids from all the zChildren the directives  need to express the feature. the group should have its group id bearing the directive is used several times in the same component
+* if there is more than one topLevel zChild invovled, the logic must be managed from the board/body , for instance were you have a camera feature or chat feature, you must keep the data assoicated with the correct features 
+	* you will require a group, name and naming system (preferrable suffix in nest directive), to uniquely idenitfy all element in the group as well as types as needed say if it was a facebook stream, google stream ... to deal with the different data expressing the same feature
 
 
 ## Components 

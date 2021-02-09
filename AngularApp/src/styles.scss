@@ -228,7 +228,10 @@ app-root :not([class^='ag']) {
     border :2px solid black;
     font-family:Arial;
     background-color: white;
+	// z-index:-6  !important
 }
+
+
 
 .a_p_p_DropDownLast{
     padding:13px 26px 13px 26px;
