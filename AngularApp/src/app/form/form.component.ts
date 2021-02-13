@@ -384,10 +384,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         zChild = this.zChildInit()
                         topLevelZChild = this._topLevelZChildInit()
                         latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
-						// console.log(zChild)
 
 
-						console.log("component latch")
                         this.directivesSendData({
                             directivesZChild:zChild,
 							options:{
@@ -405,9 +403,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 				//
 
 				//deltaNode setup
-					// FIX ME, flicker on the screen because templateMyElements.changes, fires several times
-					// if you put a delay on updateZChild it will not work out well
-
 				this.ryber.appEvents({
                     typesES:this.typesES,
                     event:'zChildUpdate',
@@ -418,15 +413,16 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         //fix the component object before continuing
                         let co = this.ryber[this.appTV]
 						ryberPerfect({co,exclude:["cssDefault"]});
+						//
+
 						this.ref.detectChanges()
                         zChild = this.zChildInit()
                         topLevelZChild = this._topLevelZChildInit()
                         latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
 
-
-						console.log("deltaNode")
                         this.directivesSendData({
                             directivesZChild:zChild,
+							templateMyElements:this.templateMyElements
                         })
 
 						// dynnamic element management bootstrap

@@ -3,7 +3,7 @@ import { RyberService } from './ryber.service';
 import { fromEvent, Subject, Observable, of, Subscription, interval, ReplaySubject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { eventDispatcher, esInit, coInit } from './customExports'
 // import {   Router,RouterEvent } from '@angular/router';
-import { catchError, take, timeout, debounceTime, tap, distinctUntilKeyChanged, distinct } from 'rxjs/operators'
+import { catchError, take, timeout, debounceTime, tap, first,delay } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
 import { environment as env} from 'src/environments/environment';
 
@@ -112,8 +112,9 @@ export class AppComponent implements OnInit, OnDestroy {
                     co.metadata.refresh = {}
                     co.metadata.latch = {
                         updateZChild : new ReplaySubject<any>(),
-                        zChild:{}
+                        zChild:{},
 					}
+
                     co.metadata.deltaNode = {
 						updateZChild : new Subject<any>(),
 						groups:{},

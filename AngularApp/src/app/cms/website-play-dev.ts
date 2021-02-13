@@ -3729,34 +3729,34 @@ let latch_dropdown_duplicate_development = {
 					"C",
 					"D",
 				],
-				// "state":"open"
+				"state":"open"
 
 			},
 			"split": "3",
 			"googleSheets": {},
 		},
-		{
-			"key": "my-dropdown-2",
-			type:"dropdown",
-			value:"2 Dropdown",
-			delta:{
-				"group":"outerDelta",
-				"type":"increment",
+		// {
+		// 	"key": "my-dropdown-2",
+		// 	type:"dropdown",
+		// 	value:"2 Dropdown",
+		// 	delta:{
+		// 		"group":"outerDelta",
+		// 		"type":"increment",
 
-			},
-			latch:{
-				options:[ //look to changes this to options
-					"E",
-					"F",
-					"G",
-					"H",
-				],
-				// "state":"open"
+		// 	},
+		// 	latch:{
+		// 		options:[ //look to changes this to options
+		// 			"E",
+		// 			"F",
+		// 			"G",
+		// 			"H",
+		// 		],
+		// 		"state":"open"
 
-			},
-			"split": "3",
-			"googleSheets": {},
-		},
+		// 	},
+		// 	"split": "3",
+		// 	"googleSheets": {},
+		// },
 		// {
 		// 	"key": "my-dropdown-3",
 		// 	type:"dropdown",
@@ -3798,7 +3798,7 @@ let latch_dropdown_duplicate_development = {
 			delta:{
 				"group":"outerDelta",
 				"type":"add",
-				"by":"3"
+				"by":1
 			},
 			"next":"true",
 			"split": "2",
@@ -3811,7 +3811,7 @@ let latch_dropdown_duplicate_development = {
 			delta:{
 				"group":"outerDelta",
 				"type":"remove",
-				"by":"2"
+				"by":1
 			},
 			"split": "3",
 			"googleSheets": {},

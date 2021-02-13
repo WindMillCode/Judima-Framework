@@ -5,6 +5,7 @@ import { deltaNode, eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUp
 import { catchError, delay,first, take } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { debuglog } from 'util';
 
 
 
@@ -72,8 +73,8 @@ export class LatchDirective {
 				ryber[co].metadata.zChildrenSubject
 				.pipe(first())
 				.subscribe((devObj)=>{
-					// console.log("init")
 					zChildren = ryber[co].metadata.zChildren
+					this.templateMyElements = devObj.templateMyElements
 
 
 					if(this.extras.type === "dropdown"){
@@ -347,18 +348,29 @@ export class LatchDirective {
 			delete this.subscriptions
 
 			if(this.extras.type === "dropdown"){
-				let {ryber} = this
+				let {ryber,ref,zChildren,zSymbols,co,templateMyElements} = this
 				let rUD = ryberUpdateFactory({ryber})
-				console.log(this.zSymbols)
-				// rUD({
-				// 	symbol:this.zSymbols[0],
-				// 	type:"remove",
-				// 	co:this.extras.co
-				// })
-				// this.zSymbols
-				// .forEach((x:any,i)=>{
 
-				// })
+				// for some weird reason I cannot call rUD here I will send this to a method on th
+					// components metadata
+					// we need to listen for ViewChildren.changes before we can continue to remvoe elements
+				templateMyElements.changes
+				.pipe(
+					first()
+				)
+				.subscribe((result:any)=>{
+					zSymbols
+					.forEach((x:any,i)=>{
+						rUD({
+							symbol:x,
+							type:"remove",
+							co
+						})
+					})
+					this.ref.detectChanges()
+				})
+
+				//
 			}
         }
     }
