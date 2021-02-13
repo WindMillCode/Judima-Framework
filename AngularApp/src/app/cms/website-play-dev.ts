@@ -3729,7 +3729,7 @@ let latch_dropdown_duplicate_development = {
 					"C",
 					"D",
 				],
-				"state":"open"
+				// "state":"open"
 
 			},
 			"split": "3",
@@ -3751,7 +3751,7 @@ let latch_dropdown_duplicate_development = {
 					"G",
 					"H",
 				],
-				"state":"open"
+				// "state":"open"
 
 			},
 			"split": "3",
@@ -3798,7 +3798,7 @@ let latch_dropdown_duplicate_development = {
 			delta:{
 				"group":"outerDelta",
 				"type":"add",
-				"by":"1"
+				"by":"3"
 			},
 			"next":"true",
 			"split": "2",
@@ -3811,7 +3811,7 @@ let latch_dropdown_duplicate_development = {
 			delta:{
 				"group":"outerDelta",
 				"type":"remove",
-				"by":"1"
+				"by":"2"
 			},
 			"split": "3",
 			"googleSheets": {},

@@ -119,8 +119,9 @@ export class AppComponent implements OnInit, OnDestroy {
 						groups:{},
 						current:null,
 						component:{
+							confirm:"false"
+						},
 
-						}
                     }
 					co.metadata.nest= {
 						groups:{}

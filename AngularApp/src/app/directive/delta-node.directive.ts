@@ -104,7 +104,9 @@ export class DeltaNodeDirective {
 								.map((y:any,j)=>{
 									// logic for add button concept
 									if(y[1]?.extras?.appDeltaNode?.type === "add"){
+
 										val.add .push ({target:y,by:+y[1].extras.appDeltaNode.by})
+
 										this.controls.push({
 											element:y[1].element,
 											type:val.type
@@ -143,15 +145,16 @@ export class DeltaNodeDirective {
 								// rmbr each group needs it own
 								val.deltas =[]
 								//
-								let addEvent = (result:any)=>{
+								let addEvent = (devObj:any)=>{
 
-									// clear this so the component can reset and format properly
+									let {y} = devObj
+ 									// clear this so the component can reset and format properly
 									// console.log(val.hooks.component)
 									val.hooks.component.clear()
 									//
 
 									// add the deltas by val.add.by times
-									Array(val.add.by).fill(null)
+									Array(y.by).fill(null)
 									.forEach(()=>{
 										let addedDeltas =[]
 										val.targets
@@ -212,7 +215,7 @@ export class DeltaNodeDirective {
 										.subscribe((result:any)=>{
 											if(!y.target[1].element.disabled){
 												this._disableButton()
-												addEvent(result)
+												addEvent({result,y})
 											}
 										})
 									})
@@ -221,14 +224,15 @@ export class DeltaNodeDirective {
 								//
 
 								// remove concept logic
-								let removeEvent = (result:any)=>{
+								let removeEvent = (devObj:any)=>{
 
+									let {y} = devObj
 									// clear this so the component can reset and format properly
 									val.hooks.component.clear()
 									//
 
 									// remove the deltas by val.remove.by times
-									Array(val.remove.by).fill(null)
+									Array(y.by).fill(null)
 									.forEach(()=>{
 
 										// if there are no deltas to remove return and enable the button
@@ -286,7 +290,7 @@ export class DeltaNodeDirective {
 										.subscribe((result:any)=>{
 											if(!y.target[1].element.disabled){
 												this._disableButton()
-												removeEvent(result)
+												removeEvent({result,y})
 											}
 
 										})

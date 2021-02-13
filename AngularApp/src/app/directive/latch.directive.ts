@@ -72,7 +72,7 @@ export class LatchDirective {
 				ryber[co].metadata.zChildrenSubject
 				.pipe(first())
 				.subscribe((devObj)=>{
-					console.log("init")
+					// console.log("init")
 					zChildren = ryber[co].metadata.zChildren
 
 
@@ -163,10 +163,10 @@ export class LatchDirective {
 
 								this.zChildren = result.directivesZChild
 
-								console.log(
-									this.el.nativeElement.innerText,
-									Object.keys({...this.zChildren})
-								)
+								// console.log(
+								// 	this.el.nativeElement.innerText,
+								// 	Object.keys({...this.zChildren})
+								// )
 
 							})
 						)

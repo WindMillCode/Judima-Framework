@@ -395,9 +395,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 							}
                         })
 
-						// dynnamic element management bootstrap
-						this._deltaNodeBootstrap({zChild});
-						//
 
                         eventDispatcher({
                             event:'resize',
@@ -434,6 +431,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 						// dynnamic element management bootstrap
 						this._deltaNodeBootstrap({zChild});
+						this.ryber[this.appTV].metadata.deltaNode.component.confirm = "true"
 						//
 
                         eventDispatcher({
@@ -468,6 +466,13 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 						let {finalKeep,finalSpacing,finalAlign} =((devObj)=>{
 							let {current,groups,component}  =this.ryber[this.appTV].metadata.deltaNode
+
+							// allowing psuedo directive to fire only when window resize came from deltaNode
+							if(component.confirm === "false"){
+								return devObj
+							}
+							this.ryber[this.appTV].metadata.deltaNode.component.confirm = "false"
+
 							let currentGroup = groups[current?.group]
 
 							let {finalKeep,finalSpacing,finalAlign} =devObj
