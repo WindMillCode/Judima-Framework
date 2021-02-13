@@ -975,10 +975,10 @@ export function stack(
     }
 ){
 
-    let {ref,options,zChild}= devObj
+    let {ref,options,zChild,zChildCss}= devObj
 
-    if(devObj.zChildCss === undefined){
-        devObj.zChildCss = 'true'
+    if(zChildCss === undefined){
+        zChildCss = 'true'
     }
 
     // if(devObj.zChildKeys !== undefined){
@@ -1011,7 +1011,7 @@ export function stack(
             devObj.zChild[x].css['top'] =  (
 
                 (
-                    devObj.zChildCss === 'true' ?
+                    zChildCss === 'true' ?
                     (
                         numberParse(      devObj.zChild[prev].css['top']   ) +
                         include({
@@ -1097,7 +1097,7 @@ export function stack(
             zChild[x].css['top'] = (
 
                 (
-                    devObj.zChildCss === 'true' ?(()=>{
+                    zChildCss === 'true' ?(()=>{
                         // console.log(
                         //     x,
                         //     (
@@ -1656,12 +1656,13 @@ let inspectKeep = (devObj)=>{
 		finalKeep
 		.map((x:any,i)=>{
 			let locations =
-				x .reduce((acc,y:any,j)=>{
-					if(component[zSymbols].includes(y)){
-						acc.push(j)
-					}
-					return acc
-				},[])
+			x .reduce((acc,y:any,j)=>{
+
+				if(component[zSymbols].includes(y)){
+					acc.push(j)
+				}
+				return acc
+			},[])
 
 			return [...x,...locations]
 		})

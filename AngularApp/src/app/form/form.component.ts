@@ -82,9 +82,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 // giving directives data about the zChildren
                 this.directivesSendData({
                     directivesZChild:zChild,
-                    random:Math.random(),
                     templateMyElements:this.templateMyElements,
-                    ref:this.ref
+                    ref:this.ref,
+					options:{
+						type:["latch"]
+					}
+
                 })
                 //
 
@@ -376,16 +379,26 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         //fix the component object before continuing
                         let co = this.ryber[this.appTV]
 						ryberPerfect({co,...result});
+						//
 
                         zChild = this.zChildInit()
                         topLevelZChild = this._topLevelZChildInit()
                         latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
+						// console.log(zChild)
 
 
+						console.log("component latch")
                         this.directivesSendData({
                             directivesZChild:zChild,
-                            random:Math.random()
+							options:{
+								type:["latch"]
+							}
                         })
+
+						// dynnamic element management bootstrap
+						this._deltaNodeBootstrap({zChild});
+						//
+
                         eventDispatcher({
                             event:'resize',
                             element:window
@@ -414,10 +427,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
 
 
-
+						console.log("deltaNode")
                         this.directivesSendData({
                             directivesZChild:zChild,
-                            random:Math.random()
                         })
 
 						// dynnamic element management bootstrap
@@ -679,12 +691,14 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     .keys(zChild)
                                     .slice(2)
                                     .forEach((x,i)=>{
+										if(zChild[x].extras.judima.formatIgnore !== "true"){
+											zChild[x].css["height"] = zChild[x].cssDefault["height"]
+											zChild[x].css["width"] = zChild[x].cssDefault["width"]
+											zChild[x].css["font-size"] = zChild[x].cssDefault["font-size"]
 
-                                        zChild[x].css["height"] = zChild[x].cssDefault["height"]
-                                        zChild[x].css["width"] = zChild[x].cssDefault["width"]
-                                        zChild[x].css["font-size"] = zChild[x].cssDefault["font-size"]
-
+										}
                                     })
+
                                     this.ref.detectChanges()
                                     //
 
@@ -1129,11 +1143,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         random?:any,
         templateMyElements?:any,
         ref?:any,
-        duplicate?
+		options?:any
     }):void{
 
 
-        let {directivesZChild,random,duplicate,templateMyElements,ref} = devObj
+        let {directivesZChild,random,templateMyElements,ref,options} = devObj
         // subjects meeded for input handle to work
         Object
         .keys(directivesZChild)
@@ -1150,7 +1164,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //
             }
         })
-        this.ryber[this.appTV.valueOf()].metadata.zChildrenSubject.next(({directivesZChild,random,templateMyElements,ref}))
+        this.ryber[this.appTV.valueOf()].metadata.zChildrenSubject.next(({options,directivesZChild,templateMyElements,ref}))
 
     }
 

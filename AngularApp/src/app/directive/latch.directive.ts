@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, Vie
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest, Observable } from 'rxjs';
 import { deltaNode, eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren } from '../customExports'
-import { catchError, delay,first } from 'rxjs/operators'
+import { catchError, delay,first, take } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -24,7 +24,7 @@ export class LatchDirective {
     constructor(
         private el: ElementRef,
         private http: HttpClient,
-        private renderer: Renderer2,
+        private renderer2: Renderer2,
         private ryber: RyberService,
 		private ref:ChangeDetectorRef
     ) { }
@@ -72,27 +72,60 @@ export class LatchDirective {
 				ryber[co].metadata.zChildrenSubject
 				.pipe(first())
 				.subscribe((devObj)=>{
-
-					let {templateMyElements} = devObj
+					console.log("init")
 					zChildren = ryber[co].metadata.zChildren
 
 
 					if(this.extras.type === "dropdown"){
+
 						let zChild = zChildren[this.extras.zSymbol]
+						// the problem is were using flexbox for nested elements
+							// wrap the dropdown in a div
+						if(zChild.extras.appNest.confirm === "true"){
+
+							let {val,css} = zChild
+							let extras = objectCopy(zChild.extras)
+
+							val = this._dropdownGetOriginalVal({co, val}).split(" ")[0] + "-container";
+
+							let containerCss = {
+								...zChild.css,
+								height:css.height || getComputedStyle(zChild.element).height,
+								width:css.width || getComputedStyle(zChild.element).width,
+								position:"static"
+							}
+
+							// rename appNest grouping convention uncoventionally
+							zChild.extras.appNest.under =extras.appNest.name
+							zChild.extras.appNest.name += "DropDown"
+							//
+
+							rUD({
+								co,
+								bool: 'div',
+								val,
+								css:containerCss,
+								cssDefault:{},
+								extras,
+							})
+						}
+						//
 						this.zSymbols = this.extras.options
 						.map((x:any,i)=>{
 							let extras = objectCopy(zChild.extras)
 							let val = zChild.val
+							let css = objectCopy(zChild.css)
 
 							// we can also use spread syntax to copy function, but make sure all object they work on are parameters
 							extras.judima.formatIgnore = "true"
 							extras.judima.topLevelZChild = "false"
 							extras.appLatch.confirm = "false"
-
+							css["z-index"] -= 1
+							css["position"] = "absolute"
 							// there is no additional latching that needs to be done
 								// these options are not to be duplicated
 								// they will latch after the select element is nested
-							// delete extras.appDeltaNode
+							delete extras.appDeltaNode
 							// delete extras.appNest
 							//
 
@@ -104,46 +137,81 @@ export class LatchDirective {
 								symbol:this.extras.zSymbol,
 								co,
 								bool:zChild.bool,
-								css:objectCopy(zChild.css),
+								css,
 								cssDefault:objectCopy(zChild.cssDefault),
 								text:x,
 								extras:extras,
 								val
 							})
-
 						})
 						ref.detectChanges()
 						this.extras.state = this.extras.state  || "closed"
 
 
+						// update zChild
+							// we place here becuase the regular subject does something strange
+							// and seems to want to emit old values which are causing nasty corrpution issues
+						this.subscriptions.push(
+							ryber[co].metadata.zChildrenSubject
+							.pipe(
+								take( zChildren[this.extras.zSymbol].quantity === 3 ? 2:1)
+							)
+							.subscribe((result:any)=>{
+								if(!result?.options?.type.includes("latch")){
+									return
+								}
+
+								this.zChildren = result.directivesZChild
+
+								console.log(
+									this.el.nativeElement.innerText,
+									Object.keys({...this.zChildren})
+								)
+
+							})
+						)
+						//
+
 						// let the component know we have new elements on the DOM
 						ryber[co].metadata.latch.updateZChild.next({
 						})
 						//
+
 					}
 
 
 				})
 			)
+
+
 			// move with target
             this.subscriptions.push(
 				combineLatest([
 					// if this causes issue seperate the observables and
 					// use one to refresh the zChildren
-					ryber[co].metadata.zChildrenSubject,
+					// ryber[co].metadata.zChildrenSubject,
 					ryber[co].metadata.ngAfterViewInitFinished
 				])
 				.pipe(
-					catchError((error)=>{
-						return of(error)
-					}),
+					// catchError((error)=>{
+					// 	return of(error)
+					// }),
 				)
 				.subscribe((result:any)=>{
 
-					this.zChildren = result[0].directivesZChild
 					let {zSymbols,zChildren} = this
 
 					if(this.extras.type === "dropdown"){
+
+
+						// if(!result[0]?.options?.type.includes("latch")){
+						// 	return
+						// }
+						// console.log(
+						// 	result[0].options,
+						// 	Object.keys({...this.zChildren}).length,
+						// 	this.el.nativeElement.innerText
+						// )
 
 						// attach listeneners to the options
 						if(this.extras.optionsSetup !== "true"){
@@ -174,6 +242,7 @@ export class LatchDirective {
 						}
 						//
 
+
 						if(this.extras.state === "closed"){
 
 							// place options behind select element
@@ -190,9 +259,36 @@ export class LatchDirective {
 			)
 			//
 
+
+
         }
     }
 
+
+	private _dropdownGetOriginalVal(devObj:{co: any, val: any}) {
+		let {co,val} = devObj
+		let symbol = this.extras.zSymbol;
+		let judimaCssIdentifier = co
+			.valueOf()
+			.split("CO")[0]
+			.split("")
+			.join("_");
+		if (symbol !== undefined) {
+			let utf8Symbol = String.fromCharCode(+symbol.split("&#")[1]);
+
+			val = val.replace(
+				new RegExp(utf8Symbol),
+				""
+			);
+		}
+
+
+		val = val.replace(
+			new RegExp(judimaCssIdentifier + "_"),
+			""
+		);
+		return val;
+	}
 
 	private _dropdownStateOpened(devObj:{zSymbols: string[], zChildren: any,ref:ChangeDetectorRef}) {
 		let {zSymbols, zChildren,ref} = devObj
@@ -201,8 +297,7 @@ export class LatchDirective {
 			zChildren[x].css.height = zChildren[this.extras.zSymbol].css.height;
 			zChildren[x].css.width = zChildren[this.extras.zSymbol].css.width;
 			zChildren[x].css.left = zChildren[this.extras.zSymbol].css.left;
-			zChildren[x].css["z-index"] = zChildren[this.extras.zSymbol].css["z-index"]
-			
+
 		});
 		stack({
 			zChildKeys:[
@@ -212,7 +307,10 @@ export class LatchDirective {
 			zChild:zChildren,
 			spacing:[null,0],
 			type:'simpleStack',
-			heightInclude:['t']
+			heightInclude:['t'],
+			// if the item is nested we have no top and height to work with until we write out a solution
+			zChildCss: zChildren[this.extras.zSymbol].extras.appNest.confirm === "true" ? "false":"true"
+			//
 		})
 		ref.detectChanges
 	}
@@ -221,13 +319,15 @@ export class LatchDirective {
 
 		let {zSymbols, zChildren, ref} = devObj
 		let greatestZIndex = -Infinity;
+		// console.log(objectCopy(Object.keys(zChildren)))
+
 		zSymbols
 		.forEach((x: any, i) => {
 			zChildren[x].css.height = zChildren[this.extras.zSymbol].css.height;
 			zChildren[x].css.width = zChildren[this.extras.zSymbol].css.width;
 			zChildren[x].css.top = zChildren[this.extras.zSymbol].css.top;
 			zChildren[x].css.left = zChildren[this.extras.zSymbol].css.left;
-			zChildren[x].css["z-index"] -= 1
+			// zChildren[x].css["z-index"] -= 1
 			if (zChildren[x].css["z-index"] > greatestZIndex) {
 				greatestZIndex = zChildren[x].css["z-index"];
 			}
@@ -245,6 +345,21 @@ export class LatchDirective {
 				x.unsubscribe()
 			})
 			delete this.subscriptions
+
+			if(this.extras.type === "dropdown"){
+				let {ryber} = this
+				let rUD = ryberUpdateFactory({ryber})
+				console.log(this.zSymbols)
+				// rUD({
+				// 	symbol:this.zSymbols[0],
+				// 	type:"remove",
+				// 	co:this.extras.co
+				// })
+				// this.zSymbols
+				// .forEach((x:any,i)=>{
+
+				// })
+			}
         }
     }
 }

@@ -126,9 +126,9 @@ RSpec.configure do |config|
 
 
 	# my_drivers = %i{ edgeBrowser internetExplorer selenium }
-	# my_drivers = %i{ edgeBrowser }
+	my_drivers = %i{ edgeBrowser }
 	# my_drivers = %i{ selenium_billy }
-	my_drivers = %i{ selenium}
+	# my_drivers = %i{ selenium}
 	# my_drivers = %i{ internetExplorer }
 	hosts = Hash.new
 	hosts[:dev] =  %{http://localhost:8000}
@@ -152,7 +152,7 @@ config.before :example do
 
     end
     visit %{/}
-    page.current_window.maximize
+    # page.current_window.maximize
     # $client =  DropboxApi::Client.new %{AN-8rJ0XuEwAAAAAAAAAATUAu6uTWRtwFG8s7WOMmdIoHdYI4Ep2yYw3mOfh5MyO}
 end
 
@@ -780,25 +780,54 @@ def stagingTest
 		end
 	end
 
+=begin
+ [
+	latch_dropdown_nesting_development,
+	latch_dropdown_at_base_development,
+	latch_dropdown_development
+]
+=end
+	RSpec.feature %{nested_latching_dropdown},:skip => true do
+		scenario %{test that all elements part of the dropdown are in the required container} do
+			dropdown = capybara_result_to_array :target => (all %{.f_o_r_m_my-first-dropdown-latch-dropdown-nesting})
+			container = first %{.f_o_r_m_my-first-dropdown-latch-dropdown-nesting-container}
+			dropdown
+			.each do |x|
+				expect(x.find(:xpath, '..')).to eq(container)
+			end
 
+		end
 
-
-	RSpec.feature %{staging}  do
-		scenario  %{test with other elements, when open it at least displays over other components} do
-			select = first %{.f_o_r_m_my-dropdown-latch-dropdown-base}
-			options = capybara_result_to_array :target => (all %{.f_o_r_m_my-dropdown-latch-dropdown-base})
-			options = options.slice(1,4)
+		scenario  %{test with other elements, when open it at least displays over other elements} do
+			select = first %{.f_o_r_m_my-first-dropdown-latch-dropdown-nesting}
+			options = capybara_result_to_array :target => (all %{.f_o_r_m_my-first-dropdown-latch-dropdown-nesting})
+			options = options.slice(1,10)
+			nest_container = first %{.f_o_r_m_my-overlay-latch-dropdown-nesting}
 			select.click
 
 			Capybara.ignore_hidden_elements = true
 			options
 			.each do |x|
-				x.click
-				select.click
+				begin
+					x.click
+					select.click
+				rescue => exception
+					# never gets here because e2e is smart enough to scroll there and see it
+					nest_container.scroll_to :align => :bottom
+					x.click
+					p x[:text]
+					select.click
+				end
 			end
 			Capybara.ignore_hidden_elements = false
 
 		end
+	end
+
+
+
+	RSpec.feature %{staging}  do
+
 	end
 end
 

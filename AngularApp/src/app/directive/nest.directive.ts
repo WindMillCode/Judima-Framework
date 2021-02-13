@@ -116,6 +116,7 @@ export class NestDirective {
 
 			});
 			//
+			// console.log(val.nestNameZSymbolMap)
 			//attempt to nest the items
 			val.targets
 			.forEach((y: any, j) => {
@@ -127,7 +128,7 @@ export class NestDirective {
 					finalNestName += " " + suffix;
 				}
 
-				let childZSymbol = val.nestNameZSymbolMap[finalNestName];
+				let childZSymbol = val.nestNameZSymbolMap[ finalNestName];
 				let parentZSymbol = val.nestNameZSymbolMap[finalNestUnder];
 				if (parentZSymbol !== undefined) {
 
@@ -136,11 +137,10 @@ export class NestDirective {
 							zChildren[parentZSymbol].element,
 							zChildren[childZSymbol].element
 						);
-						this.renderer2.setStyle(
-							zChildren[childZSymbol].element,
-							"position",
-							"static"
-						);
+
+						if(zChildren[childZSymbol].extras.appNest?.options?.positionStatic !== "false"){
+							zChildren[childZSymbol].css["position"] = "static"
+						}
 					}
 					catch (e){
 						console.log(childZSymbol)

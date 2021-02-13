@@ -1273,6 +1273,13 @@ export class RyberService {
 					//your props here
 					...options.judima
 				}
+				appLatch = {
+					...appLatch,
+					select:{
+						value
+					},
+					type:"dropdown"
+				},
 
                 symbol = rUD({
                     co,
@@ -1283,15 +1290,14 @@ export class RyberService {
                     extras: {
 						judima,
                         extend,
-                        appLatch:{
-							...appLatch,
-							select:{
-								value
-							},
-							type:"dropdown"
-						},
+                        appLatch,
 						appDeltaNode,
-                        appNest,
+                        appNest:{
+							...appNest,
+							options:{
+								positionStatic :appLatch.type === "dropdown" ? "false" :"true"
+							}
+						},
                         component,
                         type,
                         // appInputHandle: {

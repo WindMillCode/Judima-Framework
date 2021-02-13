@@ -143,6 +143,25 @@ quantity enum
 		- solution have a directive on the board/body that deals with z-index issues
 	- when dealing with other components, it goes over the other components to display as needed
 
+#### Nested dropdown
+* to get it to work we wrap the dropdown in a div, give the div class += "container", set its container.appNest.name, to dropdown.appNest.name, & same for under set dropdown.appNest.under to container.appNest.name and set  
+```
+container.appNest.name,under = dropdown.appNest.name,under
+dropdown.appNest.name += "DropDown"
+dropdown.appNest.under = container.appNest.name
+
+```
+*  when names are same, works if there are no other dropdown with the same name
+*  works when all the names are different
+* think how to make it work with duplicate
+
+* on align-content when the container is too small and flex-flow:row-wrap , the design seems to break sending elements far above further than the top, find the cause
+
+- test that all elements part of the dropdown are in the required container
+
+#### duplicate dropdown 
+
+this._deltaNodeBootstrap must be fired, to let the component.ts know about the proper changes, fix this so this can only be handled in deltaNode
 
 
 ## Directives

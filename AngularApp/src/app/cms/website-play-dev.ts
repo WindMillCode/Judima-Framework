@@ -3673,6 +3673,158 @@ let nesting_and_duplicate_testing =  [
 
 //
 
+let latch_dropdown_duplicate_development = {
+	"title": "development",
+	"type_slug": "forms",
+	"metafields": [
+
+		{
+			"key": "Body",
+			"type": "body",
+			"stack": "60",
+			// "height":"1000",
+			delta:{
+				"group":[
+					{
+						name:"outerDelta",
+						type:"add_remove_button"
+					},
+				]
+			},
+			nest:{
+
+			},
+			"googleSheets": {},
+			options:{
+				css:{
+					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+					"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+				}
+			}
+		},
+		{
+		    "key": "my-text",
+			delta:{
+				"group":"outerDelta"
+			},
+		    "type": "text",
+		    "value":"Some Text",
+		    "background":"blue",
+		    "googleSheets": {},
+			"split":"4",
+		},
+		{
+			"key": "my-dropdown-1",
+			type:"dropdown",
+			value:"1 Dropdown",
+			delta:{
+				"group":"outerDelta",
+				"type":"increment",
+
+			},
+			latch:{
+				options:[ //look to changes this to options
+					"A",
+					"B",
+					"C",
+					"D",
+				],
+				"state":"open"
+
+			},
+			"split": "3",
+			"googleSheets": {},
+		},
+		{
+			"key": "my-dropdown-2",
+			type:"dropdown",
+			value:"2 Dropdown",
+			delta:{
+				"group":"outerDelta",
+				"type":"increment",
+
+			},
+			latch:{
+				options:[ //look to changes this to options
+					"E",
+					"F",
+					"G",
+					"H",
+				],
+				"state":"open"
+
+			},
+			"split": "3",
+			"googleSheets": {},
+		},
+		// {
+		// 	"key": "my-dropdown-3",
+		// 	type:"dropdown",
+		// 	value:"Dropdown 3",
+		// 	delta:{
+		// 		"group":"outerDelta",
+		// 		"type":"increment",
+
+		// 	},
+		// 	latch:{
+		// 		options:[ //look to changes this to options
+		// 			"I",
+		// 			"J",
+		// 			"K",
+		// 			"",
+		// 		],
+		// 		"state":"open"
+
+		// 	},
+		// 	"split": "3",
+		// 	"googleSheets": {},
+		// },
+		{
+			"key": "localVideo",
+			delta:{
+				"group":"outerDelta"
+			},
+			"value": "",
+			"type": "video",
+			"split": "5",
+			// "width":"420",
+			"height":500,
+			"googleSheets": {},
+		},
+		{
+			"key": "add",
+			"type": "button",
+			"value":"Add ",
+			delta:{
+				"group":"outerDelta",
+				"type":"add",
+				"by":"1"
+			},
+			"next":"true",
+			"split": "2",
+			"googleSheets": {},
+		},
+		{
+			"key": "remove",
+			"type": "button",
+			"value":"Remove",
+			delta:{
+				"group":"outerDelta",
+				"type":"remove",
+				"by":"1"
+			},
+			"split": "3",
+			"googleSheets": {},
+		},
+
+
+
+
+	] .map((x:any,i)=>{
+		x.key += "-latch-dropdown-duplicate"
+		return x
+	})
+}
 let latch_dropdown_development = {
 	"title": "development",
 	"type_slug": "forms",
@@ -3847,11 +3999,193 @@ let latch_dropdown_at_base_development = {
 		return x
 	})
 }
+let latch_dropdown_nesting_development = {
+	"title": "latch_dropdown_nesting_development",
+	"type_slug": "forms",
+	"metafields": [
+
+		{
+			"key": "Body",
+			"type": "body",
+			"stack": "60",
+			// "height":"1000",
+			delta:{
+
+			},
+			nest:{
+				"group":[
+					{
+						name:"dropdown",
+						type:"regular"
+					},
+				],
+			},
+			"googleSheets": {},
+			options:{
+				css:{
+					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+					"clip-path":"polygon(100% 11%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
+				}
+			}
+		},
+		{
+			"key": "my-cursor",
+			// "type": "gsap-cursor",
+			type:"text",
+			// "value":"Items",
+			// "split": "3",
+			gsapCusor:{
+				"group":"a",
+				"copyPath":"true",
+
+			},
+			"height":"1",
+			"width":"1",
+			options:{
+				css:{
+					height:"200px"
+				}
+			},
+			"googleSheets": {},
+		},
+
+		{
+			"key": "my-overlay",
+			"type": "div",
+			"value":"",
+			"background":"yellow",
+			"nest":{
+				group:"dropdown",
+				name:"A1",
+				// under:"Z1"
+			},
+			// "width":"500",
+			"split":"8",
+			"height":"400",
+			"googleSheets": {},
+			"options":{
+				"css":{
+					display:"flex",
+					"flex-direction":"row",
+					"justify-content":"space-around",
+					"align-items":"space-between",
+					// "place-content":"space-around",
+					"flex-wrap":"wrap"
+				}
+			}
+		},
+		{
+			"key": "my-first-dropdown",
+			type:"dropdown",
+			value:"Comes First",
+			"nest":{
+				group:"dropdown",
+				name:"B2",
+				under:"A1"
+			},
+			latch:{
+				options:[ //look to changes this to options
+					"Sudafed",
+					"Dalcus",
+					"Omarus",
+					"Toronto",
+					"Anaheim",
+					"Minneapolis",
+					"Contregan",
+				],
+
+			},
+			options:{
+				css:{
+					width:"200px",
+					order:-2
+				}
+			},
+			// "split": "3",
+			"googleSheets": {},
+		},
+		{
+			"key": "my-dropdown",
+			type:"dropdown",
+			value:"Comes Second",
+			"nest":{
+				group:"dropdown",
+				name:"B3",
+				under:"A1"
+			},
+			latch:{
+				options:[ //look to changes this to options
+					"Toronto",
+					"Anaheim",
+					"Minneapolis",
+					"Contregan"
+				],
+
+			},
+			options:{
+				css:{
+					width:"200px",
+					order:-1
+				}
+			},
+			// "split": "3",
+			"googleSheets": {},
+		},
+		{
+		    "key": "my-table",
+		    "type": "simpleTable",
+		    "value":"",
+			"nest":{
+				group:"dropdown",
+				name:"B1",
+				under:"A1"
+			},
+		    "background":"blue",
+		    // "split": "3",
+		    // "width":"300",
+		    // "height":"250",
+		    "googleSheets": {},
+		    "options":{
+		        "css":{
+		            // "justify-self":"flex-start",
+		            // "flex-grow":"1",
+		            "height":"300px",
+		            "width":"400px",
+					// order:3
+		        }
+		    }
+		},
+		{
+			"key": "localVideo",
+			"value": "",
+			"type": "video",
+			"split": "5",
+			"nest":{
+				group:"dropdown",
+				name:"B4",
+				under:"A1"
+			},
+			// "width":"420",
+			"height":500,
+			"googleSheets": {},
+		},
+
+
+
+
+
+	] .map((x:any,i)=>{
+		x.key += "-latch-dropdown-nesting"
+		return x
+	})
+}
 
 
 let latch_testing = [
-	latch_dropdown_at_base_development,
-	latch_dropdown_development
+	latch_dropdown_duplicate_development,
+	// latch_dropdown_nesting_development,
+	// latch_dropdown_at_base_development,
+	// latch_dropdown_development
 ]
 //
 website.convertCMS =  latch_testing
