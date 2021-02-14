@@ -1280,6 +1280,22 @@ export class RyberService {
 					},
 					type:"dropdown"
 				},
+				appNest = {
+					...appNest,
+					options:{
+						positionStatic :appLatch.type === "dropdown" ? "false" :"true",
+						ignore:"true"
+					},
+				}
+				if(![appDeltaNode?.group,appNest?.group].includes( undefined )  ){
+					appLatch.suffix = 0
+					appLatch.trueNestUnder = appNest.under
+					appDeltaNode.options = {
+						target:{
+							confirm:"true"
+						}
+					}
+				}
 
                 symbol = rUD({
                     co,
@@ -1292,12 +1308,7 @@ export class RyberService {
                         extend,
                         appLatch,
 						appDeltaNode,
-                        appNest:{
-							...appNest,
-							options:{
-								positionStatic :appLatch.type === "dropdown" ? "false" :"true"
-							}
-						},
+                        appNest,
                         component,
                         type,
                         // appInputHandle: {

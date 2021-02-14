@@ -390,7 +390,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             directivesZChild:zChild,
 							options:{
 								type:["latch"]
-							}
+							},
+							templateMyElements:this.templateMyElements
                         })
 
 
@@ -452,7 +453,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     )
                     .subscribe((moving)=>{
 
-
+						console.log(zChild)
                         if(moving instanceof Event){
                             moving = {
                                 boardHeight : "0px",

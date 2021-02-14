@@ -126,9 +126,9 @@ RSpec.configure do |config|
 
 
 	# my_drivers = %i{ edgeBrowser internetExplorer selenium }
-	my_drivers = %i{ edgeBrowser }
+	# my_drivers = %i{ edgeBrowser }
 	# my_drivers = %i{ selenium_billy }
-	# my_drivers = %i{ selenium}
+	my_drivers = %i{ selenium}
 	# my_drivers = %i{ internetExplorer }
 	hosts = Hash.new
 	hosts[:dev] =  %{http://localhost:8000}
@@ -826,7 +826,57 @@ def stagingTest
 
 
 
+=begin uncomment for app testing as needed
+[
+		 latch_dropdown_nesting_development,
+	 latch_dropdown_at_base_development,
+	 latch_dropdown_development,
+	latch_dropdown_duplicate_development
+]
+
+=end
+
 	RSpec.feature %{staging}  do
+		scenario  %{test that on duplication, the options are copied to the respective dropdowns} do
+
+			add_button  = first %{.f_o_r_m_add-latch-dropdown-duplicate}
+			add_button.click
+			first_dropdown =  capybara_result_to_array :target => (all %{.f_o_r_m_my-dropdown-1-latch-dropdown-duplicate})
+			second_dropdown =  capybara_result_to_array :target => (all %{.f_o_r_m_my-dropdown-2-latch-dropdown-duplicate})
+			third_dropdown =  capybara_result_to_array :target => (all %{.f_o_r_m_my-dropdown-3-latch-dropdown-duplicate})
+			first_dropdown
+			.collect! do |x|
+				x[:text]
+			end
+			second_dropdown
+			.collect! do |x|
+				x[:text]
+			end
+			third_dropdown
+			.collect! do |x|
+				x[:text]
+			end
+			first_dropdown = [first_dropdown.slice(0,first_dropdown.length/2),first_dropdown.slice(first_dropdown.length/2,first_dropdown.length-1)]
+			second_dropdown = [second_dropdown.slice(0,second_dropdown.length/2),second_dropdown.slice(second_dropdown.length/2,second_dropdown.length-1)]
+			third_dropdown = [third_dropdown.slice(0,third_dropdown.length/2),third_dropdown.slice(third_dropdown.length/2,third_dropdown.length-1)]
+
+
+
+			first_dropdown[0].each.with_index do |x,i|
+				expect(x).to eq first_dropdown[1][i]
+			end
+
+			second_dropdown[0].each.with_index do |x,i|
+				expect(x).to eq second_dropdown[1][i]
+			end
+
+
+			third_dropdown[0].each.with_index do |x,i|
+				expect(x).to eq third_dropdown[1][i]
+			end
+
+		end
+
 
 	end
 end

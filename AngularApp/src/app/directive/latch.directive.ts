@@ -18,7 +18,10 @@ export class LatchDirective {
     extras: any;
     co:any;
     zChildren: any;
-    zSymbols:Array<string /*zSymbol*/>
+	dropdown:any= {
+		container:null, /*zSymbol*/
+		options:null
+	}
 	templateMyElements:any
 	subscriptions:Array<Subscription> = []
 
@@ -36,8 +39,8 @@ export class LatchDirective {
 
 			if(this.extras.type === "dropdown"){
 
-				let {zSymbols,zChildren,ref} = this
-
+				let {zChildren,ref,dropdown} = this
+				let {options:zSymbols} = dropdown
 
 				if(this.extras.state === "open"){
 					this._dropdownStateClosed({zSymbols, zChildren, ref});
@@ -69,6 +72,7 @@ export class LatchDirective {
 			let rUD = ryberUpdateFactory({ryber})
             let co = this.co = this.extras.co
 
+
             this.subscriptions.push(
 				ryber[co].metadata.zChildrenSubject
 				.pipe(first())
@@ -80,6 +84,7 @@ export class LatchDirective {
 					if(this.extras.type === "dropdown"){
 
 						let zChild = zChildren[this.extras.zSymbol]
+						console.log(zChild.extras.appDeltaNode.options.target)
 						// the problem is were using flexbox for nested elements
 							// wrap the dropdown in a div
 						if(zChild.extras.appNest.confirm === "true"){
@@ -97,11 +102,28 @@ export class LatchDirective {
 							}
 
 							// rename appNest grouping convention uncoventionally
-							zChild.extras.appNest.under =extras.appNest.name
-							zChild.extras.appNest.name += "DropDown"
+								// issues when appNest goes over
+
+							// this is needed because how we duplicate is when we copy the target
+								// this.extras.suffix has no connection to the first, so n + 1 gets updated
+								// but on duplication starts at the suffix contained in the original
+							if(zChild.extras.appDeltaNode.options.target.zSymbol !== undefined){
+								let {zSymbol} = zChild.extras.appDeltaNode.options.target
+								this.extras.suffix = zChildren[zSymbol].extras.appLatch.suffix
+							}
+							zChild.extras.appNest.under  = extras.appNest.name.replace(/DropDown\d+$|$/,"DropDown"+(++this.extras.suffix))
+							extras.appNest.name = zChild.extras.appNest.name.replace(/DropDown\d+$|$/,"DropDown"+this.extras.suffix)
+							extras.appNest.under = this.extras.trueNestUnder
+							this.extras.suffix++
+							zChild.extras.appNest.name = extras.appNest.name.replace(/DropDown\d+$|$/,"DropDown"+this.extras.suffix)
+							zChild.extras.appNest.options.ignore = extras.appNest.options.ignore = "false"
 							//
 
-							rUD({
+							// more modifications
+							delete extras.appDeltaNode
+							//
+
+							this.dropdown.container = rUD({
 								co,
 								bool: 'div',
 								val,
@@ -111,7 +133,7 @@ export class LatchDirective {
 							})
 						}
 						//
-						this.zSymbols = this.extras.options
+						this.dropdown.options  = this.extras.options
 						.map((x:any,i)=>{
 							let extras = objectCopy(zChild.extras)
 							let val = zChild.val
@@ -123,6 +145,9 @@ export class LatchDirective {
 							extras.appLatch.confirm = "false"
 							css["z-index"] -= 1
 							css["position"] = "absolute"
+							if(zChild.extras.appNest.confirm === "true"){
+								extras.appNest.name =extras.appNest.name.replace(/DropDown\d+$|$/,"DropDown"+ (++this.extras.suffix))
+							}
 							// there is no additional latching that needs to be done
 								// these options are not to be duplicated
 								// they will latch after the select element is nested
@@ -141,11 +166,13 @@ export class LatchDirective {
 								css,
 								cssDefault:objectCopy(zChild.cssDefault),
 								text:x,
-								extras:extras,
+								extras,
 								val
 							})
 						})
 						ref.detectChanges()
+
+
 						this.extras.state = this.extras.state  || "closed"
 
 
@@ -162,12 +189,18 @@ export class LatchDirective {
 									return
 								}
 
-								this.zChildren = result.directivesZChild
+								// since this could not happen in a timely fashion I placed here instead
 
-								// console.log(
-								// 	this.el.nativeElement.innerText,
-								// 	Object.keys({...this.zChildren})
-								// )
+								if(zChild.extras.appNest.confirm === "true"){
+									zChild.extras.appNest.options.ignore ="true"
+									if(zChild.extras.appDeltaNode.options.target.zSymbol !== undefined){
+										let {zSymbol} = zChild.extras.appDeltaNode.options.target
+										zChildren[zSymbol].extras.appLatch.suffix = this.extras.suffix
+									}
+								}
+								//
+
+								this.zChildren = result.directivesZChild
 
 							})
 						)
@@ -187,32 +220,14 @@ export class LatchDirective {
 
 			// move with target
             this.subscriptions.push(
-				combineLatest([
-					// if this causes issue seperate the observables and
-					// use one to refresh the zChildren
-					// ryber[co].metadata.zChildrenSubject,
-					ryber[co].metadata.ngAfterViewInitFinished
-				])
-				.pipe(
-					// catchError((error)=>{
-					// 	return of(error)
-					// }),
-				)
+				ryber[co].metadata.ngAfterViewInitFinished
 				.subscribe((result:any)=>{
 
-					let {zSymbols,zChildren} = this
+					let {dropdown,zChildren} = this
+					let {options:zSymbols} = dropdown
 
 					if(this.extras.type === "dropdown"){
 
-
-						// if(!result[0]?.options?.type.includes("latch")){
-						// 	return
-						// }
-						// console.log(
-						// 	result[0].options,
-						// 	Object.keys({...this.zChildren}).length,
-						// 	this.el.nativeElement.innerText
-						// )
 
 						// attach listeneners to the options
 						if(this.extras.optionsSetup !== "true"){
@@ -348,12 +363,21 @@ export class LatchDirective {
 			delete this.subscriptions
 
 			if(this.extras.type === "dropdown"){
-				let {ryber,ref,zChildren,zSymbols,co,templateMyElements} = this
+				let {ryber,ref,zChildren,dropdown,co,templateMyElements} = this
+				let {options:zSymbols,container} = dropdown
+
+				// if this dropdown was nested and dupliated -1 on the suffix
+				this.extras.suffix--
+				//
+
 				let rUD = ryberUpdateFactory({ryber})
 
 				// for some weird reason I cannot call rUD here I will send this to a method on th
 					// components metadata
 					// we need to listen for ViewChildren.changes before we can continue to remvoe elements
+				if(container !== null){
+					zSymbols.push(container)
+				}
 				templateMyElements.changes
 				.pipe(
 					first()

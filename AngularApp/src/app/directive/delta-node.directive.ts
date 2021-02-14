@@ -171,6 +171,10 @@ export class DeltaNodeDirective {
 												}
 												return y[1].innerText?.item
 											})()
+											let  extras = objectCopy(y[1].extras)
+											if(extras.appDeltaNode?.options?.target?.confirm === "true"){
+												extras.appDeltaNode.options.target.zSymbol = y[0]
+											}
 
 											// you must string the component name type and its symbol so it val
 											// can properly receive the next symbol
@@ -183,7 +187,7 @@ export class DeltaNodeDirective {
 													css,
 													cssDefault:y[1].cssDefault,
 													text,
-													extras:objectCopy(y[1].extras),
+													extras,
 													val:y[1].val
 												})
 											)

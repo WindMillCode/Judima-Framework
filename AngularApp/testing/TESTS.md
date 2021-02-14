@@ -54,31 +54,28 @@ Make sure panel borders realign properly on all mediaqueries
 * on multi line group elements get duplicated properly
 * on one line group around buttons elements get duplicated properly
 
+works with items on same line
 
-
+before contols  with items before 
+after controls  with items before     
 |position|one line|multi line|
 |:------|:------:|------:|
 |before contols                                                            |         |       |            |
 |around controls                                                           |         |       |            |
 |after controls                                                            |         |       |            |
 |before contols  with items before                                         |         |       |            |
-	 //works with items before on the same line
 |around controls    with items before                                      |         |       |            |
 |after controls  with items before                                         |         |       |            |
-	// works with items on same line
 |before contols  with items after                                          |         |       |            |
 |around controls with items after                                          |         |       |            |
 |after controls  with items after                                          |         |       |            |
-
 |before controls with items in betwewen                                    |         |       |            |
 |after controls with items in betwewen                                     |         |       |            |
 |around controls with items in betwewen top                                |         |       |            |
 |around controls with items in betwewen bottom                             |         |       |            |
 |around controls with items in betwewen both                               |         |       |            |
-
 |before controls with items in betwewen and before                         |         |       |            |
 |before controls with items in betwewen and after                          |         |       |            |
-
 |after controls with items in betwewen and before                          |         |       |            |
 |after controls with items in betwewen and after                           |         |       |            |
 
@@ -161,7 +158,9 @@ dropdown.appNest.under = container.appNest.name
 
 #### duplicate dropdown 
 
-this._deltaNodeBootstrap must be fired, to let the component.ts know about the proper changes, fix this so this can only be handled in deltaNode
+- test that on duplication, the options are copied to the respective dropdowns
+- test the functionality works on the duplicates
+
 
 
 ## Directives

@@ -65,9 +65,6 @@ export class NestDirective {
 				)
 			}
 
-
-
-
         }
     }
 
@@ -88,6 +85,12 @@ export class NestDirective {
 			let key = x[0];
 			let val = x[1];
 
+			// filter out items not to be nested
+			val.targets = val.targets
+			.filter((y:any,j)=>{
+				return y[1].extras.appNest.options?.ignore !== "true"
+			})
+			//
 
 			// first get a map from nestName to zSymbol
 			val.targets
@@ -97,7 +100,9 @@ export class NestDirective {
 				let finalNestName = y[1].extras.appNest.suffix === undefined ?
 					nestName :
 					nestName + " " + y[1].extras.appNest.suffix;
-				if (!Object.keys(val.nestNameZSymbolMap).includes(finalNestName)) {
+					// console.log(finalNestName)
+				// if (!Object.keys(val.nestNameZSymbolMap).includes(finalNestName)) {
+				if (val.nestNameZSymbolMap[finalNestName] === undefined) {
 					val.nestNameZSymbolMap[finalNestName] = y[0];
 				}
 
@@ -106,21 +111,29 @@ export class NestDirective {
 				// provide for a suffix and seperate the name and suffix by space
 				else {
 
-					while (Object.keys(val.nestNameZSymbolMap).includes(nestName + " " + suffix)) {
+					while(val.nestNameZSymbolMap[nestName + " " + suffix] !== undefined) {
+					// while (Object.keys(val.nestNameZSymbolMap).includes(nestName + " " + suffix)) {
+
 						suffix += 1;
 					}
 					y[1].extras.appNest.suffix = suffix;
 					val.nestNameZSymbolMap[nestName + " " + suffix] = y[0];
+					// console.log(finalNestName,{...val.nestNameZSymbolMap})
 
 				}
 
 			});
 			//
-			// console.log(val.nestNameZSymbolMap)
+			console.log(val.nestNameZSymbolMap)
 			//attempt to nest the items
+				/* what happens here is that of the under for name + " " + suffix exists
+				nest will try to place it under   under + " " + suffix,else it will place it under,
+				under
+				*/
 			val.targets
 			.forEach((y: any, j) => {
 				let { name: finalNestName, suffix, under: finalNestUnder } = y[1].extras.appNest;
+				// console.log({finalNestName,suffix,finalNestUnder})
 				if (suffix !== undefined) {
 					if (val.nestNameZSymbolMap[finalNestUnder + " " + suffix] !== undefined) {
 						finalNestUnder += " " + suffix;
@@ -152,7 +165,6 @@ export class NestDirective {
 			//
 
 			// resetting objects
-			// console.log({...val});
 			val.targets = [];
 			val.nestNameZSymbolMap = {}
 			//
