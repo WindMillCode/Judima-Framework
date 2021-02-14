@@ -156,7 +156,7 @@ export class NestDirective {
 						}
 					}
 					catch (e){
-						console.log(childZSymbol)
+						console.log(childZSymbol,e)
 					}
 
 				}

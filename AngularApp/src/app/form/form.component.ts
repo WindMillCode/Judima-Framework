@@ -453,7 +453,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     )
                     .subscribe((moving)=>{
 
-						console.log(zChild)
+						// console.log(zChild)
                         if(moving instanceof Event){
                             moving = {
                                 boardHeight : "0px",

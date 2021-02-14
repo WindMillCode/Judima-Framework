@@ -1,4 +1,4 @@
-import { Injectable, VERSION,Renderer2,RendererFactory2 } from "@angular/core";
+import { Injectable, VERSION,Renderer2,RendererFactory2, ChangeDetectorRef,Inject } from "@angular/core";
 import { Observable, of, Subject, Subscription, BehaviorSubject, ReplaySubject, merge, combineLatest } from "rxjs";
 // import { Router,RouterEvent } from "@angular/router";
 import { zChildren, componentObject, numberParse, ryberUpdate,ryberUpdateFactory, objectCopy } from "./customExports";
@@ -15,10 +15,12 @@ import { tap, last, catchError } from 'rxjs/operators'
 export class RyberService {
 
     private renderer2:Renderer2
+	public ref:any
     constructor(
         // private router:Router
         public http: HttpClient,
-        private renderer2Factory: RendererFactory2
+        private renderer2Factory: RendererFactory2,
+		// public ref:any
     ) {
 
         //start renderer2

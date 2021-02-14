@@ -58,13 +58,13 @@ export function flatDeep(arr, d = 1) { // polyfill for arr.flat
 };
 
 
-export function asyncData<T>(data: T) {
-    return defer(() => Promise.resolve(data));
-}
+// export function asyncData<T>(data: T) {
+//     return defer(() => Promise.resolve(data));
+// }
 
-export function asyncError<T>(errorObject: any) {
-    return defer(() => Promise.reject(errorObject));
-}
+// export function asyncError<T>(errorObject: any) {
+//     return defer(() => Promise.reject(errorObject));
+// }
 
 // The RxJS defer() operator returns an observable.
 // It takes a factory function that returns either a promise or an observable.
@@ -657,10 +657,11 @@ export function ryberUpdate(
         spot?:number,
 		symbolStart?:Array<number>,
 		symbol:string,
-		quantity?:number
+		quantity?:number,
+		ref?:ChangeDetectorRef
     }
 ):string {
-	let {symbol,co,type,css,cssDefault,extras,bool,text,val,signature,spot,quantity}= devObj
+	let {ref,symbol,co,type,css,cssDefault,extras,bool,text,val,signature,spot,quantity}= devObj
 	quantity = quantity ?? 3
 
     let ryber = this
@@ -811,7 +812,7 @@ export function ryberUpdate(
         else{
 
 			if(symbol !== undefined){
-				let utf8Symbol = String.fromCharCode(+symbol.split("&#")[1])
+				let utf8Symbol  = String.fromCharCode(+symbol.split("&#")[1])
 
 				val = val.replace(
 					new RegExp(utf8Symbol),
@@ -889,7 +890,19 @@ export function ryberUpdate(
 	}
 
 	if(type === "remove"){
+
 		let {symbol} = devObj
+		let utf8Symbol  = String.fromCharCode(+symbol.split("&#")[1])
+		// console.log(document.querySelector(`.${co} .${utf8Symbol}`))
+		let container = document.querySelectorAll("[class*='container'")
+		// this.renderer2.removeChild(
+		// 	// document.querySelector(`.${co}`),
+		// 	container[container.length-1],
+		// 	document.querySelector(`.${co} .${utf8Symbol}`),
+		// 	false
+		// )
+		// this.ref.detectChanges()
+
 		let subCO = ryber[co.valueOf()].quantity[1][1]
 		let targetIndex = subCO.symbol[1].indexOf(symbol)
 		subCO.quantity[1][targetIndex] = null

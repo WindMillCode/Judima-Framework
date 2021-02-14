@@ -61,7 +61,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (env.lifecycleHooks) console.log('app ngOnInit fires on mount');
-
+		this.ryber.ref = (()=>{
+			return this.ref
+		})()
 
         // adding scripts
         this.ryber.appCO0.metadata.scripts.push(

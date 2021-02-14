@@ -258,11 +258,12 @@ export class DeltaNodeDirective {
 											}
 
 										})
+
 										removeDeltas
 										.forEach((y:any,j)=>{
 											// remove the elements from the DOM
 												// we decide it will be the last index in deltas
-
+											
 											rUD({
 												symbol:y,
 												type:"remove",
@@ -271,6 +272,7 @@ export class DeltaNodeDirective {
 											//
 										})
 										this.ref.detectChanges()
+
 										deltaNode.current = {
 											deltas:removeDeltas,
 											group:key

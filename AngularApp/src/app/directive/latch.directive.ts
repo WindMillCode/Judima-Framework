@@ -84,7 +84,7 @@ export class LatchDirective {
 					if(this.extras.type === "dropdown"){
 
 						let zChild = zChildren[this.extras.zSymbol]
-						console.log(zChild.extras.appDeltaNode.options.target)
+						// console.log(zChild.extras.appDeltaNode.options.target)
 						// the problem is were using flexbox for nested elements
 							// wrap the dropdown in a div
 						if(zChild.extras.appNest.confirm === "true"){
@@ -356,6 +356,7 @@ export class LatchDirective {
 
     ngOnDestroy() {
         if (this.extras?.confirm === 'true') {
+
 			this.subscriptions
 			.forEach((x: any, i) => {
 				x.unsubscribe()
@@ -380,18 +381,21 @@ export class LatchDirective {
 				}
 				templateMyElements.changes
 				.pipe(
-					first()
+					first(),
+					// delay(50000)
 				)
-				.subscribe((result:any)=>{
-					zSymbols
-					.forEach((x:any,i)=>{
-						rUD({
-							symbol:x,
-							type:"remove",
-							co
+				.subscribe({
+						next:(result:any)=>{
+						zSymbols
+						.forEach((x:any,i)=>{
+							rUD({
+								symbol:x,
+								type:"remove",
+								co
+							})
 						})
-					})
-					this.ref.detectChanges()
+						this.ref.detectChanges()
+					},
 				})
 
 				//
