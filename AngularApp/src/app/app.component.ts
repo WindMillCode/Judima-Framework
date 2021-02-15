@@ -40,6 +40,10 @@ declare global {
 	// globals for gsap
 	var gsap:any
 	//
+
+	// globals for randomTextGenerator
+	var RandomTextGenerator
+	//
 }
 
 @Component({

@@ -34,6 +34,7 @@ it's
 - **What did you expect to happen?**
 
 * I expected the element and its auxillary to be removed from the DOM
+* The news has been right the learning curve is getting ridiculous for Angular, beginners and advanced should be told at face value what Angular is all about I am a strong supporter for Angular, and I cannot tolerate React to its core, but this is a sad fact I now had 1 rant over Angular. I learned in ngOnDestroy you had to get @ViewChildren.changes, if you want to modify the DOM tree, observable.subscribe has a next,error,complete, which you can take advantage of in subjects, ChangeDetection.onPush should be the default strategy as its running all the time. Angular has been getting irrelevant it its features, which builds on itself in complexion while going nowhere
 
 - **What happened instead?**
 
@@ -41,7 +42,7 @@ it's
 ```
 parent.insertBefore('comment','dropdown-container')
 ```
-* where we can clearly see that the dropdown-container is not a direct child of parent which is the component element 
+* the dropdown-container IS NOT a direct child of parent which is the component element 
 
 - **Have you tried any solutions posted on similar issues in our issue tracker, stack overflow, or google?**
 
@@ -49,7 +50,8 @@ parent.insertBefore('comment','dropdown-container')
 * I would love to flip the couse and call ngOnDestroy then remove the element but thats not how Angular works, besides it gets called again and even though it changes the reference to null, when talking about scaling and future Angular version this is not the way to go
 
 
-![](./zoom_0.gif)
+![](https://github.com/MichaelOdumosu57/Judima-Framework/blob/master/AngularApp/issues/Angular_issue_with_removing_duplicated_elements_when_moved_around_in_DOM/zoom_0.gif?raw=true)
+<img src="https://github.com/MichaelOdumosu57/Judima-Framework/blob/master/AngularApp/issues/Angular_issue_with_removing_duplicated_elements_when_moved_around_in_DOM/zoom_0.gif?raw=true" width="40" height="40" />
 
 
 ## Backtrace
@@ -158,3 +160,7 @@ node : 14.15.4
 }
 ```
 
+
+### Additional 
+
+* Apparently it replaces removed nodes with comments (since *ngFor will incorrectly mount directives to other elements if you try to to splice) and here since the dropdown is moved inside another element, a faulty bug appears. 

@@ -5,7 +5,7 @@ import { catchError, take, timeout, mapTo, debounceTime, distinctUntilChanged, d
 import {
     zChildren, getTextWidth, numberParse,
     xPosition, resize, componentBootstrap,
-    eventDispatcher, dropdown, dragElement, stack, xContain, minMaxDelta,
+    eventDispatcher, dragElement, stack, xContain, minMaxDelta,
 	objectCopy, responsiveMeasure, flatDeep, zChildText,componentConsole,ryberPerfect,
 	deltaNode
 } from '../customExports'
@@ -52,7 +52,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 if(xx !== this.appTV){
                     return
                 }
-
                 let zChild = this.zChildInit()
 				let topLevelZChild = this._topLevelZChildInit()
 				let formatZChild = this._formatZChildInit()
@@ -90,6 +89,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                 })
                 //
+
 
 
                 /*  format factory
@@ -162,7 +162,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 let keep = []
                 let keepCurrent = []
 				let keepLast = Object.keys(topLevelZChild).slice(1,2)[0]
-
                 let align = []
                 let alignCurrent = []
                 let myTotal = 0
@@ -181,7 +180,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
                     zChild[x].css["height"] = (component.height !== undefined) ?  (component.height).toString() + "px" : zChild[x].cssDefault["height"]
-                    zChild[x].css["width"] = (component.width !== undefined) ?  (component.width).toString() + "px" : zChild[x].cssDefault["width"]
+					zChild[x].css["width"] = (component.width !== undefined) ?  (component.width).toString() + "px" : zChild[x].cssDefault["width"]
                     zChild[x].css["left"] = (component.left !== undefined) ?  (component.left).toString() + "px" : zChild[x].cssDefault["left"]
                     zChild[x].css["top"] = (component.top !== undefined) ?  (component.top).toString() + "px" : zChild[x].cssDefault["top"]
                     if(zChild[x]?.css?.["width"] !== undefined){
@@ -281,7 +280,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
 				})
-				// console.log(keep)
 
 
                 align
@@ -323,15 +321,21 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 })
                 this.ref.detectChanges()
 
+
                 //making sure values are true to the DOM
+
                 staticZKeys
                 .forEach((x,i)=>{
-                    zChild[x].css["height"] = (zChild[x].element.getBoundingClientRect().height).toString() + "px"
-                    zChild[x].css["width"] = (zChild[x].element.getBoundingClientRect().width).toString() + "px"
-                    zChild[x].cssDefault["height"] = zChild[x].css["height"]
-                    zChild[x].cssDefault["width"] = zChild[x].css["width"]
-                    zChild[x].cssDefault["left"] = zChild[x].css["left"]
-                    zChild[x].cssDefault["top"] = zChild[x].css["top"]
+					if(zChild[x].extras.judima.formatIgnore !== "true"){
+						if(!["img"].includes(zChild[x].bool)){
+							zChild[x].css["height"] = (zChild[x].element.getBoundingClientRect().height).toString() + "px"
+						}
+						zChild[x].css["width"] = (zChild[x].element.getBoundingClientRect().width).toString() + "px"
+						zChild[x].cssDefault["height"] = zChild[x].css["height"]
+						zChild[x].cssDefault["width"] = zChild[x].css["width"]
+						zChild[x].cssDefault["left"] = zChild[x].css["left"]
+						zChild[x].cssDefault["top"] = zChild[x].css["top"]
+					}
                 })
                 this.ref.detectChanges()
 
@@ -430,6 +434,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 						this._deltaNodeBootstrap({zChild});
 						this.ryber[this.appTV].metadata.deltaNode.component.confirm = "true"
 						//
+
 
                         eventDispatcher({
                             event:'resize',
@@ -676,10 +681,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 						})
 
 
-						// componentConsole.call(this,{
-						// 	target:['formCO1','formCO2','formCO3'],
-						// 	data:[finalZChildKeys,zChild]
-						// })?.()
                         if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.area   ){
 
                             // element management
@@ -697,7 +698,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 											zChild[x].css["height"] = zChild[x].cssDefault["height"]
 											zChild[x].css["width"] = zChild[x].cssDefault["width"]
 											zChild[x].css["font-size"] = zChild[x].cssDefault["font-size"]
-
 										}
                                     })
 
@@ -723,7 +723,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         ref: this.ref,
                                         zChild,
                                         spacing: [null,
-											...Array.from(flatDeep(finalAlign,Infinity),(x,i)=> {return section.stack}),
+											...Array.from(flatDeep(finalAlign,Infinity),(x:string,i)=> {
+												if(zChild[x].extras.component.top !==undefined){
+													return zChild[x].extras.component.top
+												}
+												return section.stack
+											}),
 										],
 										options:{
 											overlapFix:{
@@ -744,7 +749,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 										stackObj.keep = keep
 										stackObj.options.overlapFix.flag = "false"
 										;({keep,overlapFixFlag}=stack(stackObj))
-										// console.log("next")
 										this.ref.detectChanges()
 									}
 									//
@@ -1066,9 +1070,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
             max = max
             .reduce((acc: any, x, i) => {
 
-                if(zChild[x]?.extras?.appDropDown?.change === "dropdowns"){
-                    return acc
-                }
 
                 let sum = numberParse(zChild[x].css["top"]) +
                     numberParse(zChild[x].css["height"]);
@@ -1138,8 +1139,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         return latchZChild
     }
 
-
-
     private directivesSendData(devObj?:{
         directivesZChild:zChildren,
         random?:any,
@@ -1169,10 +1168,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         this.ryber[this.appTV.valueOf()].metadata.zChildrenSubject.next(({options,directivesZChild,templateMyElements,ref}))
 
     }
-
-
-
-
 
     private zChildInit(devObj?): any {
         return componentBootstrap({

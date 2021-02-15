@@ -182,105 +182,8 @@ if fn is irregularWords
     you must know at what pixel length the browser will word wrap and if if you have
     and your x padding will play a role, your y padding is needed alse because it determines the height
 */
-export function dropdown(   devObj:{
-    font?:Array<any>,
-    heightVal?: number,
-    heightDiff? : number,
-    stringAssembly?: Array<string>,
-    paddingy:Array<number>,
-    fn:'irregularWords'
-}   ){
 
 
-    if(devObj.fn === 'irregularWords'){
-
-
-        let finalVal = devObj.heightVal
-        let  extender = devObj.stringAssembly.length != 1  ?  (()=>{
-            let multiFinal = 1
-            let controlK = 0
-            devObj.stringAssembly.forEach((y,j)=>{
-
-
-                if(j === controlK || controlK === 0 ){
-
-
-                    let k = j
-                    let testingString= ''
-                    while(k != devObj.stringAssembly.length){
-                        testingString += devObj.stringAssembly[k] + " "
-
-
-                        if(
-                            Math.ceil(
-                                getTextWidth({
-                                    elementText:testingString.slice(0,-1),
-                                    font: devObj.font.join(" ")
-                                })/devObj.heightDiff
-                            )  >  1
-                        ){
-                            // console.log('get j == to',k)
-                            controlK = k
-                            break
-                        }
-
-
-                        k += 1
-
-                    }
-                    testingString = testingString.slice(0,-1)
-
-
-                    console.log(
-                        testingString,
-                        getTextWidth({
-                            elementText:testingString,
-                            font: devObj.font.join(" ")
-                        }),
-                        devObj.heightDiff,
-                        Math.ceil(
-                            getTextWidth({
-                                elementText:testingString,
-                                font: devObj.font.join(" ")
-                            })/devObj.heightDiff
-                        )
-                    )
-
-
-                    if(
-                        Math.ceil(
-                            getTextWidth({
-                                elementText:testingString,
-                                font: devObj.font.join(" ")
-                            })/devObj.heightDiff
-                        ) > 1
-                    ){
-                        multiFinal += 1
-                    }
-
-
-                }
-
-
-            })
-            return multiFinal
-
-        })() : 1
-        devObj.heightVal += (
-            (
-                16 * extender
-            ) + (
-                devObj.paddingy.length == 1 ?
-                devObj.paddingy[0] * 2 :
-                devObj.paddingy[0] + devObj.paddingy[1]
-                )
-        )
-        return [finalVal,devObj.heightVal]
-
-
-    }
-
-}
 
 
 export function getTextWidth(   devObj:{elementText:string,font:string}   ){
@@ -657,11 +560,10 @@ export function ryberUpdate(
         spot?:number,
 		symbolStart?:Array<number>,
 		symbol:string,
-		quantity?:number,
-		ref?:ChangeDetectorRef
+		quantity?:number
     }
 ):string {
-	let {ref,symbol,co,type,css,cssDefault,extras,bool,text,val,signature,spot,quantity}= devObj
+	let {symbol,co,type,css,cssDefault,extras,bool,text,val,signature,spot,quantity}= devObj
 	quantity = quantity ?? 3
 
     let ryber = this
@@ -715,7 +617,8 @@ export function ryberUpdate(
                                 [
                                     (()=>{
                                            if(css !== undefined){
-                                               css.width = "100%" //must always be set to this value
+											// components are allowed to have different sizes should be percentages only
+                                            // css.width = "100%" //must always be set to this value
                                                return css
                                            }
 
@@ -892,17 +795,6 @@ export function ryberUpdate(
 	if(type === "remove"){
 
 		let {symbol} = devObj
-		let utf8Symbol  = String.fromCharCode(+symbol.split("&#")[1])
-		// console.log(document.querySelector(`.${co} .${utf8Symbol}`))
-		let container = document.querySelectorAll("[class*='container'")
-		// this.renderer2.removeChild(
-		// 	// document.querySelector(`.${co}`),
-		// 	container[container.length-1],
-		// 	document.querySelector(`.${co} .${utf8Symbol}`),
-		// 	false
-		// )
-		// this.ref.detectChanges()
-
 		let subCO = ryber[co.valueOf()].quantity[1][1]
 		let targetIndex = subCO.symbol[1].indexOf(symbol)
 		subCO.quantity[1][targetIndex] = null
@@ -988,24 +880,16 @@ export function stack(
     }
 ){
 
-    let {ref,options,zChild,zChildCss}= devObj
+    let {ref,options,zChild,zChildCss,type}= devObj
 
     if(zChildCss === undefined){
         zChildCss = 'true'
     }
 
-    // if(devObj.zChildKeys !== undefined){
-    //     devObj
-    //     .zChildKeys = devObj
-    //     .zChildKeys
-    //     .filter((x,i)=>{
-    //         return devObj.zChild[x] !== undefined
-    //     })
-    //     // return
-    // }
 
-    if(devObj.type === 'simpleStack'){
+    if(type === 'simpleStack'){
 
+		let {spacing} = devObj
         devObj
         .zChildKeys
         .forEach((x,i)=>{
@@ -1046,12 +930,12 @@ export function stack(
                 )
                 +
                 (
-                    typeof(devObj.spacing) === 'number' ?
-                    devObj.spacing :
+                    typeof(spacing) === 'number' ?
+                    spacing :
                     (
-                        devObj.spacing[i] === undefined ?
-                        devObj.spacing[devObj.spacing.length-1] :
-                        devObj.spacing[i]
+                        spacing[i] === undefined ?
+                        spacing[spacing.length-1] :
+                        spacing[i]
                     )
 
                 )
@@ -1074,20 +958,14 @@ export function stack(
     }
 
 
-    else if(devObj.type === 'keepSomeAligned'){
+    else if(type === 'keepSomeAligned'){
 
-        let {zChildKeys,start} = devObj
+        let {zChildKeys,start,spacing} = devObj
         if( devObj.keep === undefined){
             devObj.keep = []
         }
         let keep = Object.fromEntries(devObj.keep)
-        // console.log(devObj.keep)
-        // let keep  = {}
-        // devObj
-        // .keep
-        // .forEach((x,i)=>{
-        //     keep[x[0].valueOf()] = x[1]
-        // })
+
         devObj
         .zChildKeys
         .forEach((x,i)=>{
@@ -1111,18 +989,7 @@ export function stack(
 
                 (
                     zChildCss === 'true' ?(()=>{
-                        // console.log(
-                        //     x,
-                        //     (
-                        //         numberParse(      devObj.zChild[keep[x.valueOf()] !== undefined ? keep[x.valueOf()] : prev].css['top']   ) +
-                        //         include({
-                        //             item:numberParse(      devObj.zChild[keep[x.valueOf()] !== undefined ? keep[x.valueOf()] : prev].css['height']   ) ,
-                        //             include:devObj.heightInclude,
-                        //             index:i
-                        //         })
-                        //     )
-                        // )
-                        return                     (
+						let value1 =  (
                             numberParse(      devObj.zChild[keep[x.valueOf()] !== undefined ? keep[x.valueOf()] : prev].css['top']   ) +
                             include({
                                 item:numberParse(      devObj.zChild[keep[x.valueOf()] !== undefined ? keep[x.valueOf()] : prev].css['height']   ) ,
@@ -1130,6 +997,8 @@ export function stack(
                                 index:i
                             })
                         )
+
+                        return value1
                     })()
                     :
                     (
@@ -1154,12 +1023,12 @@ export function stack(
                         //         devObj.spacing[i]
                         //     )
                         // )
-                        return typeof(devObj.spacing) === 'number' ?
-                        devObj.spacing :
+                        return typeof(spacing) === 'number' ?
+                        spacing :
                         (
-                            devObj.spacing[i] === undefined ?
-                            devObj.spacing[devObj.spacing.length-1] :
-                            devObj.spacing[i]
+                            spacing[i] === undefined ?
+                            spacing[spacing.length-1] :
+                            spacing[i]
                         )
                     })()
                 )
@@ -1168,14 +1037,17 @@ export function stack(
 
 
             ).toString() + "px"
-			if(options?.overlapFix?.confirm === "true" && zChild[x]?.extras?.judima?.stack?.overlapFix !== "false"){
+			if(
+				options?.overlapFix?.confirm === "true" &&
+				zChild[x]?.extras?.judima?.stack?.overlapFix !== "false"
+			){
 
 				// determine all zChildren of the previous row
 					// the while loop finds when keep[x-n] !== keep[x], giving us the
 					// indictor for all the keys reverseLookup needs in order to work
 				let ii = i
 				while(keep[zChildKeys[i]] === keep[zChildKeys[ii--]]){
-
+					// console.log(ii)
 				}
 				let reverseLookup = zChildKeys.slice(0,i+1).reverse()
 				reverseLookup = reverseLookup
@@ -1203,8 +1075,13 @@ export function stack(
 				//
 
 				// replace the keep[x] and devObj with the one that clears the highest gap
-				if(overlapping.length > 0 && !reverseLookup.includes("&#8353")){
-					// console.log(x,keep[x],reverseLookup)
+				// console.log({x,overlapping,top:zChild[x].extras?.component?.top})
+				if(
+					overlapping.length > 0 &&
+					!reverseLookup.includes("&#8353") &&
+					zChild[x].extras?.component?.top === undefined
+				){
+
 					let delta = minMaxDelta({
 						type:"identify",
 						items:reverseLookup,

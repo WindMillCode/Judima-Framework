@@ -124,7 +124,7 @@ export class NestDirective {
 
 			});
 			//
-			console.log(val.nestNameZSymbolMap)
+			// console.log(val.nestNameZSymbolMap)
 			//attempt to nest the items
 				/* what happens here is that of the under for name + " " + suffix exists
 				nest will try to place it under   under + " " + suffix,else it will place it under,

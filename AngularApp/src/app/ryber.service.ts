@@ -130,8 +130,6 @@ export class RyberService {
 			}
 			//
 
-
-
             let symbol: any = ""
 
             if (type === "new" || type === "body") {
@@ -143,6 +141,7 @@ export class RyberService {
                     split: split === undefined ? sectionDefault.split : split,
                     stack: stack === undefined ? sectionDefault.stack : stack
 				}
+
 				let css ={
 					height: "300px", //must always exit
 					//expected to be a percent configureble for position in FPM logic
@@ -938,7 +937,7 @@ export class RyberService {
 					...options.judima
 				}
 
-
+				
                 symbol = rUD({
                     co,
                     bool: 'img',

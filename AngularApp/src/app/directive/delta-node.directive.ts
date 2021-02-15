@@ -73,7 +73,8 @@ export class DeltaNodeDirective {
 									component:new Set(),
 								},
 								add:[],
-								remove:[]
+								remove:[],
+
 							}
 						})
 						//
@@ -263,7 +264,7 @@ export class DeltaNodeDirective {
 										.forEach((y:any,j)=>{
 											// remove the elements from the DOM
 												// we decide it will be the last index in deltas
-											
+
 											rUD({
 												symbol:y,
 												type:"remove",
@@ -317,56 +318,75 @@ export class DeltaNodeDirective {
 							}
 							//
 
+							//
+							else if(val.type ==="repeat"){
+								val[val.type] = {}
+								let repeatedDeltas = []
+								val.deltas =[]
+								ryber[co].metadata.ngAfterViewInitFinished
+								.pipe(
+									first()
+								)
+								.subscribe((result:any)=>{
+									val.targets =val.targets
+									.map((y:any,j)=>{
+
+										//logic for increment
+										if(y[1]?.extras?.appDeltaNode?.type === "increment"){
+											y[1].extras.appDeltaNode.increment = {
+												counter: +y[1].innerText?.item.split("")[0]
+											}
+										}
+										//
+
+										// pre mods
+										let css = objectCopy(y[1].css)
+										let text = (()=>{
+											if(y[1]?.extras?.appDeltaNode?.type === "increment"){
+												let mySplit = y[1].innerText?.item.split("")
+
+												return (++y[1].extras.appDeltaNode.increment.counter)+mySplit[1]
+											}
+											return y[1].innerText?.item
+										})()
+										let  extras = objectCopy(y[1].extras)
+										if(extras.appDeltaNode?.options?.target?.confirm === "true"){
+											extras.appDeltaNode.options.target.zSymbol = y[0]
+										}
+										//
+
+										// add the elements to the dom
+										repeatedDeltas.push(
+											rUD({
+												quantity:3,
+												symbol:y[1].symbol,
+												co,
+												bool:y[1].bool,
+												css,
+												cssDefault:y[1].cssDefault,
+												text,
+												extras,
+												val:y[1].val
+											})
+										)
+										//
+										return y
+									})
+									this.ref.detectChanges()
+									deltaNode.current = {
+										deltas:repeatedDeltas,
+										group:key
+									}
+									val.deltas.push(repeatedDeltas)
+									val.hooks.directive  ="add prepare"
+									ryber[co].metadata.deltaNode.updateZChild.next()
+								})
+
+
+							}
 
 						})
 						//
-
-							// testing trigger click
-							// of([])
-							// .pipe(
-							// 	delay(1),
-							// 	// first(),
-							// 	repeat(2)
-							// )
-							// .subscribe((result:any)=>{
-
-
-							// 	let outerDeltaAddButton = groups["outerDelta"].add[0].target[1].element
-							// 	let innerDeltaAddButton = groups["innerDelta"].add[0].target[1].element
-							// 	eventDispatcher({
-							// 		event:'click',
-							// 		element:outerDeltaAddButton
-							// 	})
-							// 	// of([])
-							// 	// .pipe(
-							// 	// 	repeat(10)
-							// 	// )
-							// 	// .subscribe(()=>{
-							// 	// 	eventDispatcher({
-							// 	// 		event:'click',
-							// 	// 		element:innerDeltaAddButton
-							// 	// 	})
-							// 	// })
-							// })
-
-							// of([])
-							// .pipe(
-							// delay(1000)
-							// )
-							// .subscribe((result:any)=>{
-
-							// 	let outerDeltaRemoveButton = groups["outerDelta"].remove[0].target[1].element
-							// 	eventDispatcher({
-							// 		event:'click',
-							// 		element:outerDeltaRemoveButton
-							// 	})
-							// })
-							//
-
-						// console.log(this.subscriptions)
-
-
-
 
 					})
 				)

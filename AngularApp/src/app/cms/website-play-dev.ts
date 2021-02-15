@@ -1,5 +1,4 @@
 let website:any = {}
-
 let beforeItems  = [{
 	"key": "before-text",
 	type:"div",
@@ -1468,7 +1467,70 @@ let nesting_and_duplicate_testing =  [
 			...group1,
 
 			...controls,
-			...group2
+			...[
+				{
+					"key": "my-input-counter",
+					"type": "count",
+					"value":"1.",
+					delta:{
+						"group":"outerDelta"
+					},
+					"split": "1",
+					"googleSheets": {},
+					"options":{
+						"css":{
+						}
+					}
+				},
+				{
+					"key": "my-input",
+					"type": "textbox",
+					"value":"setup",
+					delta:{
+						"group":"outerDelta"
+					},
+					"googleSheets": {},
+
+				},
+				{
+					"key": "my-div",
+					"type": "div",
+					"value":"",
+					"next":"true",
+					delta:{
+						"group":"outerDelta"
+					},
+					options:{
+						css:{
+							border:"20px dashed rgb(21,121,227)"
+						}
+					},
+					"left":"400",
+					"split": "3",
+					"height":"250",
+					"googleSheets": {},
+
+				},
+				{
+					"key": "my-div",
+					"type": "div",
+					"value":"",
+					delta:{
+						"group":"outerDelta"
+					},
+					options:{
+						css:{
+							border:"20px dashed rgb(221,161,217)"
+						}
+					},
+					top:-20,
+					"left":"800",
+					"split": "2",
+					"height":"150",
+					"googleSheets": {},
+
+				},
+			]
 
 
 
@@ -4417,7 +4479,476 @@ let latch_testing = [
 	latch_dropdown_duplicate_nesting_development
 ]
 //
-website.convertCMS =  latch_testing
+
+//
+
+// all we test is that we can resize the borard
+let component_sizing_development ={
+	"title": "development",
+	"type_slug": "forms",
+	"metafields": [
+
+		{
+			"key": "Body",
+			"type": "body",
+			"stack": "60",
+			// "height":"1000",
+			delta:{
+
+			},
+			nest:{
+
+			},
+			height:"1000",
+			// width:"648",
+			"googleSheets": {},
+			options:{
+				css:{
+					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+					"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)",
+					width:"125%"
+				}
+			}
+		},
+		{
+			"key": "my-cursor",
+			// "type": "gsap-cursor",
+			type:"text",
+			// "value":"Items",
+			// "split": "3",
+			gsapCusor:{
+				"group":"a",
+				"copyPath":"true",
+
+			},
+			"height":"1",
+			"width":"1",
+			options:{
+				css:{
+					height:"200px"
+				}
+			},
+			"googleSheets": {},
+		},
+		{
+		    "key": "my-table",
+		    "type": "simpleTable",
+		    "value":"",
+		    "background":"blue",
+		    "googleSheets": {},
+			"split":"4",
+			"height":"300"
+		},
+		{
+			"key": "my-dropdown",
+			type:"text",
+			value:"Some Text",
+			background:"red",
+			"split": "3",
+			"googleSheets": {},
+		},
+		{
+			"key": "my-dropdown",
+			type:"textbox",
+			value:"Some Text",
+			"split": "3",
+			"googleSheets": {},
+		},
+		{
+			"key": "my-dropdown",
+			type:"loading",
+			"split": "3",
+			"color":"blue",
+			"googleSheets": {},
+		},
+		{
+			"key": "my-dropdown",
+			type:"button",
+			value:"I dont do anything",
+			"split": "3",
+			"color":"blue",
+			"googleSheets": {},
+		},
+		{
+			"key": "localVideo",
+			"value": "",
+			"type": "video",
+			"split": "5",
+			// "width":"420",
+			"height":500,
+			"googleSheets": {},
+		},
+		{
+			"key": "my-dropdown",
+			type:"dropdown",
+			value:"Select Item",
+			latch:{
+				options:[ //look to changes this to options
+					"Toronto",
+					"Suriya"
+				],
+
+			},
+			"split": "3",
+			"googleSheets": {},
+		},
+
+
+
+
+	] .map((x:any,i)=>{
+		x.key += "-component-sizing"
+		return x
+	})
+}
+
+let component_position_development = [
+	{
+		"title": "navigation",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":-147,
+				delta:{
+
+				},
+				nest:{
+
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"125%"
+					}
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Judima",
+				// "split": "3",
+				"text-align":"left",
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+            {
+                "key": "image-1",
+                "type": "image",
+                "imageURL":"angular.png",
+                "height":"100",
+                "split":2,
+            },
+			{
+				"key": "home",
+				type:"text",
+				"value":"Home",
+
+			},
+			{
+				"key": "about",
+				type:"text",
+				"value":"About",
+
+			},
+			{
+				"key": "articles",
+				type:"text",
+				"value":"Articles",
+
+			},
+			{
+				"key": "videos",
+				type:"text",
+				"value":"Videos",
+
+			},
+			{
+				"key": "newsletter",
+				type:"text",
+				"value":"Newsletter",
+				next:"true",
+				top:-40,
+				left:400
+			},
+			{
+				"key": "guides",
+				type:"text",
+
+				// top:-40,
+				top:-40,
+				"value":"Guides",
+			},
+			{
+				"key": "books",
+				type:"text",
+				// top:-40,
+				top:-40,
+				"value":"Books",
+			},
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+	{
+		"title": "aside",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				// "left":-147,
+				height:1700,
+				// width:500,
+				delta:{
+					group:[
+						{
+							name:"media_card",
+							type:"repeat"
+						}
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"menu",
+							type:"regular"
+						},
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"25%"
+					}
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Menu",
+				// "split": "3",
+				"text-align":"left",
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+				"key": "container",
+				type:"div",
+				"value":"Home",
+				split:2,
+				height:200,
+				options:{
+					css:{
+						border:"5px solid red",
+						display:"flex",
+						// "flex-flow":""
+					}
+				},
+				delta:{
+					group:"media_card",
+					by:5,
+				},
+				"nest":{
+					group:"menu",
+					name:"A1",
+				},
+			},
+            {
+                "key": "image-1",
+                "type": "image",
+                "imageURL":"python.jpg",
+				"nest":{
+					group:"menu",
+					name:"B1",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					by:5,
+				},
+				options:{
+					css:{
+						height:"170px",
+						width:"170px"
+					}
+				}
+            },
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet,
+				consectetur adipiscing elit, sed do eiusmod tempor incididunt`,
+				"nest":{
+					group:"menu",
+					name:"B2",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					by:5,
+				}
+            },
+
+
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+	{
+		"title": "article",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"stack": "60",
+				// "height":"1000",
+				left:200,
+				delta:{
+
+				},
+				nest:{
+
+				},
+				height:"1000",
+				// width:"648",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)",
+						width:"125%"
+					}
+				}
+			},
+			{
+				"key": "my-cursor",
+				// "type": "gsap-cursor",
+				type:"text",
+				// "value":"Items",
+				// "split": "3",
+				gsapCusor:{
+					"group":"a",
+					"copyPath":"true",
+
+				},
+				"height":"1",
+				"width":"1",
+				options:{
+					css:{
+						height:"200px"
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+				"key": "my-table",
+				"type": "simpleTable",
+				"value":"",
+				"background":"blue",
+				"googleSheets": {},
+				"split":"4",
+				"height":"300"
+			},
+			{
+				"key": "my-dropdown",
+				type:"text",
+				value:"Some Text",
+				background:"red",
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"textbox",
+				value:"Some Text",
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"loading",
+				"split": "3",
+				"color":"blue",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"button",
+				value:"I dont do anything",
+				"split": "3",
+				"color":"blue",
+				"googleSheets": {},
+			},
+			{
+				"key": "localVideo",
+				"value": "",
+				"type": "video",
+				"split": "5",
+				// "width":"420",
+				"height":500,
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"dropdown",
+				value:"Select Item",
+				latch:{
+					options:[ //look to changes this to options
+						"Toronto",
+						"Suriya"
+					],
+
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+
+]
+//
+
+let component_dimension_testing = [
+	// component_sizing_development,
+	...component_position_development
+]
+//
+website.convertCMS = component_dimension_testing
 
 
 export default website

@@ -1,9 +1,12 @@
+
+
 // from config
 $bg-color-1 :rgba(random(255), random(255), random(255),(random(10)/10) + .5 );
 // $bg-color-1:black;
 @function random-color() {
     @return rgba(random(255), random(255), random(255),(random(10)/10) + .5 );
 }
+
 
 
 :root{ // very upset if you have css variables avaible to you update the space and use them instead of keep yr own smh
@@ -34,6 +37,7 @@ $bg-color-1 :rgba(random(255), random(255), random(255),(random(10)/10) + .5 );
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-blue.css";
 @import "./assets/styles/pikaday.css";
+@import "./assets/styles/component-position";
 
 /* libre-franklin-regular - latin */
 @font-face {
@@ -49,11 +53,21 @@ $bg-color-1 :rgba(random(255), random(255), random(255),(random(10)/10) + .5 );
          url('./assets/fonts/libre-franklin-v4-latin-regular.svg#LibreFranklin') format('svg'); /* Legacy iOS */
 }
 
+
+@font-face {
+    font-family: 'Gilgongo Doro';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./assets/fonts/gilgongo.doro.ttf');
+
+}
+
+
 @font-face {
     font-family: 'BeteNoirNF';
     font-style: normal;
     font-weight: 400;
-    src: url('./assets/fonts/BeteNoirNF.otf'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/BeteNoirNF.otf');
     src: local('BeteNoirNF'),
          url('./assets/fonts/BeteNoirNF.ttf') format('truetype'), /* Safari, Android, iOS */
 }

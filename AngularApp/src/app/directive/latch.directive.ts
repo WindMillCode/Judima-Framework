@@ -385,7 +385,7 @@ export class LatchDirective {
 					// delay(50000)
 				)
 				.subscribe({
-						next:(result:any)=>{
+					next:(result:any)=>{
 						zSymbols
 						.forEach((x:any,i)=>{
 							rUD({

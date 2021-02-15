@@ -22,7 +22,7 @@ import { WebRTCDirective } from './directive/web-rtc.directive';
 import { WebVitalsDirective } from './directive/web-vitals.directive';
 import { DeltaNodeDirective } from './directive/delta-node.directive';
 import { GsapCursorDirective } from './directive/gsap-cursor.directive';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 let providers = []
 if(env.testingAcct.confirm === "true"){
@@ -54,6 +54,7 @@ if(env.testingAcct.confirm === "true"){
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+	MatProgressSpinnerModule,
     AgGridModule.withComponents([FormComponent])
   ],
   providers,

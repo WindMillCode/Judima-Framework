@@ -163,13 +163,24 @@ dropdown.appNest.under = container.appNest.name
 
 
 
+
 ## Directives
 * if there is more than one topLevel zChild invovled, the logic must be managed from the board/body , for instance were you have a camera feature or chat feature, you must keep the data assoicated with the correct features 
 	* you will require a group, name and naming system (preferrable suffix in nest directive), to uniquely idenitfy all element in the group as well as types as needed say if it was a facebook stream, google stream ... to deal with the different data expressing the same feature
 
 
 ## Components 
-* do we need display table
+
+__ISSUE__ - on overlapFix if a top was specified we get a infinite loop when duplication is involved, figure out the issue,
+__ISSUE__ - zChild.type === "img" if height is specifed as css on top level angular still manages to change to 0 
+
+### Component sizing
+* make sure you can size the component as needed
+
+### Componnent position
+
+* test that you can achieve the holy grail
+* provide options whether media queries should be ignored
 
 ### top level and formatting
 * by default judima will format all top level zChildren in its components
