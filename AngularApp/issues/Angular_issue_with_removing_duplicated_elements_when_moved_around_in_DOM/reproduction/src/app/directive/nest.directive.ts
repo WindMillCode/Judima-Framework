@@ -1,10 +1,6 @@
-import { Directive, ElementRef, HostListener, Input, Renderer2, ChangeDetectorRef } from '@angular/core';
+import { Directive,  Input, Renderer2, ChangeDetectorRef } from '@angular/core';
 import { RyberService } from '../ryber.service'
-import { fromEvent, from, Subscription, Subscriber, of, combineLatest } from 'rxjs';
-import { deltaNode, eventDispatcher, numberParse, objectCopy } from '../customExports'
-import { catchError, delay,first,tap,take } from 'rxjs/operators'
-import { environment as env } from '../../environments/environment'
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 
 @Directive({
@@ -20,8 +16,6 @@ export class NestDirective {
 	ref:ChangeDetectorRef
 
     constructor(
-        private el: ElementRef,
-        private http: HttpClient,
         private renderer2: Renderer2,
         private ryber: RyberService
     ) { }
@@ -38,7 +32,6 @@ export class NestDirective {
 				let {ryber,zChildren,ref} =this
 				let {co} = this.extras
 				let {groups} = this.groups =  ryber[co].metadata.nest
-				let {nest} = ryber[co].metadata
 
 				//configure object to handle nesting for different groups
 				this.extras.group
@@ -53,7 +46,6 @@ export class NestDirective {
 
 				this.subscriptions.push(
 					ryber[co].metadata.zChildrenSubject
-					// .pipe(first())
 					.subscribe(()=>{
 
 						// initalize needed vars fom the component
@@ -70,13 +62,13 @@ export class NestDirective {
 
 
 	private _nestZChildren(devObj) {
-		let {zChildren,groups,ryber,co} = devObj
+		let {zChildren,groups} = devObj
 		// gathering all objects to their respective nestGroups
 		Object.entries(zChildren)
-			.forEach((x: any, i) => {
-				let zChildNest = x[1]?.extras?.appNest;
-				groups?.[zChildNest?.group]?.targets.push(x);
-			});
+		.forEach((x: any, i) => {
+			let zChildNest = x[1]?.extras?.appNest;
+			groups?.[zChildNest?.group]?.targets.push(x);
+		});
 		//
 
 		// creating the nestingTree
@@ -134,7 +126,7 @@ export class NestDirective {
 			val.targets
 			.forEach((y: any, j) => {
 				let { name: finalNestName, suffix, under: finalNestUnder } = y[1].extras.appNest;
-				// console.log({finalNestName,suffix,finalNestUnder})
+
 				if (suffix !== undefined) {
 					if (val.nestNameZSymbolMap[finalNestUnder + " " + suffix] !== undefined) {
 						finalNestUnder += " " + suffix;

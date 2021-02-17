@@ -1,11 +1,8 @@
-import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren, Host,ChangeDetectorRef } from '@angular/core';
+import { Directive,  HostListener, Input, ChangeDetectorRef } from '@angular/core';
 import { RyberService } from '../ryber.service'
-import { fromEvent, from, Subscription, Subscriber, of, combineLatest, Observable } from 'rxjs';
-import { deltaNode, eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren } from '../customExports'
-import { catchError, delay,first, take } from 'rxjs/operators'
-import { environment as env } from '../../environments/environment'
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { debuglog } from 'util';
+import { fromEvent, Subscription } from 'rxjs';
+import {  objectCopy,ryberUpdateFactory } from '../customExports'
+import { first, take } from 'rxjs/operators'
 
 
 
@@ -26,14 +23,11 @@ export class LatchDirective {
 	subscriptions:Array<Subscription> = []
 
     constructor(
-        private el: ElementRef,
-        private http: HttpClient,
-        private renderer2: Renderer2,
         private ryber: RyberService,
 		private ref:ChangeDetectorRef
     ) { }
 
-    @HostListener('click',['$event']) onBlur(event){
+    @HostListener('click',['$event']) onClick(event){
         if(this.extras?.confirm === "true"){
 
 
@@ -147,7 +141,7 @@ export class LatchDirective {
 							extras.judima.topLevelZChild = "false"
 							extras.appLatch.confirm = "false"
 							css["z-index"] -= 1
-							css["position"] = "absolute"
+							css["position"] = "relative"
 							if(zChild.extras.appNest.confirm === "true"){
 								extras.appNest.name =extras.appNest.name.replace(/DropDown\d+$|$/,"DropDown"+ (++this.extras.suffix))
 							}
@@ -311,49 +305,26 @@ export class LatchDirective {
 
 	private _dropdownStateOpened(devObj:{zSymbols: string[], zChildren: any,ref:ChangeDetectorRef}) {
 		let {zSymbols, zChildren,ref} = devObj
+
+		zChildren[this.extras.zSymbol].css.position = "relative"
 		zSymbols
 		.forEach((x: any, i) => {
-			zChildren[x].css.height = zChildren[this.extras.zSymbol].css.height;
 			zChildren[x].css.width = zChildren[this.extras.zSymbol].css.width;
-			zChildren[x].css.left = zChildren[this.extras.zSymbol].css.left;
-
+			zChildren[x].css.position = "relative"
 		});
-		stack({
-			zChildKeys:[
-				this.extras.zSymbol,
-				...zSymbols],
-			ref,
-			zChild:zChildren,
-			spacing:[null,0],
-			type:'simpleStack',
-			heightInclude:['t'],
-			// if the item is nested we have no top and height to work with until we write out a solution
-			zChildCss: zChildren[this.extras.zSymbol].extras.appNest.confirm === "true" ? "false":"true"
-			//
-		})
-		ref.detectChanges
+		ref.detectChanges()
 	}
 
 	private _dropdownStateClosed(devObj:{zSymbols: string[], zChildren: any,ref:ChangeDetectorRef}) {
 
 		let {zSymbols, zChildren, ref} = devObj
-		let greatestZIndex = -Infinity;
-		// console.log(objectCopy(Object.keys(zChildren)))
-
+		zChildren[this.extras.zSymbol].css.position = "absolute"
 		zSymbols
 		.forEach((x: any, i) => {
-			zChildren[x].css.height = zChildren[this.extras.zSymbol].css.height;
-			zChildren[x].css.width = zChildren[this.extras.zSymbol].css.width;
-			zChildren[x].css.top = zChildren[this.extras.zSymbol].css.top;
-			zChildren[x].css.left = zChildren[this.extras.zSymbol].css.left;
-			// zChildren[x].css["z-index"] -= 1
-			if (zChildren[x].css["z-index"] > greatestZIndex) {
-				greatestZIndex = zChildren[x].css["z-index"];
-			}
+			zChildren[x].css.position = "absolute"
 
 		});
 
-		zChildren[this.extras.zSymbol].css["z-index"] = greatestZIndex + 1;
 		ref.detectChanges();
 	}
 
@@ -367,7 +338,7 @@ export class LatchDirective {
 			delete this.subscriptions
 
 			if(this.extras.type === "dropdown"){
-				let {ryber,ref,zChildren,dropdown,co,templateMyElements} = this
+				let {ryber,dropdown,co,templateMyElements} = this
 				let {options:zSymbols,container} = dropdown
 
 				// if this dropdown was nested and dupliated -1 on the suffix
@@ -376,16 +347,12 @@ export class LatchDirective {
 
 				let rUD = ryberUpdateFactory({ryber})
 
-				// for some weird reason I cannot call rUD here I will send this to a method on th
-					// components metadata
-					// we need to listen for ViewChildren.changes before we can continue to remvoe elements
 				if(container !== null){
 					zSymbols.push(container)
 				}
 				templateMyElements.changes
 				.pipe(
 					first(),
-					// delay(50000)
 				)
 				.subscribe({
 					next:(result:any)=>{
@@ -401,7 +368,7 @@ export class LatchDirective {
 					},
 				})
 
-				//
+
 			}
         }
     }

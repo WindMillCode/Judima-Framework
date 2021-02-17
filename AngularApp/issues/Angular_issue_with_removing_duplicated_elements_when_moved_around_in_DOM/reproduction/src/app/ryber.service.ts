@@ -1,10 +1,7 @@
-import { Injectable, VERSION,Renderer2,RendererFactory2, ChangeDetectorRef,Inject } from "@angular/core";
-import { Observable, of, Subject, Subscription, BehaviorSubject, ReplaySubject, merge, combineLatest } from "rxjs";
-// import { Router,RouterEvent } from "@angular/router";
-import { zChildren, componentObject, numberParse, ryberUpdate,ryberUpdateFactory, objectCopy } from "./customExports";
-import { HttpClient } from "@angular/common/http";
+import { Injectable, VERSION,Renderer2,RendererFactory2 } from "@angular/core";
+import { Observable, of, Subject, Subscription, BehaviorSubject, ReplaySubject } from "rxjs";
+import {  componentObject, ryberUpdateFactory, objectCopy } from "./customExports";
 import website from './website';
-import { tap, last, catchError } from 'rxjs/operators'
 
 
 
@@ -17,8 +14,6 @@ export class RyberService {
     private renderer2:Renderer2
 	public ref:any
     constructor(
-        // private router:Router
-        public http: HttpClient,
         private renderer2Factory: RendererFactory2,
 		// public ref:any
     ) {
@@ -261,16 +256,9 @@ export class RyberService {
 						type,
 						judima,
 						extend,
-                        appPrintFiles: {
-                            printGroup,
-                            type: printGroupType
-						},
+
 						appDeltaNode,
-                        appWebRTC:{
-                            confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
-                            co,
-                            webRTC
-						},
+
 						appNest
                     }
                 })
@@ -310,11 +298,7 @@ export class RyberService {
 						extend,
 						appDeltaNode,
                         appNest,
-                        appWebRTC:{
-                            confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
-                            co,
-                            webRTC
-                        },
+
                     }
                 })
             }
@@ -360,19 +344,6 @@ export class RyberService {
 						type,
 						appDeltaNode,
                         appNest,
-                        appWebRTC:{
-                            confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
-                            co,
-                            webRTC
-                        },
-                        appPrintFiles: {
-                            printGroup,
-                            type: 'signOut'
-						},
-						appGsapCursor:{
-                            ...appGsapCursor,
-							type:"button"
-                        }
                     }
                 })
 
@@ -567,7 +538,7 @@ export class RyberService {
 
 
         let convertCMS: any = {}
-        let myCMS: any = undefined
+        let myCMS: any
 
 
             //use backup cache to setup the website
@@ -659,12 +630,6 @@ export class RyberService {
         )
         //
 
-        // console.log(myCMS)
-        // console.log(this.appCO0.metadata["google-sheets"].metafields[0].options )
-        // console.log(myCMS['formCO0'].title)
-        // console.log(JSON.stringify(convertCMS,null,4))
-        // console.log(cmsData)
-        // console.log(this)
 
 
 
@@ -773,9 +738,6 @@ export class RyberService {
             },
             ES: [], //eventSubscriptions
             CO: [],
-            formCentral: {
-                applicantInput: "",
-            },
             ryber: {
                 CO$: [],
                 sectionDefault: {
@@ -786,39 +748,14 @@ export class RyberService {
                     stack: 20
                 }
             },
-            webRTC:{
-                init:["localVideo","dataChannelSend","camera","myVideo"]
-            },
-            inputHandle: {
-                mappings: [
-                    {
-                        type: "dropdown",
-                        cssClass: "a_p_p_DropDown",
-                    },
-                    {
-                        type: "options",
-                        cssClass: "a_p_p_Selection",
-                    },
-                    {
-                        type: "file button",
-                        cssClass: "a_p_p_FileButton",
-                    }
-                ]
-            },
-            clickDone: new ReplaySubject<Array<any>>(1),
-            clickDoneArray: [],
-            destroyComplete: new ReplaySubject<any>(1),
-            updateSheet: new ReplaySubject<any>(1),
+
+
             scripts:[]
         },
         quantity: []
     }
     //
 
-    //dev additions
-    webRTCVideo = 'true'
-    webRTCText = 'false'
-    //
 
     /* */
 

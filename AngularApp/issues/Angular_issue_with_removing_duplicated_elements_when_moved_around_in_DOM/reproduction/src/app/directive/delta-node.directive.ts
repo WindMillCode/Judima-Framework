@@ -1,11 +1,9 @@
 
-import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { RyberService } from '../ryber.service'
-import { fromEvent, from, Subscription, Subscriber, of, combineLatest,timer, Subject } from 'rxjs';
-import { ryberUpdate,ryberUpdateFactory,deltaNode, eventDispatcher, numberParse, objectCopy,flatDeep } from '../customExports'
-import { catchError, delay,first,repeat,map } from 'rxjs/operators'
-import { environment as env } from '../../environments/environment'
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { fromEvent,  Subscription, combineLatest } from 'rxjs';
+import { ryberUpdateFactory, objectCopy,flatDeep } from '../customExports'
+import { first } from 'rxjs/operators'
 
 
 @Directive({
@@ -23,9 +21,6 @@ export class DeltaNodeDirective {
 	controls:any = []
 
 	constructor(
-		private el: ElementRef,
-		private http: HttpClient,
-		private renderer2: Renderer2,
 		private ryber: RyberService
 	) { }
 
@@ -125,13 +120,7 @@ export class DeltaNodeDirective {
 									//
 
 
-									//logic for increment
-									if(y[1]?.extras?.appDeltaNode?.type === "increment"){
-										y[1].extras.appDeltaNode.increment = {
-											counter: +y[1].innerText?.item.split("")[0]
-										}
-									}
-									//
+
 									return y
 								})
 								.filter((y:any,j)=>{
@@ -155,59 +144,58 @@ export class DeltaNodeDirective {
 									//
 
 									// add the deltas by val.add.by times
-									Array(y.by).fill(null)
-									.forEach(()=>{
-										let addedDeltas =[]
-										val.targets
-										.forEach((y:any,j)=>{
 
-											// add the elements onto the dom
-												// now you have the option to add from original or add from deltas
-											let css = objectCopy(y[1].css)
-											let text = (()=>{
-												if(y[1]?.extras?.appDeltaNode?.type === "increment"){
-													let mySplit = y[1].innerText?.item.split("")
+									let addedDeltas =[]
+									val.targets
+									.forEach((y:any,j)=>{
 
-													return (++y[1].extras.appDeltaNode.increment.counter)+mySplit[1]
-												}
-												return y[1].innerText?.item
-											})()
-											let  extras = objectCopy(y[1].extras)
-											if(extras.appDeltaNode?.options?.target?.confirm === "true"){
-												extras.appDeltaNode.options.target.zSymbol = y[0]
+										// add the elements onto the dom
+											// now you have the option to add from original or add from deltas
+										let css = objectCopy(y[1].css)
+										let text = (()=>{
+											if(y[1]?.extras?.appDeltaNode?.type === "increment"){
+												let mySplit = y[1].innerText?.item.split("")
+
+												return (++y[1].extras.appDeltaNode.increment.counter)+mySplit[1]
 											}
-
-											// you must string the component name type and its symbol so it val
-											// can properly receive the next symbol
-											addedDeltas.push(
-												rUD({
-													quantity:2,
-													symbol:y[1].symbol,
-													co,
-													bool:y[1].bool,
-													css,
-													cssDefault:y[1].cssDefault,
-													text,
-													extras,
-													val:y[1].val
-												})
-											)
-
-											// console.log(this.templateMyElements)
-											//
-
-
-										})
-										this.ref.detectChanges()
-										deltaNode.current = {
-											deltas:addedDeltas,
-											group:key
+											return y[1].innerText?.item
+										})()
+										let  extras = objectCopy(y[1].extras)
+										if(extras.appDeltaNode?.options?.target?.confirm === "true"){
+											extras.appDeltaNode.options.target.zSymbol = y[0]
 										}
-										val.hooks.directive  ="add prepare"
-										val.deltas.push(addedDeltas)
-										ryber[co].metadata.deltaNode.updateZChild.next()
+
+										// you must string the component name type and its symbol so it val
+										// can properly receive the next symbol
+										addedDeltas.push(
+											rUD({
+												quantity:2,
+												symbol:y[1].symbol,
+												co,
+												bool:y[1].bool,
+												css,
+												cssDefault:y[1].cssDefault,
+												text,
+												extras,
+												val:y[1].val
+											})
+										)
+
+										// console.log(this.templateMyElements)
+										//
+
 
 									})
+									this.ref.detectChanges()
+									deltaNode.current = {
+										deltas:addedDeltas,
+										group:key
+									}
+									val.hooks.directive  ="add prepare"
+									val.deltas.push(addedDeltas)
+									ryber[co].metadata.deltaNode.updateZChild.next()
+
+
 									//
 
 								}
@@ -218,10 +206,7 @@ export class DeltaNodeDirective {
 											fromEvent(y.target[1].element,"click")
 										])
 										.subscribe((result:any)=>{
-											if(!y.target[1].element.disabled){
-												this._disableButton()
-												addEvent({result,y})
-											}
+											addEvent({result,y})
 										})
 									})
 								)
@@ -238,61 +223,54 @@ export class DeltaNodeDirective {
 									//
 
 									// remove the deltas by val.remove.by times
-									Array(y.by).fill(null)
-									.forEach(()=>{
 
-										// if there are no deltas to remove return and enable the button
-										if(val.deltas.length === 0){
-											this._enableButton()
-											val.hooks.directive = "remove done"
-											return
+									// if there are no deltas to remove return and enable the button
+									if(val.deltas.length === 0){
+										val.hooks.directive = "remove done"
+										return
+									}
+									//
+									let removeDeltas = flatDeep(val.deltas.pop(),Infinity)
+									val.targets
+									.forEach((y:any,j)=>{
+
+										// properly modify the counter
+											// now you have the option to add from original or add from deltas
+										if(y[1]?.extras?.appDeltaNode?.type === "increment"){
+
+											--y[1].extras.appDeltaNode.increment.counter
 										}
-										//
-										let removeDeltas = flatDeep(val.deltas.pop(),Infinity)
-										val.targets
-										.forEach((y:any,j)=>{
-
-											// properly modify the counter
-												// now you have the option to add from original or add from deltas
-											if(y[1]?.extras?.appDeltaNode?.type === "increment"){
-
-												--y[1].extras.appDeltaNode.increment.counter
-											}
-
-										})
-
-										removeDeltas
-										.forEach((y:any,j)=>{
-											// remove the elements from the DOM
-												// we decide it will be the last index in deltas
-
-											console.log(`
-												function responsible for removing the element with the dropdown(latch) directive
-											`)
-											/* in actual, the API manages to remove the whole dropdown and then throw the error,
-												in this minified reproduction however, the API can only remove the target element and throw the error
-												leaving the rest of the dropdown elements intact
-											*/
-											rUD({
-												symbol:y,
-												type:"remove",
-												co
-											})
-											//
-										})
-										this.ref.detectChanges()
-
-										deltaNode.current = {
-											deltas:removeDeltas,
-											group:key
-										}
-										val.hooks.directive  ="remove prepare"
-										ryber[co].metadata.deltaNode.updateZChild.next()
-
-
-
 
 									})
+
+									removeDeltas
+									.forEach((y:any,j)=>{
+										// remove the elements from the DOM
+											// we decide it will be the last index in deltas
+
+										console.log(`
+											function responsible for removing the element with the dropdown(latch) directive
+										`)
+										/* in actual, the API manages to remove the whole dropdown and then throw the error,
+											in this minified reproduction however, the API can only remove the target element and throw the error
+											leaving the rest of the dropdown elements intact
+										*/
+										rUD({
+											symbol:y,
+											type:"remove",
+											co
+										})
+										//
+									})
+									this.ref.detectChanges()
+
+									deltaNode.current = {
+										deltas:removeDeltas,
+										group:key
+									}
+									val.hooks.directive  ="remove prepare"
+									ryber[co].metadata.deltaNode.updateZChild.next()
+
 									//
 
 								}
@@ -303,10 +281,7 @@ export class DeltaNodeDirective {
 											fromEvent(y.target[1].element,"click"),
 										])
 										.subscribe((result:any)=>{
-											if(!y.target[1].element.disabled){
-												this._disableButton()
-												removeEvent({result,y})
-											}
+											removeEvent({result,y})
 
 										})
 									})
@@ -314,13 +289,7 @@ export class DeltaNodeDirective {
 								//
 
 								// unlock the buttons once components afterViewInit is finished
-								this.subscriptions.push(
-									ryber[co].metadata.ngAfterViewInitFinished
 
-									.subscribe((result:any)=>{
-										this._enableButton()
-									})
-								)
 								//
 
 							}
@@ -329,48 +298,6 @@ export class DeltaNodeDirective {
 
 						})
 						//
-
-							// testing trigger click
-							// of([])
-							// .pipe(
-							// 	delay(1),
-							// 	// first(),
-							// 	repeat(2)
-							// )
-							// .subscribe((result:any)=>{
-
-
-							// 	let outerDeltaAddButton = groups["outerDelta"].add[0].target[1].element
-							// 	let innerDeltaAddButton = groups["innerDelta"].add[0].target[1].element
-							// 	eventDispatcher({
-							// 		event:'click',
-							// 		element:outerDeltaAddButton
-							// 	})
-							// 	// of([])
-							// 	// .pipe(
-							// 	// 	repeat(10)
-							// 	// )
-							// 	// .subscribe(()=>{
-							// 	// 	eventDispatcher({
-							// 	// 		event:'click',
-							// 	// 		element:innerDeltaAddButton
-							// 	// 	})
-							// 	// })
-							// })
-
-							// of([])
-							// .pipe(
-							// delay(1000)
-							// )
-							// .subscribe((result:any)=>{
-
-							// 	let outerDeltaRemoveButton = groups["outerDelta"].remove[0].target[1].element
-							// 	eventDispatcher({
-							// 		event:'click',
-							// 		element:outerDeltaRemoveButton
-							// 	})
-							// })
-							//
 
 						// console.log(this.subscriptions)
 
@@ -387,30 +314,7 @@ export class DeltaNodeDirective {
 		}
 	}
 
-	private _disableButton  (){
-		this.controls
-		.forEach((x:any,i)=>{
-			if(x.type ==="add_remove_button"){
-				this.renderer2.setAttribute(
-					x.element,
-					"disabled",
-					"true"
-				)
-			}
-		})
-	}
 
-	private _enableButton  (){
-		this.controls
-		.forEach((x:any,i)=>{
-			if(x.type ==="add_remove_button"){
-				this.renderer2.removeAttribute(
-					x.element,
-					"disabled",
-				)
-			}
-		})
-	}
 
 	ngOnDestroy() {
 		if (this.extras?.confirm === 'true') {

@@ -1,7 +1,7 @@
 import {RyberService} from './ryber.service'
 import {defer} from 'rxjs'
 import { Observable, of, Subject, Subscription } from "rxjs";
-import { ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 declare global {
@@ -10,6 +10,7 @@ declare global {
 
 
 
+// type zSymbol =`\$\#${number}${number}${number}${number}${number| ''}`
 export class zChildText {
     item:string
 }
@@ -90,7 +91,7 @@ export function componentBootstrap(
         myElements?:Element[],
         ryber?:RyberService,
         symbol?:String | Symbol,
-        zProps?: any
+        zProps?: any,
     }
 ){
 
@@ -114,10 +115,6 @@ export function componentBootstrap(
 
     let zChild = {}
 
-    let zGrid = {
-        a:0,
-        b:0,
-	}
 
 	ryber[appTV].quantity
 	.forEach((x:any,i)=>{
@@ -131,7 +128,7 @@ export function componentBootstrap(
 						return
 					}
 					let utf8Symbol = String.fromCharCode(+w.split("&#")[1])
-
+					//  @ViewChild(`.${appTV} .${utf8Symbol}`)
 					zChild[w] ={
 						element:(
 							w === "&#8352"?
@@ -474,7 +471,9 @@ export function coInit (a,componentObjects,additional?) {
 
         // giving a subject representation so components can send data to each component
         componentObjects.forEach((c)=>{
-            co.metadata[c.valueOf()] = new Subject<any>()
+            co.metadata[c.valueOf()] = {
+				movingSubject:new Subject<any>(),
+			}
         })
         //
 
@@ -874,7 +873,9 @@ export function stack(
                 top:string
                 height:string
             },
-            ref:ChangeDetectorRef
+            ref:ChangeDetectorRef,
+			ryber?:RyberService,
+			appTV?:string
         }
 
     }
@@ -956,7 +957,6 @@ export function stack(
 
 
     }
-
 
     else if(type === 'keepSomeAligned'){
 
@@ -1135,10 +1135,59 @@ export function stack(
 
     }
 
-
     else if(devObj.type === 'yPosition'){
         // ussually for the position part of the media query
-        let {zChild,moving,ref}= devObj.yPosition
+		let {zChild,moving,ref,ryber,appTV}= devObj.yPosition
+
+		if(zChild["&#8353"].extras?.judima?.moving?.type === "custom"){
+
+			let {point,target,coordinates} =  zChild["&#8353"].extras.judima.moving
+			let diff
+			switch (point) {
+				case "left":
+					let topDiff = (
+						numberParse(ryber[target].metadata.board.top) -
+						numberParse(zChild["&#8353"].css["top"])
+					)
+					let leftDiff = (
+						(
+							numberParse(ryber[target].metadata.board.left) +
+							numberParse(ryber[target].metadata.board.width)
+						) -
+						numberParse(
+							zChild["&#8353"].css["left"] ||
+							getComputedStyle(zChild["&#8353"].element).left
+						)
+					)
+					diff = {
+						left:leftDiff,
+						top:topDiff
+					}
+					zChild["&#8353"].css["top"] = ryber[target].metadata.board.top
+					Object.keys(zChild)
+					.slice(2)
+					.forEach((x,i)=>{
+						["top"]
+						.forEach((y:any,j)=>{
+							zChild[x].css[y] = (
+								numberParse(zChild[x].css[y]) +
+								diff[y]
+							).toString() + "px"
+						})
+
+
+					})
+					ref.detectChanges()
+					// console.log(ryber[target].metadata.board)
+
+					return {point,diff}
+					break;
+
+				default:
+					break;
+			}
+			return
+		}
         let diff = -1 *(
             numberParse(zChild["&#8353"].css["top"]) -
             (

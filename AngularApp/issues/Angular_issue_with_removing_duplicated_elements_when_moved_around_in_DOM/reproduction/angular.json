@@ -48,9 +48,7 @@
                         ],
                         "scripts": [
                             "backend/modernizr/modernizr.js",
-                            "backend/polyfills/object.js",
-                            "backend/polyfills/signaturePad.js",
-                            "src/assets/scripts/pikaday.js"
+                            "backend/polyfills/object.js"
                         ],
                         "optimization": false,
                         "sourceMap": true,
@@ -121,8 +119,7 @@
                         "browserTarget": "AngularApp:judima:play",
                         "port": 8000,
                         "liveReload": true,
-						"hmr": false,
-						// "proxyConfig": "src/proxy.conf.json"
+						"hmr": false
                     },
                     "configurations": {
                         "production": {

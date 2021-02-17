@@ -12,16 +12,7 @@
 		[ngStyle] = 'a.ngCss[0][bb]'
 		>
         </div>
-        <ng-template #boardBlock0  >
-            <img
-			#myVal
-			appNest [nest] = "ryber.appAvailble( a.extras[0][bb], 'appNest')"
-			appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[0][bb], 'appDeltaNode')"
-            *ngIf= "a.bool[0][bb] ==='imgBoard' else boardBlock1"
-			class = {{a.val[0][bb]}}
-			[ngStyle] = 'a.ngCss[0][bb]'
-            />
-        </ng-template>
+
 
     </ng-container>
 
@@ -34,8 +25,6 @@
 			appNest [nest] = "ryber.appAvailble( a.extras[1][bb], 'appNest')"
 			appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[1][bb], 'appDeltaNode')"
 			appLatch [latch] = "ryber.appAvailble( a.extras[1][bb], 'appLatch')"
-            appInputHandle [inputHandle] = "ryber.appAvailble( a.extras[1][bb], 'appInputHandle')"
-            toggleButton [stuff] ="ryber.appAvailble( a.extras[1][bb], 'toggleButton')"
             #myVal
             *ngIf= "a.bool[1][bb] ==='a' else elseBlock8"
             class = {{a.val[1][bb]}}
@@ -56,8 +45,6 @@
 			<div
 				#myVal
 				appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[1][bb], 'appDeltaNode')"
-				appWebRTC [webRTC] = "ryber.appAvailble( a.extras[1][bb], 'appWebRTC')"
-				appGoogleMaps [googleMaps] = "ryber.appAvailble( a.extras[1][bb], 'appGoogleMaps')"
 				appNest [nest] = "ryber.appAvailble( a.extras[1][bb], 'appNest')"
 				*ngIf= "a.bool[1][bb] ==='div'   else elseBlock21"
 				class = {{a.val[1][bb]}}
@@ -68,14 +55,10 @@
 			<button #myVal
 				appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[1][bb], 'appDeltaNode')"
                 appNest [nest] = "ryber.appAvailble( a.extras[1][bb], 'appNest')"
-                appInputHandle [inputHandle] = "ryber.appAvailble( a.extras[1][bb], 'appInputHandle')"
-                appFormControl [formControl] = "ryber.appAvailble( a.extras[1][bb], 'appFormControl')"
-                appFileHandler [fileHandler] = "ryber.appAvailble( a.extras[1][bb], 'appFileHandler')"
                 *ngIf= "a.bool[1][bb] ==='b' else elseBlock22 "
                 class = {{a.val[1][bb]}}
                 [ngStyle] =  'a.ngCss[1][bb]'
-                [innerHTML] = 'a.text[1][bb].item'
-                appExtend [extend] = "ryber.appAvailble( a.extras[1][bb], 'extend')" >
+                [innerHTML] = 'a.text[1][bb].item' >
             </button>
         </ng-template>
 

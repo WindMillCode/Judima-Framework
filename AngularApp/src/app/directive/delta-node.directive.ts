@@ -76,6 +76,11 @@ export class DeltaNodeDirective {
 								remove:[],
 
 							}
+							if(x.type === "repeat"){
+								groups[x.name].repeat = {
+									by:x.by
+								}
+							}
 						})
 						//
 
@@ -186,7 +191,7 @@ export class DeltaNodeDirective {
 													co,
 													bool:y[1].bool,
 													css,
-													cssDefault:y[1].cssDefault,
+													cssDefault:objectCopy(y[1].cssDefault),
 													text,
 													extras,
 													val:y[1].val
@@ -262,6 +267,7 @@ export class DeltaNodeDirective {
 
 										removeDeltas
 										.forEach((y:any,j)=>{
+											// console.log(y)
 											// remove the elements from the DOM
 												// we decide it will be the last index in deltas
 
@@ -320,66 +326,70 @@ export class DeltaNodeDirective {
 
 							//
 							else if(val.type ==="repeat"){
-								val[val.type] = {}
-								let repeatedDeltas = []
 								val.deltas =[]
 								ryber[co].metadata.ngAfterViewInitFinished
 								.pipe(
 									first()
 								)
 								.subscribe((result:any)=>{
-									val.targets =val.targets
-									.map((y:any,j)=>{
+									Array(+val.repeat.by).fill(null)
+									.forEach((xx:any,ii)=>{
+										let repeatedDeltas = []
+										val.targets =val.targets
+										.map((y:any,j)=>{
 
-										//logic for increment
-										if(y[1]?.extras?.appDeltaNode?.type === "increment"){
-											y[1].extras.appDeltaNode.increment = {
-												counter: +y[1].innerText?.item.split("")[0]
-											}
-										}
-										//
-
-										// pre mods
-										let css = objectCopy(y[1].css)
-										let text = (()=>{
+											//logic for increment
 											if(y[1]?.extras?.appDeltaNode?.type === "increment"){
-												let mySplit = y[1].innerText?.item.split("")
-
-												return (++y[1].extras.appDeltaNode.increment.counter)+mySplit[1]
+												y[1].extras.appDeltaNode.increment = {
+													counter: +y[1].innerText?.item.split("")[0]
+												}
 											}
-											return y[1].innerText?.item
-										})()
-										let  extras = objectCopy(y[1].extras)
-										if(extras.appDeltaNode?.options?.target?.confirm === "true"){
-											extras.appDeltaNode.options.target.zSymbol = y[0]
-										}
-										//
+											//
 
-										// add the elements to the dom
-										repeatedDeltas.push(
-											rUD({
-												quantity:3,
-												symbol:y[1].symbol,
-												co,
-												bool:y[1].bool,
-												css,
-												cssDefault:y[1].cssDefault,
-												text,
-												extras,
-												val:y[1].val
-											})
-										)
-										//
-										return y
+											// pre mods
+											let css = objectCopy(y[1].css)
+											let text = (()=>{
+												if(y[1]?.extras?.appDeltaNode?.type === "increment"){
+													let mySplit = y[1].innerText?.item.split("")
+
+													return (++y[1].extras.appDeltaNode.increment.counter)+mySplit[1]
+												}
+												return y[1].innerText?.item
+											})()
+											let  extras = objectCopy(y[1].extras)
+											if(extras.appDeltaNode?.options?.target?.confirm === "true"){
+												extras.appDeltaNode.options.target.zSymbol = y[0]
+											}
+											//
+
+											// add the elements to the dom
+
+												repeatedDeltas.push(
+													rUD({
+														quantity:3,
+														symbol:y[1].symbol,
+														co,
+														bool:y[1].bool,
+														css:objectCopy(css),
+														cssDefault:objectCopy(y[1].cssDefault),
+														text,
+														extras:objectCopy(extras),
+														val:y[1].val
+													})
+												)
+
+											//
+											return y
+										})
+										this.ref.detectChanges()
+										deltaNode.current = {
+											deltas:repeatedDeltas,
+											group:key
+										}
+										val.deltas.push(repeatedDeltas)
+										val.hooks.directive  ="add prepare"
+										ryber[co].metadata.deltaNode.updateZChild.next()
 									})
-									this.ref.detectChanges()
-									deltaNode.current = {
-										deltas:repeatedDeltas,
-										group:key
-									}
-									val.deltas.push(repeatedDeltas)
-									val.hooks.directive  ="add prepare"
-									ryber[co].metadata.deltaNode.updateZChild.next()
 								})
 
 

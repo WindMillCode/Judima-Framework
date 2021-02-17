@@ -114,6 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 coArray,
                 ((devObj) => {
                     let { co } = devObj
+					co.metadata.board = {}
                     co.metadata.formData = {}
                     co.metadata.refresh = {}
                     co.metadata.latch = {
@@ -217,6 +218,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
         // console.log(location.pathname)
+		console.log(this.ryber)
 	}
 
 

@@ -937,7 +937,7 @@ export class RyberService {
 					...options.judima
 				}
 
-				
+
                 symbol = rUD({
                     co,
                     bool: 'img',
@@ -1288,12 +1288,14 @@ export class RyberService {
 						ignore:"true"
 					},
 				}
-				if(![appDeltaNode?.group,appNest?.group].includes( undefined )  ){
+				if(appNest?.group !==  undefined   ){
 					appLatch.suffix = 0
 					appLatch.trueNestUnder = appNest.under
-					appDeltaNode.options = {
-						target:{
-							confirm:"true"
+					if(appDeltaNode?.group !== undefined){
+						appDeltaNode.options = {
+							target:{
+								confirm:"true"
+							}
 						}
 					}
 				}

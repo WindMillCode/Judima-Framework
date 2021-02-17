@@ -33,7 +33,7 @@ export class LatchDirective {
 		private ref:ChangeDetectorRef
     ) { }
 
-    @HostListener('click',['$event']) onBlur(event){
+    @HostListener('click',['$event']) onClick(event){
         if(this.extras?.confirm === "true"){
 
 
@@ -107,7 +107,7 @@ export class LatchDirective {
 							// this is needed because how we duplicate is when we copy the target
 								// this.extras.suffix has no connection to the first, so n + 1 gets updated
 								// but on duplication starts at the suffix contained in the original
-							if(zChild.extras.appDeltaNode.options.target.zSymbol !== undefined){
+							if(zChild.extras.appDeltaNode?.options?.target.zSymbol !== undefined){
 								let {zSymbol} = zChild.extras.appDeltaNode.options.target
 								this.extras.suffix = zChildren[zSymbol].extras.appLatch.suffix
 							}
@@ -193,7 +193,7 @@ export class LatchDirective {
 
 								if(zChild.extras.appNest.confirm === "true"){
 									zChild.extras.appNest.options.ignore ="true"
-									if(zChild.extras.appDeltaNode.options.target.zSymbol !== undefined){
+									if(zChild.extras.appDeltaNode?.options?.target?.zSymbol !== undefined){
 										let {zSymbol} = zChild.extras.appDeltaNode.options.target
 										zChildren[zSymbol].extras.appLatch.suffix = this.extras.suffix
 									}
@@ -328,7 +328,7 @@ export class LatchDirective {
 			zChildCss: zChildren[this.extras.zSymbol].extras.appNest.confirm === "true" ? "false":"true"
 			//
 		})
-		ref.detectChanges
+		ref.detectChanges()
 	}
 
 	private _dropdownStateClosed(devObj:{zSymbols: string[], zChildren: any,ref:ChangeDetectorRef}) {
@@ -386,6 +386,7 @@ export class LatchDirective {
 				)
 				.subscribe({
 					next:(result:any)=>{
+
 						zSymbols
 						.forEach((x:any,i)=>{
 							rUD({

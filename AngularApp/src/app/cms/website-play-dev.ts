@@ -3838,71 +3838,8 @@ let latch_dropdown_duplicate_nesting_development = {
 			},
 			"googleSheets": {},
 		},
-		// {
-		// 	"key": "my-dropdown-2",
-		// 	type:"dropdown",
-		// 	value:"2 Dropdown",
-		// 	delta:{
-		// 		"group":"outerDelta",
-
-		// 	},
-		// 	"nest":{
-		// 		group:"dropdown",
-		// 		name:"B2",
-		// 		under:"A1"
-		// 	},
-		// 	latch:{
-		// 		options:[ //look to changes this to options
-		// 			"E",
-		// 			"F",
-		// 			"G",
-		// 			"H",
-		// 		],
-		// 		// "state":"open"
-
-		// 	},
-		// 	options:{
-		// 		css:{
-		// 			order:-2
-		// 		}
-		// 	},
-		// 	"split": "3",
-		// 	"googleSheets": {},
-		// },
-		// {
-		// 	"key": "my-dropdown-3",
-		// 	type:"dropdown",
-		// 	value:"3 Dropdown",
-		// 	delta:{
-		// 		"group":"outerDelta",
-		// 	},
-		// 	"nest":{
-		// 		group:"dropdown",
-		// 		name:"B3",
-		// 		under:"A1"
-		// 	},
-		// 	latch:{
-		// 		options:[ //look to changes this to options
-		// 			"I",
-		// 			"J",
-		// 			"K",
-		// 		],
-		// 		"state":"open"
-
-		// 	},
-		// 	options:{
-		// 		css:{
-		// 			order:-1
-		// 		}
-		// 	},
-		// 	"split": "3",
-		// 	"googleSheets": {},
-		// },
 		{
 			"key": "localVideo",
-			// delta:{
-			// 	"group":"outerDelta"
-			// },
 			"value": "",
 			"type": "video",
 			"split": "5",
@@ -4475,8 +4412,8 @@ let latch_testing = [
 	// latch_dropdown_nesting_development,
 	// latch_dropdown_at_base_development,
 	// latch_dropdown_development,
-	// latch_dropdown_duplicate_development
-	latch_dropdown_duplicate_nesting_development
+	latch_dropdown_duplicate_development,
+	// latch_dropdown_duplicate_nesting_development
 ]
 //
 
@@ -4718,7 +4655,8 @@ let component_position_development = [
 					group:[
 						{
 							name:"media_card",
-							type:"repeat"
+							type:"repeat",
+							by:"5"
 						}
 					]
 				},
@@ -4767,7 +4705,7 @@ let component_position_development = [
 				},
 				delta:{
 					group:"media_card",
-					by:5,
+					// by:5,
 				},
 				"nest":{
 					group:"menu",
@@ -4785,7 +4723,7 @@ let component_position_development = [
 				},
 				delta:{
 					group:"media_card",
-					by:5,
+					// by:5,
 				},
 				options:{
 					css:{
@@ -4806,7 +4744,7 @@ let component_position_development = [
 				},
 				delta:{
 					group:"media_card",
-					by:5,
+					// by:5,
 				}
             },
 
@@ -4830,7 +4768,7 @@ let component_position_development = [
 				"type": "body",
 				"stack": "60",
 				// "height":"1000",
-				left:200,
+				left:0,
 				delta:{
 
 				},
@@ -4845,7 +4783,15 @@ let component_position_development = [
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
 						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)",
 						width:"125%"
-					}
+					},
+					judima:{
+						moving:{
+							point:"left",
+							target:'formCO1',
+							coordinates:[0,0],
+							type:"custom"
+						}
+					},
 				}
 			},
 			{

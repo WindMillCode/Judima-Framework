@@ -1,18 +1,17 @@
 import {RyberService} from './ryber.service'
-import {defer} from 'rxjs'
-import { Observable, of, Subject, Subscription } from "rxjs";
+import {  Subject } from "rxjs";
 import { ChangeDetectorRef } from '@angular/core';
-import { environment } from 'src/environments/environment';
 
 declare global {
     interface Object { fromEntries: any; }
 }
 
-
-
 export class zChildText {
     item:string
 }
+
+
+
 
 export class zChildren {
     element:  HTMLElement;
@@ -44,37 +43,12 @@ export class componentObject { // not final
 
 
 
-function wait(   ms   ){
-    var start = new Date().getTime();
-    var end = start;
-    while(   end < start + ms   ) {
-      end = new Date().getTime();
-    }
-}
+
 
 export function flatDeep(arr, d = 1) { // polyfill for arr.flat
     return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
                  : arr.slice();
 };
-
-
-// export function asyncData<T>(data: T) {
-//     return defer(() => Promise.resolve(data));
-// }
-
-// export function asyncError<T>(errorObject: any) {
-//     return defer(() => Promise.reject(errorObject));
-// }
-
-// The RxJS defer() operator returns an observable.
-// It takes a factory function that returns either a promise or an observable.
-// When something subscribes to defer's observable,
-//  it adds the subscriber to a new observable created with that factory.
-
-
-// The defer() operator transforms the Promise.resolve() into a new observable that,
-// like HttpClient, emits once and completes.
-// Subscribers are unsubscribed after they receive the data value.
 
 
 
@@ -157,141 +131,11 @@ export function componentBootstrap(
 
 
 }
-/* test
-1. if I can take anything away from the middle
-2. if I can take from a non first subcomponent
-3. if I can take from the end of any subcomponent
-4. if I can take several at a time
-5. if you can cancel the end element of a subcomponent element and the beginning element of the next at the same time
-work on 2 and 3
-*/
-
-/*
-desc
-zProps, zChild optional props
- */
-
-/* this function helps calculate
-the css top of items in a dropdown when those
-options do not have the same height
-
-if fn is irregularWords
-    - that meansn you have a dropdown but the words are not the same length so that can word wrap
-    this fn deals with all of that,
-    - for the heightDiff we are working on this but
-    you must know at what pixel length the browser will word wrap and if if you have
-    and your x padding will play a role, your y padding is needed alse because it determines the height
-*/
-export function dropdown(   devObj:{
-    font?:Array<any>,
-    heightVal?: number,
-    heightDiff? : number,
-    stringAssembly?: Array<string>,
-    paddingy:Array<number>,
-    fn:'irregularWords'
-}   ){
 
 
-    if(devObj.fn === 'irregularWords'){
-
-
-        let finalVal = devObj.heightVal
-        let  extender = devObj.stringAssembly.length != 1  ?  (()=>{
-            let multiFinal = 1
-            let controlK = 0
-            devObj.stringAssembly.forEach((y,j)=>{
-
-
-                if(j === controlK || controlK === 0 ){
-
-
-                    let k = j
-                    let testingString= ''
-                    while(k != devObj.stringAssembly.length){
-                        testingString += devObj.stringAssembly[k] + " "
-
-
-                        if(
-                            Math.ceil(
-                                getTextWidth({
-                                    elementText:testingString.slice(0,-1),
-                                    font: devObj.font.join(" ")
-                                })/devObj.heightDiff
-                            )  >  1
-                        ){
-                            // console.log('get j == to',k)
-                            controlK = k
-                            break
-                        }
-
-
-                        k += 1
-
-                    }
-                    testingString = testingString.slice(0,-1)
-
-
-                    console.log(
-                        testingString,
-                        getTextWidth({
-                            elementText:testingString,
-                            font: devObj.font.join(" ")
-                        }),
-                        devObj.heightDiff,
-                        Math.ceil(
-                            getTextWidth({
-                                elementText:testingString,
-                                font: devObj.font.join(" ")
-                            })/devObj.heightDiff
-                        )
-                    )
-
-
-                    if(
-                        Math.ceil(
-                            getTextWidth({
-                                elementText:testingString,
-                                font: devObj.font.join(" ")
-                            })/devObj.heightDiff
-                        ) > 1
-                    ){
-                        multiFinal += 1
-                    }
-
-
-                }
-
-
-            })
-            return multiFinal
-
-        })() : 1
-        devObj.heightVal += (
-            (
-                16 * extender
-            ) + (
-                devObj.paddingy.length == 1 ?
-                devObj.paddingy[0] * 2 :
-                devObj.paddingy[0] + devObj.paddingy[1]
-                )
-        )
-        return [finalVal,devObj.heightVal]
-
-
-    }
-
-}
-
-
-export function getTextWidth(   devObj:{elementText:string,font:string}   ){
-    var canvas = document.createElement("canvas");
-    var ctx = canvas.getContext("2d");
-    ctx.font = devObj.font;  // This can be set programmaticly from the element's font-style if desired
-    return ctx.measureText(devObj.elementText).width;
-}
 
 export function eventDispatcher(   devObj:{event:string,element:HTMLElement | Window | Element}   ){
-
+	
     try {
         let event0= new Event(devObj.event)
         devObj.element.dispatchEvent(event0)
@@ -309,86 +153,7 @@ export function numberParse(   dimension:any   ){
     return dimension;
 }
 
-export function resize(   devObj:any   ){
-    // console.log(   devObj   )
-    let result = null
 
-
-    if(   devObj.misc === undefined   ){
-        devObj.misc = [.12]
-    }
-
-
-    if(   devObj.type === 'direct'   ){
-
-
-        result =
-        (
-            devObj.default -
-            (
-                devObj.containDefault   -
-                devObj.containActual
-            ) *
-            devObj.misc[0]
-        )
-
-
-    }
-
-
-    if(   devObj.type === 'nonUniform'   ){
-
-
-        try{
-            devObj.mediaQuery.slice(1)
-            .forEach((x,i) => {
-                if(x < devObj.containActual){
-                    result =
-                    (
-                        devObj.default -
-                        (
-                            devObj.containDefault   -
-                            devObj.containActual
-                        ) *
-                        devObj.misc[i]
-                    )
-                    throw(null)
-                    // throw('got my result')
-                }
-            })
-        }
-        catch(e){
-
-        }
-
-
-
-    }
-
-
-    else if(   devObj.type !== 'direct' ){
-
-
-        result = (
-            devObj.default *
-            (
-                (
-                    (
-                        devObj.containActual  /
-                        devObj.containDefault
-                    ) -
-                    devObj.misc[0]
-                )
-            )
-        )
-
-
-    }
-
-    return result = result > devObj.default  ?
-        devObj.default :
-        result
-}
 
 
 export function xPosition(devObj){
@@ -503,47 +268,9 @@ export function objectCopy(obj){
     return JSON.parse(   JSON.stringify(   obj  )   )
 }
 
-export function dragElement(elmnt) { // use this code dragElement(zChild.element);
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
-    elmnt.onmousedown = dragMouseDown;
 
 
-    function dragMouseDown(e) {
-      e = e || window.event;
-      e.preventDefault();
-      // get the mouse cursor position at startup:
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      document.onmouseup = closeDragElement;
-      // call a function whenever the cursor moves:
-      document.onmousemove = elementDrag;
-    }
 
-    function elementDrag(e) {
-      e = e || window.event;
-      e.preventDefault();
-      // calculate the new cursor position:
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      // set the element's new position:
-      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    }
-
-    function closeDragElement() {
-      // stop moving when mouse button is released:
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-}
-
-export function isDate(date) {
-    // @ts-ignore
-    return (new Date(date) !== "Invalid Date") && !isNaN(new Date(date));
-}
 
 
 
@@ -994,92 +721,16 @@ export function stack(
         zChildCss = 'true'
     }
 
-    // if(devObj.zChildKeys !== undefined){
-    //     devObj
-    //     .zChildKeys = devObj
-    //     .zChildKeys
-    //     .filter((x,i)=>{
-    //         return devObj.zChild[x] !== undefined
-    //     })
-    //     // return
-    // }
 
-    if(devObj.type === 'simpleStack'){
+    if(devObj.type === 'keepSomeAligned'){
 
-        devObj
-        .zChildKeys
-        .forEach((x,i)=>{
-
-
-            if( i === 0){
-
-                if(   devObj.start !== undefined   ){
-
-                    devObj.zChild[x].css['top'] = devObj.start.toString() + "px"
-                }
-                return
-            }
-
-            let prev = devObj.zChildKeys[i-1]
-            devObj.zChild[x].css['top'] =  (
-
-                (
-                    zChildCss === 'true' ?
-                    (
-                        numberParse(      devObj.zChild[prev].css['top']   ) +
-                        include({
-                            item:numberParse(      devObj.zChild[prev].css['height']   ),
-                            include:devObj.heightInclude,
-                            index:i
-                        })
-
-                    ):
-                    (
-                        numberParse(   getComputedStyle(   devObj.zChild[prev].element   )['top']   ) +
-                        include({
-                            item:numberParse(   getComputedStyle(   devObj.zChild[prev].element   )['height']   ),
-                            include:devObj.heightInclude,
-                            index:i
-                        })
-
-                    )
-                )
-                +
-                (
-                    typeof(devObj.spacing) === 'number' ?
-                    devObj.spacing :
-                    (
-                        devObj.spacing[i] === undefined ?
-                        devObj.spacing[devObj.spacing.length-1] :
-                        devObj.spacing[i]
-                    )
-
-                )
-            ).toString() + "px"
-
-            if(   devObj.xAlign !== undefined   ){
-                devObj.zChild[x].css['left'] = typeof(devObj.xAlign) === 'string' ?
-                devObj.xAlign :
-                (
-                    devObj.xAlign[i] === null ?
-                    devObj.zChild[x].css['left'] :
-                    devObj.xAlign[i]
-                )
-            }
-            devObj.ref.detectChanges()
-
-        })
-
-
-    }
-
-
-    else if(devObj.type === 'keepSomeAligned'){
-
-        let {zChildKeys,start} = devObj
+        let {zChildKeys,start,options} = devObj
         if( devObj.keep === undefined){
             devObj.keep = []
         }
+		if(options === undefined){
+			options = {}
+		}
         let keep = Object.fromEntries(devObj.keep)
         // console.log(devObj.keep)
         // let keep  = {}
@@ -1553,84 +1204,6 @@ export function xContain(
     }
     //
 }
-
-/*
-helps the app make an element responsive when the
-browser fails to indicate
-    // something has to be done about getComputedStyle
-*/
-export function responsiveMeasure(
-    devObj:{
-        item:{
-            target:zChildren[],
-            prop:string[]
-        },
-        values:Array<Array<[number,number]>>| any,
-        measure:{
-            target:HTMLElement,
-            prop:string
-        }
-    }
-){
-    devObj.item.target.forEach((x,i)=>{
-
-        devObj.values[i].forEach((y,j)=>{
-
-
-            if(
-                numberParse(getComputedStyle(devObj.measure.target)[devObj.measure.prop.valueOf()])   <
-                y[0]
-            ){
-                // console.log(y)
-                x.css[
-                    devObj.item.prop[i] === undefined ?
-                    devObj.item.prop[devObj.item.prop.length-1].valueOf() :
-                    devObj.item.prop[i].valueOf()
-
-                ] = y[1].toString()+"px"
-                // dont we need change  detection
-            }
-        })
-    })
-}
-
-/* deals with adding and removing elements from the DOM
-    parameters
-        symbolDeltaStart - number where all you static elements end and your dynamic elements begin
-        intent - add, add elements to the DOM
-                - subtract subract elements from the DOM
-    data
-    elements to copy and organize,
-    elements to move
-    * if you add function make sure the ask for vars in their parameters,
-        DO NOT HAVE THEM BUILT IN to the function or it will lose its reference
-*/
-
-
-
-
-export function sCG(devObj?):string{
-    let {start,distance}= devObj
-    let column = start.charCodeAt(0) + distance
-    let alphabet = "Z".charCodeAt(0) -"A".charCodeAt(0) +1
-    let char = ""
-    if(Math.floor  (  (column -"A".charCodeAt(0)) /alphabet ) +( "A".charCodeAt(0) - 1) >= 65){
-       char += String.fromCharCode(Math.floor  (  (column -"A".charCodeAt(0)) /alphabet) +( "A".charCodeAt(0) - 1)  )
-    }
-    char += String.fromCharCode(  ((column -"A".charCodeAt(0)) % alphabet) + ( "A".charCodeAt(0) )     )
-    return char
-}
-
-
-//  utility fn
-export function componentConsole(devObj?){
-	let {target,data} = devObj
-
-	if(target.includes(this.appTV)){
-		return ()=>{console.log(this.appTV,data)}
-	}
-}
-
 
 
 // deltaNode fn

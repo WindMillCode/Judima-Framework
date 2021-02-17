@@ -12,7 +12,6 @@ let latch_dropdown_duplicate_nesting_development = {
 			"key": "Body",
 			"type": "body",
 			"stack": "60",
-			// "height":"1000",
 			delta:{
 				"group":[
 					{
@@ -32,8 +31,8 @@ let latch_dropdown_duplicate_nesting_development = {
 			"googleSheets": {},
 			options:{
 				css:{
+					height:"3000px",
 					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
-					"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
 				}
 			}
 		},
@@ -167,141 +166,15 @@ let latch_dropdown_duplicate_nesting_development = {
 		return x
 	})
 }
-// 
-
-let latch_dropdown_duplicate_development = {
-	"title": "development",
-	"type_slug": "forms",
-	"metafields": [
-
-		{
-			"key": "Body",
-			"type": "body",
-			"stack": "200",
-			// "height":"1000",
-			delta:{
-				"group":[
-					{
-						name:"outerDelta",
-						type:"add_remove_button"
-					},
-				]
-			},
-			nest:{
-				"group":[
-					{
-						name:"dropdown",
-						type:"regular"
-					}
-				],
-			},
-			"googleSheets": {},
-			options:{
-				css:{
-					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
-					"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
-				}
-			}
-		},
-		{
-		    "key": "my-text",
-		    "type": "text",
-		    "value":"",
-		    "background":"",
-		    "googleSheets": {},
-			"split":"4",
-			"height":"1",
-			"options":{
-				css:{
-					width:"1px",
-					height:"1px"
-				}
-			}
-		},
-		{
-			"key": "my-dropdown-1",
-			type:"dropdown",
-			value:"1 Dropdown",
-			delta:{
-				"group":"outerDelta",
-
-			},
-
-			latch:{
-				options:[ //look to changes this to options
-					"A",
-					"B",
-					"C",
-				],
-				"state":"open"
-
-			},
-			"split": "3",
-			options:{
-				css:{
-					order:-3
-				}
-			},
-			"googleSheets": {},
-		},
-
-		{
-			"key": "add",
-			"type": "button",
-			"value":"Add ",
-			delta:{
-				"group":"outerDelta",
-				"type":"add",
-				"by":1
-			},
-
-			"next":"true",
-			"split": "2",
-			options:{
-				css:{
-					"flex-shrink":1,
-					"height":"100px"
-				}
-			},
-			"googleSheets": {},
-		},
-		{
-			"key": "remove",
-			"type": "button",
-			"value":"Remove",
-			delta:{
-				"group":"outerDelta",
-				"type":"remove",
-				"by":1
-			},
-			options:{
-				css:{
-					"flex-shrink":1,
-					"height":"100px"
-				}
-			},
-			"split": "3",
-			"googleSheets": {},
-		},
+//
 
 
-
-
-	] .map((x:any,i)=>{
-		x.key += "-latch-dropdown-duplicate"
-		return x
-	})
-}
 
 
 let latch_testing = [
 
-	// latch_dropdown_nesting_development,
-	// latch_dropdown_at_base_development,
-	// latch_dropdown_development,
 
 	latch_dropdown_duplicate_nesting_development,
-	latch_dropdown_duplicate_development,
 ]
 //
 website.convertCMS =  latch_testing
