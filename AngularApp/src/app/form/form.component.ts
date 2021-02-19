@@ -767,6 +767,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 											appTV
                                         }
 									})
+									ryber[appTV].metadata.board.diff = newSection?.diff
 									switch (newSection?.point) {
 										case "left":
 
@@ -943,6 +944,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 											appTV
                                         }
                                     })
+									ryber[appTV].metadata.board.diff = newSection?.diff
 									switch (newSection?.point) {
 										case "left":
 
@@ -1047,10 +1049,16 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 				return  [x,zChild["&#8353"].css[x]?.match("px") === (false) ?  zChild["&#8353"].css[x] :   getComputedStyle(zChild["&#8353"].element)[x]]
 			})
 		)
+
 		result.xPosition = 			xPosition({
 			target:1262.67 - (section.left *2),
 			contain: numberParse(getComputedStyle(zChild["&#8353"].element).width),
 		})
+		result.section = {...section}
+		// + 						(
+		// 	// numberParse(getComputedStyle(zChild["&#8353"].element).left) +
+		// 	numberParse(getComputedStyle(zChild["&#8353"].element).width)
+		// )
 		return result
 
 	}

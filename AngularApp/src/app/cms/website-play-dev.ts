@@ -4558,7 +4558,7 @@ let component_position_development = [
 				"googleSheets": {},
 				options:{
 					css:{
-						width:"125%"
+						// width:"125%"
 					}
 				}
 			},
@@ -4650,13 +4650,13 @@ let component_position_development = [
 				"type": "body",
 				// "left":-147,
 				height:1700,
-				// width:500,
+				width:500,
 				delta:{
 					group:[
 						{
 							name:"media_card",
 							type:"repeat",
-							by:"0"
+							by:"5"
 						}
 					]
 				},
@@ -4679,6 +4679,242 @@ let component_position_development = [
 						moving:{
 							point:"bottom",
 							target:'formCO0',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Menu",
+				// "split": "3",
+				"text-align":"left",
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+				"key": "container",
+				type:"div",
+				"value":"Home",
+				split:2,
+				"next":"true",
+				height:200,
+				options:{
+					css:{
+						border:"5px solid red",
+						display:"flex",
+						// "flex-flow":""
+					}
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				"nest":{
+					group:"menu",
+					name:"A1",
+				},
+			},
+            {
+                "key": "image-1",
+                "type": "image",
+                "imageURL":"python.jpg",
+				"nest":{
+					group:"menu",
+					name:"B1",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				options:{
+					css:{
+						height:"170px",
+						width:"170px"
+					}
+				}
+            },
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet`,
+				"nest":{
+					group:"menu",
+					name:"B2",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				}
+            },
+
+
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+	{
+		"title": "article",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"stack": "60",
+				// "height":"1000",
+				"width":"900",
+				left:40,
+				delta:{
+
+				},
+				nest:{
+
+				},
+				height:"1000",
+				// width:"648",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)",
+						width:"50%"
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'formCO1',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key": "my-table",
+				"type": "simpleTable",
+				"value":"",
+				"background":"blue",
+				"googleSheets": {},
+				"split":"4",
+				"height":"300"
+			},
+			{
+				"key": "my-dropdown",
+				type:"text",
+				value:"Some Text",
+				background:"red",
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"textbox",
+				value:"Some Text",
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"loading",
+				"split": "3",
+				"color":"blue",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"button",
+				value:"I dont do anything",
+				"split": "3",
+				"color":"blue",
+				"googleSheets": {},
+			},
+			{
+				"key": "localVideo",
+				"value": "",
+				"type": "video",
+				"split": "5",
+				// "width":"420",
+				"height":500,
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"dropdown",
+				value:"Select Item",
+				latch:{
+					options:[ //look to changes this to options
+						"Toronto",
+						"Suriya"
+					],
+
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+	{
+		"title": "aside2",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				// "left":-147,
+				height:1700,
+				// width:500,
+				delta:{
+					group:[
+						{
+							name:"media_card",
+							type:"repeat",
+							by:"5"
+						}
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"menu",
+							type:"regular"
+						},
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						// width:"25%",
+						opacity:".5",
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'formCO2',
 							coordinates:{x:0,y:0},
 							type:"custom"
 						}
@@ -4774,10 +5010,11 @@ let component_position_development = [
 		"metafields": [
 
 			{
-				"key": "Body",
+				"key": "Footer",
 				"type": "body",
 				"stack": "60",
 				// "height":"1000",
+				// "width":"900",
 				left:40,
 				delta:{
 
@@ -4792,26 +5029,17 @@ let component_position_development = [
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
 						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)",
-						width:"125%"
+						// width:"125%"
 					},
 					judima:{
 						moving:{
-							point:"left",
+							point:"bottom",
 							target:'formCO1',
 							coordinates:{x:0,y:0},
 							type:"custom"
 						}
 					},
 				}
-			},
-			{
-				"key": "my-table",
-				"type": "simpleTable",
-				"value":"",
-				"background":"blue",
-				"googleSheets": {},
-				"split":"4",
-				"height":"300"
 			},
 			{
 				"key": "my-dropdown",
@@ -4838,7 +5066,7 @@ let component_position_development = [
 			{
 				"key": "my-dropdown",
 				type:"button",
-				value:"I dont do anything",
+				value:"My Footer",
 				"split": "3",
 				"color":"blue",
 				"googleSheets": {},
@@ -4876,7 +5104,7 @@ let component_position_development = [
 		})
 	},
 
-]
+].slice(0,3)
 //
 
 let component_dimension_testing = [

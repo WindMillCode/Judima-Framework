@@ -1144,17 +1144,13 @@ export function stack(
 			let {point,target,coordinates} =  zChild["&#8353"].extras.judima.moving
 			let diff
 			switch (point) {
-				case "left":
+				case "right":
 					let topDiff = (
 						numberParse(ryber[target].metadata.board.top) -
 						numberParse(zChild["&#8353"].css["top"])
 					)
-					let leftDiff = (
-						(
-							numberParse(ryber[target].metadata.board.left) +
-							numberParse(ryber[target].metadata.board.width)
-						)
-					)
+					console.log(ryber[target].metadata.board)
+					let leftDiff =ryber[target].metadata.board.diff.left
 					diff = {
 						left:leftDiff,
 						top:topDiff
@@ -1196,25 +1192,31 @@ export function stack(
 						numberParse(ryber[target].metadata.board.top) -
 						numberParse(zChild["&#8353"].css["top"])
 					)
+					leftDiff = ryber[target].metadata.board.xPosition +
+					numberParse(ryber[target].metadata.board.left)
+
 					zChild["&#8353"].css["top"] = (
 						numberParse(ryber[target].metadata.board.top) +
 						numberParse(ryber[target].metadata.board.height) +
 						coordinates.y
 					).toString() + "px"
-
+					ref.detectChanges()
+					// console.log(ryber[target].metadata.board)
 					Object.values(zChild)
 					.slice(2)
 					.forEach((x:any,i)=>{
 						if(x.extras?.judima?.formatIgnore !== "true"){
 							x.css.left = (
 								numberParse(x.css.left) +
-								ryber[target].metadata.board.xPosition
+								leftDiff
 							).toString()+"px"
 						}
 					})
 					ref.detectChanges()
 
-					return {point:"bottom"}
+					return {point:"bottom",diff:{
+						top:topDiff,left:leftDiff
+					}}
 
 					break;
 
@@ -1424,88 +1426,88 @@ export function xContain(
         })
         //
 
-        let dims = ['left','width']
-        let  calcr =[] // calcualted ratios
+        // let dims = ['left','width']
+        // let  calcr =[] // calcualted ratios
 
 
-        try{
-            devObj.stops.points.slice(1).forEach((x,i)=>{
+        // try{
+        //     devObj.stops.points.slice(1).forEach((x,i)=>{
 
-                let total  = typeof(devObj.measure) === 'number'? devObj.measure :  numberParse(   getComputedStyle(devObj.measure.element).width   ) +
-                numberParse(   getComputedStyle(devObj.measure.element).left   ) // FIXME  make this an array so I can be more dynamic
-                if( total > x ){
+        //         let total  = typeof(devObj.measure) === 'number'? devObj.measure :  numberParse(   getComputedStyle(devObj.measure.element).width   ) +
+        //         numberParse(   getComputedStyle(devObj.measure.element).left   ) // FIXME  make this an array so I can be more dynamic
+        //         if( total > x ){
 
-                    let diff:any = {
-                        acc:0,
-                        cumul : [],
-                        newCumul : [],
-                        vals : []
-                    }
-                    let partsTotal = 0
-                    let start = devObj.stops.points[i]
-                    devObj.stops.ratio[i].forEach((y,j)=>{
-                            // console.log(y, dims[j %  dims.length],Math.floor(j/2))
+        //             let diff:any = {
+        //                 acc:0,
+        //                 cumul : [],
+        //                 newCumul : [],
+        //                 vals : []
+        //             }
+        //             let partsTotal = 0
+        //             let start = devObj.stops.points[i]
+        //             devObj.stops.ratio[i].forEach((y,j)=>{
+        //                     // console.log(y, dims[j %  dims.length],Math.floor(j/2))
 
-                        let zChild = devObj.parts[Math.floor(j/2)]
-                        let cssVal = dims[j %  dims.length]
-                        let real = start * y
-                        partsTotal += real  // partsTotal should be always greater than total
-                        // console.log(start)
+        //                 let zChild = devObj.parts[Math.floor(j/2)]
+        //                 let cssVal = dims[j %  dims.length]
+        //                 let real = start * y
+        //                 partsTotal += real  // partsTotal should be always greater than total
+        //                 // console.log(start)
 
-                        diff.cumul.push(diff.cumul.length !== 0 ? diff.cumul[j-1] + real: real )
-                        calcr.push({
-                            zChild,
-                            cssVal
-                        })
-
-
-                    })
-                    diff.delta = (partsTotal - total)/  devObj.stops.actions[i].reduce((y, j) => y + (j === 'c'), 0)
-                    devObj.stops.actions[i].forEach((y,j)=>{
+        //                 diff.cumul.push(diff.cumul.length !== 0 ? diff.cumul[j-1] + real: real )
+        //                 calcr.push({
+        //                     zChild,
+        //                     cssVal
+        //                 })
 
 
-                        if(   y === 'c'   ){
+        //             })
+        //             diff.delta = (partsTotal - total)/  devObj.stops.actions[i].reduce((y, j) => y + (j === 'c'), 0)
+        //             devObj.stops.actions[i].forEach((y,j)=>{
 
 
-                            diff.acc += diff.delta
-                            // if(devObj.stops.control !== undefined){
-                            //     diff.acc *=  devObj.stops.control[i][j]
-                            // }
+        //                 if(   y === 'c'   ){
 
 
-                        }
-
-                        if(devObj.stops.control !== undefined){
-                            diff.acc *=  devObj.stops.control[i][j]
-                        }
-
-
-                        diff.newCumul.push(diff.cumul[j] - diff.acc)
-                        diff.vals.push(diff.newCumul.length %  2 === 1 ? diff.newCumul[j] :
-                            diff.newCumul[j] - diff.newCumul[j-1] )
-                        calcr[j].zChild.css[calcr[j].cssVal.valueOf()] =  (diff.vals[j]).toString() + "px"
+        //                     diff.acc += diff.delta
+        //                     // if(devObj.stops.control !== undefined){
+        //                     //     diff.acc *=  devObj.stops.control[i][j]
+        //                     // }
 
 
-                    })
+        //                 }
 
-                    if(devObj.debug === 'true'){
-                    console.log(
-                        calcr,'\n',
-                        total,'\n',diff,devObj.stops.actions[i],
-                        partsTotal,start,diff.newCumul.map((x,i)=>{
-                            return i === 0 ?  x -0 : parseFloat(   (x - diff.newCumul[i-1]).toFixed(0)   )
-                        })
-                    )
-                    }
-                    throw('error')
+        //                 if(devObj.stops.control !== undefined){
+        //                     diff.acc *=  devObj.stops.control[i][j]
+        //                 }
 
 
-                }
+        //                 diff.newCumul.push(diff.cumul[j] - diff.acc)
+        //                 diff.vals.push(diff.newCumul.length %  2 === 1 ? diff.newCumul[j] :
+        //                     diff.newCumul[j] - diff.newCumul[j-1] )
+        //                 calcr[j].zChild.css[calcr[j].cssVal.valueOf()] =  (diff.vals[j]).toString() + "px"
 
 
-            })
-        }
-        catch(e){}
+        //             })
+
+        //             if(devObj.debug === 'true'){
+        //             console.log(
+        //                 calcr,'\n',
+        //                 total,'\n',diff,devObj.stops.actions[i],
+        //                 partsTotal,start,diff.newCumul.map((x,i)=>{
+        //                     return i === 0 ?  x -0 : parseFloat(   (x - diff.newCumul[i-1]).toFixed(0)   )
+        //                 })
+        //             )
+        //             }
+        //             throw('error')
+
+
+        //         }
+
+
+        //     })
+        // }
+        // catch(e){}
 
     }
     //
