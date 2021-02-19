@@ -1153,10 +1153,6 @@ export function stack(
 						(
 							numberParse(ryber[target].metadata.board.left) +
 							numberParse(ryber[target].metadata.board.width)
-						) -
-						numberParse(
-							zChild["&#8353"].css["left"] ||
-							getComputedStyle(zChild["&#8353"].element).left
 						)
 					)
 					diff = {
@@ -1178,9 +1174,48 @@ export function stack(
 
 					})
 					ref.detectChanges()
-					// console.log(ryber[target].metadata.board)
+
+
+					Object.values(zChild)
+					.slice(2)
+					.forEach((x:any,i)=>{
+						if(x.extras?.judima?.formatIgnore !== "true"){
+							x.css.left = (
+								numberParse(x.css.left) +
+								diff.left
+							).toString()+"px"
+						}
+					})
+					ref.detectChanges()
 
 					return {point,diff}
+					break;
+
+				case "bottom":
+					topDiff = (
+						numberParse(ryber[target].metadata.board.top) -
+						numberParse(zChild["&#8353"].css["top"])
+					)
+					zChild["&#8353"].css["top"] = (
+						numberParse(ryber[target].metadata.board.top) +
+						numberParse(ryber[target].metadata.board.height) +
+						coordinates.y
+					).toString() + "px"
+
+					Object.values(zChild)
+					.slice(2)
+					.forEach((x:any,i)=>{
+						if(x.extras?.judima?.formatIgnore !== "true"){
+							x.css.left = (
+								numberParse(x.css.left) +
+								ryber[target].metadata.board.xPosition
+							).toString()+"px"
+						}
+					})
+					ref.detectChanges()
+
+					return {point:"bottom"}
+
 					break;
 
 				default:
@@ -1239,7 +1274,8 @@ export function xContain(
             containPos?:Array<number>
             type?:string
             width?:number
-            left?:number
+            left?:number,
+			options?:any
         }
     }
 ){
@@ -1290,18 +1326,7 @@ export function xContain(
 
 
                 // grab the length of the 3 options
-                let OptionsFlex:any = {
-                    first:
-                    (
-                          devObj.preserve.type === 'center' ?
-                        (
-                        numberParse(devObj.preserve.zChild[x[x.length-1 ]].cssDefault["left"]) +
-                        numberParse(devObj.preserve.zChild[x[x.length-1 ]].cssDefault["width"]) -
-                        numberParse(devObj.preserve.zChild[x[0]].cssDefault["left"])
-                        ):
-                        devObj.preserve.width
-                    )
-                }
+                let OptionsFlex:any = {}
                 //
 
                 // resize as the left get rezie in the beginning val of src
@@ -1331,36 +1356,42 @@ export function xContain(
                     if(j !== 0 && devObj.preserve.type!== 'center'){
 
                         devObj.preserve.zChild[src[j-1]].css["left"]  =
-                        acc
-                        .slice(0,j+2)
-                        .reduce((accc,z,k)=>{
-                            if(k ===1 ){
-                                return accc - devObj.preserve.left
-                            }
-                            return accc + z
-                        },0).toString() + "px"
+                        (
+							acc
+							.slice(0,j+2)
+							.reduce((accc,z,k)=>{
+								// if(k === 1){
+									// return accc - devObj.preserve.left
+								// }
+								return accc + z
+							},0)
+						).toString() + "px"
+						// console.log("1",src[j-1], devObj.preserve.zChild[src[j-1]].css["left"])
                     }
 
                     else{
 
                         devObj.preserve.zChild[src[j]].css["left"]  =
-                        acc
-                        .slice(0,j+2)
-                        .reduce((accc,z,k)=>{
-                            return accc + z
-                        },0).toString() + "px"
+                        (
+							acc
+							.slice(0,j+2)
+							.reduce((accc,z,k)=>{
+								return accc + z
+							},0)
+						).toString() + "px"
+						// console.log("2",src[j], devObj.preserve.zChild[src[j]].css["left"])
                     }
                     return acc
                 },[
                     xPosition({
                         target:1262.67 - (devObj.preserve.left *2),
-                        // target:OptionsFlex.first,
                         contain: numberParse(getComputedStyle(devObj.preserve.zChild["&#8353"].element).width),
-                        targetPos: devObj.preserve.targetPos[i] !== undefined ? devObj.preserve.targetPos[i] :.5,
-                        containPos: devObj.preserve.containPos[i] !== undefined ? devObj.preserve.containPos[i] :.5
+                        targetPos: devObj.preserve.targetPos[i] || .5,
+                        containPos: devObj.	preserve.containPos[i] || .5
                     })
                     // devObj.preserve.left
                 ])
+
 
                 devObj.preserve.ref.detectChanges()
                 //

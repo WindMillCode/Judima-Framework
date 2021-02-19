@@ -112,20 +112,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     next - start zChild on the next stacking context
                 */
 
-                let section:any =  zChild["&#8353"]?.extras?.section
+                let section:any =  {
+					...this.ryber.appCO0.metadata.sectionDefault,
+					...zChild["&#8353"]?.extras?.section,
+				}
 
-                if(section === undefined){
-                    section = objectCopy(this.ryber.appCO0.metadata.sectionDefault)
-                }
 
-                else{
-                    let sectionDefault :any = objectCopy(this.ryber.appCO0.metadata.ryber.sectionDefault)
-                    section['gap'] !== undefined ?   section['gap'] :   sectionDefault.gap
-                    section['left'] !== undefined ?  section['left'] :  sectionDefault.left
-                    section['width'] !== undefined ? section['width'] : sectionDefault.width
-                    section['split'] !== undefined ? section['split'] : sectionDefault.split
-                    section['stack'] !== undefined ? section['stack'] : sectionDefault.stack
-                }
 
                 Object.keys(section)
                 .forEach((x,i)=>{
@@ -133,7 +125,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 })
 
                 section.area =section.left + section.width
-                // console.log(section)
+				section.prevLeft = section.left
 
 
 				//grabbing the values how the browser renders them
@@ -683,8 +675,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             {
 
                                 // functionality
-                                {
 
+								{
                                     //clean up
                                     Object
                                     .keys(zChild)
@@ -738,34 +730,30 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 									//
 
 									// align options
-									componentConsole.call(this,{
-										target:['formCO2'],
-										data:{...section}
-									})?.()
-									let xContainObj = {
+									let xContainObj:any = {
                                         preserve:{
                                             align:finalAlign,
-                                            // zChild,
-                                            zChild:zChild,
-                                            ref:this.ref,
+                                            zChild,
+                                            ref,
                                             width:section.width,
-                                            left:section.left
+                                            left:section.left,
                                         },
                                         type:'preserve',
+										// debug:"true"
 									}
 
 
 									;( {align } = xContain(xContainObj))
 									//
-
-                                }
+								}
 								//
 
 
                                 //position
-                                {
-
-									this.positionBoard({zChild:topLevelZChild});
+                                ;{
+									// position board
+									this.positionBoard({zChild:topLevelZChild,section});
+									//
                                     let newSection  = stack({
                                         type:"yPosition",
                                         yPosition:{
@@ -781,27 +769,41 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 									})
 									switch (newSection?.point) {
 										case "left":
-											console.log(
-												newSection.diff,
-												zChild["&#8353"].css["left"],
-												getComputedStyle(zChild["&#8353"].element).left
-											)
-											section.left += 315.833
-											section.area += 315.833
+
+											if( newSection.diff.left !== section.prevLeft){
+												/* does the same thing by modifying section but can be a bit confusing
+												 section.left = newSection.diff.left
+												 section.area += section.width + section.left
+												 xContainObj.preserve.left = section.prevLeft = section.left
+												 xContainObj.debug = "true"
+												 ;( {align } = xContain(xContainObj))
+												 console.log("fire")
+												*/
+
+												// Object.values(zChild)
+												// .slice(2)
+												// .forEach((x:any,i)=>{
+												// 	if(x.extras?.judima?.formatIgnore !== "true"){
+												// 		x.css.left = (
+												// 			numberParse(x.css.left) +
+												// 			newSection.diff.left
+												// 		).toString()+"px"
+												// 	}
+												// })
+												// ref.detectChanges()
+											}
+											break;
+										case "bottom":
+											// console.log(section.left)
 											break;
 
 										default:
 											break;
 									}
-									componentConsole.call(this,{
-										target:['formCO2'],
-										data:{appTV,section,newSection}
-									})?.()
 
-                                    // position board
+                                    // FPM finished
                                     ryber[appTV].metadata.ngAfterViewInitFinished.next("")
-
-                                    //
+									//
                                 }
                                 //
 
@@ -880,17 +882,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     this.ref.detectChanges()
                                     //
 
-                                    //responsive height
-                                    // staticZKeys
-                                    // .forEach((x,i)=> {
-                                    //     if(!this.ryber.appCO0.metadata.component.responsiveHeightExclude.includes(zChild[x].bool )){
-                                    //         zChild[x].css["height"] = null
-                                    //         zChild[x].css["display"] = "table"
-                                    //         this.ref.detectChanges()
-                                    //         zChild[x].css["height"] =  (zChild[x].element.getBoundingClientRect().height).toString() + "px"
-                                    //     }
-                                    // })
-                                    //
+
+
 
                                     let responsiveMeasureTargets =finalZChildKeys
                                     .reduce((acc,x,i)=>{
@@ -935,7 +928,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 //position
                                 {
 
-									this.positionBoard({zChild:topLevelZChild});
+									this.positionBoard({zChild:topLevelZChild,section});
 									// console.log(appTV,ryber[appTV].metadata.board,moving)
                                     let newSection  =  stack({
                                         type:"yPosition",
@@ -950,6 +943,38 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 											appTV
                                         }
                                     })
+									switch (newSection?.point) {
+										case "left":
+
+											if( newSection.diff.left !== section.prevLeft){
+												/* does the same thing by modifying section but can be a bit confusing
+												 section.left = newSection.diff.left
+												 section.area += section.width + section.left
+												 xContainObj.preserve.left = section.prevLeft = section.left
+												 xContainObj.debug = "true"
+												 ;( {align } = xContain(xContainObj))
+												 console.log("fire")
+												*/
+
+												// Object.values(zChild)
+												// .slice(2)
+												// .forEach((x:any,i)=>{
+												// 	if(x.extras?.judima?.formatIgnore !== "true"){
+												// 		x.css.left = (
+												// 			numberParse(x.css.left) +
+												// 			newSection.diff.left
+												// 		).toString()+"px"
+												// 	}
+												// })
+												// ref.detectChanges()
+											}
+											break;
+										case "bottom":
+											break;
+
+										default:
+											break;
+									}
 
 
 
@@ -1012,29 +1037,32 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
     }
 
 	// board methods
-	private _boardDimensions(devObj:{ zChild: any}) {
-		let {zChild} = devObj
+	private _boardDimensions(devObj?:any) {
+		let {zChild,section} = devObj
 
-		return Object.fromEntries(
+
+		let result = Object.fromEntries(
 			["top","height","left","width"]
 			.map((x:any,i)=>{
 				return  [x,zChild["&#8353"].css[x]?.match("px") === (false) ?  zChild["&#8353"].css[x] :   getComputedStyle(zChild["&#8353"].element)[x]]
 			})
 		)
+		result.xPosition = 			xPosition({
+			target:1262.67 - (section.left *2),
+			contain: numberParse(getComputedStyle(zChild["&#8353"].element).width),
+		})
+		return result
 
 	}
 
     private positionBoard(devObj?:any) {
-        let {zChild}= devObj
+        let {zChild,section}= devObj
 		let {ryber,appTV} = this
         let max:any = Object.keys(zChild)
             .slice(2)
 
-
-
             max = max
             .reduce((acc: any, x, i) => {
-
 
                 let sum = numberParse(zChild[x].css["top"]) +
                     numberParse(zChild[x].css["height"]);
@@ -1060,7 +1088,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
         this.ref.detectChanges();
 		// update curent moving
-		ryber[appTV].metadata.board = this._boardDimensions({ zChild});
+		ryber[appTV].metadata.board = this._boardDimensions({ zChild,section});
 		//
     }
 	//

@@ -4409,11 +4409,11 @@ let latch_dropdown_nesting_development = {
 
 let latch_testing = [
 
-	// latch_dropdown_nesting_development,
-	// latch_dropdown_at_base_development,
-	// latch_dropdown_development,
+	latch_dropdown_nesting_development,
+	latch_dropdown_at_base_development,
+	latch_dropdown_development,
 	latch_dropdown_duplicate_development,
-	// latch_dropdown_duplicate_nesting_development
+	latch_dropdown_duplicate_nesting_development
 ]
 //
 
@@ -4548,7 +4548,7 @@ let component_position_development = [
 			{
 				"key": "Body",
 				"type": "body",
-				"left":-147,
+				// "left":200,
 				delta:{
 
 				},
@@ -4614,7 +4614,7 @@ let component_position_development = [
 				"value":"Newsletter",
 				next:"true",
 				top:-40,
-				left:400
+				left:500
 			},
 			{
 				"key": "guides",
@@ -4656,7 +4656,7 @@ let component_position_development = [
 						{
 							name:"media_card",
 							type:"repeat",
-							by:"5"
+							by:"0"
 						}
 					]
 				},
@@ -4671,8 +4671,18 @@ let component_position_development = [
 				"googleSheets": {},
 				options:{
 					css:{
-						width:"25%"
-					}
+						width:"25%",
+						opacity:".5",
+						"max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"bottom",
+							target:'formCO0',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
 				}
 			},
 			{
@@ -4768,7 +4778,7 @@ let component_position_development = [
 				"type": "body",
 				"stack": "60",
 				// "height":"1000",
-				left:0,
+				left:40,
 				delta:{
 
 				},
@@ -4788,31 +4798,11 @@ let component_position_development = [
 						moving:{
 							point:"left",
 							target:'formCO1',
-							coordinates:[0,0],
+							coordinates:{x:0,y:0},
 							type:"custom"
 						}
 					},
 				}
-			},
-			{
-				"key": "my-cursor",
-				// "type": "gsap-cursor",
-				type:"text",
-				// "value":"Items",
-				// "split": "3",
-				gsapCusor:{
-					"group":"a",
-					"copyPath":"true",
-
-				},
-				"height":"1",
-				"width":"1",
-				options:{
-					css:{
-						height:"200px"
-					}
-				},
-				"googleSheets": {},
 			},
 			{
 				"key": "my-table",
