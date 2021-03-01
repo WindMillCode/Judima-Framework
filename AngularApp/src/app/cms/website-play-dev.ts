@@ -4648,7 +4648,7 @@ let component_position_development = [
 			{
 				"key": "Body",
 				"type": "body",
-				// "left":-147,
+				"left":147,
 				height:1700,
 				width:500,
 				delta:{
@@ -4673,7 +4673,7 @@ let component_position_development = [
 					css:{
 						width:"25%",
 						opacity:".5",
-						"max-width":"285px"
+						// "max-width":"285px"
 					},
 					judima:{
 						moving:{
@@ -4701,11 +4701,181 @@ let component_position_development = [
 				"googleSheets": {},
 			},
 			{
+				"key": "text",
+				type:"text",
+				"value":"Entry",
+				// "split": "3",
+				next:"true",
+				"text-align":"left",
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-size":"60px"
+						// "font-family":""
+					}
+				},
+				"googleSheets": {},
+			},
+			{
 				"key": "container",
 				type:"div",
 				"value":"Home",
-				split:2,
-				"next":"true",
+				split:6,
+				// "next":"true",
+				height:200,
+				options:{
+					css:{
+						border:"5px solid red",
+						display:"flex",
+						// "flex-flow":""
+					}
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				"nest":{
+					group:"menu",
+					name:"A1",
+				},
+			},
+            {
+                "key": "image-1",
+                "type": "image",
+                "imageURL":"python.jpg",
+				"nest":{
+					group:"menu",
+					name:"B1",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				options:{
+					css:{
+						height:"170px",
+						width:"170px"
+					}
+				}
+            },
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet`,
+				"nest":{
+					group:"menu",
+					name:"B2",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				}
+            },
+
+
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+	{
+		"title": "aside",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				height:1700,
+				width:500,
+				delta:{
+					group:[
+						{
+							name:"media_card",
+							type:"repeat",
+							by:"5"
+						}
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"menu",
+							type:"regular"
+						},
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"25%",
+						opacity:".5",
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"bottom",
+							target:'formCO0',
+							coordinates:{x:0,y:0},
+							// type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Menu",
+				// "split": "3",
+				"text-align":"left",
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+				"key": "text",
+				type:"text",
+				"value":"Entry",
+				// "split": "3",
+				next:"true",
+				"text-align":"left",
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-size":"60px"
+						// "font-family":""
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+				"key": "container",
+				type:"div",
+				"value":"Home",
+				split:6,
+				// "next":"true",
 				height:200,
 				options:{
 					css:{

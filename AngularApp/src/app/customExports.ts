@@ -1192,8 +1192,9 @@ export function stack(
 						numberParse(ryber[target].metadata.board.top) -
 						numberParse(zChild["&#8353"].css["top"])
 					)
-					leftDiff = ryber[target].metadata.board.xPosition +
-					numberParse(ryber[target].metadata.board.left)
+					leftDiff = ryber[target].metadata.board.xPosition - ryber[appTV].metadata.board.section.left - ryber[appTV].metadata.board.xPosition
+
+                    console.log(ryber[appTV].metadata.board,leftDiff)
 
 					zChild["&#8353"].css["top"] = (
 						numberParse(ryber[target].metadata.board.top) +
@@ -1209,6 +1210,7 @@ export function stack(
 							x.css.left = (
 								numberParse(x.css.left) +
 								leftDiff
+
 							).toString()+"px"
 						}
 					})

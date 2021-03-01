@@ -1,9 +1,3 @@
-GIT
-  remote: https://github.com/eventmachine/evma_httpserver
-  revision: 7c5a14aa636ce6b57410809f32a5d587d482bbe9
-  specs:
-    eventmachine_httpserver (0.2.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -33,6 +27,7 @@ GEM
     em-synchrony (1.0.6)
       eventmachine (>= 1.0.0.beta.1)
     eventmachine (1.2.7)
+    eventmachine_httpserver (0.2.1)
     ffi (1.14.2)
     http-accept (1.7.0)
     http-cookie (1.0.3)
@@ -109,7 +104,6 @@ PLATFORMS
 
 DEPENDENCIES
   capybara
-  eventmachine_httpserver!
   ffi
   percy-capybara (~> 4.3.3)
   puffing-billy
