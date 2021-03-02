@@ -1149,8 +1149,12 @@ export function stack(
 						numberParse(ryber[target].metadata.board.top) -
 						numberParse(zChild["&#8353"].css["top"])
 					)
-					console.log(ryber[target].metadata.board)
-					let leftDiff =ryber[target].metadata.board.diff.left
+					// console.log(ryber[target].metadata.board)
+					let leftDiff =  - ryber[appTV].metadata.board.xPosition +
+                    numberParse(ryber[target].metadata.board.width) +
+                    ryber[target].metadata.board.diff.left -
+                    ryber[target].metadata.board.xPosition
+                    // console.log(leftDiff)
 					diff = {
 						left:leftDiff,
 						top:topDiff
@@ -1189,20 +1193,43 @@ export function stack(
 
 				case "bottom":
 					topDiff = (
-						numberParse(ryber[target].metadata.board.top) -
-						numberParse(zChild["&#8353"].css["top"])
-					)
-					leftDiff = ryber[target].metadata.board.xPosition - ryber[appTV].metadata.board.section.left - ryber[appTV].metadata.board.xPosition
-
-                    console.log(ryber[appTV].metadata.board,leftDiff)
-
-					zChild["&#8353"].css["top"] = (
 						numberParse(ryber[target].metadata.board.top) +
 						numberParse(ryber[target].metadata.board.height) +
-						coordinates.y
+                        coordinates.y
+					)
+
+					leftDiff = ryber[target].metadata.board.xPosition-
+                    ryber[appTV].metadata.board.section.left -
+                    ryber[appTV].metadata.board.xPosition
+
+                    if(ryber[target].metadata.board.point !== undefined){
+                        leftDiff += ryber[appTV].metadata.board.xPosition -
+                        ryber[target].metadata.board.xPosition
+
+                        Object.values(zChild)
+                        .slice(2)
+                        .forEach((x:any,i)=>{
+                            if(x.extras?.judima?.formatIgnore !== "true"){
+                                x.css.top = (
+                                    numberParse(x.css.top) +
+                                    topDiff -
+                                    numberParse(zChild["&#8353"].css["top"])
+
+                                ).toString()+"px"
+                            }
+                        })
+                    }
+
+					zChild["&#8353"].css["top"] = (
+						topDiff
 					).toString() + "px"
+
+                    leftDiff += coordinates.x
+
+
+
+
 					ref.detectChanges()
-					// console.log(ryber[target].metadata.board)
 					Object.values(zChild)
 					.slice(2)
 					.forEach((x:any,i)=>{

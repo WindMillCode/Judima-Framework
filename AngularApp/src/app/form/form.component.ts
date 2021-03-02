@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChildren, AfterViewInit, Inject, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy, Renderer2, ElementRef } from '@angular/core';
 import { RyberService } from '../ryber.service';
 import { fromEvent, interval, of, from, Observable, merge, Subject, BehaviorSubject, combineLatest, forkJoin,concat } from 'rxjs';
-import { catchError, take, timeout, mapTo, debounceTime, distinctUntilChanged, debounce, first, ignoreElements, tap, delay,withLatestFrom, skipUntil, map } from 'rxjs/operators';
+import { catchError, take, timeout, mapTo, debounceTime, distinctUntilChanged, debounce, first, ignoreElements, tap, delay,withLatestFrom, skipUntil, map, reduce } from 'rxjs/operators';
 import {
     zChildren, getTextWidth, numberParse,
     xPosition, resize, componentBootstrap,
@@ -337,8 +337,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //more init
                 let cmsZKeys = ryber[appTV.valueOf()].metadata.order
                 //
-
-
 
                 //stack spacing setup
                 let spacing =  [null,
@@ -753,6 +751,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 ;{
 									// position board
 									this.positionBoard({zChild:topLevelZChild,section});
+                                    
 									//
                                     let newSection  = stack({
                                         type:"yPosition",
@@ -768,6 +767,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                         }
 									})
 									ryber[appTV].metadata.board.diff = newSection?.diff
+                                    ryber[appTV].metadata.board.point = newSection?.point
 									switch (newSection?.point) {
 										case "left":
 
@@ -795,7 +795,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 											}
 											break;
 										case "bottom":
-											// console.log(section.left)
+											// console.log(newSection)
 											break;
 
 										default:
