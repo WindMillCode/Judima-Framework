@@ -218,7 +218,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
         // console.log(location.pathname)
-		console.log(this.ryber)
+		// console.log(this.ryber)
 	}
 
 

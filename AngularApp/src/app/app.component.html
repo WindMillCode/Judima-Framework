@@ -1,7 +1,12 @@
 <ng-container *ngIf ="ryber.appCurrentNav  === '/home' || ryber.appCurrentNav  === '/'  ">
     <ng-container *ngFor="let item of ryber['formCO$'] | async  ; index as i;">
 
-        <app-form #myTemp [class] = 'item' [appTV]= 'item'  [ngStyle] = 'ryber[item].quantity[0][0].ngCss[0][0]'></app-form>
+        <app-form #myTemp
+        [class] = 'item'
+        [appTV]= 'item'
+        [ngStyle] = 'ryber[item].quantity[0][0].ngCss[0][0]'
+       
+    ></app-form>
     </ng-container>
 
 

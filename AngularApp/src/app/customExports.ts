@@ -875,7 +875,8 @@ export function stack(
             },
             ref:ChangeDetectorRef,
 			ryber?:RyberService,
-			appTV?:string
+			appTV?:string,
+            mediaQuery?:string
         }
 
     }
@@ -1137,9 +1138,9 @@ export function stack(
 
     else if(devObj.type === 'yPosition'){
         // ussually for the position part of the media query
-		let {zChild,moving,ref,ryber,appTV}= devObj.yPosition
+		let {zChild,moving,ref,ryber,appTV,mediaQuery}= devObj.yPosition
 
-		if(zChild["&#8353"].extras?.judima?.moving?.type === "custom"){
+		if(zChild["&#8353"].extras?.judima?.moving?.type === "custom" && mediaQuery !== "mobile"){
 
 			let {point,target,coordinates} =  zChild["&#8353"].extras.judima.moving
 			let diff

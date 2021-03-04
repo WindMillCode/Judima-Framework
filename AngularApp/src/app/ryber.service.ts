@@ -46,7 +46,7 @@ export class RyberService {
 
 
             let { mf } = devObj
-            let { gsapCursor,webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nest,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
+            let { appSection,gsapCursor,webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nest,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
             let { left, top, height, width, split, next } = devObj.mf
 			let component = { left, top, height, width, split, next }
 
@@ -165,6 +165,10 @@ export class RyberService {
                         section,
                         type,
                         component,
+                        appSection:{
+                            confirm:appSection?.confirm,
+                            co
+                        },
                         appWebVitals:{
                             confirm:webVitals?.confirm,
                             co,
@@ -1854,7 +1858,17 @@ export class RyberService {
                     left: 50,
                     width: 1175,
                     split: 9,
-                    stack: 20
+                    stack: 20,
+                    app:{
+                        width:{
+                            value:1175,
+                            mediaQuery:null
+                        },
+                        type:"custom", //stack,custom,
+                        custom:{
+                            board:null
+                        }
+                    }
                 }
             },
             webRTC:{

@@ -4560,6 +4560,9 @@ let component_position_development = [
 					css:{
 						// width:"125%"
 					}
+				},
+				appSection:{
+					confirm:"true"
 				}
 			},
 			{
@@ -4649,7 +4652,7 @@ let component_position_development = [
 				"key": "Body",
 				"type": "body",
 				"left":147,
-				height:1700,
+				// height:1700,
 				width:500,
 				delta:{
 					group:[
@@ -4807,7 +4810,6 @@ let component_position_development = [
 				nest:{
 
 				},
-				height:"1000",
 				// width:"648",
 				"googleSheets": {},
 				options:{
@@ -4907,7 +4909,7 @@ let component_position_development = [
 				"type": "body",
 				// "left":-147,
 				width:500,
-				height:1700,
+				// height:1700,
 				// width:500,
 				delta:{
 					group:[

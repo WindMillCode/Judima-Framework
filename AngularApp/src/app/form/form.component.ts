@@ -666,340 +666,52 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 							finalAlign:align
 						})
 
-
-                        if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.width   ){
-
-                            // element management
-                            {
-
-                                // functionality
-
-								{
-                                    //clean up
-                                    Object
-                                    .keys(zChild)
-                                    .slice(2)
-                                    .forEach((x,i)=>{
-										if(zChild[x].extras.judima.formatIgnore !== "true"){
-											zChild[x].css["height"] = zChild[x].cssDefault["height"]
-											zChild[x].css["width"] = zChild[x].cssDefault["width"]
-											zChild[x].css["font-size"] = zChild[x].cssDefault["font-size"]
-										}
-                                    })
-
-                                    this.ref.detectChanges()
-                                    //
+                        if(ryber.appCO0.metadata.ryber.sectionDefault.app.type === "stack"){
 
 
-									keep = finalKeep
-									let stackObj = {
-                                        zChildKeys:finalZChildKeys,
-                                        ref: this.ref,
-                                        zChild,
-                                        spacing: [null,
-											...Array.from(flatDeep(finalAlign,Infinity),(x:string,i)=> {
-												if(zChild[x].extras.component.top !==undefined){
-													return zChild[x].extras.component.top
-												}
-												return section.stack
-											}),
-										],
-										options:{
-											overlapFix:{
-												confirm:"true",
-												flag:"false"
-											}
-										},
-                                        keep:finalKeep,
-                                        type:'keepSomeAligned',
-                                        heightInclude:[null,...Array.from(finalAlign[0],(x,i)=> {return 'f'}),...Array.from( flatDeep(finalAlign.slice(1),Infinity),(x,i)=> {return 't'})]
-									}
+                            if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.width   ){
 
-									// just in case another feature cant properly configure the stack
-									// overlapFix will help fix whats broken
-									//  if issues doe the first call outside the while loop and deinitalize overlapFixFlag
-									let overlapFixFlag = "true"
-									while(overlapFixFlag === "true"){
-										stackObj.keep = keep
-										stackObj.options.overlapFix.flag = "false"
-										;({keep,overlapFixFlag}=stack(stackObj))
-										this.ref.detectChanges()
-									}
-									//
-
-									// align options
-									let xContainObj:any = {
-                                        preserve:{
-                                            align:finalAlign,
-                                            zChild,
-                                            ref,
-                                            width:section.width,
-                                            left:section.left,
-                                        },
-                                        type:'preserve',
-										// debug:"true"
-									}
-
-
-									;( {align } = xContain(xContainObj))
-									//
-								}
-								//
-
-
-                                //position
-                                ;{
-									// position board
-									this.positionBoard({zChild:topLevelZChild,section});
-                                    
-									//
-                                    let newSection  = stack({
-                                        type:"yPosition",
-                                        yPosition:{
-                                            zChild:topLevelZChild,
-                                            moving:{
-                                                top:moving.boardTop,
-                                                height:moving.boardHeight
-                                            },
-                                            ref,
-											ryber,
-											appTV
-                                        }
-									})
-									ryber[appTV].metadata.board.diff = newSection?.diff
-                                    ryber[appTV].metadata.board.point = newSection?.point
-									switch (newSection?.point) {
-										case "left":
-
-											if( newSection.diff.left !== section.prevLeft){
-												/* does the same thing by modifying section but can be a bit confusing
-												 section.left = newSection.diff.left
-												 section.area += section.width + section.left
-												 xContainObj.preserve.left = section.prevLeft = section.left
-												 xContainObj.debug = "true"
-												 ;( {align } = xContain(xContainObj))
-												 console.log("fire")
-												*/
-
-												// Object.values(zChild)
-												// .slice(2)
-												// .forEach((x:any,i)=>{
-												// 	if(x.extras?.judima?.formatIgnore !== "true"){
-												// 		x.css.left = (
-												// 			numberParse(x.css.left) +
-												// 			newSection.diff.left
-												// 		).toString()+"px"
-												// 	}
-												// })
-												// ref.detectChanges()
-											}
-											break;
-										case "bottom":
-											// console.log(newSection)
-											break;
-
-										default:
-											break;
-									}
-
-                                    // FPM finished
-                                    ryber[appTV].metadata.ngAfterViewInitFinished.next("")
-									//
-                                }
+                                // element management
+                                this.desktopMediaQuery({zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV});
                                 //
 
-                                //moving
-                                {
-
-                                }
-                                //
                             }
-                            //
+
+
+                            else if(    numberParse(getComputedStyle(zChild["&#8353"].element).width) > 0  ){
+
+
+                                //element management
+                                this.mobileMediaQuery({finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV});
+                                //
+
+
+                            }
+
 
                         }
 
 
-                        else if(    numberParse(getComputedStyle(zChild["&#8353"].element).width) > 0  ){
+                        else if(ryber.appCO0.metadata.ryber.sectionDefault.app.type === "custom"){
+                            if(  ryber.appCO0.metadata.ryber.sectionDefault.app.width.mediaQuery !=="mobile"   ){
 
-
-                            //element management
-                            {
-                                // functionality
-                                {
-
-
-                                    //clean up
-
-                                    //
-
-
-
-
-                                    // same start
-                                    // staticZKeys
-                                    finalZChildKeys
-									.slice(1)
-                                    .forEach((x,i)=>{
-                                        zChild[x].css["width"] = (
-                                            .9 * numberParse(getComputedStyle(zChild["&#8353"].element).width)
-                                        ).toString() + "px"
-                                        this.ref.detectChanges()
-                                        zChild[x].css["left"] = (
-											xPosition({
-												target:numberParse(zChild[x].css["width"]),
-												contain: numberParse(getComputedStyle(zChild["&#8353"].element).width)
-											})
-										)
-										.toString() + "px"
-                                    })
-                                    this.ref.detectChanges()
-                                    //
-
-
-                                    //serveral targets
-
-
-                                    let mobileShrinkFonts =   finalZChildKeys
-                                        .reduce((acc,x,i)=>{
-                                            if(zChild[x]?.extras?.appFocusFont?.mobileShrink  ==="true"){
-                                                acc.push(x)
-                                            }
-                                            return acc
-                                        },[])
-
-                                    mobileShrinkFonts
-                                    .forEach((x,i)=>{
-                                        zChild[x].css["font-size"]  =(
-                                            resize({
-                                                default:numberParse(   zChild[x].cssDefault["font-size"]   ),
-                                                containActual:numberParse(   getComputedStyle(   zChild["&#8353"].element   ).width   ),
-                                                containDefault:540,
-                                                type:'nonUniform',
-                                                misc:[.052,.06],
-                                                mediaQuery:[379,286,0]
-                                            })
-                                        ).toString() + "px"
-                                    })
-                                    this.ref.detectChanges()
-                                    //
-
-
-
-
-                                    let responsiveMeasureTargets =finalZChildKeys
-                                    .reduce((acc,x,i)=>{
-
-                                        if( ["ta","c"].includes(zChild[x].bool)){
-                                            acc.push(zChild[x])
-                                        }
-                                        return acc
-                                    },[])
-                                    responsiveMeasure({
-                                        item:{
-                                            target:responsiveMeasureTargets,
-                                            prop:[...Array.from(Array(responsiveMeasureTargets.length),()=> { return  "height"})]
-                                        },
-                                        values:[
-                                            ...Array.from(Array(responsiveMeasureTargets.length),()=> { return  [[1190,163],[770,303],[495,343],[391,385],[305,426],[216,487],[175,650]]})
-
-                                        ],
-                                        measure:{
-                                            target:zChild["&#8353"].element,
-                                            prop:"width"
-                                        }
-                                    })
-                                    this.ref.detectChanges()
-
-                                    stack({
-                                        zChildKeys:finalZChildKeys,
-                                        ref: this.ref,
-                                        zChild,
-                                        spacing:[null,100,section.stack],
-                                        type:'simpleStack',
-                                        heightInclude:[null,'f','t']
-                                    })
-                                    this.ref.detectChanges()
-
-
-
-
-                                }
+                                // element management
+                                this.desktopMediaQuery({zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV});
                                 //
 
-                                //position
-                                {
-
-									this.positionBoard({zChild:topLevelZChild,section});
-									// console.log(appTV,ryber[appTV].metadata.board,moving)
-                                    let newSection  =  stack({
-                                        type:"yPosition",
-                                        yPosition:{
-                                            zChild:topLevelZChild,
-                                            moving:{
-                                                top:moving.boardTop,
-                                                height:moving.boardHeight
-                                            },
-                                            ref,
-											ryber,
-											appTV
-                                        }
-                                    })
-									ryber[appTV].metadata.board.diff = newSection?.diff
-									switch (newSection?.point) {
-										case "left":
-
-											if( newSection.diff.left !== section.prevLeft){
-												/* does the same thing by modifying section but can be a bit confusing
-												 section.left = newSection.diff.left
-												 section.area += section.width + section.left
-												 xContainObj.preserve.left = section.prevLeft = section.left
-												 xContainObj.debug = "true"
-												 ;( {align } = xContain(xContainObj))
-												 console.log("fire")
-												*/
-
-												// Object.values(zChild)
-												// .slice(2)
-												// .forEach((x:any,i)=>{
-												// 	if(x.extras?.judima?.formatIgnore !== "true"){
-												// 		x.css.left = (
-												// 			numberParse(x.css.left) +
-												// 			newSection.diff.left
-												// 		).toString()+"px"
-												// 	}
-												// })
-												// ref.detectChanges()
-											}
-											break;
-										case "bottom":
-											break;
-
-										default:
-											break;
-									}
-
-
-
-                                    // position board
-                                    ryber[appTV].metadata.ngAfterViewInitFinished.next("")
-                                    // this.positionBoard({zChild:topLevelZChild});
-                                    //
-
-
-                                }
-                                //
-
-                                //moving
-                                {
-
-                                }
-                                //
                             }
-                            //
 
 
+                            else if(  ryber.appCO0.metadata.ryber.sectionDefault.app.width.mediaQuery !=="desktop"  ){
+
+
+                                //element management
+                                this.mobileMediaQuery({finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV,sectionType:"custom"});
+                                //
+
+
+                            }
                         }
-
 
                         // so you wont have to find the panel
                         if(ii === env.component?.[appTV.split("C")[0].valueOf()]?.panelView){
@@ -1036,6 +748,236 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 		//
 
 
+    }
+
+
+
+    private desktopMediaQuery(devObj:{zChild: any, keep: any[], finalKeep: any[], finalZChildKeys: any[], finalAlign: any[], section: any, ref: ChangeDetectorRef, align: any[], topLevelZChild: any, moving: any, ryber: RyberService, appTV: any}) {
+        let {zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV} = devObj
+        {
+
+            {
+                Object
+                    .keys(zChild)
+                    .slice(2)
+                    .forEach((x, i) => {
+                        if (zChild[x].extras.judima.formatIgnore !== "true") {
+                            zChild[x].css["height"] = zChild[x].cssDefault["height"];
+                            zChild[x].css["width"] = zChild[x].cssDefault["width"];
+                            zChild[x].css["font-size"] = zChild[x].cssDefault["font-size"];
+                        }
+                    });
+
+                this.ref.detectChanges();
+                //
+                keep = finalKeep;
+                let stackObj = {
+                    zChildKeys: finalZChildKeys,
+                    ref: this.ref,
+                    zChild,
+                    spacing: [null,
+                        ...Array.from(flatDeep(finalAlign, Infinity), (x: string, i) => {
+                            if (zChild[x].extras.component.top !== undefined) {
+                                return zChild[x].extras.component.top;
+                            }
+                            return section.stack;
+                        }),
+                    ],
+                    options: {
+                        overlapFix: {
+                            confirm: "true",
+                            flag: "false"
+                        }
+                    },
+                    keep: finalKeep,
+                    type: 'keepSomeAligned',
+                    heightInclude: [null, ...Array.from(finalAlign[0], (x, i) => { return 'f'; }), ...Array.from(flatDeep(finalAlign.slice(1), Infinity), (x, i) => { return 't'; })]
+                };
+
+                // just in case another feature cant properly configure the stack
+                // overlapFix will help fix whats broken
+                //  if issues doe the first call outside the while loop and deinitalize overlapFixFlag
+                let overlapFixFlag = "true";
+                while (overlapFixFlag === "true") {
+                    stackObj.keep = keep;
+                    stackObj.options.overlapFix.flag = "false"; ({ keep, overlapFixFlag } = stack(stackObj));
+                    this.ref.detectChanges();
+                }
+                //
+                // align options
+                let xContainObj: any = {
+                    preserve: {
+                        align: finalAlign,
+                        zChild,
+                        ref,
+                        width: section.width,
+                        left: section.left,
+                    },
+                    type: 'preserve',
+                }; ({ align } = xContain(xContainObj));
+                //
+            }
+            //
+            //position
+            ; {
+                // position board
+                this.positionBoard({ zChild: topLevelZChild, section });
+
+                //
+                let newSection = stack({
+                    type: "yPosition",
+                    yPosition: {
+                        zChild: topLevelZChild,
+                        moving: {
+                            top: moving.boardTop,
+                            height: moving.boardHeight
+                        },
+                        ref,
+                        ryber,
+                        appTV
+                    }
+                });
+                ryber[appTV].metadata.board.diff = newSection?.diff;
+                ryber[appTV].metadata.board.point = newSection?.point;
+
+
+                // FPM finished
+                ryber[appTV].metadata.ngAfterViewInitFinished.next("");
+                //
+            }
+            //
+            //moving
+            {
+            }
+            //
+        }
+
+    }
+
+    private mobileMediaQuery(devObj:{sectionType?:string,finalZChildKeys: any[], zChild: any, section: any, topLevelZChild: any, moving: any, ref: ChangeDetectorRef, ryber: RyberService, appTV: any}) {
+        let {finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV,sectionType} = devObj
+        let board = zChild["&#8353"]
+
+        if(sectionType === "custom"){
+            board = ryber.appCO0.metadata.ryber.sectionDefault.app.custom.board
+        }
+        {
+            {
+
+
+                finalZChildKeys
+                    .slice(1)
+                    .forEach((x, i) => {
+                        zChild[x].css["width"] = (
+                            .9 * numberParse(getComputedStyle(board.element).width)
+                        ).toString() + "px";
+                        this.ref.detectChanges();
+                        zChild[x].css["left"] = (
+                            xPosition({
+                                target: numberParse(zChild[x].css["width"]),
+                                contain: numberParse(getComputedStyle(board.element).width)
+                            })
+                        ).toString() + "px";
+                    });
+                this.ref.detectChanges();
+                //
+                //serveral targets
+                let mobileShrinkFonts = finalZChildKeys
+                    .reduce((acc, x, i) => {
+                        if (zChild[x]?.extras?.appFocusFont?.mobileShrink === "true") {
+                            acc.push(x);
+                        }
+                        return acc;
+                    }, []);
+
+                mobileShrinkFonts
+                    .forEach((x, i) => {
+                        zChild[x].css["font-size"] = (
+                            resize({
+                                default: numberParse(zChild[x].cssDefault["font-size"]),
+                                containActual: numberParse(getComputedStyle(board.element).width),
+                                containDefault: 540,
+                                type: 'nonUniform',
+                                misc: [.052, .06],
+                                mediaQuery: [379, 286, 0]
+                            })
+                        ).toString() + "px";
+                    });
+                this.ref.detectChanges();
+                //
+                let responsiveMeasureTargets = finalZChildKeys
+                    .reduce((acc, x, i) => {
+
+                        if (["ta", "c"].includes(zChild[x].bool)) {
+                            acc.push(zChild[x]);
+                        }
+                        return acc;
+                    }, []);
+                responsiveMeasure({
+                    item: {
+                        target: responsiveMeasureTargets,
+                        prop: [...Array.from(Array(responsiveMeasureTargets.length), () => { return "height"; })]
+                    },
+                    values: [
+                        ...Array.from(Array(responsiveMeasureTargets.length), () => { return [[1190, 163], [770, 303], [495, 343], [391, 385], [305, 426], [216, 487], [175, 650]]; })
+                    ],
+                    measure: {
+                        target: board.element,
+                        prop: "width"
+                    }
+                });
+                this.ref.detectChanges();
+
+                stack({
+                    zChildKeys: finalZChildKeys,
+                    ref: this.ref,
+                    zChild,
+                    spacing: [null, 100, section.stack],
+                    type: 'simpleStack',
+                    heightInclude: [null, 'f', 't']
+                });
+                this.ref.detectChanges();
+
+
+
+
+            }
+            //
+            //position
+            {
+
+                this.positionBoard({ zChild: topLevelZChild, section });
+                // console.log(appTV,ryber[appTV].metadata.board,moving)
+                let newSection = stack({
+                    type: "yPosition",
+                    yPosition: {
+                        zChild: topLevelZChild,
+                        moving: {
+                            top: moving.boardTop,
+                            height: moving.boardHeight
+                        },
+                        ref,
+                        ryber,
+                        appTV,
+                        mediaQuery: "mobile"
+                    }
+                });
+                ryber[appTV].metadata.board.diff = newSection?.diff;
+                ryber[appTV].metadata.board.point = newSection?.point;
+
+
+
+                // position board
+                ryber[appTV].metadata.ngAfterViewInitFinished.next("");
+                // this.positionBoard({zChild:topLevelZChild});
+                //
+            }
+            //
+            //moving
+            {
+            }
+            //
+        }
     }
 
 	// board methods
