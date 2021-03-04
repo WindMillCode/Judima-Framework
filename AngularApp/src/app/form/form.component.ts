@@ -7,7 +7,7 @@ import {
     xPosition, resize, componentBootstrap,
     eventDispatcher, dragElement, stack, xContain, minMaxDelta,
 	objectCopy, responsiveMeasure, flatDeep, zChildText,componentConsole,ryberPerfect,
-	deltaNode
+	deltaNode,_boardDimensions
 } from '../customExports'
 import { environment as env } from '../../environments/environment'
 
@@ -666,6 +666,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 							finalAlign:align
 						})
 
+
+
                         if(ryber.appCO0.metadata.ryber.sectionDefault.app.type === "stack"){
 
 
@@ -712,6 +714,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                             }
                         }
+
+                        console.log(appTV,{...ryber[appTV].metadata.board})
 
                         // so you wont have to find the panel
                         if(ii === env.component?.[appTV.split("C")[0].valueOf()]?.panelView){
@@ -837,6 +841,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         appTV
                     }
                 });
+                ryber[appTV].metadata.board = _boardDimensions({ zChild,section});
                 ryber[appTV].metadata.board.diff = newSection?.diff;
                 ryber[appTV].metadata.board.point = newSection?.point;
 
@@ -862,6 +867,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
             board = ryber.appCO0.metadata.ryber.sectionDefault.app.custom.board
         }
         {
+            //feature
             {
 
 
@@ -962,8 +968,10 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         mediaQuery: "mobile"
                     }
                 });
+                ryber[appTV].metadata.board = _boardDimensions({ zChild,section});
                 ryber[appTV].metadata.board.diff = newSection?.diff;
                 ryber[appTV].metadata.board.point = newSection?.point;
+
 
 
 
@@ -980,30 +988,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         }
     }
 
-	// board methods
-	private _boardDimensions(devObj?:any) {
-		let {zChild,section} = devObj
 
-
-		let result = Object.fromEntries(
-			["top","height","left","width"]
-			.map((x:any,i)=>{
-				return  [x,zChild["&#8353"].css[x]?.match("px") === (false) ?  zChild["&#8353"].css[x] :   getComputedStyle(zChild["&#8353"].element)[x]]
-			})
-		)
-
-		result.xPosition = 			xPosition({
-			target:1262.67 - (section.left *2),
-			contain: numberParse(getComputedStyle(zChild["&#8353"].element).width),
-		})
-		result.section = {...section}
-		// + 						(
-		// 	// numberParse(getComputedStyle(zChild["&#8353"].element).left) +
-		// 	numberParse(getComputedStyle(zChild["&#8353"].element).width)
-		// )
-		return result
-
-	}
 
     private positionBoard(devObj?:any) {
         let {zChild,section}= devObj
@@ -1038,7 +1023,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
         this.ref.detectChanges();
 		// update curent moving
-		ryber[appTV].metadata.board = this._boardDimensions({ zChild,section});
+		ryber[appTV].metadata.board = _boardDimensions({ zChild,section});
 		//
     }
 	//

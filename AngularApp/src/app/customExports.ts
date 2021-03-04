@@ -1198,7 +1198,7 @@ export function stack(
 						numberParse(ryber[target].metadata.board.height) +
                         coordinates.y
 					)
-
+                    console.log({...ryber[target].metadata.board},appTV)
 					leftDiff = ryber[target].metadata.board.xPosition-
                     ryber[appTV].metadata.board.section.left -
                     ryber[appTV].metadata.board.xPosition
@@ -1207,30 +1207,27 @@ export function stack(
                         leftDiff += ryber[appTV].metadata.board.xPosition -
                         ryber[target].metadata.board.xPosition
 
-                        Object.values(zChild)
-                        .slice(2)
-                        .forEach((x:any,i)=>{
-                            if(x.extras?.judima?.formatIgnore !== "true"){
-                                x.css.top = (
-                                    numberParse(x.css.top) +
-                                    topDiff -
-                                    numberParse(zChild["&#8353"].css["top"])
-
-                                ).toString()+"px"
-                            }
-                        })
                     }
+
+                    Object.values(zChild)
+                    .slice(2)
+                    .forEach((x:any,i)=>{
+                        if(x.extras?.judima?.formatIgnore !== "true"){
+                            x.css.top = (
+                                numberParse(x.css.top) +
+                                topDiff -
+                                numberParse(zChild["&#8353"].css["top"])
+
+                            ).toString()+"px"
+                        }
+                    })
 
 					zChild["&#8353"].css["top"] = (
 						topDiff
 					).toString() + "px"
+					ref.detectChanges()
 
                     leftDiff += coordinates.x
-
-
-
-
-					ref.detectChanges()
 					Object.values(zChild)
 					.slice(2)
 					.forEach((x:any,i)=>{
@@ -1618,6 +1615,29 @@ export function componentConsole(devObj?){
 	if(target.includes(this.appTV)){
 		return ()=>{console.log(this.appTV,data)}
 	}
+}
+
+
+//section fn
+export function _boardDimensions(devObj?:any) {
+    let {zChild,section} = devObj
+
+
+    let result = Object.fromEntries(
+        ["top","height","left","width"]
+        .map((x:any,i)=>{
+            return  [x,zChild["&#8353"].css[x]?.match("px") === (false) ?  zChild["&#8353"].css[x] :   getComputedStyle(zChild["&#8353"].element)[x]]
+        })
+    )
+
+    result.xPosition = 			xPosition({
+        target:1262.67 - (section.left *2),
+        contain: numberParse(getComputedStyle(zChild["&#8353"].element).width),
+    })
+    result.section = {...section}
+
+    return result
+
 }
 
 
