@@ -5743,10 +5743,438 @@ let articles_development = [
 		})
 	},
 ]
+let video_development = [
+	...home_development.slice(0,1),
+	{
+		"title": "videos",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				// width:300,
+				delta:{
+					group:[
+
+					]
+				},
+				nest:{
+					"group":[
+						// {
+						// 	name:"article section",
+						// 	type:"regular"
+						// },
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						// width:"20%",
+						opacity:".5",
+						// "max-width":"285px"
+						"background-color":"rgb(176,196,222)"
+					},
+					judima:{
+						moving:{
+							point:"bottom",
+							target:'formCO0',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Videos",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				// "nest":{
+				// 	group:"article section",
+				// 	name:"B1",
+				// 	under:"A1"
+				// },
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+            {
+                "key": "text",
+                "type": "video",
+				"next":"true",
+				"split":9,
+				"text-align":"center",
+            },
+            {
+                "key": "text",
+                "type": "button",
+				value:"Start",
+				"next":"true",
+				"split":3,
+				"text-align":"center",
+            },
+            {
+                "key": "text",
+                "type": "button",
+				value:"Pause",
+				"split":3,
+				"text-align":"center",
+            },
+            {
+                "key": "text",
+                "type": "button",
+				value:"Stop",
+				"split":3,
+				"text-align":"center",
+            },
+
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-video"
+			return x
+		})
+	},
+
+]
+let blog_development = [
+	...home_development.slice(0,1),
+	{
+		"title": "blog title",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				// width:300,
+				delta:{
+					group:[
+
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"blog title",
+							type:"regular"
+						},
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+
+						opacity:".5",
+
+					},
+					judima:{
+						moving:{
+							point:"bottom",
+							target:'formCO0',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				key:"heading container",
+				type:"div",
+				split:9,
+				height:"200",
+				"nest":{
+					group:"blog title",
+					name:"A1"
+				},
+				options:{
+					css:{
+						"background-color":"rgb(0,255,255)",
+						"display":"flex",
+						"flex-direction":"row",
+						"place-content":"flex-start center"
+					}
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Blog",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				"nest":{
+					group:"blog title",
+					name:"B1",
+					under:"A1"
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"font-size":"108px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+            {
+                "key": "text",
+                "type": "div",
+				"next":"true",
+				"split":1,
+				"height":1,
+
+            },
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-blog"
+			return x
+		})
+	},
+	{
+		"title": "blog aside",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				width:200,
+				delta:{
+					group:[
+						{
+							name:"media_card",
+							type:"repeat",
+							by:"5"
+						}
+					]
+				},
+				nest:{
+					"group":[
+
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"25%",
+						opacity:".5",
+						// "background-color":"rgb(0,25,255)",
+
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'formCO1',
+							coordinates:{x:-950,y:200},
+							type:"custom"
+						}
+					},
+				}
+			},
+
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Aside",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				options:{
+					css:{
+						"font-size":"80px",
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+                "key": "image-1",
+                "type": "image",
+                "imageURL":"python.jpg",
+				split:9,
+				height:170,
+				delta:{
+					group:"media_card",
+				},
+				options:{
+					css:{
+						height:"170px",
+						width:"170px"
+					}
+				}
+            },
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-blog"
+			return x
+		})
+	},
+	{
+		"title": "blog forum",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				width:600,
+				delta:{
+					group:[
+						{
+							name:"outerDelta",
+							type:"add_remove_button"
+						}
+					]
+				},
+				nest:{
+					"group":[
+
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"25%",
+						opacity:".5",
+						// "background-color":"rgb(0,25,255)",
+
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'formCO2',
+							coordinates:{x:-450,y:200},
+							type:"custom"
+						}
+					},
+				}
+			},
+
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Forum",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				options:{
+					css:{
+						// height:"200px",
+						"font-size":"108px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+                "key": "counter",
+                "type": "count",
+				value:"1",
+				split:1,
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						"font-size":"40px"
+					}
+				}
+            },
+			{
+                "key": "textbox",
+                "type": "loading",
+				// value:"ENTER TEXT HERE",
+				height:200,
+				split:8,
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						"stroke":"green"
+					}
+				}
+            },
+			{
+                "key": "textbox",
+                "type": "textbox",
+				value:"ENTER TEXT HERE",
+				height:200,
+				split:8,
+				delta:{
+					"group":"outerDelta"
+				},
+				options:{
+					css:{
+						"font-size":"40px",
+					}
+				}
+            },
+			{
+				"key": "add",
+				"type": "button",
+				"value":"Add ",
+				delta:{
+					"group":"outerDelta",
+					"type":"add",
+					"by":"1"
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "remove",
+				"type": "button",
+				"value":"Remove",
+				delta:{
+					"group":"outerDelta",
+					"type":"remove",
+					"by":"1"
+				},
+				"split": "6",
+				"googleSheets": {},
+			}
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-blog-forum"
+			return x
+		})
+	},
+
+]
 let navigation_development = [
 	// ...home_development,
 	// ...about_development,
-	...articles_development
+	// ...articles_development
+	// ...video_development,
+	...blog_development
 ]
 
 let navigation_testing = [...navigation_development]

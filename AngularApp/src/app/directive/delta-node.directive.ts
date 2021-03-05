@@ -172,8 +172,7 @@ export class DeltaNodeDirective {
 											let text = (()=>{
 												if(y[1]?.extras?.appDeltaNode?.type === "increment"){
 													let mySplit = y[1].innerText?.item.split("")
-
-													return (++y[1].extras.appDeltaNode.increment.counter)+mySplit[1]
+													return (++y[1].extras.appDeltaNode.increment.counter)+(mySplit[1] || "")
 												}
 												return y[1].innerText?.item
 											})()
