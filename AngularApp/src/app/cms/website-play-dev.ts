@@ -1520,10 +1520,11 @@ let nesting_and_duplicate_testing =  [
 					},
 					options:{
 						css:{
-							border:"20px dashed rgb(221,161,217)"
+							border:"20px dashed rgb(221,161,217)",
+							"margin-top":"-80px"
 						}
 					},
-					top:-20,
+
 					"left":"800",
 					"split": "2",
 					"height":"150",

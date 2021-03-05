@@ -715,7 +715,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             }
                         }
 
-                        console.log(appTV,{...ryber[appTV].metadata.board})
+                        // console.log(appTV,{...ryber[appTV].metadata.board})
 
                         // so you wont have to find the panel
                         if(ii === env.component?.[appTV.split("C")[0].valueOf()]?.panelView){

@@ -1014,16 +1014,7 @@ export function stack(
                 +
                 (
                     (()=>{
-                        // console.log(
-                        //     x,
-                        //     typeof(devObj.spacing) === 'number' ?
-                        //     devObj.spacing :
-                        //     (
-                        //         devObj.spacing[i] === undefined ?
-                        //         devObj.spacing[devObj.spacing.length-1] :
-                        //         devObj.spacing[i]
-                        //     )
-                        // )
+
                         return typeof(spacing) === 'number' ?
                         spacing :
                         (
@@ -1198,7 +1189,6 @@ export function stack(
 						numberParse(ryber[target].metadata.board.height) +
                         coordinates.y
 					)
-                    console.log({...ryber[target].metadata.board},appTV)
 					leftDiff = ryber[target].metadata.board.xPosition-
                     ryber[appTV].metadata.board.section.left -
                     ryber[appTV].metadata.board.xPosition
