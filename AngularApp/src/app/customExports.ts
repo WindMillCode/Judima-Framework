@@ -1139,13 +1139,15 @@ export function stack(
 				case "right":
 					let topDiff = (
 						numberParse(ryber[target].metadata.board.top) -
-						numberParse(zChild["&#8353"].css["top"])
+						numberParse(zChild["&#8353"].css["top"]) +
+                        coordinates.y
 					)
 					// console.log(ryber[target].metadata.board)
 					let leftDiff =  - ryber[appTV].metadata.board.xPosition +
                     numberParse(ryber[target].metadata.board.width) +
                     ryber[target].metadata.board.diff.left -
-                    ryber[target].metadata.board.xPosition
+                    ryber[target].metadata.board.xPosition +
+                    coordinates.x
                     // console.log(leftDiff)
 					diff = {
 						left:leftDiff,

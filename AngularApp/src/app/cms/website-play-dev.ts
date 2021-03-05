@@ -3731,7 +3731,7 @@ let nesting_and_duplicate_testing =  [
 		})
 	},
 
-]
+].slice(3,4)
 //
 
 //
@@ -4613,9 +4613,9 @@ let component_position_development = [
 
 			},
 			{
-				"key": "newsletter",
+				"key": "blog",
 				type:"text",
-				"value":"Newsletter",
+				"value":"Blog",
 				next:"true",
 				top:-40,
 				left:500
@@ -5138,7 +5138,623 @@ let component_dimension_testing = [
 	...component_position_development
 ]
 //
-website.convertCMS = component_dimension_testing
+let home_development = component_position_development
+let about_development = [
+	...home_development.slice(0,1),
+	{
+		"title": "about",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				// width:500,
+				delta:{
+					group:[
+
+					]
+				},
+				nest:{
+					"group":[
+
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"100%",
+						opacity:".5",
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"bottom",
+							target:'formCO0',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"About",
+				// "split": "3",
+				"left":"700",
+				"text-align":"left",
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
+				"next":"true",
+				"split":9,
+				"text-align":"center"
+            },
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-about"
+			return x
+		})
+	},
+]
+let articles_development = [
+	...home_development.slice(0,1),
+	{
+		"title": "section 1",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				width:300,
+				delta:{
+					group:[
+
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"article section",
+							type:"regular"
+						},
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"20%",
+						opacity:".5",
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"bottom",
+							target:'formCO0',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				key:"container",
+				type:"div",
+				height:1000,
+				split:9,
+				top:0,
+				options:{
+					css:{
+						"background-color":"lightgreen"
+					}
+				},
+				"nest":{
+					group:"article section",
+					name:"A1",
+				},
+			},
+			{
+				key:"helper",
+				type:"div",
+				height:1,
+				split:1,
+				options:{
+					css:{
+						"background-color":"lightgreen"
+					}
+				},
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Section 1",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				"nest":{
+					group:"article section",
+					name:"B1",
+					under:"A1"
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
+				"next":"true",
+				"split":9,
+				"text-align":"center",
+				"nest":{
+					group:"article section",
+					name:"B2",
+					under:"A1"
+				},
+            },
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-articles"
+			return x
+		})
+	},
+	{
+		"title": "header",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				width:650,
+				delta:{
+					group:[
+
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"article section",
+							type:"regular"
+						},
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"20%",
+						opacity:".5",
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'formCO1',
+							coordinates:{x:-670,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				key:"container",
+				type:"div",
+				height:200,
+				split:9,
+				top:0,
+				options:{
+					css:{
+						"background-color":"tomato",
+						display:"flex",
+						"flex-direction": "row",
+						"justify-content":"center",
+						"align-content":"flex-start"
+					}
+				},
+				"nest":{
+					group:"article section",
+					name:"A1",
+				},
+			},
+			{
+				key:"helper",
+				type:"div",
+				height:1,
+				split:1,
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Article Name Here",
+				// "left":"700",
+				"nest":{
+					group:"article section",
+					name:"B1",
+					under:"A1"
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-articles"
+			return x
+		})
+	},
+	{
+		"title": "section 2",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				width:300,
+				delta:{
+					group:[
+
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"article section",
+							type:"regular"
+						},
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"20%",
+						opacity:".5",
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'formCO2',
+							coordinates:{x:-320,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				key:"container",
+				type:"div",
+				height:1000,
+				split:9,
+				top:0,
+				options:{
+					css:{
+						"background-color":"rgb(0,191,255)"
+					}
+				},
+				"nest":{
+					group:"article section",
+					name:"A1",
+				},
+			},
+			{
+				key:"helper",
+				type:"div",
+				height:1,
+				split:1,
+				options:{
+					css:{
+						"background-color":"lightgreen"
+					}
+				},
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Section 2",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				"nest":{
+					group:"article section",
+					name:"B1",
+					under:"A1"
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
+				"next":"true",
+				"split":9,
+				"text-align":"center",
+				"nest":{
+					group:"article section",
+					name:"B2",
+					under:"A1"
+				},
+            },
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-articles-2"
+			return x
+		})
+	},
+	{
+		"title": "section 3",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				width:300,
+				delta:{
+					group:[
+
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"article section",
+							type:"regular"
+						},
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"20%",
+						opacity:".5",
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'formCO1',
+							coordinates:{x:-660,y:200},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				key:"container",
+				type:"div",
+				height:1000,
+				split:9,
+				top:0,
+				options:{
+					css:{
+						"background-color":"rgb(238,130,238)"
+					}
+				},
+				"nest":{
+					group:"article section",
+					name:"A1",
+				},
+			},
+			{
+				key:"helper",
+				type:"div",
+				height:1,
+				split:1,
+				options:{
+					css:{
+						"background-color":"lightgreen"
+					}
+				},
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Section 3",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				"nest":{
+					group:"article section",
+					name:"B1",
+					under:"A1"
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
+				"next":"true",
+				"split":9,
+				"text-align":"center",
+				"nest":{
+					group:"article section",
+					name:"B2",
+					under:"A1"
+				},
+            },
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-articles-3"
+			return x
+		})
+	},
+	{
+		"title": "section 4",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				width:300,
+				delta:{
+					group:[
+
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"article section",
+							type:"regular"
+						},
+					],
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"20%",
+						opacity:".5",
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'formCO4',
+							coordinates:{x:-660,y:200},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				key:"container",
+				type:"div",
+				height:1000,
+				split:9,
+				top:0,
+				options:{
+					css:{
+						"background-color":"rgb(244,164,96)"
+					}
+				},
+				"nest":{
+					group:"article section",
+					name:"A1",
+				},
+			},
+			{
+				key:"helper",
+				type:"div",
+				height:1,
+				split:1,
+				options:{
+					css:{
+						"background-color":"lightgreen"
+					}
+				},
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Section 4",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				"nest":{
+					group:"article section",
+					name:"B1",
+					under:"A1"
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
+				"next":"true",
+				"split":9,
+				"text-align":"center",
+				"nest":{
+					group:"article section",
+					name:"B2",
+					under:"A1"
+				},
+            },
+
+		] .map((x:any,i)=>{
+			x.key += "-navigation-articles-3"
+			return x
+		})
+	},
+]
+let navigation_development = [
+	// ...home_development,
+	// ...about_development,
+	...articles_development
+]
+
+let navigation_testing = [...navigation_development]
+website.convertCMS = navigation_testing
+
+
+
+
 
 
 export default website
