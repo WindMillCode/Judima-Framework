@@ -131,6 +131,9 @@ export class AppComponent implements OnInit, OnDestroy {
 						},
 
                     }
+                    co.metadata.navigation ={
+                        groups:{},
+                    }
 					co.metadata.nest= {
 						groups:{}
 					}

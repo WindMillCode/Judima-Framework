@@ -54,13 +54,9 @@ export class DeltaNodeDirective {
 					.pipe(first())
 					.subscribe((result) => {
 
-
-
 						this.zChildren = ryber[co].metadata.zChildren
 						this.templateMyElements = ryber[co].metadata.templateMyElements
 						this.ref =ryber[co].metadata.ref
-
-
 
 						// gathering all the deltaGroups in the component
 						this.extras.group

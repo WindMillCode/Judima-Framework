@@ -67,22 +67,21 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
     }
 
+
     ngOnInit() {
         this.extras = this.googleMaps
-        console.log(this.extras)
+
         if (this.extras?.confirm === 'true') {
+            let {ryber,extras,zChildren,subscriptions} = this
+            let {co} = extras
 
-
-            let mainSubscription = combineLatest([
-                env.googleMaps.scriptLoaded.subject,
-                this.ryber[this.extras.co.valueOf()].metadata.zChildrenSubject
-            ])
+            let mainSubscription =ryber[co].metadata.zChildrenSubject
             .subscribe((result) => {
 
-                this.zChildren = this.ryber[this.extras.co.valueOf()].metadata.zChildren
+                this.zChildren = zChildren = ryber[co].metadata.zChildren
 
             })
-            this.subscriptions.push(mainSubscription)
+            subscriptions.push(mainSubscription)
 
         }
     }

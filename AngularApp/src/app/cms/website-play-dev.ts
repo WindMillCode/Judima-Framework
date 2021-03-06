@@ -4571,7 +4571,7 @@ let component_position_development = [
 							type:"direct_link"
 						},
 						{
-							name:"video",
+							name:"videos",
 							type:"direct_link"
 						},
 						{
@@ -4616,24 +4616,39 @@ let component_position_development = [
 				"key": "home",
 				type:"text",
 				"value":"Home",
-
+				navigation:{
+					group:"home",
+					type:"direct_link"
+				}
 			},
 			{
 				"key": "about",
 				type:"text",
 				"value":"About",
+				navigation:{
+					group:"about",
+					type:"direct_link"
+				}
 
 			},
 			{
 				"key": "articles",
 				type:"text",
 				"value":"Articles",
+				navigation:{
+					group:"articles",
+					type:"direct_link"
+				}
 
 			},
 			{
 				"key": "videos",
 				type:"text",
 				"value":"Videos",
+				navigation:{
+					group:"videos",
+					type:"direct_link"
+				}
 
 			},
 			{
@@ -4642,7 +4657,11 @@ let component_position_development = [
 				"value":"Blog",
 				next:"true",
 				top:-40,
-				left:500
+				left:500,
+				navigation:{
+					group:"blog",
+					type:"direct_link"
+				}
 			},
 			{
 				"key": "guides",

@@ -126,7 +126,8 @@ export class RyberService {
             let appNavigation ={
                 confirm: navigation?.group === undefined ? "false":"true",
                 co,
-                ...navigation
+                ...navigation,
+                zSymbolNeeded:"true",
             }
 			//
 
