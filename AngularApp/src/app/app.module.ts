@@ -24,6 +24,7 @@ import { DeltaNodeDirective } from './directive/delta-node.directive';
 import { GsapCursorDirective } from './directive/gsap-cursor.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SectionDirective } from './directive/section.directive';
+import { NavigationDirective } from './directive/navigation.directive';
 
 let providers = []
 if(env.testingAcct.confirm === "true"){
@@ -48,6 +49,7 @@ if(env.testingAcct.confirm === "true"){
     DeltaNodeDirective,
     GsapCursorDirective,
     SectionDirective,
+    NavigationDirective,
     // FormControlDirective,
 
   ],

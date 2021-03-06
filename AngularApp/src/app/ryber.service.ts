@@ -17,10 +17,8 @@ export class RyberService {
     private renderer2:Renderer2
 	public ref:any
     constructor(
-        // private router:Router
         public http: HttpClient,
         private renderer2Factory: RendererFactory2,
-		// public ref:any
     ) {
 
         //start renderer2
@@ -42,12 +40,9 @@ export class RyberService {
             options?: any
         }): any {
 
-            let { co } = devObj
-
-
-            let { mf } = devObj
-            let { appSection,gsapCursor,webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nest,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
-            let { left, top, height, width, split, next } = devObj.mf
+            let { co,mf } = devObj
+            let { navigation,appSection,gsapCursor,webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nest,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
+            let { left, top, height, width, split, next } = mf
 			let component = { left, top, height, width, split, next }
 
 
@@ -128,6 +123,11 @@ export class RyberService {
 				co,
 				...latch,
 			}
+            let appNavigation ={
+                confirm: navigation?.group === undefined ? "false":"true",
+                co,
+                ...navigation
+            }
 			//
 
             let symbol: any = ""
@@ -182,6 +182,10 @@ export class RyberService {
 							...appNest,
 							confirm:"true"
 						},
+                        appNavigation:{
+                            type:"body",
+                            ...appNavigation
+                        }
                     }
                 })
             }
@@ -504,6 +508,7 @@ export class RyberService {
                             printGroup,
                             type: printGroupType
 						},
+                        appNavigation,
 						appDeltaNode,
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",

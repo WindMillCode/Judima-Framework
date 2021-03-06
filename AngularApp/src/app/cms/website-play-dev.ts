@@ -4556,6 +4556,30 @@ let component_position_development = [
 				nest:{
 
 				},
+				navigation:{
+					"group":[
+						{
+							name:"home",
+							type:"direct_link"
+						},
+						{
+							name:"about",
+							type:"direct_link"
+						},
+						{
+							name:"articles",
+							type:"direct_link"
+						},
+						{
+							name:"video",
+							type:"direct_link"
+						},
+						{
+							name:"blog",
+							type:"direct_link"
+						},
+					]
+				},
 				"googleSheets": {},
 				options:{
 					css:{
@@ -6104,7 +6128,7 @@ let blog_development = [
 					}
 				}
             },
-			{
+	{
                 "key": "textbox",
                 "type": "loading",
 				// value:"ENTER TEXT HERE",
