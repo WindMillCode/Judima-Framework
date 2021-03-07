@@ -6,6 +6,7 @@ import { ryberUpdate,ryberUpdateFactory,deltaNode, eventDispatcher, numberParse,
 import { catchError, delay,first,repeat,map } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { S_IXGRP } from 'constants';
 
 
 @Directive({
@@ -30,8 +31,6 @@ export class DeltaNodeDirective {
 	) { }
 
 
-
-
 	ngOnInit() {
 		this.extras = this.deltaNode
 		if (this.extras?.confirm === 'true') {
@@ -39,15 +38,14 @@ export class DeltaNodeDirective {
 			// command is setup only from the body this is where you can decide which elements have certain controls
 			if(this.extras.type === "body"){
 
-				let {ryber} = this
+
+				let {ryber,extras,subscriptions} = this
 				let rUD = ryberUpdateFactory({ryber})
 				let {co} = this.extras
 				let {groups} = this.groups =  ryber[co].metadata.deltaNode
 				let {deltaNode} = ryber[co].metadata
 
-
-
-				this.subscriptions.push(
+				subscriptions.push(
 					combineLatest([
 						ryber[co].metadata.zChildrenSubject
 					])
@@ -73,9 +71,23 @@ export class DeltaNodeDirective {
 
 							}
 							if(x.type === "repeat"){
-								groups[x.name].repeat = {
-									by:x.by
+								// should be initalized once
+									// navigation might make this repeat
+								if(x.complete === "true"){
+									groups[x.name].repeat = {
+										by:0
+									}
 								}
+								//
+
+								//
+								else{
+									groups[x.name].repeat = {
+										by:x.by
+									}
+									x.complete ="true"
+								}
+								// 
 							}
 						})
 						//
@@ -398,7 +410,6 @@ export class DeltaNodeDirective {
 
 			}
 			//
-
 
 		}
 	}

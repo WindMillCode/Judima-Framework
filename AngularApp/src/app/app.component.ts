@@ -235,7 +235,7 @@ export class AppComponent implements OnInit, OnDestroy {
         ) {
 
 
-            
+
             // window.onload  sometimes the elements dont resize prorply, dispatch when the window is fully loaded
             eventDispatcher({
                 element: window,

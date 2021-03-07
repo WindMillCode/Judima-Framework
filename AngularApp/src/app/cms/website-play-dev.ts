@@ -5921,9 +5921,7 @@ let blog_development = [
 				// height:1700,
 				// width:300,
 				delta:{
-					group:[
 
-					]
 				},
 				nest:{
 					"group":[

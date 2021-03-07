@@ -59,12 +59,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 				let formatZChild = this._formatZChildInit()
                 let latchZChild
                 let staticZKeys = this.staticZKeysGen(zChild)
-                if(env.component.form.zChild.includes(ii)){
-                    console.log("zChild for " +this.appTV , zChild);
-				}
-                if(env.component.form.topLevelZChild.includes(ii)){
-                    console.log("topLevel zChild for " +this.appTV ,topLevelZChild);
-				}
+
 
 
                 // drags elements for you
@@ -353,9 +348,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //
 
                 //latch setup
-                let latchEvent = combineLatest([
-                        this.ryber[this.appTV].metadata.latch.updateZChild,
-                    ])
+                let latchEvent =
+                    this.ryber[this.appTV].metadata.latch.updateZChild
                     .subscribe((result)=>{
 
                         //fix the component object before continuing
@@ -386,36 +380,36 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 				//
 
 				//deltaNode setup
-                let deltaNodeEvent = combineLatest([
-						ryber[appTV].metadata.deltaNode.updateZChild
-					])
-                    .subscribe((result)=>{
-                        //fix the component object before continuing
-                        let co = ryber[appTV]
-						ryberPerfect({co,exclude:["cssDefault"]});
-						//
+                let deltaNodeEvent =ryber[appTV].metadata.deltaNode.updateZChild
+                .subscribe((result)=>{
+                    //fix the component object before continuing
+                    let co = ryber[appTV]
+                    ryberPerfect({co,exclude:["cssDefault"]});
+                    //
 
-						this.ref.detectChanges()
-                        zChild = this.zChildInit()
-                        topLevelZChild = this._topLevelZChildInit()
-                        latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
+                    this.ref.detectChanges()
+                    zChild = this.zChildInit()
+                    topLevelZChild = this._topLevelZChildInit()
+                    latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
 
-                        this.directivesSendData({
-                            directivesZChild:zChild,
-							templateMyElements:this.templateMyElements
-                        })
-
-						// dynnamic element management bootstrap
-						this._deltaNodeBootstrap({zChild});
-						this.ryber[this.appTV].metadata.deltaNode.component.confirm = "true"
-						//
-
-
-                        eventDispatcher({
-                            event:'resize',
-                            element:window
-                        })
+                    this.directivesSendData({
+                        directivesZChild:zChild,
+                        templateMyElements:this.templateMyElements
                     })
+
+                    // dynnamic element management bootstrap
+                    this._deltaNodeBootstrap({zChild});
+
+                    console.log(zChild)
+                    this.ryber[this.appTV].metadata.deltaNode.component.confirm = "true"
+                    //
+
+
+                    eventDispatcher({
+                        event:'resize',
+                        element:window
+                    })
+                })
 
 				//
 				let finalZChildKeys =[
@@ -679,7 +673,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     })
 
 
-
                     if(ryber.appCO0.metadata.ryber.sectionDefault.app.type === "stack"){
 
 
@@ -727,8 +720,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         }
                     }
 
-                    // console.log(appTV,{...ryber[appTV].metadata.board})
-
                     // so you wont have to find the panel
                     if(ii === env.component?.[appTV.split("C")[0].valueOf()]?.panelView){
                         this.currentScroll(zChild)
@@ -755,8 +746,18 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
                 })
-                subscriptions.push(latchEvent,deltaNodeEvent,mainResizeEvent)
+                subscriptions.push(latchEvent,deltaNodeEvent,mainResizeEvent);
 
+                // zChild inquiry
+                Object.entries({zChild,topLevelZChild})
+                .forEach((x:any,i)=>{
+                    let key = x[0]
+                    let val = x[1]
+                    if(env.component.form[key].includes(ii)){
+                        console.log(key +" for " +appTV , val );
+                    }
+                })
+                //
         })
         //
 
