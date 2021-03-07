@@ -5,7 +5,7 @@ import { eventDispatcher, esInit, coInit } from './customExports'
 import { catchError, take, timeout, debounceTime, tap, first,delay } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
 import { environment as env} from 'src/environments/environment';
-import website from './website';
+import { Router, ActivatedRoute, ParamMap,RouterEvent } from '@angular/router';
 
 
 
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private ref: ChangeDetectorRef,
         private renderer2: Renderer2,
         private http: HttpClient,
-        // private route: ActivatedRoute,
+        private route: ActivatedRoute,
     ) { }
 
     title = 'Judima';
@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (env.lifecycleHooks) console.log('app ngOnInit fires on mount');
-        let {ryber,subscriptions} = this
+        let {ryber,route,subscriptions} = this
 		this.ryber.ref = (()=>{
 			return this.ref
 		})()
@@ -160,10 +160,25 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // console.log(this.ryber)
 
+
+
+
+        if (
+            window.name !== '/' &&
+            window.name !== '/home'
+        ) {
+
+
+            window.name = '/home'
+
+
+        }
+
+
         if (this.ryber.appReloaded === 'true') {
 
 
-            this.ryber.appCurrentNav = "/blog"
+            this.ryber.appCurrentNav = window.name
 
 
         }
@@ -191,21 +206,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
             // async the navigation
-            if (
-                Object.values(ryber.appViewNavigation.routes)
-                .reduce((acc,x:any,i)=>{
-                    return acc + x.size
-                },0) ===ryber.appViewNavigation.routeLengths[ryber.appCurrentNav]
-            ) {
+            if (['/home', '/'].includes(this.ryber.appCurrentNav)) {
 
 
 
                 this.routeDispatch({
-                    arr: Array.from(ryber.appViewNavigation.routes[ryber.appCurrentNav]).sort(),
+                    arr: [...this.ryber["formCO"]].sort(),
                 })
 
 
-                console.log(ryber.appViewNavigation)
+
             }
             //
 
@@ -216,7 +226,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
         // console.log(location.pathname)
-
+		// console.log(this.ryber)
 	}
 
 

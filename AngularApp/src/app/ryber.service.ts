@@ -1666,6 +1666,17 @@ export class RyberService {
             convertCMS
             .map((x, i) => {
 
+                // navigation setup
+                    // if the navigation object doesnt exist you must provide for a default in the case of SPA
+                if(["body","new"].includes(x.metafields[0].type)){
+                    let route = "/"+x.metafields[0]?.navigation?.name
+                    if(this.appViewNavigation.routeLengths[route] === undefined){
+                        this.appViewNavigation.routeLengths[route] = 0
+                    }
+                    this.appViewNavigation.routeLengths[route]+= 1
+                }
+                //
+
                 // tracking different components
                 let mySlug = x.type_slug.split("s")[0]
                 if (track[mySlug + 'CO'.valueOf()] === undefined) {
@@ -1779,6 +1790,25 @@ export class RyberService {
     appSubscriptionArray: Subscription[] = []
     appViewComplete: Subject<any> = new Subject<any>()
     appViewCompleteArray: Array<any> = []
+    appViewNavigation ={
+        routerMatcher:(devObj)=>{
+
+            let {item} = devObj
+            let route = "/"+this[item].quantity[1][0].extras[0][0]?.appNavigation?.name
+
+            // start the target components for the route
+            if(this.appViewNavigation.routes[route] === undefined){
+                this.appViewNavigation.routes[route] = new Set()
+            }
+            this.appViewNavigation.routes[route].add(item)
+            //
+
+            
+            return route === this.appCurrentNav
+        },
+        routes:{},
+        routeLengths:{}
+    }
     appEventListener: Function = (a, event = null) => {
         if (typeof a === "function") {
 

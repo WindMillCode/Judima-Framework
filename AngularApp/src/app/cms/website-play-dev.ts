@@ -1,3 +1,5 @@
+import {objectCopy} from '../customExports'
+
 let website:any = {}
 let beforeItems  = [{
 	"key": "before-text",
@@ -4578,7 +4580,8 @@ let component_position_development = [
 							name:"blog",
 							type:"direct_link"
 						},
-					]
+					],
+					name:"home"
 				},
 				"googleSheets": {},
 				options:{
@@ -5182,8 +5185,10 @@ let component_dimension_testing = [
 ]
 //
 let home_development = component_position_development
+let about_navigation = objectCopy(home_development.slice(0,1)[0])
+about_navigation.metafields[0].navigation.name = "about"
 let about_development = [
-	...home_development.slice(0,1),
+	about_navigation,
 	{
 		"title": "about",
 		"type_slug": "forms",
@@ -5254,8 +5259,10 @@ let about_development = [
 		})
 	},
 ]
+let articles_navigation = objectCopy(home_development.slice(0,1)[0])
+articles_navigation.metafields[0].navigation.name = "articles"
 let articles_development = [
-	...home_development.slice(0,1),
+	articles_navigation,
 	{
 		"title": "section 1",
 		"type_slug": "forms",
@@ -5786,8 +5793,10 @@ let articles_development = [
 		})
 	},
 ]
+let video_navigation = objectCopy(home_development.slice(0,1)[0])
+video_navigation.metafields[0].navigation.name = "videos"
 let video_development = [
-	...home_development.slice(0,1),
+	video_navigation,
 	{
 		"title": "videos",
 		"type_slug": "forms",
@@ -5811,6 +5820,9 @@ let video_development = [
 						// 	type:"regular"
 						// },
 					],
+				},
+				navigation:{
+					name:"videos"
 				},
 				"googleSheets": {},
 				options:{
@@ -5889,8 +5901,10 @@ let video_development = [
 	},
 
 ]
+let blog_navigation = objectCopy(home_development.slice(0,1)[0])
+blog_navigation.metafields[0].navigation.name = "blog"
 let blog_development = [
-	...home_development.slice(0,1),
+	blog_navigation,
 	{
 		"title": "blog title",
 		"type_slug": "forms",
@@ -5914,6 +5928,9 @@ let blog_development = [
 							type:"regular"
 						},
 					],
+				},
+				navigation:{
+					name:"blog"
 				},
 				"googleSheets": {},
 				options:{
@@ -6013,6 +6030,9 @@ let blog_development = [
 
 					],
 				},
+				navigation:{
+					name:"blog"
+				},
 				"googleSheets": {},
 				options:{
 					css:{
@@ -6096,6 +6116,9 @@ let blog_development = [
 					"group":[
 
 					],
+				},
+				navigation:{
+					name:"blog"
 				},
 				"googleSheets": {},
 				options:{
@@ -6216,7 +6239,7 @@ let navigation_development = [
 	// ...home_development,
 	// ...about_development,
 	// ...articles_development
-	// ...video_development,
+	...video_development,
 	...blog_development
 ]
 

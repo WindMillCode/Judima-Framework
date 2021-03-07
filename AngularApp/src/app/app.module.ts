@@ -56,7 +56,7 @@ if(env.testingAcct.confirm === "true"){
   imports: [
     HammerModule,
     BrowserModule,
-    AppRoutingModule,
+    // AppRoutingModule,
     HttpClientModule,
 	MatProgressSpinnerModule,
     AgGridModule.withComponents([FormComponent])

@@ -74,7 +74,9 @@ export class NavigationDirective {
                                 "click"
                             )
                             .subscribe((result:any)=>{
-                                console.log("navigated")
+                                // change the path
+                                ryber.appCurrentNav = "/"+zChildren[y].extras.appNavigation.group
+                                //
                             })
                             subscriptions.push(anchorEvent)
 
