@@ -205,7 +205,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 })
 
 
-                console.log(ryber.appViewNavigation)
+                console.log(ryber.appViewNavigation,ryber)
             }
             //
 

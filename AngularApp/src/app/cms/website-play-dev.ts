@@ -5902,6 +5902,7 @@ let video_development = [
 
 ]
 let blog_navigation = objectCopy(home_development.slice(0,1)[0])
+blog_navigation.title = "blog navigation"
 blog_navigation.metafields[0].navigation.name = "blog"
 let blog_development = [
 	blog_navigation,
@@ -5942,7 +5943,7 @@ let blog_development = [
 					judima:{
 						moving:{
 							point:"bottom",
-							target:'formCO0',
+							target:'blog navigation',
 							coordinates:{x:0,y:0},
 							type:"custom"
 						}
@@ -6044,7 +6045,7 @@ let blog_development = [
 					judima:{
 						moving:{
 							point:"right",
-							target:'formCO1',
+							target:'blog title',
 							coordinates:{x:-950,y:200},
 							type:"custom"
 						}
@@ -6131,7 +6132,7 @@ let blog_development = [
 					judima:{
 						moving:{
 							point:"right",
-							target:'formCO2',
+							target:'blog aside',
 							coordinates:{x:-450,y:200},
 							type:"custom"
 						}

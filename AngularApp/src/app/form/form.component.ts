@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChildren, AfterViewInit, Inject, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy, Renderer2, ElementRef } from '@angular/core';
 import { RyberService } from '../ryber.service';
-import { fromEvent, interval, of, from, Observable, merge, Subject, BehaviorSubject, combineLatest, forkJoin,concat } from 'rxjs';
+import { fromEvent, interval, of, from, Observable, merge, Subject, BehaviorSubject, combineLatest, forkJoin,concat, Subscription } from 'rxjs';
 import { catchError, take, timeout, mapTo, debounceTime, distinctUntilChanged, debounce, first, ignoreElements, tap, delay,withLatestFrom, skipUntil, map, reduce } from 'rxjs/operators';
 import {
     zChildren, getTextWidth, numberParse,
@@ -31,6 +31,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
     @Input() appTV:string | any;
     foo:any= {}
     typesES:string = 'formES'
+    subscriptions: Array<Subscription> = []
 
 
     ngOnInit():void {
@@ -271,7 +272,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 				})
 
-
                 align
                 .forEach((x,i)=>{
                     let gaps =
@@ -311,9 +311,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 })
                 this.ref.detectChanges()
 
-
                 //making sure values are true to the DOM
-
                 staticZKeys
                 .forEach((x,i)=>{
 					if(zChild[x].extras.judima.formatIgnore !== "true"){
@@ -328,7 +326,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 					}
                 })
                 this.ref.detectChanges()
-
                 //
 
                 //init   buttons
@@ -432,16 +429,38 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 					...cmsZKeys
 				]
 
+
+                let resizeEvent =(()=>{
+                    if(ryber.appCO0.metadata.navigation.type === "SPA"){
+                        return (
+                            ryber[ryber['formCO'][ii-1]]?.metadata[this.appTV].movingSubject ||
+                            fromEvent(window,'resize')
+                        )
+                    }
+                    else if(ryber.appCO0.metadata.navigation.type === "full"){
+                        // the starting component
+                        if(ryber.appViewNavigation.routes[ryber.appCurrentNav].size === 1){
+                            return fromEvent(window,'resize')
+                        }
+                        //
+
+                        // get the movingSubject of the component in front
+                        else{
+                            let components = Array.from(ryber.appViewNavigation.routes[ryber.appCurrentNav]).reverse() as Array<string>
+                            return ryber[components[1]].metadata[this.appTV].movingSubject
+                        }
+                        //
+
+                    }
+                })()
                 ryber.appEvents({
                     typesES:this.typesES,
                     event:'resize',
-                    of:(
-                        ryber[ryber['formCO'][ii-1]]?.metadata[this.appTV].movingSubject ||
-                        fromEvent(window,'resize')
-                    )
+                    of:resizeEvent
                     .subscribe((moving)=>{
 
 						// console.log(zChild)
+                        
                         if(moving instanceof Event){
                             moving = {
                                 boardHeight : "0px",
@@ -725,10 +744,20 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
                         //send moving data to the next CO
-                        ryber[appTV].metadata?.[this.ryber['formCO'][ii+1]]?.movingSubject.next?.({
-                            boardTop:zChild["&#8353"].css["top"],
-                            boardHeight:zChild["&#8353"].css["height"]
-                        })
+                        if(ryber.appCO0.metadata.navigation.type === "SPA"){
+                            ryber[appTV].metadata?.[this.ryber['formCO'][ii+1]]?.movingSubject.next?.({
+                                boardTop:zChild["&#8353"].css["top"],
+                                boardHeight:zChild["&#8353"].css["height"]
+                            })
+                        }
+                        else if(ryber.appCO0.metadata.navigation.type === "full"){
+                            let components = Array.from(ryber.appViewNavigation.routes[ryber.appCurrentNav]) as Array<string>
+                            ryber[appTV].metadata?.[components[components.indexOf(appTV)+1]]?.movingSubject.next?.({
+                                boardTop:zChild["&#8353"].css["top"],
+                                boardHeight:zChild["&#8353"].css["height"]
+                            })
+
+                        }
                         //
 
 
@@ -739,7 +768,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
         })
-
         //
 
 		// help app.component.ts trigger and make the website using the FPM for each component

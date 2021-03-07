@@ -152,6 +152,13 @@ export class RyberService {
 					"background-color": background,
 					...options.css
 				}
+                if(this.appCO0.metadata.navigation.type === "full"){
+                    let target = options.judima?.moving?.target
+                    if(target !==undefined){
+                        let map = this.appCO0.metadata.navigation.full.map
+                        options.judima.moving.target  = map[target]
+                    }
+                }
 				let judima = {
 					...options.judima
 				}
@@ -1666,24 +1673,15 @@ export class RyberService {
             convertCMS
             .map((x, i) => {
 
-                // navigation setup
-                    // if the navigation object doesnt exist you must provide for a default in the case of SPA
-                if(["body","new"].includes(x.metafields[0].type)){
-                    let route = "/"+x.metafields[0]?.navigation?.name
-                    if(this.appViewNavigation.routeLengths[route] === undefined){
-                        this.appViewNavigation.routeLengths[route] = 0
-                    }
-                    this.appViewNavigation.routeLengths[route]+= 1
-                }
-                //
+
 
                 // tracking different components
                 let mySlug = x.type_slug.split("s")[0]
-                if (track[mySlug + 'CO'.valueOf()] === undefined) {
+                if (track[mySlug + 'CO'] === undefined) {
                     //co setup
-                    track[mySlug + 'CO'.valueOf()] = 0
-                    this[mySlug + 'CO'.valueOf()] = []
-                    this[mySlug + 'CO$'.valueOf()] = new ReplaySubject<any>(1)
+                    track[mySlug + 'CO'] = 0
+                    this[mySlug + 'CO' ] = []
+                    this[mySlug + 'CO$'] = new ReplaySubject<any>(1)
                     this.appCO0.metadata.CO.push(mySlug + 'CO$'.valueOf())
                     //
 
@@ -1699,6 +1697,18 @@ export class RyberService {
                 let co = mySlug + 'CO' + track[x.type_slug.split("s")[0] + 'CO'.valueOf()] // if a slug starts with s ????? FIXME
                 this[mySlug + 'CO'.valueOf()].push(co)
                 this[mySlug + 'CO$'.valueOf()].next(this[mySlug + 'CO'.valueOf()])
+                //
+
+                // navigation setup
+                    // if the navigation object doesnt exist you must provide for a default in the case of SPA
+                    if(["body","new"].includes(x.metafields[0].type) && this.appCO0.metadata.navigation.type === "full"){
+                        let route = "/"+x.metafields[0]?.navigation?.name
+                        if(this.appViewNavigation.routeLengths[route] === undefined){
+                            this.appViewNavigation.routeLengths[route] = 0
+                        }
+                        this.appViewNavigation.routeLengths[route]+= 1
+                        this.appCO0.metadata.navigation.full.map[x.title] =co
+                    }
                 //
                 let x$ = of(x)
 
@@ -1803,7 +1813,7 @@ export class RyberService {
             this.appViewNavigation.routes[route].add(item)
             //
 
-            
+
             return route === this.appCurrentNav
         },
         routes:{},
@@ -1905,6 +1915,12 @@ export class RyberService {
                             board:null
                         }
                     }
+                }
+            },
+            navigation:{
+                type:"full", //[SPA,FULL],
+                full:{
+                    map:{}
                 }
             },
             webRTC:{
