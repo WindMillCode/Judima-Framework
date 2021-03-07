@@ -23,12 +23,6 @@ export const environment: any = {
 			topLevelZChild:[-1],
             drag:[-1],
         },
-        dialog: {
-            panelView: -1,
-			lifecycleHooks: true,
-            zChildView:-1,
-            zChild:-1
-        },
         app: {}
     },
     submission: {

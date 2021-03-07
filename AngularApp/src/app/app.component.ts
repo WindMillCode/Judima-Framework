@@ -170,8 +170,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.ryber.appViewComplete.subscribe(() => {
 
-            // console.log(ryber.appViewCompleteArray,route)
-
             if (window.name === '') {
 
 
@@ -191,11 +189,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
             // async the navigation
+
             if (
-                Object.values(ryber.appViewNavigation.routes)
-                .reduce((acc,x:any,i)=>{
-                    return acc + x.size
-                },0) ===ryber.appViewNavigation.routeLengths[ryber.appCurrentNav]
+                ryber.appViewNavigation.routes[ryber.appCurrentNav].size ===ryber.appViewNavigation.routeLengths[ryber.appCurrentNav]
             ) {
 
 
@@ -205,7 +201,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 })
 
 
-                console.log(ryber.appViewNavigation,ryber)
+                // console.log(ryber.appViewNavigation.routes)
             }
             //
 
@@ -215,7 +211,6 @@ export class AppComponent implements OnInit, OnDestroy {
         })
 
 
-        // console.log(location.pathname)
 
 	}
 
@@ -229,6 +224,7 @@ export class AppComponent implements OnInit, OnDestroy {
         let { arr } = devObj
         arr = arr.sort()
         this.ryber.appViewCompleteArray = this.ryber.appViewCompleteArray.sort()
+
         if (
             arr
                 .filter((x, i) => {
@@ -239,7 +235,7 @@ export class AppComponent implements OnInit, OnDestroy {
         ) {
 
 
-            // console.log('dispatched')
+            
             // window.onload  sometimes the elements dont resize prorply, dispatch when the window is fully loaded
             eventDispatcher({
                 element: window,

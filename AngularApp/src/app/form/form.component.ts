@@ -35,15 +35,15 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
     ngOnInit():void {
-		if(env.lifecycleHooks) console.log(this.appTV+ 'ngOnInit fires on mount')
+		if(env.component.form.lifecycleHooks) console.log(this.appTV+ 'ngOnInit fires on mount')
 
     }
 
     ngAfterViewInit(): void {
         // indicating where we are in the code
         if(env.inputHandle.options) console.groupEnd()
-        if(env.lifecycleHooks) console.log( this.appTV+ 'ngAfterViewInit fires one remount')
-        let {ryber,appTV,ref,templateMyElements} = this
+        let {ryber,appTV,ref,templateMyElements,subscriptions} = this
+        if(env.component.form.lifecycleHooks) {console.log( appTV+ 'ngAfterViewInit fires one remount')}
 		//
 
         // FPM for each component
@@ -353,10 +353,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //
 
                 //latch setup
-                ryber.appEvents({
-                    typesES:this.typesES,
-                    event:'zChildUpdate',
-                    of:combineLatest([
+                let latchEvent = combineLatest([
                         this.ryber[this.appTV].metadata.latch.updateZChild,
                     ])
                     .subscribe((result)=>{
@@ -385,14 +382,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             element:window
                         })
                     })
-                })
+
 				//
 
 				//deltaNode setup
-				ryber.appEvents({
-                    typesES:this.typesES,
-                    event:'zChildUpdate',
-                    of:combineLatest([
+                let deltaNodeEvent = combineLatest([
 						ryber[appTV].metadata.deltaNode.updateZChild
 					])
                     .subscribe((result)=>{
@@ -422,7 +416,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             element:window
                         })
                     })
-                })
+
 				//
 				let finalZChildKeys =[
 					"&#8353",
@@ -430,7 +424,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 				]
 
 
-                let resizeEvent =(()=>{
+                let mainResizeObservable$ =(()=>{
                     if(ryber.appCO0.metadata.navigation.type === "SPA"){
                         return (
                             ryber[ryber['formCO'][ii-1]]?.metadata[this.appTV].movingSubject ||
@@ -438,334 +432,330 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         )
                     }
                     else if(ryber.appCO0.metadata.navigation.type === "full"){
+                        let components = Array.from(ryber.appViewNavigation.routes[ryber.appCurrentNav]) as Array<string>
+
                         // the starting component
-                        if(ryber.appViewNavigation.routes[ryber.appCurrentNav].size === 1){
+                        if(components[0] === appTV){
                             return fromEvent(window,'resize')
                         }
                         //
 
                         // get the movingSubject of the component in front
                         else{
-                            let components = Array.from(ryber.appViewNavigation.routes[ryber.appCurrentNav]).reverse() as Array<string>
-                            return ryber[components[1]].metadata[this.appTV].movingSubject
+
+                            return ryber[components[components.indexOf(appTV)-1]].metadata[this.appTV].movingSubject
                         }
                         //
 
                     }
                 })()
-                ryber.appEvents({
-                    typesES:this.typesES,
-                    event:'resize',
-                    of:resizeEvent
-                    .subscribe((moving)=>{
+                let mainResizeEvent =mainResizeObservable$
+                .subscribe((moving)=>{
 
-						// console.log(zChild)
-                        
-                        if(moving instanceof Event){
-                            moving = {
-                                boardHeight : "0px",
-                                boardTop : "0px"
-                            }
+                    // console.log(zChild)
+
+                    if(moving instanceof Event){
+                        moving = {
+                            boardHeight : "0px",
+                            boardTop : "0px"
                         }
+                    }
 
 
-						// console.log(this.appTV,moving)
+                    // console.log(this.appTV,moving)
 
-						let {finalKeep,finalSpacing,finalAlign} =((devObj)=>{
-							let {current,groups,component}  =this.ryber[this.appTV].metadata.deltaNode
+                    let {finalKeep,finalSpacing,finalAlign} =((devObj)=>{
+                        let {current,groups,component}  =this.ryber[this.appTV].metadata.deltaNode
 
-							// allowing psuedo directive to fire only when window resize came from deltaNode
-							if(component.confirm === "false"){
-								return devObj
-							}
-							this.ryber[this.appTV].metadata.deltaNode.component.confirm = "false"
+                        // allowing psuedo directive to fire only when window resize came from deltaNode
+                        if(component.confirm === "false"){
+                            return devObj
+                        }
+                        this.ryber[this.appTV].metadata.deltaNode.component.confirm = "false"
 
-							let currentGroup = groups[current?.group]
+                        let currentGroup = groups[current?.group]
 
-							let {finalKeep,finalSpacing,finalAlign} =devObj
-							let {determineKeepGroups,inspectKeep,logicKeep} = deltaNode
-
-
-
-							if(
-								current !== null &&
-								currentGroup.hooks.directive === "add prepare"
-							){
-
-								// set the component hook to "add prepare"
-								if(currentGroup.hooks.component.has("remove prepare")){
-									currentGroup.hooks.component.clear()
-								}
-								currentGroup.hooks.component.add("add prepare")
-								//
-
-								// deterimine new spacing
-									component.keep = {groups:[{items:[],index:[],oneExists:"false"}]}
-									// inspect the keep
-									inspectKeep({
-										zSymbols:"target",
-										component,
-										finalKeep
-									})
-									//
-
-									// determine groups to be duplicated and placed in different parts of keep
-									determineKeepGroups({component})
-									//
-
-
-									// create the logic for the new groups
-									// length = 1 only means it has 0 and needs a new attach
-									// length = 2 means replace both per guidance of mapping
-									// console.log(component)
-									logicKeep({
-										hook:currentGroup.hooks.component,
-										zSymbolsMap:"deltasMap",
-										component,
-										finalKeep,
-										zChild,
-
-									})
-									component.keep.groups.reverse()
-									.forEach((x:any,i)=>{
-										// update the finalKeep and zChildKeys
-										// finalKeep has one less then the others rmbr to add 1
-										let position = x.index[0]  || finalZChildKeys.length
-
-										finalZChildKeys.splice(
-											(position+1),0,
-											...x.newItems
-											.map((y:any,j)=>{
-												return y[0]
-											})
-										)
-										position = x.index[0] || finalKeep.length
-										finalKeep.splice(
-											position,0,
-											...x.newItems
-										)
-										//
-
-									})
-									//
-
-								//
-
-								//align setup
-								finalAlign .map((x:any,i)=>{
-									return x.map((y:any,j)=>{
-										return component.deltasMap[y]
-									})
-									.filter((y:any,j)=>{
-										return y !== undefined
-									})
-								})
-								.filter((x:any,i)=>{
-									return x.length !== 0
-								})
-								.forEach((x:any,i)=>{
-									finalAlign.push(x)
-								})
-								//
-
-
-								// set the component and directive hooks to "add done"
-								currentGroup.hooks.component.delete("add prepare")
-								currentGroup.hooks.directive = "add done"
-								currentGroup.hooks.component.add("add desktop done")
-								currentGroup.hooks.component.add("add mobile done")
-								//
-
-								//
-							}
-
-
-							else if(
-								current !== null &&
-								// !currentGroup.hooks.component.has("remove desktop done") &&
-								currentGroup.hooks.directive === "remove prepare"
-							){
-
-								// set the component hook
-								if(currentGroup.hooks.component.has("add prepare")){
-									currentGroup.hooks.component.clear()
-								}
-								currentGroup.hooks.component.add("remove prepare")
-								//
-
-
-								// deterimine new spacing
-								component.keep = {groups:[{items:[],index:[]}]}
-									// inspect the keep
-
-									inspectKeep({
-										zSymbols:"deltas",
-										component,
-										finalKeep
-									})
-									//
-
-									// determine groups to be removed which are in different pats of the keep
-									determineKeepGroups({
-										component
-									})
-									//
-
-									// remove the logic for the groups
-									logicKeep({
-										hook:currentGroup.hooks.component,
-										zSymbolsMap:"targetMap",
-										component,
-										finalKeep
-									})
-									component.keep.groups.reverse()
-									.forEach((x:any,i)=>{
-										// update the finalKeep and zChildKeys
-										// finalKeep has one less then the others rmbr to add 1
-										// x.index should start where the 0 start but they start between
-											// 0,1 like add, simply subtract x.items.length to get the correct result
-
-										let position = x.index[0]+1  || finalZChildKeys.length
-										finalZChildKeys.splice(
-											(position)-x.items.length,
-											// (position)-x.items.length,
-											x.items.length
-										)
-										position = x.index[0] || finalKeep.length
-										finalKeep.splice(
-											position-x.items.length,
-											x.items.length,
-										)
-										//
-
-									})
-									//
-
-								//
-
-								// align setup
-								finalAlign = finalAlign
-								.filter((x:any,i)=>{
-
-									return x
-									.map((y:any,j)=>{
-										return component.targetMap[y]
-									}).includes(undefined)
-
-
-								})
-
-								//
-
-								// set the component and directive hooks to "remove done"
-								currentGroup.hooks.component.delete("remove prepare")
-								currentGroup.hooks.directive = "remove done"
-								currentGroup.hooks.component.add("remove desktop done")
-								currentGroup.hooks.component.add("remove mobile done")
-								//
-							}
-							// fixes the craziness that is xContain
-							align = finalAlign
-							//
-
-							// console.log(this.ryber[this.appTV].metadata.deltaNode)
-							// console.log(component,currentGroup)
-
-							return{
-								finalKeep,
-								finalSpacing,
-								finalAlign
-							}
+                        let {finalKeep,finalSpacing,finalAlign} =devObj
+                        let {determineKeepGroups,inspectKeep,logicKeep} = deltaNode
 
 
 
-						})({
-							finalKeep:keep,
-							finalSpacing:spacing,
-							finalAlign:align
-						})
+                        if(
+                            current !== null &&
+                            currentGroup.hooks.directive === "add prepare"
+                        ){
 
+                            // set the component hook to "add prepare"
+                            if(currentGroup.hooks.component.has("remove prepare")){
+                                currentGroup.hooks.component.clear()
+                            }
+                            currentGroup.hooks.component.add("add prepare")
+                            //
 
-
-                        if(ryber.appCO0.metadata.ryber.sectionDefault.app.type === "stack"){
-
-
-                            if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.width   ){
-
-                                // element management
-                                this.desktopMediaQuery({zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV});
+                            // deterimine new spacing
+                                component.keep = {groups:[{items:[],index:[],oneExists:"false"}]}
+                                // inspect the keep
+                                inspectKeep({
+                                    zSymbols:"target",
+                                    component,
+                                    finalKeep
+                                })
                                 //
 
-                            }
-
-
-                            else if(    numberParse(getComputedStyle(zChild["&#8353"].element).width) > 0  ){
-
-
-                                //element management
-                                this.mobileMediaQuery({finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV});
+                                // determine groups to be duplicated and placed in different parts of keep
+                                determineKeepGroups({component})
                                 //
 
 
-                            }
+                                // create the logic for the new groups
+                                // length = 1 only means it has 0 and needs a new attach
+                                // length = 2 means replace both per guidance of mapping
+                                // console.log(component)
+                                logicKeep({
+                                    hook:currentGroup.hooks.component,
+                                    zSymbolsMap:"deltasMap",
+                                    component,
+                                    finalKeep,
+                                    zChild,
 
+                                })
+                                component.keep.groups.reverse()
+                                .forEach((x:any,i)=>{
+                                    // update the finalKeep and zChildKeys
+                                    // finalKeep has one less then the others rmbr to add 1
+                                    let position = x.index[0]  || finalZChildKeys.length
 
-                        }
+                                    finalZChildKeys.splice(
+                                        (position+1),0,
+                                        ...x.newItems
+                                        .map((y:any,j)=>{
+                                            return y[0]
+                                        })
+                                    )
+                                    position = x.index[0] || finalKeep.length
+                                    finalKeep.splice(
+                                        position,0,
+                                        ...x.newItems
+                                    )
+                                    //
 
-
-                        else if(ryber.appCO0.metadata.ryber.sectionDefault.app.type === "custom"){
-                            if(  ryber.appCO0.metadata.ryber.sectionDefault.app.width.mediaQuery !=="mobile"   ){
-
-                                // element management
-                                this.desktopMediaQuery({zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV});
+                                })
                                 //
 
-                            }
+                            //
 
-
-                            else if(  ryber.appCO0.metadata.ryber.sectionDefault.app.width.mediaQuery !=="desktop"  ){
-
-
-                                //element management
-                                this.mobileMediaQuery({finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV,sectionType:"custom"});
-                                //
-
-
-                            }
-                        }
-
-                        // console.log(appTV,{...ryber[appTV].metadata.board})
-
-                        // so you wont have to find the panel
-                        if(ii === env.component?.[appTV.split("C")[0].valueOf()]?.panelView){
-                            this.currentScroll(zChild)
-                        }
-                        //
-
-
-                        //send moving data to the next CO
-                        if(ryber.appCO0.metadata.navigation.type === "SPA"){
-                            ryber[appTV].metadata?.[this.ryber['formCO'][ii+1]]?.movingSubject.next?.({
-                                boardTop:zChild["&#8353"].css["top"],
-                                boardHeight:zChild["&#8353"].css["height"]
+                            //align setup
+                            finalAlign .map((x:any,i)=>{
+                                return x.map((y:any,j)=>{
+                                    return component.deltasMap[y]
+                                })
+                                .filter((y:any,j)=>{
+                                    return y !== undefined
+                                })
                             })
+                            .filter((x:any,i)=>{
+                                return x.length !== 0
+                            })
+                            .forEach((x:any,i)=>{
+                                finalAlign.push(x)
+                            })
+                            //
+
+
+                            // set the component and directive hooks to "add done"
+                            currentGroup.hooks.component.delete("add prepare")
+                            currentGroup.hooks.directive = "add done"
+                            currentGroup.hooks.component.add("add desktop done")
+                            currentGroup.hooks.component.add("add mobile done")
+                            //
+
+                            //
                         }
-                        else if(ryber.appCO0.metadata.navigation.type === "full"){
-                            let components = Array.from(ryber.appViewNavigation.routes[ryber.appCurrentNav]) as Array<string>
-                            ryber[appTV].metadata?.[components[components.indexOf(appTV)+1]]?.movingSubject.next?.({
-                                boardTop:zChild["&#8353"].css["top"],
-                                boardHeight:zChild["&#8353"].css["height"]
+
+
+                        else if(
+                            current !== null &&
+                            // !currentGroup.hooks.component.has("remove desktop done") &&
+                            currentGroup.hooks.directive === "remove prepare"
+                        ){
+
+                            // set the component hook
+                            if(currentGroup.hooks.component.has("add prepare")){
+                                currentGroup.hooks.component.clear()
+                            }
+                            currentGroup.hooks.component.add("remove prepare")
+                            //
+
+
+                            // deterimine new spacing
+                            component.keep = {groups:[{items:[],index:[]}]}
+                                // inspect the keep
+
+                                inspectKeep({
+                                    zSymbols:"deltas",
+                                    component,
+                                    finalKeep
+                                })
+                                //
+
+                                // determine groups to be removed which are in different pats of the keep
+                                determineKeepGroups({
+                                    component
+                                })
+                                //
+
+                                // remove the logic for the groups
+                                logicKeep({
+                                    hook:currentGroup.hooks.component,
+                                    zSymbolsMap:"targetMap",
+                                    component,
+                                    finalKeep
+                                })
+                                component.keep.groups.reverse()
+                                .forEach((x:any,i)=>{
+                                    // update the finalKeep and zChildKeys
+                                    // finalKeep has one less then the others rmbr to add 1
+                                    // x.index should start where the 0 start but they start between
+                                        // 0,1 like add, simply subtract x.items.length to get the correct result
+
+                                    let position = x.index[0]+1  || finalZChildKeys.length
+                                    finalZChildKeys.splice(
+                                        (position)-x.items.length,
+                                        // (position)-x.items.length,
+                                        x.items.length
+                                    )
+                                    position = x.index[0] || finalKeep.length
+                                    finalKeep.splice(
+                                        position-x.items.length,
+                                        x.items.length,
+                                    )
+                                    //
+
+                                })
+                                //
+
+                            //
+
+                            // align setup
+                            finalAlign = finalAlign
+                            .filter((x:any,i)=>{
+
+                                return x
+                                .map((y:any,j)=>{
+                                    return component.targetMap[y]
+                                }).includes(undefined)
+
+
                             })
 
+                            //
+
+                            // set the component and directive hooks to "remove done"
+                            currentGroup.hooks.component.delete("remove prepare")
+                            currentGroup.hooks.directive = "remove done"
+                            currentGroup.hooks.component.add("remove desktop done")
+                            currentGroup.hooks.component.add("remove mobile done")
+                            //
                         }
+                        // fixes the craziness that is xContain
+                        align = finalAlign
                         //
 
+                        // console.log(this.ryber[this.appTV].metadata.deltaNode)
+                        // console.log(component,currentGroup)
 
+                        return{
+                            finalKeep,
+                            finalSpacing,
+                            finalAlign
+                        }
+
+
+
+                    })({
+                        finalKeep:keep,
+                        finalSpacing:spacing,
+                        finalAlign:align
                     })
+
+
+
+                    if(ryber.appCO0.metadata.ryber.sectionDefault.app.type === "stack"){
+
+
+                        if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.width   ){
+
+                            // element management
+                            this.desktopMediaQuery({zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV});
+                            //
+
+                        }
+
+
+                        else if(    numberParse(getComputedStyle(zChild["&#8353"].element).width) > 0  ){
+
+
+                            //element management
+                            this.mobileMediaQuery({finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV});
+                            //
+
+
+                        }
+
+
+                    }
+
+
+                    else if(ryber.appCO0.metadata.ryber.sectionDefault.app.type === "custom"){
+                        if(  ryber.appCO0.metadata.ryber.sectionDefault.app.width.mediaQuery !=="mobile"   ){
+
+                            // element management
+                            this.desktopMediaQuery({zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV});
+                            //
+
+                        }
+
+
+                        else if(  ryber.appCO0.metadata.ryber.sectionDefault.app.width.mediaQuery !=="desktop"  ){
+
+
+                            //element management
+                            this.mobileMediaQuery({finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV,sectionType:"custom"});
+                            //
+
+
+                        }
+                    }
+
+                    // console.log(appTV,{...ryber[appTV].metadata.board})
+
+                    // so you wont have to find the panel
+                    if(ii === env.component?.[appTV.split("C")[0].valueOf()]?.panelView){
+                        this.currentScroll(zChild)
+                    }
+                    //
+
+
+                    //send moving data to the next CO
+                    if(ryber.appCO0.metadata.navigation.type === "SPA"){
+                        ryber[appTV].metadata?.[this.ryber['formCO'][ii+1]]?.movingSubject.next?.({
+                            boardTop:zChild["&#8353"].css["top"],
+                            boardHeight:zChild["&#8353"].css["height"]
+                        })
+                    }
+                    else if(ryber.appCO0.metadata.navigation.type === "full"){
+                        let components = Array.from(ryber.appViewNavigation.routes[ryber.appCurrentNav]) as Array<string>
+                        ryber[appTV].metadata?.[components[components.indexOf(appTV)+1]]?.movingSubject.next?.({
+                            boardTop:zChild["&#8353"].css["top"],
+                            boardHeight:zChild["&#8353"].css["height"]
+                        })
+
+                    }
+                    //
+
+
                 })
-
-
-
+                subscriptions.push(latchEvent,deltaNodeEvent,mainResizeEvent)
 
         })
         //
@@ -782,6 +772,30 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
     }
 
+
+    ngOnDestroy(): void {
+        if(env.component.form.lifecycleHooks) console.log(this.appTV+ '  ngOnDestroy fires on dismount')
+        Object
+        .values(this.ryber[this.typesES])
+        .forEach((x:any,i)=>{
+            Object
+            .values(x)
+            .forEach((y:any,j)=>{
+                if(y.unsubscribe !== undefined ){
+                    y.unsubscribe()
+                }
+            })
+        })
+        this.subscriptions
+        .forEach((x: any, i) => {
+            try{
+                x.unsubscribe()
+            }
+            catch(e){}
+
+        })
+        delete this.subscriptions
+    }
 
 
     private desktopMediaQuery(devObj:{zChild: any, keep: any[], finalKeep: any[], finalZChildKeys: any[], finalAlign: any[], section: any, ref: ChangeDetectorRef, align: any[], topLevelZChild: any, moving: any, ryber: RyberService, appTV: any}) {
@@ -1016,8 +1030,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         }
     }
 
-
-
     private positionBoard(devObj?:any) {
         let {zChild,section}= devObj
 		let {ryber,appTV} = this
@@ -1104,22 +1116,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 		}
 
 	}
-
-    ngOnDestroy(): void {
-        if(env.lifecycleHooks) console.log(this.appTV+ '  ngOnDestroy fires on dismount')
-        Object
-        .values(this.ryber[this.typesES])
-        .forEach((x:any,i)=>{
-            Object
-            .values(x)
-            .forEach((y:any,j)=>{
-                if(y.unsubscribe !== undefined ){
-                    y.unsubscribe()
-                }
-            })
-        })
-    }
-
 
     private _topLevelZChildInit (){
         let topLevelZChild = this.zChildInit()

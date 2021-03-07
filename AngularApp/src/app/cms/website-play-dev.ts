@@ -4587,6 +4587,7 @@ let component_position_development = [
 				options:{
 					css:{
 						// width:"125%"
+						"background-color":"rgb(205, 180, 178)"
 					}
 				},
 				appSection:{
@@ -4723,6 +4724,7 @@ let component_position_development = [
 					css:{
 						width:"25%",
 						opacity:".5",
+						// "background-color":"rgb(205, 180, 178)"
 						// "max-width":"285px"
 					},
 					judima:{
@@ -5794,6 +5796,7 @@ let articles_development = [
 	},
 ]
 let video_navigation = objectCopy(home_development.slice(0,1)[0])
+video_navigation.title ="video navigation"
 video_navigation.metafields[0].navigation.name = "videos"
 let video_development = [
 	video_navigation,
@@ -5835,7 +5838,7 @@ let video_development = [
 					judima:{
 						moving:{
 							point:"bottom",
-							target:'formCO0',
+							target:'video navigation',
 							coordinates:{x:0,y:0},
 							type:"custom"
 						}
