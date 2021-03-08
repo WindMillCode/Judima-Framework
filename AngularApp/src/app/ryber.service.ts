@@ -1802,19 +1802,23 @@ export class RyberService {
     appViewCompleteArray: Array<any> = []
     appViewNavigation ={
         routerMatcher:(devObj)=>{
-
-            let {item} = devObj
-            let route = "/"+this[item].quantity[1][0].extras[0][0]?.appNavigation?.name
-
-            // start the target components for the route
-            if(this.appViewNavigation.routes[route] === undefined){
-                this.appViewNavigation.routes[route] = new Set()
+            if(this.appCO0.metadata.navigation.type === "SPA"){
+                return true
             }
-            this.appViewNavigation.routes[route].add(item)
-            //
 
+            else if(this.appCO0.metadata.navigation.type === "full"){
+                let {item} = devObj
+                let route = "/"+this[item].quantity[1][0].extras[0][0]?.appNavigation?.name
 
-            return route === this.appCurrentNav
+                // start the target components for the route
+                if(this.appViewNavigation.routes[route] === undefined){
+                    this.appViewNavigation.routes[route] = new Set()
+                }
+                this.appViewNavigation.routes[route].add(item)
+                //
+
+                return route === this.appCurrentNav
+            }
         },
         routes:{},
         routeLengths:{}
@@ -1918,7 +1922,7 @@ export class RyberService {
                 }
             },
             navigation:{
-                type:"full", //[SPA,FULL],
+                type:"full", //[SPA,full],
                 full:{
                     map:{}
                 }

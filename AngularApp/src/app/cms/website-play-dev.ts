@@ -5918,8 +5918,6 @@ let blog_development = [
 				"key": "Body",
 				"type": "body",
 				"left":147,
-				// height:1700,
-				// width:300,
 				delta:{
 
 				},
@@ -5955,6 +5953,7 @@ let blog_development = [
 				key:"heading container",
 				type:"div",
 				split:9,
+				top:0,
 				height:"200",
 				"nest":{
 					group:"blog title",
@@ -6016,6 +6015,7 @@ let blog_development = [
 				"key": "Body",
 				"type": "body",
 				"left":147,
+				// "top":0,
 				// height:1700,
 				width:200,
 				delta:{

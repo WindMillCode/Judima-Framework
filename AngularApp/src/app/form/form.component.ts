@@ -40,6 +40,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
+
         // indicating where we are in the code
         if(env.inputHandle.options) console.groupEnd()
         let {ryber,appTV,ref,templateMyElements,subscriptions} = this
@@ -86,6 +87,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 })
                 //
 
+
                 /*  format factory
                 so here are 3 options,
                     handle, the framework builds it out for use
@@ -125,15 +127,14 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
 				//grabbing the values how the browser renders them
-                ryber[appTV.valueOf()].metadata.order = ryber[appTV.valueOf()].metadata.order
+                ryber[appTV].metadata.order = ryber[appTV].metadata.order
                 .filter((x:any,i)=>{
 
 					return !(zChild[x]?.extras?.judima?.formatIgnore === "true")
-					// return true
+
 				})
 
-                // console.log(ryber[appTV.valueOf()].metadata.order)
-                ryber[appTV.valueOf()].metadata.order
+                ryber[appTV].metadata.order
                 .forEach((x,i)=>{
                     let defaultClientRect = zChild[x].element.getBoundingClientRect()
                     zChild[x].cssDefault["height"]   = defaultClientRect.height.toString() + "px"
@@ -151,7 +152,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 let align = []
                 let alignCurrent = []
                 let myTotal = 0
-                ryber[appTV.valueOf()].metadata.order
+                ryber[appTV].metadata.order
                 .forEach((x,i)=>{
 
 					let {component} = zChild[x].extras
@@ -304,7 +305,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     })
 
                 })
-                this.ref.detectChanges()
+                ref.detectChanges()
 
                 //making sure values are true to the DOM
                 staticZKeys
@@ -320,11 +321,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 						zChild[x].cssDefault["top"] = zChild[x].css["top"]
 					}
                 })
-                this.ref.detectChanges()
+                ref.detectChanges()
                 //
-
-                //init   buttons
-                // console.log(group)
 
                 //more init
                 let cmsZKeys = ryber[appTV.valueOf()].metadata.order
@@ -399,8 +397,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                     // dynnamic element management bootstrap
                     this._deltaNodeBootstrap({zChild});
-
-                    console.log(zChild)
                     this.ryber[this.appTV].metadata.deltaNode.component.confirm = "true"
                     //
 
@@ -776,6 +772,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         if(env.component.form.lifecycleHooks) console.log(this.appTV+ '  ngOnDestroy fires on dismount')
+        let {ryber,appTV} = this
+        let zChild = ryber[appTV].metadata.zChildren
         Object
         .values(this.ryber[this.typesES])
         .forEach((x:any,i)=>{
@@ -787,6 +785,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 }
             })
         })
+
+        // update the order dynamics are now static to the state of the view
+        ryber[appTV].metadata.order = Object.keys(zChild).slice(2)
+        //
+
         this.subscriptions
         .forEach((x: any, i) => {
             try{
@@ -798,22 +801,22 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         delete this.subscriptions
     }
 
-
     private desktopMediaQuery(devObj:{zChild: any, keep: any[], finalKeep: any[], finalZChildKeys: any[], finalAlign: any[], section: any, ref: ChangeDetectorRef, align: any[], topLevelZChild: any, moving: any, ryber: RyberService, appTV: any}) {
         let {zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV} = devObj
         {
 
             {
+
                 Object
-                    .keys(zChild)
-                    .slice(2)
-                    .forEach((x, i) => {
-                        if (zChild[x].extras.judima.formatIgnore !== "true") {
-                            zChild[x].css["height"] = zChild[x].cssDefault["height"];
-                            zChild[x].css["width"] = zChild[x].cssDefault["width"];
-                            zChild[x].css["font-size"] = zChild[x].cssDefault["font-size"];
-                        }
-                    });
+                .keys(zChild)
+                .slice(2)
+                .forEach((x, i) => {
+                    if (zChild[x].extras.judima.formatIgnore !== "true") {
+                        zChild[x].css["height"] = zChild[x].cssDefault["height"];
+                        zChild[x].css["width"] = zChild[x].cssDefault["width"];
+                        zChild[x].css["font-size"] = zChild[x].cssDefault["font-size"];
+                    }
+                });
 
                 this.ref.detectChanges();
                 //

@@ -118,6 +118,9 @@ export class AppComponent implements OnInit, OnDestroy {
                 coArray,
                 ((devObj) => {
                     let { co } = devObj
+                    co.metadata.judima = {
+             
+                    }
 					co.metadata.board = {}
                     co.metadata.formData = {}
                     co.metadata.refresh = {}
@@ -189,19 +192,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
             // async the navigation
+            if(ryber.appCO0.metadata.navigation.type === "full"){
+                if (
+                    ryber.appViewNavigation.routes[ryber.appCurrentNav].size ===ryber.appViewNavigation.routeLengths[ryber.appCurrentNav]
+                ) {
 
-            if (
-                ryber.appViewNavigation.routes[ryber.appCurrentNav].size ===ryber.appViewNavigation.routeLengths[ryber.appCurrentNav]
-            ) {
 
 
+                    this.routeDispatch({
+                        arr: Array.from(ryber.appViewNavigation.routes[ryber.appCurrentNav]).sort(),
+                    })
 
+
+                    // console.log(ryber.appViewNavigation.routes)
+                }
+            }
+
+            else if(ryber.appCO0.metadata.navigation.type === "SPA"){
                 this.routeDispatch({
-                    arr: Array.from(ryber.appViewNavigation.routes[ryber.appCurrentNav]).sort(),
+                    arr: [...this.ryber["formCO"]].sort(),
                 })
-
-
-                // console.log(ryber.appViewNavigation.routes)
             }
             //
 
