@@ -119,9 +119,15 @@ export class AppComponent implements OnInit, OnDestroy {
                 ((devObj) => {
                     let { co } = devObj
                     co.metadata.judima = {
-                        stack:{
-                            keep:null
-                        }
+                        desktop:{
+                            stack:{
+                                keep:null
+                            },
+                            xContain:{
+                                align:null
+                            }
+                        },
+                        init:"false"
                     }
 					co.metadata.board = {}
                     co.metadata.formData = {}
@@ -169,7 +175,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this.ryber.appReloaded === 'true') {
 
 
-            this.ryber.appCurrentNav = "/home"
+            this.ryber.appCurrentNav = "/blog"
 
 
         }

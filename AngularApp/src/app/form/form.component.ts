@@ -7,7 +7,7 @@ import {
     xPosition, resize, componentBootstrap,
     eventDispatcher, dragElement, stack, xContain, minMaxDelta,
 	objectCopy, responsiveMeasure, flatDeep, zChildText,componentConsole,ryberPerfect,
-	deltaNode,_boardDimensions
+	deltaNode,_boardDimensions,navigationType
 } from '../customExports'
 import { environment as env } from '../../environments/environment'
 
@@ -115,8 +115,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 					...zChild["&#8353"]?.extras?.section,
 				}
 
-
-
                 Object.keys(section)
                 .forEach((x,i)=>{
                     section[x] = +section[x]
@@ -125,203 +123,233 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 section.area =section.left + section.width
 				section.prevLeft = section.left
 
-
-				//grabbing the values how the browser renders them
-                ryber[appTV].metadata.order = ryber[appTV].metadata.order
-                .filter((x:any,i)=>{
-
-					return !(zChild[x]?.extras?.judima?.formatIgnore === "true")
-
-				})
-
-                ryber[appTV].metadata.order
-                .forEach((x,i)=>{
-                    let defaultClientRect = zChild[x].element.getBoundingClientRect()
-                    zChild[x].cssDefault["height"]   = defaultClientRect.height.toString() + "px"
-                    zChild[x].cssDefault["width"]   = defaultClientRect.width.toString() + "px"
-                    zChild[x].cssDefault["left"]   = defaultClientRect.left.toString() + "px"
-                    zChild[x].cssDefault["top"]   = defaultClientRect.top.toString() + "px"
-                    this.ref.detectChanges()
+                // --
+                let keep
+                let keepCurrent
+                let keepLast
+                let align
+                let alignCurrent
+                let myTotal
+                let action:any = navigationType({
+                    type:["full"],
+                    fn:()=>{
+                        if(
+                            ryber.appCO0.metadata.navigation.full.navigated === "true" &&
+                            ryber[appTV].metadata.judima.init === "true"
+                        ){
+                            return "return"
+                        }
+                    },
+                    ryber
                 })
-                //
-
-                //applying end user values
-                let keep = []
-                let keepCurrent = []
-				let keepLast = Object.keys(topLevelZChild).slice(1,2)[0]
-                let align = []
-                let alignCurrent = []
-                let myTotal = 0
-                ryber[appTV].metadata.order
-                .forEach((x,i)=>{
-
-					let {component} = zChild[x].extras
-					Object.keys(component)
-					.forEach((y,j)=>{ // if issues look here
-						let a = component[y]
-						if( !isNaN(a)){
-							component[y] = +(component[y])
-						}
-
-					})
+                if(action.full === "return"){
+                    console.log(ryber[appTV].metadata.judima)
+                    keep = ryber[appTV].metadata.judima.desktop.stack.keep
+                    align = ryber[appTV].metadata.judima.desktop.xContain.align
+                }
 
 
-                    zChild[x].css["height"] = (component.height !== undefined) ?  (component.height).toString() + "px" : zChild[x].cssDefault["height"]
-					zChild[x].css["width"] = (component.width !== undefined) ?  (component.width).toString() + "px" : zChild[x].cssDefault["width"]
-                    zChild[x].css["left"] = (component.left !== undefined) ?  (component.left).toString() + "px" : zChild[x].cssDefault["left"]
-                    zChild[x].css["top"] = (component.top !== undefined) ?  (component.top).toString() + "px" : zChild[x].cssDefault["top"]
-                    if(zChild[x]?.css?.["width"] !== undefined){
-                        if(numberParse(zChild[x].css["width"]) > section.width){
-                            zChild[x].css["width"] = section.width.toString() +"px"
-                        }
-                    }
+                // initalize the component
+                else{
+                    ryber[appTV].metadata.judima.init = "true"
+                    //grabbing the values how the browser renders them
+                    ryber[appTV].metadata.order = ryber[appTV].metadata.order
+                    .filter((x:any,i)=>{
 
-                    //determine width
-					myTotal +=  component.split === undefined ? numberParse(zChild[x].css["width"]) : ((component.split/section.split) *  section.width)
+                        return !(zChild[x]?.extras?.judima?.formatIgnore === "true")
 
-					if(component.split === section.split){
-						zChild[x].css["width"] = component.split === undefined ? zChild[x].css["width"] : (((component.split/section.split) * section.width)).toString() + "px"
-					}
-					else{
-						zChild[x].css["width"] = component.split === undefined ? zChild[x].css["width"] : (((component.split/section.split) * section.width)-section.gap).toString() + "px"
-					}
-
-					keepCurrent.push([x,keepLast])
-					alignCurrent.push(x)
-                    //
-
-
-
-                    if((!["date","ta","i"].includes(zChild[x].bool) ) && component.height === undefined ){
-                        zChild[x].css["height"] = null
-                        this.ref.detectChanges()
-                        zChild[x].css["height"] = zChild[x].element.getBoundingClientRect().height.toString() + "px"
-                        this.ref.detectChanges()
-                    }
-
-
-
-
-					//stacking context
-						// dont use next === true when there is no need for it
-                    if((myTotal  > section.width && i !== Object.keys(topLevelZChild).slice(2).length -1) || (component.next === "true" && i !== Object.keys(topLevelZChild).slice(2).length -1 )){
-                        // console.log('a')
-						myTotal =  numberParse(topLevelZChild[x].css["width"])
-
-                        let a = keepCurrent.pop()
-						keep.push(...keepCurrent)
-                        keepLast = keepCurrent
-                        .reduce((acc,y,j)=>{
-							// console.log(y[0],topLevelZChild[y[0]].css["height"],acc)
-
-                            if(numberParse(topLevelZChild[y[0]].css["height"])   > acc[1]){
-                                acc = [y[0],numberParse(topLevelZChild[y[0]].css["height"])]
-                            }
-                            return acc
-                        },["",0])[0]
-                        keepCurrent = [[a[0],keepLast]]
-                        let b = alignCurrent.pop()
-                        align.push(alignCurrent)
-                        alignCurrent = [b]
-                    }
-
-                    else if( (myTotal  < section.width  && i === Object.keys(topLevelZChild).slice(2).length -1) && ( component.next !== "true"  )  ){
-
-                        // console.log('b')
-                        myTotal =   numberParse(topLevelZChild[x].css["width"])
-                        keep.push(...keepCurrent)
-                        keepLast = keepCurrent
-                        .reduce((acc,y,j)=>{
-                            return numberParse(topLevelZChild[y[0]].css["height"]) > acc[1] ?
-                            [y[0],numberParse(topLevelZChild[y[0]].css["height"])] :
-                            acc
-                        },["",0])[0]
-                        keepCurrent = []
-                        align.push(alignCurrent)
-                        alignCurrent = []
-                    }
-
-                    else if( (i === Object.keys(topLevelZChild).slice(2).length -1) || (component.next === "true" )){
-                        // console.log('c')
-                        myTotal  =  numberParse(topLevelZChild[x].css["width"])
-                        let a = keepCurrent.pop()
-                        keep.push(...keepCurrent)
-                        keepLast = keepCurrent
-                        .reduce((acc,y,j)=>{
-                            return numberParse(topLevelZChild[y[0]].css["height"]) > acc[1] ?
-                            [y[0],numberParse(topLevelZChild[y[0]].css["height"])] :
-                            acc
-                        },["",0])[0]
-                        // console.log(keepLast)
-                        keepCurrent = [[a[0],keepLast]]
-                        keep.push(...keepCurrent)
-                        let b = alignCurrent.pop()
-                        align.push(alignCurrent)
-                        alignCurrent = [b]
-                        align.push(alignCurrent)
-					}
-
-
-
-                    //
-
-
-				})
-
-                align
-                .forEach((x,i)=>{
-                    let gaps =
-                        ((section.width) -
-                        x.reduce((acc,y,j)=>{
-                            acc += numberParse(zChild[y].css["width"])
-                            return acc
-                        },0) ) /  ( x.length-1 )
-                    let gapType = x.reduce((acc,y,j)=>{
-                            acc += numberParse(zChild[y].css["width"]) + (
-                                zChild[y].extras?.component?.split === undefined || zChild[y].extras?.component?.split === 6 ? 0: section.gap
-                            )
-                            return acc
-                        },0)
-                    x
-                    .forEach((y,j)=>{
-                        //determine left
-                        if(zChild[y].extras?.component?.left !== undefined){
-                            return
-                        }
-                        if(j === 0){
-                            zChild[y].css["left"] = section.left + "px"
-                            // console.log(zChild[y].css["left"])
-                        }
-                        else{
-
-                            zChild[y].css["left"] = (
-                                numberParse(   zChild[x[j-1]].css["left"]  ) +
-                                numberParse(   zChild[x[j-1]].css["width"]  ) +
-                                // section.gap
-                                (gapType >= section.width -300 ?gaps : section.gap)
-                            ).toString() + "px"
-                        }
-                        //
                     })
 
-                })
-                ref.detectChanges()
+                    ryber[appTV].metadata.order
+                    .forEach((x,i)=>{
+                        let defaultClientRect = zChild[x].element.getBoundingClientRect()
+                        zChild[x].cssDefault["height"]   = defaultClientRect.height.toString() + "px"
+                        zChild[x].cssDefault["width"]   = defaultClientRect.width.toString() + "px"
+                        zChild[x].cssDefault["left"]   = defaultClientRect.left.toString() + "px"
+                        zChild[x].cssDefault["top"]   = defaultClientRect.top.toString() + "px"
+                        this.ref.detectChanges()
+                    })
+                    //
 
-                //making sure values are true to the DOM
-                staticZKeys
-                .forEach((x,i)=>{
-					if(zChild[x].extras.judima.formatIgnore !== "true"){
-						if(!["img"].includes(zChild[x].bool)){
-							zChild[x].css["height"] = (zChild[x].element.getBoundingClientRect().height).toString() + "px"
-						}
-						zChild[x].css["width"] = (zChild[x].element.getBoundingClientRect().width).toString() + "px"
-						zChild[x].cssDefault["height"] = zChild[x].css["height"]
-						zChild[x].cssDefault["width"] = zChild[x].css["width"]
-						zChild[x].cssDefault["left"] = zChild[x].css["left"]
-						zChild[x].cssDefault["top"] = zChild[x].css["top"]
-					}
-                })
-                ref.detectChanges()
+                    //applying end user values
+                    keep = []
+                    keepCurrent = []
+                    keepLast = Object.keys(topLevelZChild).slice(1,2)[0]
+                    align = []
+                    alignCurrent = []
+                    myTotal = 0
+                    ryber[appTV].metadata.order
+                    .forEach((x,i)=>{
+
+                        let {component} = zChild[x].extras
+                        Object.keys(component)
+                        .forEach((y,j)=>{ // if issues look here
+                            let a = component[y]
+                            if( !isNaN(a)){
+                                component[y] = +(component[y])
+                            }
+
+                        })
+
+
+                        zChild[x].css["height"] = (component.height !== undefined) ?  (component.height).toString() + "px" : zChild[x].cssDefault["height"]
+                        zChild[x].css["width"] = (component.width !== undefined) ?  (component.width).toString() + "px" : zChild[x].cssDefault["width"]
+                        zChild[x].css["left"] = (component.left !== undefined) ?  (component.left).toString() + "px" : zChild[x].cssDefault["left"]
+                        zChild[x].css["top"] = (component.top !== undefined) ?  (component.top).toString() + "px" : zChild[x].cssDefault["top"]
+                        if(zChild[x]?.css?.["width"] !== undefined){
+                            if(numberParse(zChild[x].css["width"]) > section.width){
+                                zChild[x].css["width"] = section.width.toString() +"px"
+                            }
+                        }
+
+                        //determine width
+                        myTotal +=  component.split === undefined ? numberParse(zChild[x].css["width"]) : ((component.split/section.split) *  section.width)
+
+                        if(component.split === section.split){
+                            zChild[x].css["width"] = component.split === undefined ? zChild[x].css["width"] : (((component.split/section.split) * section.width)).toString() + "px"
+                        }
+                        else{
+                            zChild[x].css["width"] = component.split === undefined ? zChild[x].css["width"] : (((component.split/section.split) * section.width)-section.gap).toString() + "px"
+                        }
+
+                        keepCurrent.push([x,keepLast])
+                        alignCurrent.push(x)
+                        //
+
+
+
+                        if((!["date","ta","i"].includes(zChild[x].bool) ) && component.height === undefined ){
+                            zChild[x].css["height"] = null
+                            this.ref.detectChanges()
+                            zChild[x].css["height"] = zChild[x].element.getBoundingClientRect().height.toString() + "px"
+                            this.ref.detectChanges()
+                        }
+
+
+
+
+                        //stacking context
+                            // dont use next === true when there is no need for it
+                        if((myTotal  > section.width && i !== Object.keys(topLevelZChild).slice(2).length -1) || (component.next === "true" && i !== Object.keys(topLevelZChild).slice(2).length -1 )){
+                            // console.log('a')
+                            myTotal =  numberParse(topLevelZChild[x].css["width"])
+
+                            let a = keepCurrent.pop()
+                            keep.push(...keepCurrent)
+                            keepLast = keepCurrent
+                            .reduce((acc,y,j)=>{
+                                // console.log(y[0],topLevelZChild[y[0]].css["height"],acc)
+
+                                if(numberParse(topLevelZChild[y[0]].css["height"])   > acc[1]){
+                                    acc = [y[0],numberParse(topLevelZChild[y[0]].css["height"])]
+                                }
+                                return acc
+                            },["",0])[0]
+                            keepCurrent = [[a[0],keepLast]]
+                            let b = alignCurrent.pop()
+                            align.push(alignCurrent)
+                            alignCurrent = [b]
+                        }
+
+                        else if( (myTotal  < section.width  && i === Object.keys(topLevelZChild).slice(2).length -1) && ( component.next !== "true"  )  ){
+
+                            // console.log('b')
+                            myTotal =   numberParse(topLevelZChild[x].css["width"])
+                            keep.push(...keepCurrent)
+                            keepLast = keepCurrent
+                            .reduce((acc,y,j)=>{
+                                return numberParse(topLevelZChild[y[0]].css["height"]) > acc[1] ?
+                                [y[0],numberParse(topLevelZChild[y[0]].css["height"])] :
+                                acc
+                            },["",0])[0]
+                            keepCurrent = []
+                            align.push(alignCurrent)
+                            alignCurrent = []
+                        }
+
+                        else if( (i === Object.keys(topLevelZChild).slice(2).length -1) || (component.next === "true" )){
+                            // console.log('c')
+                            myTotal  =  numberParse(topLevelZChild[x].css["width"])
+                            let a = keepCurrent.pop()
+                            keep.push(...keepCurrent)
+                            keepLast = keepCurrent
+                            .reduce((acc,y,j)=>{
+                                return numberParse(topLevelZChild[y[0]].css["height"]) > acc[1] ?
+                                [y[0],numberParse(topLevelZChild[y[0]].css["height"])] :
+                                acc
+                            },["",0])[0]
+                            // console.log(keepLast)
+                            keepCurrent = [[a[0],keepLast]]
+                            keep.push(...keepCurrent)
+                            let b = alignCurrent.pop()
+                            align.push(alignCurrent)
+                            alignCurrent = [b]
+                            align.push(alignCurrent)
+                        }
+
+
+
+                        //
+
+
+                    })
+
+                    align
+                    .forEach((x,i)=>{
+                        let gaps =
+                            ((section.width) -
+                            x.reduce((acc,y,j)=>{
+                                acc += numberParse(zChild[y].css["width"])
+                                return acc
+                            },0) ) /  ( x.length-1 )
+                        let gapType = x.reduce((acc,y,j)=>{
+                                acc += numberParse(zChild[y].css["width"]) + (
+                                    zChild[y].extras?.component?.split === undefined || zChild[y].extras?.component?.split === 6 ? 0: section.gap
+                                )
+                                return acc
+                            },0)
+                        x
+                        .forEach((y,j)=>{
+                            //determine left
+                            if(zChild[y].extras?.component?.left !== undefined){
+                                return
+                            }
+                            if(j === 0){
+                                zChild[y].css["left"] = section.left + "px"
+                                // console.log(zChild[y].css["left"])
+                            }
+                            else{
+
+                                zChild[y].css["left"] = (
+                                    numberParse(   zChild[x[j-1]].css["left"]  ) +
+                                    numberParse(   zChild[x[j-1]].css["width"]  ) +
+                                    // section.gap
+                                    (gapType >= section.width -300 ?gaps : section.gap)
+                                ).toString() + "px"
+                            }
+                            //
+                        })
+
+                    })
+                    ref.detectChanges()
+
+                    //making sure values are true to the DOM
+                    staticZKeys
+                    .forEach((x,i)=>{
+                        if(zChild[x].extras.judima.formatIgnore !== "true"){
+                            if(!["img"].includes(zChild[x].bool)){
+                                zChild[x].css["height"] = (zChild[x].element.getBoundingClientRect().height).toString() + "px"
+                            }
+                            zChild[x].css["width"] = (zChild[x].element.getBoundingClientRect().width).toString() + "px"
+                            zChild[x].cssDefault["height"] = zChild[x].css["height"]
+                            zChild[x].cssDefault["width"] = zChild[x].css["width"]
+                            zChild[x].cssDefault["left"] = zChild[x].css["left"]
+                            zChild[x].cssDefault["top"] = zChild[x].css["top"]
+                        }
+                    })
+                    ref.detectChanges()
+                    //
+                }
                 //
 
                 //more init
@@ -347,34 +375,33 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                 //latch setup
                 let latchEvent =
-                    this.ryber[this.appTV].metadata.latch.updateZChild
-                    .subscribe((result)=>{
+                this.ryber[this.appTV].metadata.latch.updateZChild
+                .subscribe((result)=>{
 
-                        //fix the component object before continuing
-                        let co = this.ryber[this.appTV]
-						ryberPerfect({co,...result});
-						//
+                    //fix the component object before continuing
+                    let co = this.ryber[this.appTV]
+                    ryberPerfect({co,...result});
+                    //
 
-                        zChild = this.zChildInit()
-                        topLevelZChild = this._topLevelZChildInit()
-                        latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
-
-
-                        this.directivesSendData({
-                            directivesZChild:zChild,
-							options:{
-								type:["latch"]
-							},
-							templateMyElements:this.templateMyElements
-                        })
+                    zChild = this.zChildInit()
+                    topLevelZChild = this._topLevelZChildInit()
+                    latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
 
 
-                        eventDispatcher({
-                            event:'resize',
-                            element:window
-                        })
+                    this.directivesSendData({
+                        directivesZChild:zChild,
+                        options:{
+                            type:["latch"]
+                        },
+                        templateMyElements:this.templateMyElements
                     })
 
+
+                    eventDispatcher({
+                        event:'resize',
+                        element:window
+                    })
+                })
 				//
 
 				//deltaNode setup
@@ -788,7 +815,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
         // update the order dynamics are now static to the state of the view
         let order = [
-            ...ryber[appTV].metadata.judima.stack.keep
+            ...ryber[appTV].metadata.judima.desktop.stack.keep
             .map((x:any,i)=>{
 
                 return x[0]
@@ -825,12 +852,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     }
                 });
 
-                this.ref.detectChanges();
+                ref.detectChanges();
                 //
                 keep = finalKeep;
                 let stackObj = {
                     zChildKeys: finalZChildKeys,
-                    ref: this.ref,
+                    ref,
                     zChild,
                     spacing: [null,
                         ...Array.from(flatDeep(finalAlign, Infinity), (x: string, i) => {
@@ -860,7 +887,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     stackObj.options.overlapFix.flag = "false"; ({ keep, overlapFixFlag } = stack(stackObj));
                     this.ref.detectChanges();
                 }
-                ryber[appTV].metadata.judima.stack.keep =  stackObj.keep
+                ryber[appTV].metadata.judima.desktop.stack.keep =  objectCopy(stackObj.keep)
                 //
                 // align options
                 let xContainObj: any = {
@@ -873,6 +900,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     },
                     type: 'preserve',
                 }; ({ align } = xContain(xContainObj));
+                ryber[appTV].metadata.judima.desktop.xContain.align =  objectCopy(xContainObj.preserve.align)
                 //
             }
             //
