@@ -74,7 +74,6 @@ export class LatchDirective {
 			let action:any = navigationType({
 				type:["full"],
 				fn:()=>{
-					console.log(ryber.appCO0.metadata.navigation.full.navigated)
 					if(ryber.appCO0.metadata.navigation.full.navigated === "true"){
 						return "return"
 					}
@@ -383,7 +382,6 @@ export class LatchDirective {
 				let action:any = navigationType({
 					type:["full"],
 					fn:()=>{
-						console.log(ryber.appCO0.metadata.navigation.full.navigated)
 						if(ryber.appCO0.metadata.navigation.full.navigated === "true"){
 							return "return"
 						}
