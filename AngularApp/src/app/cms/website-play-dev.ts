@@ -5186,8 +5186,673 @@ let component_dimension_testing = [
 	...component_position_development
 ]
 //
-let home_development = component_position_development
+let home_development = [
+	{
+		"title": "navigation",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				// "left":200,
+				delta:{
+
+				},
+				nest:{
+
+				},
+				navigation:{
+					"group":[
+						{
+							name:"home",
+							type:"direct_link"
+						},
+						{
+							name:"about",
+							type:"direct_link"
+						},
+						{
+							name:"articles",
+							type:"direct_link"
+						},
+						{
+							name:"videos",
+							type:"direct_link"
+						},
+						{
+							name:"blog",
+							type:"direct_link"
+						},
+					],
+					name:"home"
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						// width:"125%"
+						"background-color":"rgb(205, 180, 178)"
+					}
+				},
+				appSection:{
+					confirm:"true"
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Judima",
+				// "split": "3",
+				"text-align":"left",
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+            {
+                "key": "image-1",
+                "type": "image",
+                "imageURL":"angular.png",
+                "height":"100",
+                "split":2,
+            },
+			{
+				"key": "home",
+				type:"text",
+				"value":"Home",
+				navigation:{
+					group:"home",
+					type:"direct_link"
+				}
+			},
+			{
+				"key": "about",
+				type:"text",
+				"value":"About",
+				navigation:{
+					group:"about",
+					type:"direct_link"
+				}
+
+			},
+			{
+				"key": "articles",
+				type:"text",
+				"value":"Articles",
+				navigation:{
+					group:"articles",
+					type:"direct_link"
+				}
+
+			},
+			{
+				"key": "videos",
+				type:"text",
+				"value":"Videos",
+				navigation:{
+					group:"videos",
+					type:"direct_link"
+				}
+
+			},
+			{
+				"key": "blog",
+				type:"text",
+				"value":"Blog",
+				next:"true",
+				top:-40,
+				left:500,
+				navigation:{
+					group:"blog",
+					type:"direct_link"
+				}
+			},
+			{
+				"key": "guides",
+				type:"text",
+
+				// top:-40,
+				top:-40,
+				"value":"Guides",
+			},
+			{
+				"key": "books",
+				type:"text",
+				// top:-40,
+				top:-40,
+				"value":"Books",
+			},
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+	{
+		"title": "aside",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"left":147,
+				// height:1700,
+				width:500,
+				delta:{
+					group:[
+						{
+							name:"media_card",
+							type:"repeat",
+							by:"5"
+						}
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"menu",
+							type:"regular"
+						},
+					],
+				},
+				navigation:{
+					name:"home"
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"25%",
+						opacity:".5",
+						// "background-color":"rgb(205, 180, 178)"
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"bottom",
+							target:'navigation',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Menu",
+				// "split": "3",
+				"text-align":"left",
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+				"key": "text",
+				type:"text",
+				"value":"Entry",
+				// "split": "3",
+				next:"true",
+				"text-align":"left",
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-size":"60px"
+						// "font-family":""
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+				"key": "container",
+				type:"div",
+				"value":"Home",
+				split:6,
+				// "next":"true",
+				height:200,
+				options:{
+					css:{
+						border:"5px solid red",
+						display:"flex",
+						// "flex-flow":""
+					}
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				"nest":{
+					group:"menu",
+					name:"A1",
+				},
+			},
+            {
+                "key": "image-1",
+                "type": "image",
+                "imageURL":"python.jpg",
+				"nest":{
+					group:"menu",
+					name:"B1",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				options:{
+					css:{
+						height:"170px",
+						width:"170px"
+					}
+				}
+            },
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet`,
+				"nest":{
+					group:"menu",
+					name:"B2",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				}
+            },
+
+
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+	{
+		"title": "article",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				"stack": "60",
+				// "height":"1000",
+				"width":"900",
+				left:40,
+				delta:{
+
+				},
+				nest:{
+
+				},
+				navigation:{
+					name:"home"
+				},
+				// width:"648",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)",
+						width:"50%"
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'aside',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key": "my-table",
+				"type": "simpleTable",
+				"value":"",
+				"background":"blue",
+				"googleSheets": {},
+				"split":"4",
+				"height":"300"
+			},
+			{
+				"key": "my-text",
+				type:"text",
+				value:"Some Text",
+				background:"red",
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-textbox",
+				type:"textbox",
+				value:"Some Text",
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-button",
+				type:"loading",
+				"split": "3",
+				"color":"blue",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-button",
+				type:"button",
+				value:"I dont do anything",
+				"split": "3",
+				"color":"blue",
+				"googleSheets": {},
+			},
+			{
+				"key": "localVideo",
+				"value": "",
+				"type": "video",
+				"split": "5",
+				// "width":"420",
+				"height":500,
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"dropdown",
+				value:"Select Item",
+				latch:{
+					options:[ //look to changes this to options
+						"Toronto",
+						"Suriya"
+					],
+
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown-2",
+				type:"dropdown",
+				value:"Select Item",
+				latch:{
+					options:[ //look to changes this to options
+						"Akranti",
+						"Jalen"
+					],
+
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+	{
+		"title": "aside2",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				// "left":-147,
+				width:500,
+				// height:1700,
+				// width:500,
+				delta:{
+					group:[
+						{
+							name:"media_card",
+							type:"repeat",
+							by:"5"
+						}
+					]
+				},
+				nest:{
+					"group":[
+						{
+							name:"menu",
+							type:"regular"
+						},
+					],
+				},
+				navigation:{
+					name:"home"
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						width:"25%",
+						opacity:".5",
+						"background-color":"teal"
+						// "max-width":"285px"
+					},
+					judima:{
+						moving:{
+							point:"right",
+							target:'article',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Menu",
+				// "split": "3",
+				"text-align":"left",
+				options:{
+					css:{
+						height:"200px",
+						"text-align":"left",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+			{
+				"key": "container",
+				type:"div",
+				"value":"Home",
+				split:8,
+				height:200,
+				options:{
+					css:{
+						border:"5px solid red",
+						display:"flex",
+						// "flex-flow":""
+					}
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				"nest":{
+					group:"menu",
+					name:"A1",
+				},
+			},
+            {
+                "key": "image-1",
+                "type": "image",
+                "imageURL":"python.jpg",
+				"nest":{
+					group:"menu",
+					name:"B1",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				},
+				options:{
+					css:{
+						height:"170px",
+						width:"170px"
+					}
+				}
+            },
+            {
+                "key": "text",
+                "type": "text",
+                "value":`Lorem ipsum dolor sit amet,
+				consectetur adipiscing elit, sed do eiusmod tempor incididunt`,
+				"nest":{
+					group:"menu",
+					name:"B2",
+					under:"A1"
+				},
+				delta:{
+					group:"media_card",
+					// by:5,
+				}
+            },
+
+
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+	{
+		"title": "article2",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Footer",
+				"type": "body",
+				"stack": "60",
+				// "height":"1000",
+				// "width":"900",
+				// left:40,
+				delta:{
+
+				},
+				nest:{
+
+				},
+				navigation:{
+					name:"home"
+				},
+				height:"1000",
+				// width:"648",
+				"googleSheets": {},
+				options:{
+					css:{
+						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+						"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)",
+						// width:"125%"
+					},
+					judima:{
+						moving:{
+							point:"bottom",
+							target:'aside2',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key": "my-dropdown",
+				type:"text",
+				value:"Some Text",
+				background:"red",
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"textbox",
+				value:"Some Text",
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"loading",
+				"split": "3",
+				"color":"blue",
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"button",
+				value:"My Footer",
+				"split": "3",
+				"color":"blue",
+				"googleSheets": {},
+			},
+			{
+				"key": "localVideo",
+				"value": "",
+				"type": "video",
+				"split": "5",
+				// "width":"420",
+				"height":500,
+				"googleSheets": {},
+			},
+			{
+				"key": "my-dropdown",
+				type:"dropdown",
+				value:"Select Item",
+				latch:{
+					options:[ //look to changes this to options
+						"Toronto",
+						"Suriya"
+					],
+
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-component-position"
+			return x
+		})
+	},
+
+]
 let about_navigation = objectCopy(home_development.slice(0,1)[0])
+about_navigation.metafields[0].navigation.name = "about"
+about_navigation.title = "about navigation"
 about_navigation.metafields[0].navigation.name = "about"
 let about_development = [
 	about_navigation,
@@ -5212,6 +5877,9 @@ let about_development = [
 
 					],
 				},
+				navigation:{
+					name:"about"
+				},
 				"googleSheets": {},
 				options:{
 					css:{
@@ -5222,7 +5890,7 @@ let about_development = [
 					judima:{
 						moving:{
 							point:"bottom",
-							target:'formCO0',
+							target:'about navigation',
 							coordinates:{x:0,y:0},
 							type:"custom"
 						}
@@ -5262,6 +5930,7 @@ let about_development = [
 	},
 ]
 let articles_navigation = objectCopy(home_development.slice(0,1)[0])
+articles_navigation.title ="articles navigation"
 articles_navigation.metafields[0].navigation.name = "articles"
 let articles_development = [
 	articles_navigation,
@@ -5289,6 +5958,9 @@ let articles_development = [
 						},
 					],
 				},
+				navigation:{
+					name:"articles"
+				},
 				"googleSheets": {},
 				options:{
 					css:{
@@ -5299,7 +5971,7 @@ let articles_development = [
 					judima:{
 						moving:{
 							point:"bottom",
-							target:'formCO0',
+							target:'articles navigation',
 							coordinates:{x:0,y:0},
 							type:"custom"
 						}
@@ -5398,6 +6070,9 @@ let articles_development = [
 						},
 					],
 				},
+				navigation:{
+					name:"articles"
+				},
 				"googleSheets": {},
 				options:{
 					css:{
@@ -5408,7 +6083,7 @@ let articles_development = [
 					judima:{
 						moving:{
 							point:"right",
-							target:'formCO1',
+							target:'section 1',
 							coordinates:{x:-670,y:0},
 							type:"custom"
 						}
@@ -5483,6 +6158,9 @@ let articles_development = [
 
 					]
 				},
+				navigation:{
+					name:"articles"
+				},
 				nest:{
 					"group":[
 						{
@@ -5501,7 +6179,7 @@ let articles_development = [
 					judima:{
 						moving:{
 							point:"right",
-							target:'formCO2',
+							target:'header',
 							coordinates:{x:-320,y:0},
 							type:"custom"
 						}
@@ -5586,7 +6264,7 @@ let articles_development = [
 				"type": "body",
 				"left":147,
 				// height:1700,
-				width:300,
+				width:330,
 				delta:{
 					group:[
 
@@ -5600,6 +6278,9 @@ let articles_development = [
 						},
 					],
 				},
+				navigation:{
+					name:"articles"
+				},
 				"googleSheets": {},
 				options:{
 					css:{
@@ -5610,8 +6291,8 @@ let articles_development = [
 					judima:{
 						moving:{
 							point:"right",
-							target:'formCO1',
-							coordinates:{x:-660,y:200},
+							target:'header',
+							coordinates:{x:-970,y:200},
 							type:"custom"
 						}
 					},
@@ -5709,6 +6390,9 @@ let articles_development = [
 						},
 					],
 				},
+				navigation:{
+					name:"articles"
+				},
 				"googleSheets": {},
 				options:{
 					css:{
@@ -5719,8 +6403,8 @@ let articles_development = [
 					judima:{
 						moving:{
 							point:"right",
-							target:'formCO4',
-							coordinates:{x:-660,y:200},
+							target:'section 3',
+							coordinates:{x:-620,y:200},
 							type:"custom"
 						}
 					},
@@ -6015,6 +6699,7 @@ let blog_development = [
 				"key": "Body",
 				"type": "body",
 				"left":147,
+				"gap":10,
 				// "top":0,
 				// height:1700,
 				width:200,
@@ -6075,7 +6760,7 @@ let blog_development = [
                 "key": "image-1",
                 "type": "image",
                 "imageURL":"python.jpg",
-				split:9,
+				split:6,
 				height:170,
 				delta:{
 					group:"media_card",
@@ -6084,6 +6769,21 @@ let blog_development = [
 					css:{
 						height:"170px",
 						width:"170px"
+					}
+				}
+            },
+			{
+                "key": "text",
+                "type": "text",
+				split:3,
+				value:"Some Text",
+				delta:{
+					group:"media_card",
+				},
+				options:{
+					css:{
+						// height:"170px",
+						// width:"170px"
 					}
 				}
             },
@@ -6238,9 +6938,9 @@ let blog_development = [
 
 ]
 let navigation_development = [
-	// ...home_development,
-	// ...about_development,
-	// ...articles_development
+	...home_development,
+	...about_development,
+	...articles_development,
 	...video_development,
 	...blog_development
 ]

@@ -1609,6 +1609,15 @@ export function componentConsole(devObj?){
 	}
 }
 
+export function navigationType(devObj?){
+    let {ryber,type,fn} = devObj
+    let answer = {}
+    if(type.includes(ryber.appCO0.metadata.navigation.type)){
+        answer[type] =fn()
+    }
+    return answer
+}
+
 
 //section fn
 export function _boardDimensions(devObj?:any) {

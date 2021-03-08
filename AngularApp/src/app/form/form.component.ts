@@ -787,7 +787,14 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         })
 
         // update the order dynamics are now static to the state of the view
-        ryber[appTV].metadata.order = Object.keys(zChild).slice(2)
+        let order = [
+            ...ryber[appTV].metadata.judima.stack.keep
+            .map((x:any,i)=>{
+
+                return x[0]
+            })
+        ]
+        ryber[appTV].metadata.order = order
         //
 
         this.subscriptions
@@ -853,6 +860,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     stackObj.options.overlapFix.flag = "false"; ({ keep, overlapFixFlag } = stack(stackObj));
                     this.ref.detectChanges();
                 }
+                ryber[appTV].metadata.judima.stack.keep =  stackObj.keep
                 //
                 // align options
                 let xContainObj: any = {

@@ -119,7 +119,9 @@ export class AppComponent implements OnInit, OnDestroy {
                 ((devObj) => {
                     let { co } = devObj
                     co.metadata.judima = {
-             
+                        stack:{
+                            keep:null
+                        }
                     }
 					co.metadata.board = {}
                     co.metadata.formData = {}
@@ -127,6 +129,7 @@ export class AppComponent implements OnInit, OnDestroy {
                     co.metadata.latch = {
                         updateZChild : new ReplaySubject<any>(),
                         zChild:{},
+                        falseDestroy:[]
 					}
 
                     co.metadata.deltaNode = {
@@ -166,12 +169,13 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this.ryber.appReloaded === 'true') {
 
 
-            this.ryber.appCurrentNav = "/blog"
+            this.ryber.appCurrentNav = "/home"
 
 
         }
 
         this.ryber.appViewComplete.subscribe(() => {
+
 
             if (window.name === '') {
 
@@ -254,6 +258,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
             this.ryber.appViewCompleteArray = []
+            // not perfect find a better way to wait for the route to initalize before modifying this value
+            this.ryber.appCO0.metadata.navigation.full.navigated = "false"
+            //
 
 
             if (this.ryber.appReloaded === 'true') {

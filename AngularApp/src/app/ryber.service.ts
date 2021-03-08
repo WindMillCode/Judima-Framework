@@ -1924,7 +1924,8 @@ export class RyberService {
             navigation:{
                 type:"full", //[SPA,full],
                 full:{
-                    map:{}
+                    map:{},
+                    navigated:"false"
                 }
             },
             webRTC:{

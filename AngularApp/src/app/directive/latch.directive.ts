@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren, Host,ChangeDetectorRef } from '@angular/core';
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest, Observable } from 'rxjs';
-import { deltaNode, eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren } from '../customExports'
+import {  navigationType,eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren } from '../customExports'
 import { catchError, delay,first, take } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -25,10 +25,8 @@ export class LatchDirective {
 	templateMyElements:any
 	subscriptions:Array<Subscription> = []
 
+
     constructor(
-        private el: ElementRef,
-        private http: HttpClient,
-        private renderer2: Renderer2,
         private ryber: RyberService,
 		private ref:ChangeDetectorRef
     ) { }
@@ -63,17 +61,37 @@ export class LatchDirective {
     }
 
 
-
     ngOnInit() {
         this.extras = this.latch
 
         if (this.extras?.confirm === 'true') {
-			let {ryber,ref,zChildren} = this
+			let {ryber,ref,zChildren,subscriptions,extras} = this
 			let rUD = ryberUpdateFactory({ryber})
             let co = this.co = this.extras.co
 
+			// the feature has been initialized do not reinitalize on navigation
+				// remember when duplicating this cant be the case
+			let action:any = navigationType({
+				type:["full"],
+				fn:()=>{
+					console.log(ryber.appCO0.metadata.navigation.full.navigated)
+					if(ryber.appCO0.metadata.navigation.full.navigated === "true"){
+						return "return"
+					}
+				},
+				ryber
+			})
+			if(action.full ==="return"){
+				// restove from 'ngFalseDestroy'
+					// to do, dropdown is a bit laggy please fix
+				let save =  ryber[co].metadata.latch.falseDestroy.shift()
+				Object.assign(this,save)
+				//
+				return
+			}
+			//
 
-            this.subscriptions.push(
+            subscriptions.push(
 				ryber[co].metadata.zChildrenSubject
 				.pipe(first())
 				.subscribe((devObj)=>{
@@ -81,7 +99,7 @@ export class LatchDirective {
 					this.templateMyElements = devObj.templateMyElements
 
 
-					if(this.extras.type === "dropdown"){
+					if(extras.type === "dropdown"){
 
 						let zChild = zChildren[this.extras.zSymbol]
 						// console.log(zChild.extras.appDeltaNode.options.target)
@@ -219,7 +237,7 @@ export class LatchDirective {
 
 
 			// move with target
-            this.subscriptions.push(
+            subscriptions.push(
 				ryber[co].metadata.ngAfterViewInitFinished
 				.subscribe((result:any)=>{
 
@@ -274,6 +292,8 @@ export class LatchDirective {
 				})
 			)
 			//
+
+
 
 
 
@@ -356,6 +376,36 @@ export class LatchDirective {
 
     ngOnDestroy() {
         if (this.extras?.confirm === 'true') {
+			let {ryber,extras,co} = this
+
+				// prevent the dropdown from being destroyed on navigation
+					// lets be honest subscriptions might go missing
+				let action:any = navigationType({
+					type:["full"],
+					fn:()=>{
+						console.log(ryber.appCO0.metadata.navigation.full.navigated)
+						if(ryber.appCO0.metadata.navigation.full.navigated === "true"){
+							return "return"
+						}
+					},
+					ryber
+				})
+				if(action.full ==="return"){
+					// falseDestroy protection
+						// for things like navigation, the elements dont go so save the directive properties
+
+					let save = {
+						co:this.co,
+						dropdown:this?.dropdown,
+						subscriptions:this.subscriptions,
+						zChildren:this.zChildren
+					}
+					ryber[co].metadata.latch.falseDestroy.push(save)
+					//
+					return
+				}
+				//
+
 
 			this.subscriptions
 			.forEach((x: any, i) => {
@@ -366,6 +416,8 @@ export class LatchDirective {
 			if(this.extras.type === "dropdown"){
 				let {ryber,ref,zChildren,dropdown,co,templateMyElements} = this
 				let {options:zSymbols,container} = dropdown
+
+
 
 				// if this dropdown was nested and dupliated -1 on the suffix
 				this.extras.suffix--
@@ -381,7 +433,7 @@ export class LatchDirective {
 				}
 				templateMyElements.changes
 				.pipe(
-					first(),
+					take(1),
 					// delay(50000)
 				)
 				.subscribe({
