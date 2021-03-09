@@ -1,12 +1,12 @@
 
-import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, Renderer2, ViewChildren } from '@angular/core';
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest,timer, Subject } from 'rxjs';
-import { ryberUpdate,ryberUpdateFactory,deltaNode, eventDispatcher, numberParse, objectCopy,flatDeep } from '../customExports'
+import { navigationType,ryberUpdateFactory, eventDispatcher, numberParse, objectCopy,flatDeep, componentConsole } from '../customExports'
 import { catchError, delay,first,repeat,map } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { S_IXGRP } from 'constants';
+import { VanillaFrameworkOverrides } from 'ag-grid-community';
+
 
 
 @Directive({
@@ -24,19 +24,19 @@ export class DeltaNodeDirective {
 	controls:any = []
 
 	constructor(
-		private el: ElementRef,
-		private http: HttpClient,
 		private renderer2: Renderer2,
 		private ryber: RyberService
 	) { }
 
 
 	ngOnInit() {
+
 		this.extras = this.deltaNode
 		if (this.extras?.confirm === 'true') {
 
 			// command is setup only from the body this is where you can decide which elements have certain controls
 			if(this.extras.type === "body"){
+				if(env.directive.deltaNode.lifecycleHooks) console.log(this.extras.co + " " + this.extras.zSymbol+ ' deltaNode ngOnInit fires on mount')
 
 
 				let {ryber,extras,subscriptions} = this
@@ -44,6 +44,8 @@ export class DeltaNodeDirective {
 				let {co} = this.extras
 				let {groups} = this.groups =  ryber[co].metadata.deltaNode
 				let {deltaNode} = ryber[co].metadata
+
+
 
 				subscriptions.push(
 					combineLatest([
@@ -55,6 +57,52 @@ export class DeltaNodeDirective {
 						this.zChildren = ryber[co].metadata.zChildren
 						this.templateMyElements = ryber[co].metadata.templateMyElements
 						this.ref =ryber[co].metadata.ref
+
+						// restore deltaNode from false destroy like navigation
+						let action:any = navigationType({
+							type:["full"],
+							fn:()=>{
+								if(
+									ryber.appCO0.metadata.navigation.full.navigated === "true" &&
+									ryber[co].metadata.judima.init === "true"
+								){
+									return "return"
+								}
+							},
+							ryber
+						})
+						if(action.full === "return"){
+							// restore from 'ngFalseDestroy'
+							let save = ryber[co].metadata.deltaNode.falseDestroy.shift()
+
+							Object.assign(this,save)
+							let {groups} = this.groups
+							let {subscriptions,zChildren} = this
+
+							// restore controls for add and remove events
+							Object.entries(groups)
+							.forEach((x:any,i)=>{
+								let key = x[0]
+								let val = x[1]
+								if(val.type === "add_remove_button"){
+									["add","remove"]
+									.forEach((y:any,j)=>{
+										val[y]
+										.forEach((z:any,k)=>{
+											subscriptions[z.eventWrapper.index].unsubscribe()
+											subscriptions[z.eventWrapper.index] = fromEvent(
+												zChildren[z.target[0]].element,
+												"click"
+											)
+											.subscribe(z.eventWrapper.fn)
+										})
+									})
+								}
+							})
+							//
+							return
+						}
+						//
 
 						// gathering all the deltaGroups in the component
 						this.extras.group
@@ -87,7 +135,7 @@ export class DeltaNodeDirective {
 									}
 									x.complete ="true"
 								}
-								// 
+								//
 							}
 						})
 						//
@@ -99,7 +147,6 @@ export class DeltaNodeDirective {
 							groups?.[zChildDeltaNode?.group]?.targets.push(x)
 						})
 						//
-
 
 						//
 						// sorting the elements associated to respetive groups
@@ -223,20 +270,25 @@ export class DeltaNodeDirective {
 									//
 
 								}
-								this.subscriptions.push(
-									...val.add
-									.map((y:any,j)=>{
-										return combineLatest([
-											fromEvent(y.target[1].element,"click")
-										])
-										.subscribe((result:any)=>{
+
+								val.add
+								.map((y:any,j)=>{
+									y.eventWrapper = {
+										fn:(result:any)=>{
 											if(!y.target[1].element.disabled){
 												this._disableButton()
 												addEvent({result,y})
 											}
-										})
-									})
-								)
+										},
+										index: subscriptions.length
+									}
+									subscriptions.push(
+										fromEvent(y.target[1].element,"click")
+										.subscribe(y.eventWrapper.fn)
+									)
+
+								})
+
 
 								//
 
@@ -301,21 +353,25 @@ export class DeltaNodeDirective {
 									//
 
 								}
-								this.subscriptions.push(
-									...val.remove
-									.map((y:any,j)=>{
-										return combineLatest([
-											fromEvent(y.target[1].element,"click"),
-										])
-										.subscribe((result:any)=>{
+
+								val.remove
+								.map((y:any,j)=>{
+									y.eventWrapper  = {
+										fn:(result:any)=>{
 											if(!y.target[1].element.disabled){
 												this._disableButton()
 												removeEvent({result,y})
 											}
+										},
+										index:subscriptions.length
+									}
+									subscriptions.push(
+										fromEvent(y.target[1].element,"click")
+										.subscribe(y.eventWrapper.fn)
+									)
 
-										})
-									})
-								)
+								})
+
 								//
 
 								// unlock the buttons once components afterViewInit is finished
@@ -440,8 +496,34 @@ export class DeltaNodeDirective {
 	}
 
 	ngOnDestroy() {
-		if (this.extras?.confirm === 'true') {
-			this.subscriptions
+		if (this.extras?.confirm === 'true' && this.extras?.type === "body") {
+			if(env.directive.deltaNode.lifecycleHooks) console.log(this.extras.co + " " + this.extras.zSymbol+ ' deltaNode ngOnDestroy fires on dismount')
+			let {ryber,extras,subscriptions,controls,groups,templateMyElements,zChildren} = this
+			let {co}= extras
+			// prevent the deltaNode setup from going missing
+				let action:any = navigationType({
+					type:["full"],
+					fn:()=>{
+						if(ryber.appCO0.metadata.navigation.full.navigated === "true"){
+							return "return"
+						}
+					},
+					ryber
+				})
+				if(action.full ==="return"){
+					// falseDestroy protection
+						// for things like navigation, the elements dont go so save the directive properties
+					let save ={
+						subscriptions,
+						controls,
+						groups,
+					}
+					ryber[co].metadata.deltaNode.falseDestroy.push(save)
+					//
+					return
+				}
+			//
+			subscriptions
 			.forEach((x: any, i) => {
 				try{
 					x.unsubscribe()
@@ -449,7 +531,6 @@ export class DeltaNodeDirective {
 				catch(e){}
 
 			})
-			delete this.subscriptions
 		}
 	}
 }

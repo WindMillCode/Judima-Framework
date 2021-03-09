@@ -23,7 +23,17 @@ export const environment: any = {
 			topLevelZChild:[-1],
             drag:[-1],
         },
-        app: {}
+        app: {
+            lifecycleHooks:false
+        }
+    },
+    directive:{
+        deltaNode:{
+            lifecycleHooks:false
+        },
+        latch:{
+            lifecycleHooks:false
+        }
     },
     submission: {
         fakeValues: false,

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChildren, Inject, ElementRef, ChangeDetectorRef, ChangeDetectionStrategy, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, Inject, ElementRef, ChangeDetectorRef, ChangeDetectionStrategy, Renderer2, QueryList } from '@angular/core';
 import { RyberService } from './ryber.service';
 import { fromEvent, Subject, Observable, of, Subscription, interval, ReplaySubject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { eventDispatcher, esInit, coInit } from './customExports'
@@ -57,24 +57,23 @@ export class AppComponent implements OnInit, OnDestroy {
     constructor(
         public ryber: RyberService,
         private ref: ChangeDetectorRef,
-        private renderer2: Renderer2,
-        private http: HttpClient,
-        // private route: ActivatedRoute,
     ) { }
 
     title = 'Judima';
     CO$: Subscription
     subscriptions:Array<Subscription> = []
+    @ViewChildren('myTemp', {read:ElementRef}) templateMyComponents: QueryList<ElementRef>;
+
 
     ngOnInit() {
-        if (env.lifecycleHooks) console.log('app ngOnInit fires on mount');
-        let {ryber,subscriptions} = this
-		this.ryber.ref = (()=>{
-			return this.ref
+        if (env.component.app.lifecycleHooks) {console.log('app ngOnInit fires on mount ')}
+        let {ryber,subscriptions,ref} = this
+		ryber.ref = (()=>{
+			return ref
 		})()
 
         // adding scripts
-        this.ryber.appCO0.metadata.scripts.push(
+        ryber.appCO0.metadata.scripts.push(
             ...this.ryber.appAddScripts({
                 scripts:[
                     {
@@ -104,7 +103,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
         /* App Setup*/
-        esInit(this.ryber, this.ryber.appCO0.metadata.ES)
+        esInit(ryber, ryber.appCO0.metadata.ES)
 
 
         this.CO$ = merge(
@@ -145,6 +144,7 @@ export class AppComponent implements OnInit, OnDestroy {
 						component:{
 							confirm:"false"
 						},
+                        falseDestroy:[]
 
                     }
                     co.metadata.navigation ={
@@ -169,8 +169,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 })
             )
         })
-
-        // console.log(this.ryber)
+        subscriptions.push(this.CO$)
 
         if (this.ryber.appReloaded === 'true') {
 
@@ -180,7 +179,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
         }
 
-        this.ryber.appViewComplete.subscribe(() => {
+        subscriptions.push(
+            this.ryber.appViewComplete.subscribe(() => {
 
 
             if (window.name === '') {
@@ -228,13 +228,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
 
-        })
-
-
+            })
+        )
 
 	}
-
-
 
     routeDispatch(
         devObj: {
@@ -265,7 +262,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
             this.ryber.appViewCompleteArray = []
             // not perfect find a better way to wait for the route to initalize before modifying this value
-            this.ryber.appCO0.metadata.navigation.full.navigated = "false"
+
             //
 
 
@@ -283,13 +280,20 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	ngAfterViewInit(){
-		// console.log(this.ryber)
+        if (env.component.app.lifecycleHooks) {console.log('app ngAfterViewInit fires on mount ')}
+		let {templateMyComponents,ryber} = this
+
+
+        // listen for route changes
+        templateMyComponents.changes
+        .subscribe((result:any)=>{
+            ryber.appCO0.metadata.navigation.full.navigated = "false"
+        })
+        //
 	}
 
     ngOnDestroy() {
-        if (env.lifecycleHooks) console.log('app ngOnDestroy fires on dismount')
-        this.CO$.unsubscribe?.()
-        this.ryber.appViewComplete.unsubscribe?.()
+        if (env.component.app.lifecycleHooks){ console.log('app ngOnDestroy fires on dismount')}
         this.subscriptions
         .forEach((x: any, i) => {
             try{

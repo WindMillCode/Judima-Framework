@@ -1925,6 +1925,7 @@ export class RyberService {
                 type:"full", //[SPA,full],
                 full:{
                     map:{},
+                    // navigated:new BehaviorSubject("false")
                     navigated:"false"
                 }
             },

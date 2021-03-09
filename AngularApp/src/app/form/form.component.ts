@@ -35,8 +35,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
     ngOnInit():void {
-		if(env.component.form.lifecycleHooks) console.log(this.appTV+ 'ngOnInit fires on mount')
-
+		if(env.component.form.lifecycleHooks) console.log(this.appTV+ ' ngOnInit fires on mount')
     }
 
     ngAfterViewInit(): void {
@@ -44,7 +43,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         // indicating where we are in the code
         if(env.inputHandle.options) console.groupEnd()
         let {ryber,appTV,ref,templateMyElements,subscriptions} = this
-        if(env.component.form.lifecycleHooks) {console.log( appTV+ 'ngAfterViewInit fires one remount')}
+        if(env.component.form.lifecycleHooks) {console.log( appTV+ ' ngAfterViewInit fires on mount')}
 		//
 
         // FPM for each component
@@ -143,7 +142,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     ryber
                 })
                 if(action.full === "return"){
-                    console.log(ryber[appTV].metadata.judima)
                     keep = ryber[appTV].metadata.judima.desktop.stack.keep
                     align = ryber[appTV].metadata.judima.desktop.xContain.align
                 }
@@ -798,7 +796,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
     ngOnDestroy(): void {
-        if(env.component.form.lifecycleHooks) console.log(this.appTV+ '  ngOnDestroy fires on dismount')
+        if(env.component.form.lifecycleHooks) console.log(this.appTV+ ' ngOnDestroy fires on dismount')
         let {ryber,appTV} = this
         let zChild = ryber[appTV].metadata.zChildren
         Object
@@ -815,7 +813,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
         // update the order dynamics are now static to the state of the view
         let order = [
-            ...ryber[appTV].metadata.judima.desktop.stack.keep
+        ...ryber[appTV].metadata.judima.desktop.stack.keep
             .map((x:any,i)=>{
 
                 return x[0]

@@ -74,7 +74,10 @@ export class LatchDirective {
 			let action:any = navigationType({
 				type:["full"],
 				fn:()=>{
-					if(ryber.appCO0.metadata.navigation.full.navigated === "true"){
+					if(
+						ryber.appCO0.metadata.navigation.full.navigated === "true" &&
+						ryber[co].metadata.judima.init === "true"
+					){
 						return "return"
 					}
 				},
@@ -82,7 +85,7 @@ export class LatchDirective {
 			})
 			if(action.full ==="return"){
 				// restove from 'ngFalseDestroy'
-					// to do, dropdown is a bit laggy please fix
+					// TODO, dropdown is a bit laggy please fix
 				let save =  ryber[co].metadata.latch.falseDestroy.shift()
 				Object.assign(this,save)
 				//
@@ -399,6 +402,7 @@ export class LatchDirective {
 						zChildren:this.zChildren
 					}
 					ryber[co].metadata.latch.falseDestroy.push(save)
+					// should be {...save}
 					//
 					return
 				}
