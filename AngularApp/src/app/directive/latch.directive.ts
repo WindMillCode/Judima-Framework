@@ -23,6 +23,7 @@ export class LatchDirective {
 		options:null
 	}
 	templateMyElements:any
+	moveWithTarget:{sub:Subscription,index:Number}
 	subscriptions:Array<Subscription> = []
 
 
@@ -65,7 +66,7 @@ export class LatchDirective {
         this.extras = this.latch
 
         if (this.extras?.confirm === 'true') {
-			let {ryber,ref,zChildren,subscriptions,extras} = this
+			let {ryber,ref,zChildren,subscriptions,extras,moveWithTarget} = this
 			let rUD = ryberUpdateFactory({ryber})
             let co = this.co = this.extras.co
 
@@ -87,9 +88,9 @@ export class LatchDirective {
 				// restove from 'ngFalseDestroy'
 					// TODO, dropdown is a bit laggy please fix
 				let save =  ryber[co].metadata.latch.falseDestroy.shift()
+				this.extras.optionsSetup = "false"
 				Object.assign(this,save)
 				//
-				return
 			}
 			//
 
@@ -97,8 +98,12 @@ export class LatchDirective {
 				ryber[co].metadata.zChildrenSubject
 				.pipe(first())
 				.subscribe((devObj)=>{
-					zChildren = ryber[co].metadata.zChildren
+					zChildren =this.zChildren= ryber[co].metadata.zChildren
 					this.templateMyElements = devObj.templateMyElements
+
+					if(action.full ==="return"){
+						return
+					}
 
 
 					if(extras.type === "dropdown"){
@@ -239,8 +244,8 @@ export class LatchDirective {
 
 
 			// move with target
-            subscriptions.push(
-				ryber[co].metadata.ngAfterViewInitFinished
+			moveWithTarget=this.moveWithTarget = {
+				sub:ryber[co].metadata.ngAfterViewInitFinished
 				.subscribe((result:any)=>{
 
 					let {dropdown,zChildren} = this
@@ -253,27 +258,32 @@ export class LatchDirective {
 						if(this.extras.optionsSetup !== "true"){
 
 
-							this.subscriptions.push(
-								...zSymbols
-								.map((x:any,i)=>{
-									return fromEvent(zChildren[x].element,"click")
-									.subscribe((result:any)=>{
-										// choose the choosen value, if the item was chosen go back to the default value
-										zChildren[this.extras.zSymbol].innerText.item =
-										zChildren[this.extras.zSymbol].innerText.item ===
-										zChildren[x].innerText.item ?
-										this.extras.select.value : zChildren[x].innerText.item
-										ref.detectChanges()
-										//
-
-										// ?? option to disable this and only fire when select is clicked
-										this._dropdownStateClosed({zSymbols, zChildren, ref});
-										this.extras.state = "closed"
-										//
-
+								dropdown.optionsMetadata = []
+								zSymbols
+								.forEach((x:any,i)=>{
+									dropdown.optionsMetadata.push({
+										index:subscriptions.length
 									})
+									subscriptions.push(
+										fromEvent(zChildren[x].element,"click")
+										.subscribe((result:any)=>{
+											// choose the choosen value, if the item was chosen go back to the default value
+											zChildren[this.extras.zSymbol].innerText.item =
+											zChildren[this.extras.zSymbol].innerText.item ===
+											zChildren[x].innerText.item ?
+											this.extras.select.value : zChildren[x].innerText.item
+											ref.detectChanges()
+											//
+
+											// ?? option to disable this and only fire when select is clicked
+											this._dropdownStateClosed({zSymbols, zChildren, ref});
+											this.extras.state = "closed"
+											//
+
+										})
+									)
 								})
-							)
+
 							this.extras.optionsSetup = "true"
 						}
 						//
@@ -291,8 +301,10 @@ export class LatchDirective {
 						}
 
 					}
-				})
-			)
+				}),
+				index : subscriptions.length
+			}
+            subscriptions.push( moveWithTarget.sub)
 			//
 
 
@@ -396,13 +408,15 @@ export class LatchDirective {
 						// for things like navigation, the elements dont go so save the directive properties
 
 					let save = {
-						co:this.co,
-						dropdown:this?.dropdown,
-						subscriptions:this.subscriptions,
-						zChildren:this.zChildren
+						dropdown:this?.dropdown
 					}
 					ryber[co].metadata.latch.falseDestroy.push(save)
-					// should be {...save}
+
+					this.subscriptions
+					.forEach((x: any, i) => {
+						x.unsubscribe()
+					})
+					delete this.subscriptions
 					//
 					return
 				}

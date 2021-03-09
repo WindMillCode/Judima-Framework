@@ -174,7 +174,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this.ryber.appReloaded === 'true') {
 
 
-            this.ryber.appCurrentNav = "/blog"
+            this.ryber.appCurrentNav = "/home"
 
 
         }
@@ -281,14 +281,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
 	ngAfterViewInit(){
         if (env.component.app.lifecycleHooks) {console.log('app ngAfterViewInit fires on mount ')}
-		let {templateMyComponents,ryber} = this
+		let {templateMyComponents,ryber,subscriptions} = this
 
 
         // listen for route changes
-        templateMyComponents.changes
-        .subscribe((result:any)=>{
-            ryber.appCO0.metadata.navigation.full.navigated = "false"
-        })
+        subscriptions.push(
+            templateMyComponents.changes
+            .subscribe((result:any)=>{
+                ryber.appCO0.metadata.navigation.full.navigated = "false"
+            })
+        )
         //
 	}
 

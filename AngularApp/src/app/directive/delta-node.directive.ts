@@ -54,7 +54,7 @@ export class DeltaNodeDirective {
 					.pipe(first())
 					.subscribe((result) => {
 
-						this.zChildren = ryber[co].metadata.zChildren
+						let zChildren = this.zChildren = ryber[co].metadata.zChildren
 						this.templateMyElements = ryber[co].metadata.templateMyElements
 						this.ref =ryber[co].metadata.ref
 
@@ -80,6 +80,7 @@ export class DeltaNodeDirective {
 							let {subscriptions,zChildren} = this
 
 							// restore controls for add and remove events
+								// in latch directive elements have controls too however, it still is able to figure things out
 							Object.entries(groups)
 							.forEach((x:any,i)=>{
 								let key = x[0]
@@ -283,7 +284,7 @@ export class DeltaNodeDirective {
 										index: subscriptions.length
 									}
 									subscriptions.push(
-										fromEvent(y.target[1].element,"click")
+										fromEvent(zChildren[y.target[0]].element,"click")
 										.subscribe(y.eventWrapper.fn)
 									)
 
@@ -366,7 +367,7 @@ export class DeltaNodeDirective {
 										index:subscriptions.length
 									}
 									subscriptions.push(
-										fromEvent(y.target[1].element,"click")
+										fromEvent(zChildren[y.target[0]].element,"click")
 										.subscribe(y.eventWrapper.fn)
 									)
 
