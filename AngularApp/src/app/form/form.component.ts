@@ -835,6 +835,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
     private desktopMediaQuery(devObj:{zChild: any, keep: any[], finalKeep: any[], finalZChildKeys: any[], finalAlign: any[], section: any, ref: ChangeDetectorRef, align: any[], topLevelZChild: any, moving: any, ryber: RyberService, appTV: any}) {
         let {zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV} = devObj
+        let desktopSection = {
+            ...ryber.appCO0.metadata.ryber.sectionDefault.desktop,
+            ...zChild["&#8353"].extras.judima.desktop
+        }
+
         {
 
             {
@@ -905,7 +910,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
             //position
             ; {
                 // position board
-                this.positionBoard({ zChild: topLevelZChild, section });
+                this.positionBoard({ zChild: topLevelZChild, section,mediaQuery:desktopSection });
 
                 //
                 let newSection = stack({
@@ -943,62 +948,70 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         let {finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV,sectionType} = devObj
         let board = zChild["&#8353"]
 
+
         if(sectionType === "custom"){
             board = ryber.appCO0.metadata.ryber.sectionDefault.app.custom.board
         }
+        let mobileSection =  {
+            ...ryber.appCO0.metadata.ryber.sectionDefault.mobile,
+            ...zChild["&#8353"].extras.judima.mobile
+        }
+
         {
             //feature
             {
 
 
                 finalZChildKeys
-                    .slice(1)
-                    .forEach((x, i) => {
-                        zChild[x].css["width"] = (
-                            .9 * numberParse(getComputedStyle(board.element).width)
-                        ).toString() + "px";
-                        this.ref.detectChanges();
-                        zChild[x].css["left"] = (
-                            xPosition({
-                                target: numberParse(zChild[x].css["width"]),
-                                contain: numberParse(getComputedStyle(board.element).width)
-                            })
-                        ).toString() + "px";
-                    });
-                this.ref.detectChanges();
+                .slice(1)
+                .forEach((x, i) => {
+
+                    zChild[x].css["width"] = (
+                        (zChild[x].extras.judima?.mobile?.widthRatio ||mobileSection.widthRatio )
+                        * numberParse(getComputedStyle(board.element).width)
+                    ).toString() + "px";
+                    this.ref.detectChanges();
+                    zChild[x].css["left"] = zChild[x].extras.judima?.mobile?.left || (
+                        xPosition({
+                            target: numberParse(zChild[x].css["width"]),
+                            contain: numberParse(getComputedStyle(board.element).width)
+                        })
+                    ).toString() + "px";
+                });
+                ref.detectChanges();
                 //
                 //serveral targets
                 let mobileShrinkFonts = finalZChildKeys
-                    .reduce((acc, x, i) => {
-                        if (zChild[x]?.extras?.appFocusFont?.mobileShrink === "true") {
-                            acc.push(x);
-                        }
-                        return acc;
-                    }, []);
+                .reduce((acc, x, i) => {
+                    if (zChild[x]?.extras?.appFocusFont?.mobileShrink === "true") {
+                        acc.push(x);
+                    }
+                    return acc;
+                }, []);
 
                 mobileShrinkFonts
-                    .forEach((x, i) => {
-                        zChild[x].css["font-size"] = (
-                            resize({
-                                default: numberParse(zChild[x].cssDefault["font-size"]),
-                                containActual: numberParse(getComputedStyle(board.element).width),
-                                containDefault: 540,
-                                type: 'nonUniform',
-                                misc: [.052, .06],
-                                mediaQuery: [379, 286, 0]
-                            })
-                        ).toString() + "px";
-                    });
+                .forEach((x, i) => {
+                    zChild[x].css["font-size"] = (
+                        resize({
+                            default: numberParse(zChild[x].cssDefault["font-size"]),
+                            containActual: numberParse(getComputedStyle(board.element).width),
+                            containDefault: 540,
+                            type: 'nonUniform',
+                            misc: [.052, .06],
+                            mediaQuery: [379, 286, 0]
+                        })
+                    ).toString() + "px";
+                });
                 this.ref.detectChanges();
                 //
                 let responsiveMeasureTargets = finalZChildKeys
-                    .reduce((acc, x, i) => {
+                .reduce((acc, x, i) => {
 
-                        if (["ta", "c"].includes(zChild[x].bool)) {
-                            acc.push(zChild[x]);
-                        }
-                        return acc;
-                    }, []);
+                    if (["ta", "c"].includes(zChild[x].bool)) {
+                        acc.push(zChild[x]);
+                    }
+                    return acc;
+                }, []);
                 responsiveMeasure({
                     item: {
                         target: responsiveMeasureTargets,
@@ -1012,17 +1025,23 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         prop: "width"
                     }
                 });
-                this.ref.detectChanges();
+                ref.detectChanges();
+
 
                 stack({
                     zChildKeys: finalZChildKeys,
                     ref: this.ref,
                     zChild,
-                    spacing: [null, 100, section.stack],
+                    spacing:finalZChildKeys.map( (x: string, i) => {
+                            if (zChild[x].extras.judima?.mobile?.top !== undefined) {
+                                return zChild[x].extras.judima.mobile.top;
+                            }
+                            return mobileSection.stack;
+                        }),
                     type: 'simpleStack',
                     heightInclude: [null, 'f', 't']
                 });
-                this.ref.detectChanges();
+                ref.detectChanges();
 
 
 
@@ -1032,7 +1051,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
             //position
             {
 
-                this.positionBoard({ zChild: topLevelZChild, section });
+                this.positionBoard({ zChild: topLevelZChild, section,mediaQuery:mobileSection });
                 // console.log(appTV,ryber[appTV].metadata.board,moving)
                 let newSection = stack({
                     type: "yPosition",
@@ -1069,8 +1088,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
     }
 
     private positionBoard(devObj?:any) {
-        let {zChild,section}= devObj
-		let {ryber,appTV} = this
+        let {zChild,section,mediaQuery}= devObj
+		let {ryber,appTV,ref} = this
         let max:any = Object.keys(zChild)
             .slice(2)
 
@@ -1086,6 +1105,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 return acc;
             }, ["", 0])[0];
 
+
         if(zChild["&#8353"].extras.component.height !== undefined){
             zChild["&#8353"].css["height"] = zChild["&#8353"].extras.component.height.toString() + "px"
         }
@@ -1094,12 +1114,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
             zChild["&#8353"].css["height"] = (
                 numberParse(zChild[max].css["top"]) +
                 numberParse(zChild[max].css["height"]) +
-                50 -
+                mediaQuery.footerSpace -
                 numberParse(zChild["&#8353"].css["top"])
             ).toString() + "px";
         }
 
-        this.ref.detectChanges();
+        ref.detectChanges();
 		// update curent moving
 		ryber[appTV].metadata.board = _boardDimensions({ zChild,section});
 		//

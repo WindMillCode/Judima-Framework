@@ -1918,6 +1918,14 @@ export class RyberService {
                         custom:{
                             board:null
                         }
+                    },
+                    mobile:{
+                        stack:100,
+                        widthRatio:.9 ,  //this represents a percentage of the board
+                        footerSpace:0
+                    },
+                    desktop:{
+                        footerSpace:50 // represents space of footer to end of board
                     }
                 }
             },

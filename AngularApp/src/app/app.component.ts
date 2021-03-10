@@ -174,7 +174,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this.ryber.appReloaded === 'true') {
 
 
-            this.ryber.appCurrentNav = "/home"
+            this.ryber.appCurrentNav = "/articles"
 
 
         }
