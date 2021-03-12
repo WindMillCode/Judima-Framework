@@ -5232,6 +5232,12 @@ let home_development = [
 					css:{
 						// width:"125%"
 						"background-color":"rgb(205, 180, 178)"
+					},
+					judima:{
+						mobile:{
+							stack:20,
+							footerSpace:50
+						}
 					}
 				},
 				appSection:{
@@ -5305,10 +5311,17 @@ let home_development = [
 				"value":"Blog",
 				next:"true",
 				top:-40,
-				left:500,
+				left:600,
 				navigation:{
 					group:"blog",
 					type:"direct_link"
+				},
+				options:{
+					judima:{
+						stack:{
+							overlapFix:"false"
+						}
+					}
 				}
 			},
 			{
@@ -5380,7 +5393,7 @@ let home_development = [
 							target:'navigation',
 							coordinates:{x:0,y:0},
 							type:"custom"
-						}
+						},
 					},
 				}
 			},
@@ -7700,7 +7713,7 @@ let mobileCustom_testing = [
 	...mobileCustom_development
 ]
 
-website.convertCMS = mobileCustom_testing
+website.convertCMS = navigation_testing
 
 
 
