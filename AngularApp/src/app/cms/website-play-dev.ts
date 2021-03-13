@@ -5324,27 +5324,27 @@ let home_development = [
 					}
 				}
 			},
-			{
-				"key": "guides",
-				type:"text",
+			// {
+			// 	"key": "guides",
+			// 	type:"text",
 
-				// top:-40,
-				top:-40,
-				"value":"Guides",
-			},
-			{
-				"key": "books",
-				type:"text",
-				// top:-40,
-				top:-40,
-				"value":"Books",
-			},
+			// 	// top:-40,
+			// 	top:-40,
+			// 	"value":"Guides",
+			// },
+			// {
+			// 	"key": "books",
+			// 	type:"text",
+			// 	// top:-40,
+			// 	top:-40,
+			// 	"value":"Books",
+			// },
 
 
 
 
 		] .map((x:any,i)=>{
-			x.key += "-component-position"
+			x.key += "-main-navigation"
 			return x
 		})
 	},
@@ -5542,8 +5542,8 @@ let home_development = [
 			},
 			{
 				"key": "my-table",
-				"type": "simpleTable",
-				"value":"",
+				"type": "heading",
+				"value":"Duplicate Me",
 				"background":"blue",
 				"googleSheets": {},
 				"split":"4",
@@ -6821,6 +6821,10 @@ let blog_development = [
 						{
 							name:"outerDelta",
 							type:"add_remove_button"
+						},
+						{
+							name:"secondDelta",
+							type:"add_remove_button"
 						}
 					]
 				},
@@ -6882,8 +6886,8 @@ let blog_development = [
 					}
 				}
             },
-	{
-                "key": "textbox",
+			{
+                "key": "loading",
                 "type": "loading",
 				// value:"ENTER TEXT HERE",
 				height:200,
@@ -6947,7 +6951,43 @@ let blog_development = [
 				},
 				"split": "6",
 				"googleSheets": {},
-			}
+			},
+			{
+				"key": "table",
+				"type": "heading",
+				"value":"Duplicate Me",
+				"height":300,
+				delta:{
+					"group":"secondDelta",
+				},
+				"split": "6",
+				"googleSheets": {},
+			},
+			{
+				"key": "add",
+				"type": "button",
+				"value":"Add ",
+				next:"true",
+				delta:{
+					"group":"secondDelta",
+					"type":"add",
+					"by":"3"
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "remove",
+				"type": "button",
+				"value":"Remove",
+				delta:{
+				"group":"secondDelta",
+					"type":"remove",
+					"by":"2"
+				},
+				"split": "6",
+				"googleSheets": {},
+			},
 
 
 

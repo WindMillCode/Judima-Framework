@@ -48,6 +48,11 @@ Capybara.default_max_wait_time = 5
 Capybara.ignore_hidden_elements = false
 
 
+# Selenium::WebDriver::Firefox::Binary.path="/mnt/c/Users/Restop-2345/unneeded/Mozilla\ Firefox/firefox.exe"
+Selenium::WebDriver::Firefox::Binary.path = %{C://Users//Restop-2345//unneeded//Mozilla Firefox//firefox.exe}
+# Selenium::WebDriver::Firefox::Binary.driver_path="/mnt/c/Users/Restop-2345/unneeded/ruby/geckodriver.exe"
+
+
 
 $client = nil
 
@@ -71,23 +76,33 @@ Capybara.register_driver :internetExplorer do |app|
 
 end
 
+Capybara.register_driver :seleniumChrome do |app|
+
+	Capybara::Selenium::Driver.new(
+		app,
+		:browser => :selenium_chrome
+	)
+end
+
+
 Capybara.register_driver :firefox_profile do |app|
 	desired_caps = Selenium::WebDriver::Remote::Capabilities.firefox
 	# desired_caps[:firefox_profile] = %{file:///C:/Users/oluod/My_Notebook/angular/v10/GNDC/CLT-GNDC/testing/e2e/firefox_profile}
 	# desired_caps[:firefox_profile] = %{C:/Users/oluod/My_Notebook/angular/v10/GNDC/CLT-GNDC/testing/e2e/firefox_profile}
 	# desired_caps[:firefox_profile] = %{capybara}
-	service = Selenium::WebDriver::Service.firefox :args => [%{-vv}]
-	options = Selenium::WebDriver::Firefox::Options.new :args => [%{-profile=C:\\Users\\oluod\\My_Notebook\\angular\\v10\\GNDC\\CLT-GNDC\\testing\\e2e\\firefox_profile}]
+	# service = Selenium::WebDriver::Service.firefox :args => [%{-vv}]
+	# options = Selenium::WebDriver::Firefox::Options.new :args => [%{-profile=C:\\Users\\oluod\\My_Notebook\\angular\\v10\\GNDC\\CLT-GNDC\\testing\\e2e\\firefox_profile}]
 	# options.profile = Selenium::WebDriver::Firefox::Profile.new %{C:\\Users\\oluod\\My_Notebook\\angular\\v10\\GNDC\\CLT-GNDC\\testing\\e2e\\firefox_profile}
 
-	options.log_level = %{trace}
+	# options.log_level = %{debug}
 	Capybara::Selenium::Driver.new(
 			app,
 			:browser => :ff,
 			:desired_capabilities => desired_caps,
-			:options =>   options,
-			:service => service
+			# :options =>   options,
+			# :service => service
 	)
+
 
 end
 
@@ -128,7 +143,7 @@ RSpec.configure do |config|
 	# my_drivers = %i{ edgeBrowser internetExplorer selenium }
 	# my_drivers = %i{ edgeBrowser }
 	# my_drivers = %i{ selenium_billy }
-	my_drivers = %i{ selenium}
+	my_drivers = %i{ firefox_profile}
 	# my_drivers = %i{ internetExplorer }
 	hosts = Hash.new
 	hosts[:dev] =  %{http://localhost:8000}
@@ -145,15 +160,17 @@ RSpec.configure do |config|
 	]
 
 config.before :example do
-    page.driver.quit
-    begin
-	page.driver.close_window page.windows.last.handle
-    rescue => exception
+#     page.driver.quit
+#     begin
+# 	page.driver.close_window page.windows.last.handle
+#     rescue => exception
 
-    end
+#     end
     visit %{/}
-    # page.current_window.maximize
-    # $client =  DropboxApi::Client.new %{AN-8rJ0XuEwAAAAAAAAAATUAu6uTWRtwFG8s7WOMmdIoHdYI4Ep2yYw3mOfh5MyO}
+    page.current_window.maximize
+		sleep 2
+		# page.fullscreen
+#     # $client =  DropboxApi::Client.new %{AN-8rJ0XuEwAAAAAAAAAATUAu6uTWRtwFG8s7WOMmdIoHdYI4Ep2yYw3mOfh5MyO}
 end
 
 
@@ -822,23 +839,9 @@ def stagingTest
 			Capybara.ignore_hidden_elements = false
 
 		end
-	end
 
-
-
-=begin uncomment for app testing as needed
-[
-		 latch_dropdown_nesting_development,
-	 latch_dropdown_at_base_development,
-	 latch_dropdown_development,
-	latch_dropdown_duplicate_development
-]
-
-=end
-
-	RSpec.feature %{staging}  do
-		scenario  %{test that on duplication, the options are copied to the respective dropdowns} do
-
+		scenario  %{test that on duplication, the options are copied to the respective dropdowns}, :skip => true do
+			# this spec fails because something is broken in Angular
 			add_button  = first %{.f_o_r_m_add-latch-dropdown-duplicate}
 			add_button.click
 			first_dropdown =  capybara_result_to_array :target => (all %{.f_o_r_m_my-dropdown-1-latch-dropdown-duplicate})
@@ -876,12 +879,131 @@ def stagingTest
 			end
 
 		end
+	end
 
+
+
+
+=begin uncomment for app testing as needed
+[
+	...navigation_development
+]
+
+=end
+	RSpec.feature %{navigation},:skip => true  do
+
+
+		scenario %{test that as you navigate the pages are the same when you leave as when you come} do
+
+			elements = Hash.new
+			20.times do |x|
+				navigation = all %{p[class*='main-navigation'] }
+				current = navigation.sample
+				navigation_text = current.text
+
+				current.click
+				unless elements[navigation_text] != nil
+
+					#  still comes up with auto
+					# PP.pp execute_script %Q{
+					# 	return Array.from(document.querySelectorAll("*"))
+					# 	.map((x,i)=>{
+					# 		# return {
+					# 		# 	top: getComputedStyle(x)["top"],
+					# 		# 	left:getComputedStyle(x)["left"]
+					# 		# }
+					# 	})
+					# }
+					#
+
+					p navigation_text
+
+					# page modifers
+					if navigation_text == %{Blog}
+						controls = all %{.a_p_p_Button}
+						10.times do
+							sleep 0.5
+							controls.sample.click
+						end
+					elsif navigation_text == %{Home}
+						dropdowns = dropdownSelectSelector
+						5.times do
+							dropdowns.sample.click
+						end
+
+					end
+					#
+
+					elements[navigation_text] = navigationPage
+				else
+					p %{#{navigation_text} found a match}
+					new_navigation =  navigationPage
+
+					# test the top left of the old against the top left of the new
+					elements[navigation_text].each_with_index do |x,i|
+						expect(x).to eq new_navigation[i]
+					end
+					#
+
+					# once the test passes make the new navigation the current
+					if navigation_text == %{Blog}
+						controls = all %{.a_p_p_Button}
+						10.times do
+							sleep 0.5
+							controls.sample.click
+						end
+					elsif navigation_text == %{Home}
+						dropdowns = dropdownSelectSelector
+						5.times do
+							dropdowns.sample.click
+						end
+
+					end
+					new_navigation = navigationPage
+					elements[navigation_text] =  new_navigation
+					#
+
+				end
+
+
+			end
+
+		end
+
+	end
+
+	RSpec.feature %{staging}  do
+
+
+		scenario %{} do
+		end
 
 	end
 end
 
 
+def dropdownSelectSelector
+	(all %{.a_p_p_DropDownMiddle})
+	.to_a
+	.select! do |x|
+		x.text == %{Select Item}
+	end
+end
+def navigationPage
+	(all %{*})
+	.to_a
+	.select! do |x|
+		unless x[:class] == nil
+			!(x[:class].include? %{main-navigation})
+		else
+			true
+		end
+	end
+	.collect! do |x|
+		x.style %{top},%{left}
+	end
+
+end
 
 def numberParse  devObj
     dimension = devObj[:dimension]

@@ -7,10 +7,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment as env} from 'src/environments/environment';
 import website from './website';
 
-
-
-
-
 declare global {
     interface Window { Modernizr: any;createMap:any }
     // not let or else local to this file
@@ -174,7 +170,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this.ryber.appReloaded === 'true') {
 
 
-            this.ryber.appCurrentNav = "/articles"
+            this.ryber.appCurrentNav = "/home"
 
 
         }
