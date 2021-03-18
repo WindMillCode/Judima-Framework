@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren, Host,ChangeDetectorRef } from '@angular/core';
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest, Observable } from 'rxjs';
-import {  navigationType,eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren } from '../customExports'
+import {  navigationType,eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren, minMaxDelta } from '../customExports'
 import { catchError, delay,first, take } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -65,10 +65,13 @@ export class LatchDirective {
     ngOnInit() {
         this.extras = this.latch
 
+
         if (this.extras?.confirm === 'true') {
+
 			let {ryber,ref,zChildren,subscriptions,extras,moveWithTarget} = this
 			let rUD = ryberUpdateFactory({ryber})
             let co = this.co = this.extras.co
+
 
 			// the feature has been initialized do not reinitalize on navigation
 				// remember when duplicating this cant be the case
@@ -84,29 +87,33 @@ export class LatchDirective {
 				},
 				ryber
 			})
-			if(action.full ==="return"){
-				// restove from 'ngFalseDestroy'
-					// TODO, dropdown is a bit laggy please fix
-				let save =  ryber[co].metadata.latch.falseDestroy.shift()
-				this.extras.optionsSetup = "false"
-				Object.assign(this,save)
+
+
+
+			if(extras.type === "dropdown"){
+
+				// preserve state from navigation ...
+				if(action.full ==="return"){
+					// restore from 'ngFalseDestroy'
+						// TODO, dropdown is a bit laggy please fix
+					let save =  ryber[co].metadata.latch.falseDestroy.shift()
+					this.extras.optionsSetup = "false"
+					Object.assign(this,save)
+					//
+				}
 				//
-			}
-			//
-
-            subscriptions.push(
-				ryber[co].metadata.zChildrenSubject
-				.pipe(first())
-				.subscribe((devObj)=>{
-					zChildren =this.zChildren= ryber[co].metadata.zChildren
-					this.templateMyElements = devObj.templateMyElements
-
-					if(action.full ==="return"){
-						return
-					}
 
 
-					if(extras.type === "dropdown"){
+				subscriptions.push(
+					ryber[co].metadata.zChildrenSubject
+					.pipe(first())
+					.subscribe((devObj)=>{
+						zChildren =this.zChildren= ryber[co].metadata.zChildren
+						this.templateMyElements = devObj.templateMyElements
+
+						if(action.full ==="return"){
+							return
+						}
 
 						let zChild = zChildren[this.extras.zSymbol]
 						// console.log(zChild.extras.appDeltaNode.options.target)
@@ -196,8 +203,6 @@ export class LatchDirective {
 							})
 						})
 						ref.detectChanges()
-
-
 						this.extras.state = this.extras.state  || "closed"
 
 
@@ -236,23 +241,20 @@ export class LatchDirective {
 						})
 						//
 
-					}
 
 
-				})
-			)
+
+					})
+				)
 
 
-			// move with target
-			moveWithTarget=this.moveWithTarget = {
-				sub:ryber[co].metadata.ngAfterViewInitFinished
-				.subscribe((result:any)=>{
+				// move with target
+				moveWithTarget=this.moveWithTarget = {
+					sub:ryber[co].metadata.ngAfterViewInitFinished
+					.subscribe((result:any)=>{
 
-					let {dropdown,zChildren} = this
-					let {options:zSymbols} = dropdown
-
-					if(this.extras.type === "dropdown"){
-
+						let {dropdown,zChildren} = this
+						let {options:zSymbols} = dropdown
 
 						// attach listeneners to the options
 						if(this.extras.optionsSetup !== "true"){
@@ -300,16 +302,121 @@ export class LatchDirective {
 							this._dropdownStateOpened({zSymbols, zChildren,ref});
 						}
 
-					}
-				}),
-				index : subscriptions.length
+
+					}),
+					index : subscriptions.length
+				}
+				subscriptions.push( moveWithTarget.sub)
+				//
+
 			}
-            subscriptions.push( moveWithTarget.sub)
-			//
+
+			else if(extras.type ==="display" && extras.display?.type === "target"){
+
+				ryber[co].metadata.zChildrenSubject
+				.pipe(first())
+				.subscribe((devObj)=>{
+					zChildren =this.zChildren= ryber[co].metadata.zChildren
+					this.templateMyElements = devObj.templateMyElements
+				})
+
+				// create the display in relation to the target object
+				ryber[co].metadata.ngAfterViewInitFinished
+				.pipe(first())
+				.subscribe((result:any)=>{
+					zChildren =this.zChildren= ryber[co].metadata.zChildren
+
+					// gather all elements to the part of the display
+					extras.display.targets =[]
+					Object.keys(zChildren)
+					.forEach((x:any,i)=>{
+						if(["target","part"].includes(zChildren[x].extras?.appLatch?.display.type)){
+							extras.display.targets.push(x)
+						}
+					})
+					//
+
+					extras.display = extras.zChildren
+					.map((x:any,i)=>{
+						// console.log(x.logic,zChildren[extras.zSymbol].css)
+
+						let css= {
+							...x.css
+						}
+						console.log(extras.display.targets,x.group)
+						let neededTargets = extras.display.targets
+						.filter((y:any,j)=>{
+							return x.group.includes(zChildren[y].extras.appLatch.display.name)
+						})
+
+						;[["top","height"],["left","width"]]
+						.forEach((z:any,k)=>{
+							let delta = minMaxDelta({
+								type:"identify",
+								items:neededTargets,
+								min:(item)=>{
+									return {
+										key:item,
+										value:numberParse(zChildren[item].css[z[0]])
+									}
+								},
+								max:(item)=>{
+									return {
+										key:item,
+										value:numberParse(zChildren[item].css[z[0]]) +
+										numberParse(zChildren[item].css[z[1]])
+									}
+								}
+							})
+							css[z[0]] = delta.min.value
+							css[z[1]] = delta.max.value - delta.min.value
+						})
+
+
+						Object.entries(x.logic)
+						.forEach((y:any,i)=>{
+							let key = y[0]
+							let val = y[1]
+
+
+							if(["width","height"].includes(key)){
+								css[key] = (val * css[key]).toString() + "px"
+							}
+							else if(["top","left"].includes(key)){
+								css[key] = (val + css[key]).toString() + "px"
+							}
+
+						})
+
+						return rUD({
+							quantity:4,
+							co,
+							bool:x.bool,
+							css,
+							cssDefault:{},
+							text:x.text || "",
+							extras: {
+								judima:{
+									formatIgnore:"true",
+									topLevelZChild:"true"
+								},
+								...x?.extras
+							},
+							val:"a_p_p_Display " +x.val
+						})
+					})
+
+					// let the component know we have new elements on the DOM
+					ryber[co].metadata.latch.updateZChild.next({
+					})
+					//
+				})
+				//
 
 
 
 
+			}
 
         }
     }
@@ -403,22 +510,28 @@ export class LatchDirective {
 					},
 					ryber
 				})
-				if(action.full ==="return"){
-					// falseDestroy protection
-						// for things like navigation, the elements dont go so save the directive properties
+				if(extras.type === "dropdown"){
 
-					let save = {
-						dropdown:this?.dropdown
+
+					if(action.full ==="return"){
+						// falseDestroy protection
+							// for things like navigation, the elements dont go so save the directive properties
+
+						let save = {
+							dropdown:this?.dropdown
+						}
+						ryber[co].metadata.latch.falseDestroy.push(save)
+
+						this.subscriptions
+						.forEach((x: any, i) => {
+							x.unsubscribe()
+						})
+						delete this.subscriptions
+						//
+						return
 					}
-					ryber[co].metadata.latch.falseDestroy.push(save)
 
-					this.subscriptions
-					.forEach((x: any, i) => {
-						x.unsubscribe()
-					})
-					delete this.subscriptions
-					//
-					return
+
 				}
 				//
 

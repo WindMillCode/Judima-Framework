@@ -118,7 +118,7 @@ export class RyberService {
                 co
             }
 			let appLatch = {
-				confirm: 'true',
+				confirm: latch?.type !== undefined? 'true':'false',
 				zSymbolNeeded: "true",// zChildSymbol goes here
 				co,
 				...latch,
@@ -222,6 +222,7 @@ export class RyberService {
 				}
 
 
+
                 symbol = rUD({
                     co,
                     bool: 'h1',
@@ -234,6 +235,7 @@ export class RyberService {
 						extend,
 						judima,
 						appDeltaNode,
+                        appLatch,
                         appNest,
 					},
                 })
@@ -518,6 +520,7 @@ export class RyberService {
 						},
                         appNavigation,
 						appDeltaNode,
+                        appLatch,
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
@@ -1296,6 +1299,7 @@ export class RyberService {
 					select:{
 						value
 					},
+                    confirm:"true",
 					type:"dropdown"
 				},
 				appNest = {
@@ -1930,11 +1934,11 @@ export class RyberService {
                 }
             },
             navigation:{
-                type:"full", //[SPA,full],
+                type:"SPA", //[SPA,full],
                 full:{
                     map:{},
-                    // navigated:new BehaviorSubject("false")
-                    navigated:"false"
+                    navigated:"false",
+                    startURL:"/articles"
                 }
             },
             webRTC:{

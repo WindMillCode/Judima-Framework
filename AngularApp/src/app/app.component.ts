@@ -169,8 +169,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
         if (this.ryber.appReloaded === 'true') {
 
-
-            this.ryber.appCurrentNav = "/home"
+        
+            this.ryber.appCurrentNav = ryber.appCO0.metadata.navigation.full.startURL
 
 
         }

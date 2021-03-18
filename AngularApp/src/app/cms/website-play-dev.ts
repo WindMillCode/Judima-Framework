@@ -7753,7 +7753,145 @@ let mobileCustom_testing = [
 	...mobileCustom_development
 ]
 
-website.convertCMS = navigation_testing
+let display_development = [
+	{
+		"title": "section 1",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				// "left":147,
+				height:1700,
+				width:1175,
+				delta:{
+
+				},
+				nest:{
+
+				},
+				navigation:{
+
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						// width:"20%",
+						opacity:".5",
+						"background-color":"black"
+						// "max-width":"285px"
+					},
+					judima:{
+						mobile:{
+							stack:50,
+							widthRatio:1
+						},
+
+
+					},
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Section 1",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				top:100,
+				latch:{
+					type:"display",
+					display:{
+						type:"target",
+						name:"display_1"
+					},
+					zChildren:[
+						{
+							bool:"div",
+							css:{
+								"background-color":"red",
+							},
+							val:"my-display",
+							logic:{
+								width:1.10,
+								height:1.10,
+								top:-40,
+								left:-40
+							},
+							group:["display_1","display_2"]
+						},
+						{
+							bool:"div",
+							css:{
+								"background-color":"lightgreen",
+							},
+							val:"my-display",
+							logic:{
+								width:1.10,
+								height:1.10,
+								top:-40,
+								left:-40
+							},
+							group:["display_3"]
+						}
+					]
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+
+            {
+                "key": "text",
+                "type": "text",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"display_2"
+					},
+				},
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
+				"next":"true",
+				"split":4,
+				"text-align":"center",
+
+            },
+
+            {
+                "key": "text",
+                "type": "text",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"display_3"
+					},
+				},
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
+
+				"split":5,
+				"text-align":"center",
+
+            },
+
+		] .map((x:any,i)=>{
+			x.key += "-display"
+			return x
+		})
+	},
+]
+let display_testing = [
+	...display_development
+]
+
+website.convertCMS = display_testing
 
 
 
