@@ -355,11 +355,12 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 //
 
                 //stack spacing setup
-                let spacing =  [null,
-                    ...Array.from(align[0],(x,i)=> {return 50}),
-					...Array.from(align[1] !== undefined && align[0].length <= 1 ? align[1] : Array(0) ,(x,i)=> {return 50}),
-					section.stack
-                ]
+                let spacing =[]
+                // =  [null,
+                //     ...Array.from(align[0],(x,i)=> {return 50}),
+				// 	...Array.from(align[1] !== undefined && align[0].length <= 1 ? align[1] : Array(0) ,(x,i)=> {return 50}),
+				// 	section.stack
+                // ]
                 cmsZKeys
                 .forEach((x:any,i)=>{
                     if(zChild[x].extras.component.top !== undefined){
@@ -394,7 +395,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         templateMyElements:this.templateMyElements
                     })
 
-
+                    console.log(zChild)
                     eventDispatcher({
                         event:'resize',
                         element:window
@@ -417,6 +418,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                     this.directivesSendData({
                         directivesZChild:zChild,
+                        options:{
+                            type:["deltaNode"]
+                        },
                         templateMyElements:this.templateMyElements
                     })
 
@@ -812,14 +816,16 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         })
 
         // update the order dynamics are now static to the state of the view
-        let order = [
-        ...ryber[appTV].metadata.judima.desktop.stack.keep
+        try{
+            let order =ryber[appTV].metadata.judima.desktop.stack.keep
             .map((x:any,i)=>{
 
                 return x[0]
             })
-        ]
+
         ryber[appTV].metadata.order = order
+        }
+        catch(e){}
         //
 
         this.subscriptions
@@ -1004,6 +1010,21 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 });
                 this.ref.detectChanges();
                 //
+
+                //responsive height
+                Object.keys(zChild)
+                .forEach((x,i)=> {
+                    if(zChild[x].extras?.judima?.formatIgnore === "false"){
+                        if(["p","ta","c"].includes(zChild[x].bool )){
+                            zChild[x].css["height"] = null
+                            zChild[x].css["display"] = "table"
+                            this.ref.detectChanges()
+                            zChild[x].css["height"] =  (zChild[x].element.getBoundingClientRect().height).toString() + "px"
+                        }
+                    }
+                })
+                //
+
                 let responsiveMeasureTargets = finalZChildKeys
                 .reduce((acc, x, i) => {
 

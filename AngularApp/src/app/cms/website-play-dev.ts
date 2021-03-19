@@ -5186,6 +5186,219 @@ let component_dimension_testing = [
 	...component_position_development
 ]
 //
+
+
+// display testing
+
+let display_development = [
+	{
+		"title": "section 1",
+		"type_slug": "forms",
+		"metafields": [
+
+			{
+				"key": "Body",
+				"type": "body",
+				// "left":147,
+				height:1700,
+				width:1175,
+				delta:{
+					group:[
+						{
+							name:"displayDelta",
+							type:"add_remove_button"
+						},
+					]
+
+				},
+				nest:{
+
+				},
+				navigation:{
+					name:"guides"
+				},
+				"googleSheets": {},
+				options:{
+					css:{
+						// width:"20%",
+						opacity:".5",
+						// "background-color":"black"
+						// "max-width":"285px"
+					},
+					judima:{
+						mobile:{
+							stack:50,
+							widthRatio:.9
+						},
+
+
+					},
+				}
+			},
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Section 1",
+				"split": "9",
+				// "left":"700",
+				"text-align":"left",
+				top:200,
+				delta:{
+					"group":"displayDelta"
+				},
+				latch:{
+					type:"display",
+					display:{
+						type:"target",
+						name:"my_display_1"
+					},
+					zChildren:[
+						{
+							bool:"div",
+							css:{
+								"background-color":"red",
+							},
+							val:"my-display",
+							logic:{
+								width:1.10,
+								height:1.10,
+								top:-40,
+								left:-40
+							},
+							extras:{
+								appLatch:{
+									confirm:"true",
+									zSymbolNeeded:"true",
+
+									type:"display",
+									display:{
+										type:"target",
+										name:"overlay_1"
+									},
+									zChildren:[
+										{
+											bool:"div",
+											css:{
+												"background-color":"yellow",
+												"z-index":-1
+											},
+											val:"my-overlay-display",
+											logic:{
+												width:1.10,
+												height:1.10,
+												top:-60,
+												left:-60
+											},
+											group:["overlay_1"]
+										}
+									]
+								}
+							},
+
+							group:["my_display_1","my_display_2","my_display_3"]
+						},
+						{
+							bool:"div",
+							css:{
+								"background-color":"lightgreen",
+							},
+							val:"my-display",
+							logic:{
+								width:1.10,
+								height:1.10,
+								top:-20,
+								left:-40
+							},
+							group:["my_display_3"]
+						}
+					]
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					}
+				},
+				"googleSheets": {},
+			},
+
+            {
+                "key": "text",
+                "type": "text",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"my_display_2"
+					},
+				},
+				delta:{
+					"group":"displayDelta"
+				},
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
+				"next":"true",
+				"split":4,
+				"text-align":"center",
+
+            },
+
+            {
+                "key": "text",
+                "type": "text",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"my_display_3"
+					},
+				},
+				delta:{
+					"group":"displayDelta"
+				},
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
+
+				"split":5,
+				"text-align":"center",
+
+            },
+			{
+				"key": "add",
+				"type": "button",
+				"value":"Add ",
+				top:300,
+				delta:{
+					"group":"displayDelta",
+					"type":"add",
+					"by":"1"
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "remove",
+				"type": "button",
+				"value":"Remove",
+				top:300,
+				delta:{
+					"group":"displayDelta",
+					"type":"remove",
+					"by":"1"
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+
+		] .map((x:any,i)=>{
+			x.key += "-display"
+			return x
+		})
+	},
+]
+let display_testing = [
+	...display_development
+]
+//
 let home_development = [
 	{
 		"title": "navigation",
@@ -5222,6 +5435,10 @@ let home_development = [
 						},
 						{
 							name:"blog",
+							type:"direct_link"
+						},
+						{
+							name:"guides",
 							type:"direct_link"
 						},
 					],
@@ -5324,14 +5541,17 @@ let home_development = [
 					}
 				}
 			},
-			// {
-			// 	"key": "guides",
-			// 	type:"text",
-
-			// 	// top:-40,
-			// 	top:-40,
-			// 	"value":"Guides",
-			// },
+			{
+				"key": "guides",
+				type:"text",
+				navigation:{
+					group:"guides",
+					type:"direct_link"
+				},
+				// top:-40,
+				top:-40,
+				"value":"Guides",
+			},
 			// {
 			// 	"key": "books",
 			// 	type:"text",
@@ -6954,11 +7174,23 @@ let blog_development = [
 			},
 			{
 				"key": "table",
-				"type": "heading",
+				"type": "dropdown",
 				"value":"Duplicate Me",
-				"height":300,
+				// "height":300,
 				delta:{
 					"group":"secondDelta",
+				},
+				latch:{
+					options:[ //look to changes this to options
+						"A",
+						"B",
+						"C",
+						"D",
+						"E",
+						"F",
+					],
+					// "state":"open"
+
 				},
 				"split": "6",
 				"googleSheets": {},
@@ -6999,14 +7231,23 @@ let blog_development = [
 	},
 
 ]
+
+let guides_navigation = objectCopy(home_development.slice(0,1)[0])
+guides_navigation.title = "guides navigation"
+guides_navigation.metafields[0].navigation.name = "guides"
+let guides_development = [
+	guides_navigation,
+	...display_development
+]
+
 let navigation_development = [
 	...home_development,
 	...about_development,
 	...articles_development,
 	...video_development,
-	...blog_development
+	...blog_development,
+	...guides_development
 ]
-
 let navigation_testing = [...navigation_development]
 
 
@@ -7753,145 +7994,9 @@ let mobileCustom_testing = [
 	...mobileCustom_development
 ]
 
-let display_development = [
-	{
-		"title": "section 1",
-		"type_slug": "forms",
-		"metafields": [
-
-			{
-				"key": "Body",
-				"type": "body",
-				// "left":147,
-				height:1700,
-				width:1175,
-				delta:{
-
-				},
-				nest:{
-
-				},
-				navigation:{
-
-				},
-				"googleSheets": {},
-				options:{
-					css:{
-						// width:"20%",
-						opacity:".5",
-						"background-color":"black"
-						// "max-width":"285px"
-					},
-					judima:{
-						mobile:{
-							stack:50,
-							widthRatio:1
-						},
 
 
-					},
-				}
-			},
-			{
-				"key": "heading",
-				type:"heading",
-				"value":"Section 1",
-				"split": "9",
-				// "left":"700",
-				"text-align":"left",
-				top:100,
-				latch:{
-					type:"display",
-					display:{
-						type:"target",
-						name:"display_1"
-					},
-					zChildren:[
-						{
-							bool:"div",
-							css:{
-								"background-color":"red",
-							},
-							val:"my-display",
-							logic:{
-								width:1.10,
-								height:1.10,
-								top:-40,
-								left:-40
-							},
-							group:["display_1","display_2"]
-						},
-						{
-							bool:"div",
-							css:{
-								"background-color":"lightgreen",
-							},
-							val:"my-display",
-							logic:{
-								width:1.10,
-								height:1.10,
-								top:-40,
-								left:-40
-							},
-							group:["display_3"]
-						}
-					]
-				},
-				options:{
-					css:{
-						// height:"200px",
-						"text-align":"center",
-						"font-family":"Gilgongo Doro"
-					}
-				},
-				"googleSheets": {},
-			},
-
-            {
-                "key": "text",
-                "type": "text",
-				latch:{
-					type:"display",
-					display:{
-						type:"part",
-						name:"display_2"
-					},
-				},
-                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
-				"next":"true",
-				"split":4,
-				"text-align":"center",
-
-            },
-
-            {
-                "key": "text",
-                "type": "text",
-				latch:{
-					type:"display",
-					display:{
-						type:"part",
-						name:"display_3"
-					},
-				},
-                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus egestas tellus. Pellentesque diam volutpat commodo sed egestas. Diam quam nulla porttitor massa. Molestie ac feugiat sed lectus vestibulum mattis. Nisi est sit amet facilisis magna etiam tempor orci eu. Enim nec dui nunc mattis. Adipiscing bibendum est ultricies integer quis auctor elit sed. Fusce id velit ut tortor pretium. Maecenas accumsan lacus vel facilisis. Aliquam ultrices sagittis orci a. Urna nunc id cursus metus aliquam eleifend mi in nulla. Et magnis dis parturient montes nascetur ridiculus. Sollicitudin ac orci phasellus egestas tellus rutrum. Libero enim sed faucibus turpis in eu mi bibendum neque. Massa enim nec dui nunc mattis. Elit scelerisque mauris pellentesque pulvinar pellentesque. Diam phasellus vestibulum lorem sed risus. In iaculis nunc sed augue lacus viverra vitae congue.`,
-
-				"split":5,
-				"text-align":"center",
-
-            },
-
-		] .map((x:any,i)=>{
-			x.key += "-display"
-			return x
-		})
-	},
-]
-let display_testing = [
-	...display_development
-]
-
-website.convertCMS = display_testing
+website.convertCMS = navigation_testing
 
 
 

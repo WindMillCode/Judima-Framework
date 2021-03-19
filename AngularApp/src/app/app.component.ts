@@ -130,7 +130,11 @@ export class AppComponent implements OnInit, OnDestroy {
                     co.metadata.latch = {
                         updateZChild : new ReplaySubject<any>(),
                         zChild:{},
-                        falseDestroy:[]
+                        falseDestroy:[],
+                        display:{
+                            suffix:"display_",
+                            deltaNode:{}
+                        }
 					}
 
                     co.metadata.deltaNode = {
@@ -169,7 +173,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         if (this.ryber.appReloaded === 'true') {
 
-        
+
             this.ryber.appCurrentNav = ryber.appCO0.metadata.navigation.full.startURL
 
 

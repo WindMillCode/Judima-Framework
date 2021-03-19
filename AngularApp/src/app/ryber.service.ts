@@ -653,6 +653,7 @@ export class RyberService {
 						extend,
 						appDeltaNode,
                         appNest,
+                        appLatch,
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
@@ -1934,11 +1935,11 @@ export class RyberService {
                 }
             },
             navigation:{
-                type:"SPA", //[SPA,full],
+                type:"full", //[SPA,full],
                 full:{
                     map:{},
                     navigated:"false",
-                    startURL:"/articles"
+                    startURL:"/guides"
                 }
             },
             webRTC:{
