@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren, Host,ChangeDetectorRef } from '@angular/core';
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest, Observable } from 'rxjs';
-import {  navigationType,eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren, minMaxDelta } from '../customExports'
+import {  flatDeep,navigationType,eventDispatcher, numberParse, objectCopy,ryberUpdate,ryberUpdateFactory,xContain,stack, zChildren, minMaxDelta } from '../customExports'
 import { catchError, delay,first, take } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -30,6 +30,7 @@ export class LatchDirective {
     constructor(
         private ryber: RyberService,
 		private ref:ChangeDetectorRef,
+		private el:ElementRef
     ) { }
 
     @HostListener('click',['$event']) onClick(event){
@@ -67,6 +68,8 @@ export class LatchDirective {
 
 
         if (this.extras?.confirm === 'true') {
+
+
 
 
 
@@ -326,6 +329,7 @@ export class LatchDirective {
 						// 	ryber[co].metadata.latch.display.increment  = "true"
 						// }
 						zChildren =this.zChildren= ryber[co].metadata.zChildren
+						this.templateMyElements = devObj.templateMyElements
 					}),
 
 
@@ -341,7 +345,7 @@ export class LatchDirective {
 
 							let deltaNodegroup = zChildren[extras.zSymbol].extras.appDeltaNode?.group || extras.deltaNode.group || null
 
-							
+
 							if(ryber[co].metadata.deltaNode.groups[deltaNodegroup]){
 
 								ryber[co].metadata.latch.display.deltaNode[deltaNodegroup] ={
@@ -470,7 +474,9 @@ export class LatchDirective {
 					// move with target
 					ryber[co].metadata.ngAfterViewInitFinished
 					.subscribe((result:any)=>{
-
+						if(!Object.keys(zChildren).includes(extras.zSymbol)){
+							return
+						}
 						extras.zChildren
 						.forEach((x:any,i)=>{
 							this._displayDetermineDims({
@@ -497,6 +503,7 @@ export class LatchDirective {
 
 	private _displayDetermineDims(devObj:{dims: string[][], neededTargets: any, zChildren: any, css: any,logic:any}) {
 		let {dims,neededTargets,zChildren,css,logic} = devObj
+
 		dims
 		.forEach((z: any, k) => {
 			let delta = minMaxDelta({
@@ -611,7 +618,11 @@ export class LatchDirective {
 	}
 
     ngOnDestroy() {
+
+
         if (this.extras?.confirm === 'true') {
+
+
 			let {ryber,extras,co} = this
 
 				// prevent the dropdown from being destroyed on navigation
@@ -656,8 +667,9 @@ export class LatchDirective {
 				x.unsubscribe()
 			})
 			delete this.subscriptions
+			// console.log(this.extras)
 
-			if(this.extras.type === "dropdown"){
+			if(this.extras.type === "dropdown" ){
 				let {ryber,ref,zChildren,dropdown,co,templateMyElements} = this
 				let {options:zSymbols,container} = dropdown
 
@@ -697,7 +709,68 @@ export class LatchDirective {
 
 				//
 			}
+
+
+			else if(extras.type ==="display" && extras.display?.type === "target"){
+				let {ref,zChildren,templateMyElements} = this
+
+				let rUD = ryberUpdateFactory({ryber})
+
+				templateMyElements.changes
+				.pipe(
+					take(1),
+				)
+				.subscribe({
+					next:(result:any)=>{
+
+						extras.display.targets
+						.forEach((x:any,i)=>{
+							// recursively search for displays on other displays
+								// if issues check here however we strong recommend against using recursed display
+								//  find a better ratio then adding displays on on top another
+							let recursedDisplays = this.getRecursedDisplays({x,zChildren})
+							recursedDisplays
+							.forEach((y:any,j)=>{
+								rUD({
+									symbol:y,
+									type:"remove",
+									co
+								})
+							})
+							//
+						})
+						ref.detectChanges()
+					},
+				})
+			}
+
         }
     }
+
+	private getRecursedDisplays(devObj:{x:string,zChildren: any} ) {
+
+
+			let { x,zChildren } = devObj;
+
+			if (zChildren[x].extras.appLatch?.display?.targets !== undefined) {
+
+				return flatDeep(
+					[
+						x,
+						zChildren[x].extras.appLatch?.display?.targets
+						.map((y: any, j) => {
+							return this.getRecursedDisplays({ x: y,zChildren });
+						})
+					],
+					Infinity
+				)
+
+			}
+			else if (zChildren[x].extras.appLatch?.display?.targets === undefined) {
+				return [x];
+			}
+
+
+	}
 }
 

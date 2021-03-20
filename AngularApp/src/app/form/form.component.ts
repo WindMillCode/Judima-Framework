@@ -430,6 +430,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     //
 
 
+
                     eventDispatcher({
                         event:'resize',
                         element:window
