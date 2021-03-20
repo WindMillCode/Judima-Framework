@@ -5200,7 +5200,7 @@ let display_development = [
 				"key": "Body",
 				"type": "body",
 				// "left":147,
-				height:1700,
+				// height:1700,
 				width:1175,
 				delta:{
 					group:[
@@ -5242,10 +5242,11 @@ let display_development = [
 				"split": "9",
 				// "left":"700",
 				"text-align":"left",
-				top:200,
+				top:300,
 				delta:{
 					"group":"displayDelta"
 				},
+
 				latch:{
 					type:"display",
 					display:{
@@ -5318,6 +5319,12 @@ let display_development = [
 						// height:"200px",
 						"text-align":"center",
 						"font-family":"Gilgongo Doro"
+					},
+					judima:{
+						mobile:{
+							widthRatio:.3,
+							top:500
+						}
 					}
 				},
 				"googleSheets": {},
@@ -5371,6 +5378,13 @@ let display_development = [
 					"group":"displayDelta",
 					"type":"add",
 					"by":"1"
+				},
+				options:{
+					judima:{
+						mobile:{
+							top:200
+						}
+					}
 				},
 				"split": "3",
 				"googleSheets": {},

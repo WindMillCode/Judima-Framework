@@ -395,7 +395,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         templateMyElements:this.templateMyElements
                     })
 
-                    console.log(zChild)
+                    // console.log(zChild)
                     eventDispatcher({
                         event:'resize',
                         element:window
@@ -868,8 +868,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     zChildKeys: finalZChildKeys,
                     ref,
                     zChild,
-                    spacing: [null,
-                        ...Array.from(flatDeep(finalAlign, Infinity), (x: string, i) => {
+                    spacing: [
+                        ...Array.from(finalZChildKeys, (x: string, i) => {
                             if (zChild[x].extras.component.top !== undefined) {
                                 return zChild[x].extras.component.top;
                             }

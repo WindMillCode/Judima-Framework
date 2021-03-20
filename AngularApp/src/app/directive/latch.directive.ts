@@ -341,8 +341,8 @@ export class LatchDirective {
 
 							let deltaNodegroup = zChildren[extras.zSymbol].extras.appDeltaNode?.group || extras.deltaNode.group || null
 
-
-							if(deltaNodegroup !== null){
+							
+							if(ryber[co].metadata.deltaNode.groups[deltaNodegroup]){
 
 								ryber[co].metadata.latch.display.deltaNode[deltaNodegroup] ={
 									count:ryber[co].metadata.deltaNode.groups[deltaNodegroup]?.deltas.length,
@@ -352,6 +352,7 @@ export class LatchDirective {
 									ryber[co].metadata.deltaNode.groups[deltaNodegroup]?.deltas
 								).reverse()[0] || []
 							}
+
 						//
 
 						// gather all elements to the part of the display
@@ -363,7 +364,7 @@ export class LatchDirective {
 
 								let {suffix,deltaNode} = ryber[co].metadata.latch.display
 								let neededZSymbol = zChildren[x].extras.appLatch?.deltaNode?.zSymbol ||zChildren[x].extras.appLatch.zSymbol
-								console.log(neededZSymbol)
+
 
 								if(zChildren[x].extras.appLatch.display.originalName === undefined){
 									zChildren[x].extras.appLatch.display.originalName =
@@ -371,7 +372,7 @@ export class LatchDirective {
 								}
 								//
 
-								if(deltaNode[deltaNodegroup].symbols.includes(neededZSymbol) ){
+								if(deltaNode[deltaNodegroup]?.symbols.includes(neededZSymbol) || deltaNodegroup ===null ){
 									zChildren[x].extras.appLatch.display.name =
 									zChildren[x].extras.appLatch.display.originalName+ suffix + deltaNode[deltaNodegroup].count
 
@@ -390,7 +391,7 @@ export class LatchDirective {
 										y.group = y.group
 										.map((z:any,k)=>{
 
-											if(deltaNode[deltaNodegroup].symbols.includes(neededZSymbol)){
+											if(deltaNode[deltaNodegroup]?.symbols.includes(neededZSymbol) || deltaNodegroup ===null){
 												return  y.originalGroup[k] + suffix + deltaNode[deltaNodegroup].count
 											}
 											return z
@@ -415,14 +416,14 @@ export class LatchDirective {
 							}
 
 
-							console.group()
+							// console.group()
 							let neededTargets = x.neededTargets= extras.display.targets
 							.filter((y:any,j)=>{
-								console.log(zChildren[y].extras.appLatch.display.name)
+								// console.log(zChildren[y].extras.appLatch.display.name)
 								return x.group.includes(zChildren[y].extras.appLatch.display.name)
 							})
-							console.log(x.group)
-							console.groupEnd()
+							// console.log(x.group)
+							// console.groupEnd()
 
 							this._displayDetermineDims({dims, neededTargets, zChildren, css,logic:x.logic});
 
