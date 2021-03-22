@@ -5208,8 +5208,11 @@ let display_development = [
 							name:"displayDelta",
 							type:"add_remove_button"
 						},
+						{
+							name:"displayExpand",
+							type:"add_remove_button"
+						},
 					]
-
 				},
 				nest:{
 
@@ -5261,10 +5264,18 @@ let display_development = [
 							},
 							val:"my-display",
 							logic:{
-								width:1.10,
-								height:1.10,
-								top:-40,
-								left:-40
+								desktop:{
+									width:1.10,
+									height:1.10,
+									top:-40,
+									left:-40
+								},
+								mobile:{
+									width:1.10,
+									height:1.10,
+									top:-40,
+									left:-40
+								}
 							},
 							extras:{
 								appLatch:{
@@ -5285,10 +5296,18 @@ let display_development = [
 											},
 											val:"my-overlay-display",
 											logic:{
-												width:1.10,
-												height:1.10,
-												top:-60,
-												left:-60
+												desktop:{
+													width:1.10,
+													height:1.10,
+													top:-60,
+													left:-60
+												},
+												mobile:{
+													width:1.10,
+													height:1.10,
+													top:-60,
+													left:-60
+												}
 											},
 											group:["overlay_1"]
 										}
@@ -5305,10 +5324,18 @@ let display_development = [
 							},
 							val:"my-display",
 							logic:{
-								width:1.10,
-								height:1.10,
-								top:-20,
-								left:-40
+								desktop:{
+									width:1.10,
+									height:1.10,
+									top:-20,
+									left:-40
+								},
+								mobile:{
+									width:1.10,
+									height:1.10,
+									top:-20,
+									left:-40
+								}
 							},
 							group:["my_display_3"]
 						}
@@ -5329,7 +5356,6 @@ let display_development = [
 				},
 				"googleSheets": {},
 			},
-
             {
                 "key": "text",
                 "type": "text",
@@ -5349,7 +5375,6 @@ let display_development = [
 				"text-align":"center",
 
             },
-
             {
                 "key": "text",
                 "type": "text",
@@ -5396,6 +5421,222 @@ let display_development = [
 				top:300,
 				delta:{
 					"group":"displayDelta",
+					"type":"remove",
+					"by":"1"
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+
+			{
+				"key": "heading",
+				type:"heading",
+				"value":"Section 1",
+				"split": 5,
+				// "left":"700",
+				"text-align":"left",
+				top:300,
+				delta:{
+					"group":"displayExpand"
+				},
+
+				latch:{
+					type:"display",
+					display:{
+						type:"target",
+						name:"my_display_expand_1"
+					},
+
+					zChildren:[
+						{
+							bool:"div",
+							css:{
+								"background-color":"lightgreen",
+							},
+							val:"my-display",
+							logic:{
+								desktop:{
+									width:1.20,
+									height:function (devObj){
+										let {current,vertical,horizontal} = devObj.delta
+
+										return vertical.delta.value + 200
+
+									},
+									top:-80,
+									left:-80
+								},
+								mobile:{
+									width:1.20,
+									height:function (devObj){
+										let {current,vertical,horizontal} = devObj.delta
+
+										return vertical.delta.value + 200
+
+									},
+									top:-80,
+									left:-80
+								}
+							},
+							group:Array.from(Array(4),(x,i)=>{
+								return "my_display_expand_"+(i+1)
+							}),
+							type:["deltaNodeContainer"]
+						},
+						{
+							bool:"div",
+							css:{
+								"background-color":"rgb(128,65,150)",
+								opacity:.8
+							},
+							val:"my-display",
+							logic:{
+								desktop:{
+									width:1.10,
+									height:1.20,
+									top:-30,
+									left:-30
+								},
+								mobile:{
+									width:1.10,
+									height:1.20,
+									top:-30,
+									left:-30
+								}
+							},
+							group:["my_display_expand_1","my_display_expand_3"]
+						},
+						{
+							bool:"div",
+							css:{
+								"background-color":"rgb(109,106,237)",
+								opacity:.5
+							},
+							val:"my-display",
+							logic:{
+								desktop:{
+									width:1.10,
+									height:1.20,
+									top:-30,
+									left:-30
+								},
+								mobile:{
+									width:1.10,
+									height:1.20,
+									top:-30,
+									left:-30
+								}
+							},
+							group:["my_display_expand_2","my_display_expand_4"]
+						},
+					]
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					},
+					judima:{
+						mobile:{
+							widthRatio:.3,
+							top:500
+						}
+					}
+				},
+				"googleSheets": {},
+			},
+            {
+                "key": "section-2",
+                "type": "heading",
+				top:300,
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"my_display_expand_2"
+					},
+				},
+				options:{
+					css:{
+						// height:"200px",
+						"text-align":"center",
+						"font-family":"Gilgongo Doro"
+					},
+				},
+				delta:{
+					"group":"displayExpand"
+				},
+				value:"Section 2",
+                "split":4,
+				"text-align":"center",
+
+            },
+            {
+                "key": "text",
+                "type": "text",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"my_display_expand_3"
+					},
+				},
+				delta:{
+					"group":"displayExpand"
+				},
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus .`,
+				"split":5,
+				"text-align":"center",
+
+            },
+            {
+                "key": "text",
+                "type": "text",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"my_display_expand_4"
+					},
+				},
+				delta:{
+					"group":"displayExpand"
+				},
+                "value":`Lorem ipsum dolor sit amet,consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl nisi scelerisque eu ultrices vitae auctor. Et sollicitudin ac orci phasellus .`,
+				"split":4,
+				"text-align":"center",
+
+            },
+
+			{
+				"key": "add",
+				"type": "button",
+				"value":"Add ",
+				"next":"true",
+				top:300,
+				delta:{
+					"group":"displayExpand",
+					"type":"add",
+					"by":"1"
+				},
+				options:{
+					judima:{
+						mobile:{
+							top:200
+						}
+					}
+				},
+				"split": "3",
+				"googleSheets": {},
+			},
+			{
+				"key": "remove",
+				"type": "button",
+				"value":"Remove",
+				top:300,
+				delta:{
+					"group":"displayExpand",
 					"type":"remove",
 					"by":"1"
 				},

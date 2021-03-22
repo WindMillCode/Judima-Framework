@@ -128,7 +128,8 @@ export function componentBootstrap(
 						return
 					}
 					let utf8Symbol = String.fromCharCode(+w.split("&#")[1])
-					//  @ViewChild(`.${appTV} .${utf8Symbol}`)
+
+
 					zChild[w] ={
 						element:(
 							w === "&#8352"?
@@ -399,9 +400,42 @@ export function numDigits(
     return Math.max(Math.floor(Math.log10(Math.abs(devObj.x))), 0) + 1;
 }
 
+// soft copy utility fn
+    // much more complicated because a needed fn got deleted on JSON.parse(JSON.stringify)
 export function objectCopy(obj){
-    return JSON.parse(   JSON.stringify(   obj  )   )
+    let serialized = JSON.stringify(obj, function(k,v){
+        //special treatment for function types
+        if(typeof v === "function")
+            return v.toString();//we save the function as string
+        return v;
+    });
+
+    let compileFunction = function(str){
+        //find parameters
+        let pstart = str.indexOf('('), pend = str.indexOf(')');
+        let params = str.substring(pstart+1, pend);
+        params = params.trim();
+
+        //find function body
+        let bstart = str.indexOf('{'), bend = str.lastIndexOf('}');
+        str = str.substring(bstart+1, bend);
+
+        return Function(params, str);
+    }
+
+    let revivedObj = JSON.parse(serialized, function(k,v){
+        // there is probably a better way to determ if a value is a function string
+        if(typeof v === "string" && v.indexOf("function") !== -1)
+            return compileFunction(v);
+        return v;
+    });
+
+    return revivedObj
 }
+
+// export function objectCopy(obj){
+//     return {...obj }
+// }
 
 export function dragElement(elmnt) { // use this code dragElement(zChild.element);
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;

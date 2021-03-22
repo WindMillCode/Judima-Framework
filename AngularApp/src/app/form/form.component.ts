@@ -395,7 +395,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         templateMyElements:this.templateMyElements
                     })
 
-                    // console.log(zChild)
+
                     eventDispatcher({
                         event:'resize',
                         element:window
@@ -436,8 +436,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         element:window
                     })
                 })
-
 				//
+
 				let finalZChildKeys =[
 					"&#8353",
 					...cmsZKeys
@@ -705,6 +705,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         if(   numberParse(getComputedStyle(zChild["&#8353"].element).width) > section.width   ){
 
                             // element management
+                            ryber[appTV].metadata.section.mediaQuery ="desktop"
                             this.desktopMediaQuery({zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV});
                             //
 
@@ -715,6 +716,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
                             //element management
+                            ryber[appTV].metadata.section.mediaQuery ="mobile"
                             this.mobileMediaQuery({finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV});
                             //
 
@@ -729,6 +731,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         if(  ryber.appCO0.metadata.ryber.sectionDefault.app.width.mediaQuery !=="mobile"   ){
 
                             // element management
+                            ryber[appTV].metadata.section.mediaQuery ="desktop"
                             this.desktopMediaQuery({zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV});
                             //
 
@@ -739,6 +742,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
                             //element management
+                            ryber[appTV].metadata.section.mediaQuery ="mobile"
                             this.mobileMediaQuery({finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV,sectionType:"custom"});
                             //
 
@@ -1055,11 +1059,11 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     ref: this.ref,
                     zChild,
                     spacing:finalZChildKeys.map( (x: string, i) => {
-                            if (zChild[x].extras.judima?.mobile?.top !== undefined) {
-                                return zChild[x].extras.judima.mobile.top;
-                            }
-                            return mobileSection.stack;
-                        }),
+                        if (zChild[x].extras.judima?.mobile?.top !== undefined) {
+                            return zChild[x].extras.judima.mobile.top;
+                        }
+                        return mobileSection.stack;
+                    }),
                     type: 'simpleStack',
                     heightInclude: [null, 'f', 't']
                 });
@@ -1260,7 +1264,6 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
 
                 // if zSymbolNeeded is "true" provide the zSymbol
-                    // above is deprecated
                 Object.values(directivesZChild[x].extras)
                 .forEach((y:any,j)=>{
                     y?.zSymbolNeeded === "true" ? y.zSymbol = x : null

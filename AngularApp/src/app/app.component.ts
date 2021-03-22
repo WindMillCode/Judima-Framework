@@ -136,7 +136,6 @@ export class AppComponent implements OnInit, OnDestroy {
                             deltaNode:{}
                         }
 					}
-
                     co.metadata.deltaNode = {
 						updateZChild : new Subject<any>(),
 						groups:{},
@@ -146,6 +145,9 @@ export class AppComponent implements OnInit, OnDestroy {
 						},
                         falseDestroy:[]
 
+                    }
+                    co.metadata.section = {
+                        mediaQuery:null
                     }
                     co.metadata.navigation ={
                         groups:{},
@@ -283,7 +285,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (env.component.app.lifecycleHooks) {console.log('app ngAfterViewInit fires on mount ')}
 		let {templateMyComponents,ryber,subscriptions} = this
 
-
+        
         // listen for route changes
         subscriptions.push(
             templateMyComponents.changes

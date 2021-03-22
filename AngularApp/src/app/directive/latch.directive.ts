@@ -322,12 +322,9 @@ export class LatchDirective {
 
 				subscriptions.push(
 					ryber[co].metadata.zChildrenSubject
-					// .pipe(first())
 					.subscribe((devObj)=>{
 
-						// if(devObj.options.type.includes("deltaNode")){
-						// 	ryber[co].metadata.latch.display.increment  = "true"
-						// }
+
 						zChildren =this.zChildren= ryber[co].metadata.zChildren
 						this.templateMyElements = devObj.templateMyElements
 					}),
@@ -344,17 +341,18 @@ export class LatchDirective {
 						// determine if there are duplicates
 
 							let deltaNodegroup = zChildren[extras.zSymbol].extras.appDeltaNode?.group || extras.deltaNode.group || null
-
-
 							if(ryber[co].metadata.deltaNode.groups[deltaNodegroup]){
-
+								extras.deltaNode =extras.deltaNode || {
+									group:null,
+									zSymbol:null,
+									containerZSymbol:[]
+								}
 								ryber[co].metadata.latch.display.deltaNode[deltaNodegroup] ={
 									count:ryber[co].metadata.deltaNode.groups[deltaNodegroup]?.deltas.length,
-									symbols:[]
+									symbols:objectCopy(
+										ryber[co].metadata.deltaNode.groups[deltaNodegroup]?.deltas
+									).reverse()[0] || []
 								}
-								ryber[co].metadata.latch.display.deltaNode[deltaNodegroup].symbols = objectCopy(
-									ryber[co].metadata.deltaNode.groups[deltaNodegroup]?.deltas
-								).reverse()[0] || []
 							}
 
 						//
@@ -387,19 +385,24 @@ export class LatchDirective {
 
 									zChildren[x].extras?.appLatch.zChildren
 									.forEach((y:any,j)=>{
+
 										if(y.originalGroup === undefined){
 											y.originalGroup = y.group
 										}
 
+										// if this display is meant to be a container  for its repeated try to make one its doesnt need
+											// naming conventions, else make each display unique only to its connected  duplicated
 
-										y.group = y.group
-										.map((z:any,k)=>{
+											y.group = y.group
+											.map((z:any,k)=>{
 
-											if(deltaNode[deltaNodegroup]?.symbols.includes(neededZSymbol) || deltaNodegroup ===null){
-												return  y.originalGroup[k] + suffix + deltaNode[deltaNodegroup].count
-											}
-											return z
-										})
+												if(deltaNode[deltaNodegroup]?.symbols.includes(neededZSymbol) || deltaNodegroup ===null){
+													return  y.originalGroup[k] + suffix + deltaNode[deltaNodegroup].count
+												}
+												return z
+											})
+
+										//
 
 									})
 
@@ -409,7 +412,31 @@ export class LatchDirective {
 						})
 						//
 
-						extras.display.targets = extras.zChildren
+						extras.zChildren = extras.zChildren
+						.filter((x:any,i)=>{
+							if(x?.type?.includes("deltaNodeContainer") && x.group[0] !== x.originalGroup[0]){
+								// update the targets of the deltaNodeContainer
+								// console.log(extras.deltaNode.containerZSymbol,x)
+								let {containerZSymbol} = extras.deltaNode
+								containerZSymbol
+								.forEach((y:any,j)=>{
+									zChildren[y].extras.appLatch.zChildren[j].neededTargets =
+									extras.display.targets
+									.filter((z:any,k)=>{
+										// console.log(zChildren[y].extras.appLatch.display.name)
+										return zChildren[y].extras.appLatch.zChildren[j].originalGroup
+										.includes(zChildren[z].extras.appLatch.display.originalName)
+									})
+
+								})
+
+								//
+								return false
+							}
+							return true
+						})
+
+						extras.display.targets =  extras.zChildren
 						.map((x:any,i)=>{
 
 							let css= {
@@ -421,15 +448,28 @@ export class LatchDirective {
 
 
 							// console.group()
-							let neededTargets = x.neededTargets= extras.display.targets
-							.filter((y:any,j)=>{
-								// console.log(zChildren[y].extras.appLatch.display.name)
-								return x.group.includes(zChildren[y].extras.appLatch.display.name)
-							})
+							let neededTargets
+							if(x?.type?.includes("deltaNodeContainer")){
+								neededTargets = x.neededTargets= extras.display.targets
+								.filter((y:any,j)=>{
+									// console.log(zChildren[y].extras.appLatch.display.name)
+									return x.originalGroup.includes(zChildren[y].extras.appLatch.display.originalName)
+								})
+							}
+							else{
+								neededTargets = x.neededTargets= extras.display.targets
+								.filter((y:any,j)=>{
+									// console.log(zChildren[y].extras.appLatch.display.name)
+									return x.group.includes(zChildren[y].extras.appLatch.display.name)
+								})
+							}
 							// console.log(x.group)
 							// console.groupEnd()
 
-							this._displayDetermineDims({dims, neededTargets, zChildren, css,logic:x.logic});
+							this._displayDetermineDims({
+								dims, neededTargets, zChildren, css,
+								logic:x.logic[ryber[co].metadata.section.mediaQuery] ||  x.logic["default"]
+							});
 
 
 							try{
@@ -439,13 +479,14 @@ export class LatchDirective {
 
 								})
 								zChidlrenExtras.appLatch.deltaNode ={
+									...zChidlrenExtras.appLatch.deltaNode,
 									group: zChildren[extras.zSymbol].extras.appDeltaNode?.group,
 									zSymbol:extras.zSymbol
 								}
 							}
 							catch(e){}
 
-							return rUD({
+							let symbol = rUD({
 								quantity:4,
 								co,
 								bool:x.bool,
@@ -461,7 +502,16 @@ export class LatchDirective {
 								},
 								val:"a_p_p_Display " +x.val
 							})
+
+							if(x?.type?.includes("deltaNodeContainer")){
+
+								extras.deltaNode.containerZSymbol.push(extras.zSymbol)
+							}
+
+							return symbol
 						})
+
+						// console.log(extras.zChildren)
 						ref.detectChanges()
 
 						// let the component know we have new elements on the DOM
@@ -477,14 +527,27 @@ export class LatchDirective {
 						if(!Object.keys(zChildren).includes(extras.zSymbol)){
 							return
 						}
+
 						extras.zChildren
 						.forEach((x:any,i)=>{
+							// for some reason on navigation this filter methods removes
+								// zChildren already on the DOM so this must apply to
+								// deltaNodeContainer only
+							if(x?.type?.includes("deltaNodeContainer")){
+								x.neededTargets =
+								x.neededTargets
+								.filter((x:any,i)=>{
+									return zChildren[x] !== undefined
+								})
+							}
+							//
+
 							this._displayDetermineDims({
 								dims,
 								neededTargets:x.neededTargets,
 								zChildren,
 								css:zChildren[extras.display.targets[i]].css,
-								logic:x.logic
+								logic:x.logic[ryber[co].metadata.section.mediaQuery] || x.logic["default"]
 							});
 						})
 						ref.detectChanges()
@@ -504,9 +567,15 @@ export class LatchDirective {
 	private _displayDetermineDims(devObj:{dims: string[][], neededTargets: any, zChildren: any, css: any,logic:any}) {
 		let {dims,neededTargets,zChildren,css,logic} = devObj
 
+
+		let delta:any = {
+			vertical:null,
+			horizontal:null,
+			current:null
+		}
 		dims
 		.forEach((z: any, k) => {
-			let delta = minMaxDelta({
+			delta.current = minMaxDelta({
 				type: "identify",
 				items: neededTargets,
 				min: (item) => {
@@ -523,25 +592,39 @@ export class LatchDirective {
 					};
 				}
 			});
-			css[z[0]] = delta.min.value;
-			css[z[1]] = delta.max.value - delta.min.value;
 
-		});
+			css[z[0]] = delta.current.min.value;
+			css[z[1]] = delta.current.max.value - delta.current.min.value;
+			delta[Object.keys(delta)[k]] = delta.current
+		})
 
 		Object.entries(logic)
 		.forEach((y:any,i)=>{
 			let key = y[0]
 			let val = y[1]
+			// console.log(key,val)
+			if(typeof val ==="number"){
+				if(["width","height"].includes(key)){
+					css[key] = (val * css[key]).toString() + "px"
+				}
+				else if(["top","left"].includes(key)){
+					css[key] = (val + css[key]).toString() + "px"
+				}
 
+			}
+			//dev provides a custom fn to calculate the display
+				// must return a number
 
-			if(["width","height"].includes(key)){
-				css[key] = (val * css[key]).toString() + "px"
+			else if(typeof val ==="function"){
+
+				css[key] = val({
+					delta,
+				}).toString()+"px"
 			}
-			else if(["top","left"].includes(key)){
-				css[key] = (val + css[key]).toString() + "px"
-			}
+			//
 
 		})
+
 	}
 
 	private _dropdownGetOriginalVal(devObj:{co: any, val: any}) {
