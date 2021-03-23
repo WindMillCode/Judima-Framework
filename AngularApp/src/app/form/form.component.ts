@@ -1283,7 +1283,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
             zProps: {
                 extras: 'true',
                 val:'true',
-                quantity:'true'
+                quantity:'true',
+                // symbol:'true'
             }
         });
     }

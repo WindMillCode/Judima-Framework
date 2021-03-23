@@ -140,12 +140,13 @@ export function componentBootstrap(
 						cssDefault:y.ngCssDefault[k][h],
 						bool:y.bool[k][h],
 						innerText: y.text[k][h],
-						symbol:w,
+						// symbol:w,
 						extras:zProps.extras === 'true' ? y.extras[k][h] : null,
 						val:zProps.val === 'true' ? y.val[k][h] : null,
 						quantity:zProps.quantity === 'true' ? y.quantity[k][h] : null,
 
 					}
+                    zProps.symbol === "true" ? zChild[w].symbol = w : null
 				})
 			})
 
