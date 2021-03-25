@@ -88,7 +88,20 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
 
 
 ### The Ryber
-* the Ryber is the service responsible for the app. Judima treats the web app it creates as big data, one can see that from the website.ts file 
+* the Ryber is the service that creates the app from big data. Judima treats the web app it creates as big data, one can see that from the website.ts file. The ryber intializes the application and represents the entire website in its raw form
+
+* in its constructor it starts to create component objects to represent the components in the app then transforms website.ts  using template.component.html to create Elements and place them on the DOM, binded with all the data the HTMLElementS will need to play its role in the application
+
+* you should not edit anything here instead of zChildTemplate and ryber.appCO0
+* appViewComplete,appViewCompleteArray deal with the observable representations of the component, they let the app and the developer know that the component is ready for UX/UI, for example, 
+
+* appViewNavigation deals with navigation from one link to another
+
+* appAvailble are for directives, since you can't use *ngIf on attribute directives appAvaiable looks for blank in which other wise would be data the directive needs to be enabled. this fn handles the one error the comes with finding undefined in places, allowing the directive to be disabled and the app to continue
+
+* ryber.appCO0 servs as app-wide settings, features need to be expressed in terms of the app itself. Read the guides below only how to properly modify the metadata
+
+
 
 #### ryber.addAppScripts
 a way to async manage 3rd party srcripts
@@ -161,7 +174,12 @@ __FILE__
             })
 ```
 
+### app.component.ts
+* this is where angular intends for the application to initalize so judima uses it here
+* app initalizion partly occurs here however, everything that cannot be expressed in terms of judima are async executed here such as the loading of 3rd party scripts , global variables, navigation logic, and component configuration.component configuration is required to help judima work but the main concept is setting a data object for a component whether it was required to express judima features or not. the intent is for non-judima code to be maintained here and in the ryber,however judima is flexible make as many exceptions as you wish
 
+### customExports.ts
+* judima utility library, 
 ### MVC VS FPM
 * tradtionally we have Model View Controller
 * we use Feature Postition Moving
@@ -173,6 +191,16 @@ __FILE__
     * simple structred code
     * dynamic zChildren code is a modular extensior of static zChild code
     * never worry about cross component issues again
+
+#### form.component.ts 
+* serves as the formatter for the entire app. 
+* It is the algorithmic link between the DOM elements and the judima framework. its responsible for poisitioning everything on the website according to its code and settings, which completes the transformation of big data to a website representation of it. It is responsible for identifying the existence of features that are significantly involved in the formatting of the website and make sure that there is cooperation, that the features of a zChild are fully expressed as well as maintain the overall formatting structure of the app without the 2 affecting each other
+
+* the algorithm is big because web front-end formatting development is a near-impossible tasks. there is flexbox and grid, however using the algorithm logic allows for infinite granaularity in terms of formatting control. More possible for integration of features into the website without difficulty as well as the expression of the uniqueness of Judima
+
+* the zChildren are made here
+
+
 
 #### Features
 
