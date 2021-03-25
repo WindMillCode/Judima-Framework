@@ -1790,6 +1790,7 @@ export class RyberService {
     /* app*/
     appCurrentNav: string = "/home"
     appReloaded: string = "true"
+    //deprecated
     appES = {
         router: {
         },
@@ -1803,6 +1804,7 @@ export class RyberService {
         },
 		zChildUpdate:{}
     }
+    //
     appSubscriptionArray: Subscription[] = []
     appViewComplete: Subject<any> = new Subject<any>()
     appViewCompleteArray: Array<any> = []

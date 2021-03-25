@@ -144,11 +144,10 @@ RSpec.configure do |config|
 	# my_drivers = %i{ edgeBrowser }
 	# my_drivers = %i{ selenium_billy }
 	my_drivers = %i{ firefox_profile}
+	# my_drivers = %i{seleniumChrome}
 	# my_drivers = %i{ internetExplorer }
 	hosts = Hash.new
 	hosts[:dev] =  %{http://localhost:8000}
-	# hosts[:homeowner_dev] =  %{http://localhost:4201}
-	# hosts[:rental_prod] = %{https://www.guadalupendc.org/online-rental-housing-application}
 
 	config.full_backtrace = false
 	config.backtrace_exclusion_patterns = [
