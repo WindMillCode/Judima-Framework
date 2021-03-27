@@ -5239,7 +5239,7 @@ let display_development = [
 				}
 			},
 			{
-				"key": "heading",
+				"key": "heading-display1",
 				type:"heading",
 				"value":"Section 1",
 				"split": "9",
@@ -5262,7 +5262,7 @@ let display_development = [
 							css:{
 								"background-color":"red",
 							},
-							val:"my-display",
+							val:"my-display1",
 							logic:{
 								desktop:{
 									width:1.10,
@@ -5294,7 +5294,7 @@ let display_development = [
 												"background-color":"yellow",
 												"z-index":-1
 											},
-											val:"my-overlay-display",
+											val:"my-overlay-display1",
 											logic:{
 												desktop:{
 													width:1.10,
@@ -5322,7 +5322,7 @@ let display_development = [
 							css:{
 								"background-color":"lightgreen",
 							},
-							val:"my-display",
+							val:"my-display1",
 							logic:{
 								desktop:{
 									width:1.10,
@@ -5357,7 +5357,7 @@ let display_development = [
 				"googleSheets": {},
 			},
             {
-                "key": "text",
+                "key": "text-display1",
                 "type": "text",
 				latch:{
 					type:"display",
@@ -5376,7 +5376,7 @@ let display_development = [
 
             },
             {
-                "key": "text",
+                "key": "text-display1",
                 "type": "text",
 				latch:{
 					type:"display",
@@ -5395,7 +5395,7 @@ let display_development = [
 
             },
 			{
-				"key": "add",
+				"key": "add-1",
 				"type": "button",
 				"value":"Add ",
 				top:300,
@@ -5415,7 +5415,7 @@ let display_development = [
 				"googleSheets": {},
 			},
 			{
-				"key": "remove",
+				"key": "remove-1",
 				"type": "button",
 				"value":"Remove",
 				top:300,
@@ -5429,9 +5429,9 @@ let display_development = [
 			},
 
 			{
-				"key": "heading",
+				"key": "heading-display2",
 				type:"heading",
-				"value":"Section 1",
+				"value":"Section 2",
 				"split": 5,
 				// "left":"700",
 				"text-align":"left",
@@ -5453,7 +5453,7 @@ let display_development = [
 							css:{
 								"background-color":"lightgreen",
 							},
-							val:"my-display",
+							val:"my-display-overlay",
 							logic:{
 								desktop:{
 									width:1.20,
@@ -5464,7 +5464,7 @@ let display_development = [
 
 									},
 									top:-80,
-									left:-80
+									left:200
 								},
 								mobile:{
 									width:1.20,
@@ -5489,7 +5489,7 @@ let display_development = [
 								"background-color":"rgb(128,65,150)",
 								opacity:.8
 							},
-							val:"my-display",
+							val:"my-display3",
 							logic:{
 								desktop:{
 									width:1.10,
@@ -5512,7 +5512,7 @@ let display_development = [
 								"background-color":"rgb(109,106,237)",
 								opacity:.5
 							},
-							val:"my-display",
+							val:"my-display2",
 							logic:{
 								desktop:{
 									width:1.10,
@@ -5547,7 +5547,7 @@ let display_development = [
 				"googleSheets": {},
 			},
             {
-                "key": "section-2",
+                "key": "section-2display2",
                 "type": "heading",
 				top:300,
 				latch:{
@@ -5567,13 +5567,13 @@ let display_development = [
 				delta:{
 					"group":"displayExpand"
 				},
-				value:"Section 2",
+				value:"Section 3",
                 "split":4,
 				"text-align":"center",
 
             },
             {
-                "key": "text",
+                "key": "text-display2",
                 "type": "text",
 				latch:{
 					type:"display",
@@ -5610,7 +5610,7 @@ let display_development = [
             },
 
 			{
-				"key": "add",
+				"key": "add-2",
 				"type": "button",
 				"value":"Add ",
 				"next":"true",
@@ -6072,7 +6072,7 @@ let home_development = [
 						"Toronto",
 						"Suriya"
 					],
-					
+
 				},
 				"split": "3",
 				"googleSheets": {},
