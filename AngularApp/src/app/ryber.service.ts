@@ -1,5 +1,5 @@
 import { Injectable, VERSION,Renderer2,RendererFactory2, ChangeDetectorRef,Inject } from "@angular/core";
-import { Observable, of, Subject, Subscription, BehaviorSubject, ReplaySubject, merge, combineLatest } from "rxjs";
+import { fromEvent,Observable, of, Subject, Subscription, BehaviorSubject, ReplaySubject, merge, combineLatest } from "rxjs";
 // import { Router,RouterEvent } from "@angular/router";
 import { zChildren, componentObject, numberParse, ryberUpdate,ryberUpdateFactory, objectCopy } from "./customExports";
 import { HttpClient } from "@angular/common/http";
@@ -972,6 +972,7 @@ export class RyberService {
 						extend,
 						appDeltaNode,
                         appNest,
+                        appLatch,
                     }
                 })
             }
@@ -1178,48 +1179,7 @@ export class RyberService {
 
             }
 
-            else if (type === "display") {
-				// strong argument to deprecate because if we start nesting do we want this
 
-                let css = {
-                    top: '0px',
-                    left: '90px',
-                    width: '1085px',
-                    height: '1200px',
-                    "background-color": background === undefined ? "rgb(211,211,211)" : background,
-                    color,
-					"border-radius": Modernizr.borderradius ? "20px 20px 20px 20px" : null,
-					...options.css
-				}
-				extend = {
-					...extend,
-					//your props here
-					...options.extend
-				}
-				judima = {
-					...judima,
-					//your props here
-					...options.judima
-				}
-
-
-                component.height = component?.height === undefined ? 1200 : component.height
-
-                symbol = rUD({
-                    co,
-                    bool: 'div',
-                    val: key.split("_").reverse()[0],
-                    css,
-                    extras: {
-						extend,
-						judima,
-                        component,
-						type,
-						appDeltaNode,
-                        appNest,
-                    }
-                })
-            }
 
             else if (type === "bullet point") {
 
@@ -1878,7 +1838,7 @@ export class RyberService {
             x.innerText ? this.renderer2.setProperty(s,"innerText",x.innerText) : null
             x.innerText ? this.renderer2.setProperty(s,"innerHTML",x.innerText) : null
 			x.async  ? this.renderer2.setAttribute(s,"async",x.async) : null
-			x.defer  ? this.renderer2.setAttribute(s,"async",x.defer) : null
+			x.defer  ? this.renderer2.setAttribute(s,"defer",x.defer) : null
 			x.integrity  ? this.renderer2.setAttribute(s,"integrity",x.integrity) : null
             if(x.placement){
                 if(x.placement?.appendChild){
@@ -1892,7 +1852,12 @@ export class RyberService {
             else{
                 this.renderer2.appendChild(window.document.head, s);
             }
-            return {element:s,name:x.name}
+            let scriptMetadata =  {element:s,name:x.name,loaded:"false"}
+            fromEvent(s,"load")
+            .subscribe((result:any)=>{
+                scriptMetadata.loaded = "true"
+            })
+            return scriptMetadata
         });
     }
     appTestKeyword = "root"

@@ -324,9 +324,10 @@ export class LatchDirective {
 					ryber[co].metadata.zChildrenSubject
 					.subscribe((devObj)=>{
 
-
+						console.log(ryber[co].metadata.deltaNode)
 						zChildren =this.zChildren= ryber[co].metadata.zChildren
 						this.templateMyElements = devObj.templateMyElements
+
 					}),
 
 
@@ -340,7 +341,7 @@ export class LatchDirective {
 						}
 						// determine if there are duplicates
 
-							let deltaNodegroup = zChildren[extras.zSymbol].extras.appDeltaNode?.group || extras.deltaNode.group || null
+							let deltaNodegroup = zChildren[extras.zSymbol].extras.appDeltaNode?.group || extras.deltaNode?.group || null
 							if(ryber[co].metadata.deltaNode.groups[deltaNodegroup]){
 								extras.deltaNode =extras.deltaNode || {
 									group:null,
@@ -361,7 +362,8 @@ export class LatchDirective {
 						extras.display.targets =[]
 						Object.keys(zChildren)
 						.forEach((x:any,i)=>{
-							if(["target","part"].includes(zChildren[x].extras?.appLatch?.display.type)){
+
+							if(["target","part"].includes(zChildren[x].extras?.appLatch?.display?.type)){
 								// consider duplicates
 
 								let {suffix,deltaNode} = ryber[co].metadata.latch.display
