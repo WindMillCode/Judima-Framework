@@ -193,7 +193,8 @@ export class RyberService {
                         appNavigation:{
                             type:"body",
                             ...appNavigation
-                        }
+                        },
+                        ...options.extras
                     }
                 })
             }
@@ -238,6 +239,7 @@ export class RyberService {
 						appDeltaNode,
                         appLatch,
                         appNest,
+                        ...options.extras
 					},
                 })
 
@@ -261,7 +263,7 @@ export class RyberService {
 				extend = {
 					...extend,
 					type: 'text',
-                    placeholder: value,
+                    placeholder: value || "",
 					form: 'myForm',
 					...options.extend
 				}
@@ -301,8 +303,8 @@ export class RyberService {
                         },
                         appNest,
                         component,
-
-                        type
+                        type,
+                        ...options.extras
                     }
                 })
             }
@@ -362,7 +364,8 @@ export class RyberService {
                             link: form?.link
                         },
                         component,
-                        type
+                        type,
+                        ...options.extras
                     }
                 })
             }
@@ -417,7 +420,8 @@ export class RyberService {
                             link: form?.link
                         },
                         component,
-                        type
+                        type,
+                        ...options.extras
                     }
                 })
             }
@@ -475,7 +479,8 @@ export class RyberService {
                         appDateClick: {
                             confirm: "true"
                         },
-                        type
+                        type,
+                        ...options.extras
                     }
                 })
             }
@@ -527,7 +532,8 @@ export class RyberService {
                             co,
                             webRTC
 						},
-						appNest
+						appNest,
+                        ...options.extras
                     }
                 })
             }
@@ -568,7 +574,8 @@ export class RyberService {
 						extend,
 						judima,
 						appDeltaNode,
-						appNest
+						appNest,
+                        ...options.extras
                     }
                 })
             }
@@ -615,7 +622,8 @@ export class RyberService {
                             },
 						},
 						appDeltaNode,
-                        appNest
+                        appNest,
+                        ...options.extras
                     }
                 })
             }
@@ -660,6 +668,7 @@ export class RyberService {
                             co,
                             webRTC
                         },
+                        ...options.extras
                     }
                 })
             }
@@ -701,87 +710,12 @@ export class RyberService {
 						type,
 						appDeltaNode,
                         appNest,
+                        ...options.extras
                     }
                 })
             }
 
-            else if (type === "options") {
-                if (this[co.valueOf()].metadata.toggleButton === undefined) {
-                    this[co.valueOf()].metadata.toggleButton = {
-                        options: {}
-                    }
-                }
-                if (count !== undefined && this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] === undefined) {
-                    this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] = {
-                        selectedElement: [],
-                        count,
-                        stuff: []
-                    }
-                }
 
-
-                let css = {
-                    "z-index": 4,
-                    display: "table",
-                    "font-size": "21px",
-                    // 'background-color':background,
-					// color,
-
-                    "font-weight": italics,
-					"font-family": fonts,
-					...options.css
-				}
-				extend = {
-					...extend,
-					//your props here
-					...options.extend
-				}
-				judima = {
-					...judima,
-					//your props here
-					...options.judima
-				}
-
-                symbol = rUD({
-                    co,
-                    bool: 'a',
-                    val: key.split("_").reverse()[0] + '  a_p_p_Selection',
-                    text: value,
-                    css,
-                    extras: {
-						extend,
-						judima,
-                        toggleButton: {
-                            confirm: 'true',
-                            onBackgroundColor: 'black',
-                            onColor: 'white',
-                            offBackgroundColor: 'transparent',
-                            offColor: 'black',
-                            selected: this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] === undefined ? 'false' : () => { return this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] },
-                            mySelected: this[co.valueOf()].metadata.toggleButton.options[group.valueOf()] === undefined ? undefined : 'false'
-						},
-						appDeltaNode,
-                        appNest,
-                        appInputHandle: {
-                            confirm: 'true',
-                            zSymbol: "",// zChildSymbol goes here
-                            co,
-                            name: this[co.valueOf()].quantity[1][1].signature + " " + group,
-                            // if we get duplicated we need to do something abt it
-                            value,
-                            type: "options",
-                            googleSheets,
-                            required: form?.required !== undefined ? "options" : "false",
-							link: form?.link,
-							zSymbolNeeded:"true"
-                        },
-                        component,
-                        type,
-                        group
-                    }
-
-                })
-            }
 
             else if (type === "button") {
 
@@ -836,7 +770,8 @@ export class RyberService {
 						appGsapCursor:{
                             ...appGsapCursor,
 							type:"button"
-                        }
+                        },
+                        ...options.extras
                     }
                 })
 
@@ -887,59 +822,13 @@ export class RyberService {
                             co
                         },
                         component,
-                        type
+                        type,
+                        ...options.extras
                     }
                 })
             }
 
-            // lab zChild additions
-            else if (type === "googleMaps div") {
 
-                let css = {
-                    width: '325px',
-                    "font-size": "48px",
-                    top: "0px",
-                    // height:"75px",
-                    // left:'400px',
-                    "z-index": 4,
-                    'background-color': background,
-                    color,
-                    "font-family": fonts,
-					"font-weight": italics,
-					...options.css
-				}
-				extend = {
-					...extend,
-					//your props here
-					...options.extend
-				}
-				judima = {
-					...judima,
-					//your props here
-					...options.judima
-				}
-
-                symbol = rUD({
-                    co,
-                    bool: 'div',
-                    text: value,
-                    val: key.split("_").reverse()[0] + ' a_p_p_Maps',
-                    css,
-                    extras: {
-						extend,
-						judima,
-						appDeltaNode,
-                        appNest,
-                        appGoogleMaps: {
-                            confirm: 'true',
-                            co
-                        },
-                        component,
-                        type
-                    }
-                })
-            }
-            //
 
             else if (type === "image") { // for now a better use of divs?
 
@@ -973,6 +862,7 @@ export class RyberService {
 						appDeltaNode,
                         appNest,
                         appLatch,
+                        ...options.extras
                     }
                 })
             }
@@ -1011,6 +901,7 @@ export class RyberService {
                             co,
                             webRTC
                         },
+                        ...options.extras
 
                     }
                 })
@@ -1052,7 +943,7 @@ export class RyberService {
                             co,
                             webRTC
                         },
-
+                        ...options.extras
                     }
                 })
             }
@@ -1113,7 +1004,8 @@ export class RyberService {
                             type: "file button"
                         },
                         component,
-                        type
+                        type,
+                        ...options.extras
                     }
                 })
             }
@@ -1172,6 +1064,7 @@ export class RyberService {
                             googleSheets,
                             link: form?.link
                         },
+                        ...options.extras
 
                     }
                 })
@@ -1225,6 +1118,7 @@ export class RyberService {
 						type,
 						appDeltaNode,
                         appNest,
+                        ...options.extras
                     }
                 })
             }
@@ -1297,16 +1191,7 @@ export class RyberService {
                         appNest,
                         component,
                         type,
-                        // appInputHandle: {
-                        //     googleSheets,
-                        //     confirm: 'true',
-                        //     type,
-                        //     zSymbolNeeded:"true",
-                        //     co,
-                        //     name: this[co.valueOf()].quantity[1][1].signature + " " + zCTgen.next().value,
-                        //     link: form?.link,
-                        //     required: form?.required !== undefined ? "dropdown" : "false",
-                        // }
+                        ...options.extras
                     },
 
                 })
@@ -1351,6 +1236,7 @@ export class RyberService {
 							type: delta?.type || "increment",
 						},
                         appNest,
+                        ...options.extras
                     }
                 })
 
@@ -1397,6 +1283,7 @@ export class RyberService {
 							type:"cursor"
 						},
                         appNest,
+                        ...options.extras
                     }
                 })
 
@@ -1437,7 +1324,8 @@ export class RyberService {
                         component,
 						type: "text",
 						appDeltaNode,
-						appNest
+						appNest,
+                        ...options.extras
                     }
                 })
             }
@@ -1907,7 +1795,7 @@ export class RyberService {
                 full:{
                     map:{},
                     navigated:"false",
-                    startURL:"/guides"
+                    startURL:"/form"
                 }
             },
             webRTC:{

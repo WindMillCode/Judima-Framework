@@ -218,6 +218,15 @@ __type__
     * name acts as the unique ID for the part of the group 
     * type is the role the part plays in the group, whether it be head tail, foot, 
      play button, submit button, arrow ...
+
+* to implement a feature use the template-judima.directive, and initaite setup from the component body zChild, with type of body. the logic is divided into groups and types, if a name is not provided,  it will be given 'default'. It deals with navigation by going through the zChildren and assigning zSymbols to groups and types in a group object maintained on the componentObject metadata object. it deals with duplication, but looking at the  componentObject metadata deltaNode object and looking for which index an element belongs to in its deltas.
+
+	* always be wary of navigation and duplication
+	* after proper grouping and initalization is bug free, use the types to create logic for your code, once again navigation and duplication
+
+	* navigation will make element event listeners disappear, so make sure you reattach instead of reinitalize, one example is the falseDestroy used in other componentObject metadata directives, to save the state of the feature
+
+	* the directive needs to know as much as is needed about whether an element is duplicated, since we fail to have deltaNode properly give, the framework will be redone in a future major version where deltaNode is not only responsible for duplication but also responsible for presenting info the rest of the app can easily work with 
 ##### Navigation Directive
 * these help the element act as a linked when clicked on navigates to different part of the site
 * when performing navigation, DOM elements dont disappear, but zChildren are deleted, 

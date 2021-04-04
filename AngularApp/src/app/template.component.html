@@ -5,6 +5,7 @@
 		<div
 		appNest [nest] = "ryber.appAvailble( a.extras[0][bb], 'appNest')"
 		appWebVitals [webVitals] = "ryber.appAvailble( a.extras[0][bb], 'appWebVitals')"
+        appVanillaTilt [vanillaTilt] = "ryber.appAvailble( a.extras[0][bb], 'appVanillaTilt')"
 		appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[0][bb], 'appDeltaNode')"
         appSection [section] = "ryber.appAvailble( a.extras[0][bb], 'appSection')"
         appNavigation [navigation] = "ryber.appAvailble( a.extras[0][bb], 'appNavigation')"
@@ -298,14 +299,14 @@
                 appFormControl [formControl] = "ryber.appAvailble( a.extras[1][bb], 'appFormControl')"
                 appFileHandler [fileHandler] = "ryber.appAvailble( a.extras[1][bb], 'appFileHandler')"
                 appLatch [latch] = "ryber.appAvailble( a.extras[1][bb], 'appLatch')"
-                *ngIf= "a.bool[1][bb] ==='b' else elseBlock21 "
+                *ngIf= "a.bool[1][bb] ==='b' else elseBlock22"
                 class = {{a.val[1][bb]}}
                 [ngStyle] =  'a.ngCss[1][bb]'
                 [innerHTML] = 'a.text[1][bb].item'
                 appExtend [extend] = "ryber.appAvailble( a.extras[1][bb], 'extend')" >
             </button>
 		</ng-template>
-        <ng-template #elseBlock21  >
+        <!-- <ng-template #elseBlock21  >
 			<button #myVal
 				appDeltaNode [deltaNode] = "ryber.appAvailble( a.extras[1][bb], 'appDeltaNode')"
                 appNest [nest] = "ryber.appAvailble( a.extras[1][bb], 'appNest')"
@@ -319,7 +320,7 @@
                 [innerHTML] = 'a.text[1][bb].item'
                 appExtend [extend] = "ryber.appAvailble( a.extras[1][bb], 'extend')" >
             </button>
-        </ng-template>
+        </ng-template> -->
         <ng-template #elseBlock22  >
             <embed
 			#myVal

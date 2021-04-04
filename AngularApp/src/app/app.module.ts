@@ -23,6 +23,7 @@ import { GsapCursorDirective } from './directive/gsap-cursor.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SectionDirective } from './directive/section.directive';
 import { NavigationDirective } from './directive/navigation.directive';
+import { VanillaTiltDirective } from './directive/vanilla-tilt.directive';
 
 let providers = []
 if(env.testingAcct.confirm === "true"){
@@ -43,6 +44,7 @@ if(env.testingAcct.confirm === "true"){
     GsapCursorDirective,
     SectionDirective,
     NavigationDirective,
+    VanillaTiltDirective,
     
 
   ],

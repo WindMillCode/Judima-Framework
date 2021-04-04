@@ -1,4 +1,4 @@
-import {objectCopy} from '../customExports'
+import {objectCopy,zProtoComponent,zProtoChildren} from '../customExports'
 
 let website:any = {}
 let beforeItems  = [{
@@ -12,7 +12,7 @@ let beforeItems  = [{
 			"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
 		}
 	},
-	"googleSheets": {},
+
 },
 {
 	"key": "before-text",
@@ -20,7 +20,7 @@ let beforeItems  = [{
 	"value":"Before Items",
 	"split": "3",
 	// "height":"1",
-	"googleSheets": {},
+
 },
 {
 	"key": "before-text",
@@ -33,7 +33,7 @@ let beforeItems  = [{
 		}
 	},
 	// "height":"1",
-	"googleSheets": {},
+
 },
 {
 	"key": "before-text",
@@ -42,7 +42,7 @@ let beforeItems  = [{
 	"value":"Before Items",
 	"split": "3",
 	// "height":"1",
-	"googleSheets": {},
+
 }].slice((Math.random()*3)+1)
 let afterItems  = [{
 	"key": "after-text",
@@ -56,7 +56,7 @@ let afterItems  = [{
 			"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
 		}
 	},
-	"googleSheets": {},
+
 },
 {
 	"key": "after-text",
@@ -64,7 +64,7 @@ let afterItems  = [{
 	"value":"after Items",
 	"split": "3",
 	// "height":"1",
-	"googleSheets": {},
+
 },
 {
 	"key": "after-text",
@@ -77,7 +77,7 @@ let afterItems  = [{
 		}
 	},
 	// "height":"1",
-	"googleSheets": {},
+
 },
 {
 	"key": "after-text",
@@ -86,7 +86,7 @@ let afterItems  = [{
 	"value":"after Items",
 	"split": "3",
 	// "height":"1",
-	"googleSheets": {},
+
 }]
 let betweenItems  = [{
 	"key": "between-text",
@@ -100,7 +100,7 @@ let betweenItems  = [{
 			"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
 		}
 	},
-	"googleSheets": {},
+
 },
 {
 	"key": "between-text",
@@ -108,7 +108,7 @@ let betweenItems  = [{
 	"value":"between Items",
 	"split": "3",
 	// "height":"1",
-	"googleSheets": {},
+
 },
 {
 	"key": "between-text",
@@ -121,7 +121,7 @@ let betweenItems  = [{
 		}
 	},
 	// "height":"1",
-	"googleSheets": {},
+
 },
 {
 	"key": "between-text",
@@ -130,7 +130,7 @@ let betweenItems  = [{
 	"value":"between Items",
 	"split": "3",
 	// "height":"1",
-	"googleSheets": {},
+
 }]
 let group1 = [
 	{
@@ -141,7 +141,7 @@ let group1 = [
 			"group":"outerDelta"
 		},
 		"split": "1",
-		"googleSheets": {},
+
 	},
 	{
 		"key": "my-input",
@@ -150,7 +150,7 @@ let group1 = [
 		delta:{
 			"group":"outerDelta"
 		},
-		"googleSheets": {},
+
 
 	},
 	{
@@ -169,7 +169,7 @@ let group1 = [
 		"left":"400",
 		"split": "3",
 		"height":"250",
-		"googleSheets": {},
+
 
 	},
 	{
@@ -187,7 +187,7 @@ let group1 = [
 		"left":"800",
 		"split": "5",
 		"height":"150",
-		"googleSheets": {},
+
 
 	},
 ]
@@ -200,7 +200,7 @@ let group2 = [
 			"group":"outerDelta"
 		},
 		"split": "1",
-		"googleSheets": {},
+
 		"options":{
 			"css":{
 			}
@@ -213,7 +213,7 @@ let group2 = [
 		delta:{
 			"group":"outerDelta"
 		},
-		"googleSheets": {},
+
 
 	},
 	{
@@ -232,7 +232,7 @@ let group2 = [
 		"left":"400",
 		"split": "3",
 		"height":"250",
-		"googleSheets": {},
+
 
 	},
 	{
@@ -250,7 +250,7 @@ let group2 = [
 		"left":"800",
 		"split": "2",
 		"height":"150",
-		"googleSheets": {},
+
 
 	},
 ]
@@ -264,7 +264,7 @@ let controls = [            {
 		"by":"1"
 	},
 	"split": "3",
-	"googleSheets": {},
+
 },
 {
 	"key": "remove",
@@ -276,7 +276,7 @@ let controls = [            {
 		"by":"1"
 	},
 	"split": "6",
-	"googleSheets": {},
+
 },]
 
 let secondOuterDelta = [
@@ -289,7 +289,7 @@ let secondOuterDelta = [
 			"group":"secondOuterDelta"
 		},
 		"split": "1",
-		"googleSheets": {},
+
 		"options":{
 			"css":{
 			}
@@ -302,7 +302,7 @@ let secondOuterDelta = [
 		delta:{
 			"group":"secondOuterDelta"
 		},
-		"googleSheets": {},
+
 
 	},
 	{
@@ -321,7 +321,7 @@ let secondOuterDelta = [
 		"left":"400",
 		"split": "3",
 		"height":"250",
-		"googleSheets": {},
+
 
 	},
 	{
@@ -339,7 +339,7 @@ let secondOuterDelta = [
 		"left":"800",
 		"split": "2",
 		"height":"150",
-		"googleSheets": {},
+
 
 	},
 
@@ -354,7 +354,7 @@ let secondOuterDelta = [
 		},
 		"next":"true",
 		"split": "2",
-		"googleSheets": {},
+
 	},
 	{
 		"key": "remove",
@@ -366,7 +366,7 @@ let secondOuterDelta = [
 			"by":"1"
 		},
 		"split": "3",
-		"googleSheets": {},
+
 	},
 ]
 
@@ -402,7 +402,7 @@ let nesting_development =  {
 				],
 			},
 			"background": "rgb(155, 9, 104)",
-			"googleSheets": {},
+
 			options:{
 				css:{
 					"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
@@ -421,7 +421,7 @@ let nesting_development =  {
 			"split": "5",
 			// "width":"420",
 			"height":500,
-			"googleSheets": {},
+
 			webRTC:{
 				item:"localVideo"
 			}
@@ -446,7 +446,7 @@ let nesting_development =  {
 			"split": "4",
 			// "width":"420",
 			// "height":500,
-			"googleSheets": {},
+
 			webRTC:{
 				item:"remoteVideo"
 			}
@@ -469,7 +469,7 @@ let nesting_development =  {
 			"split": "4",
 			"width":"420",
 			"height":300,
-			"googleSheets": {},
+
 			webRTC:{
 				item:"remoteVideo"
 			}
@@ -481,7 +481,7 @@ let nesting_development =  {
 			"type": "button",
 			"next":"true",
 			"split": "3",
-			"googleSheets": {},
+
 			webRTC:{
 				item:"startButton"
 			}
@@ -491,7 +491,7 @@ let nesting_development =  {
 			"value": "Call",
 			"type": "button",
 			"split": "3",
-			"googleSheets": {},
+
 			webRTC:{
 				item:"callButton"
 			}
@@ -502,7 +502,7 @@ let nesting_development =  {
 			"type": "button",
 
 			"split": "3",
-			"googleSheets": {},
+
 			webRTC:{
 				item:"hangupButton"
 			}
@@ -519,7 +519,7 @@ let nesting_development =  {
 			},
 			"width":"1600",
 			"height":"700",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					display:"flex",
@@ -541,7 +541,7 @@ let nesting_development =  {
 				under:"A1"
 			},
 			// "height":"250",
-			"googleSheets": {},
+
 			"text-align":"center",
 			"options":{
 				"css":{
@@ -567,7 +567,7 @@ let nesting_development =  {
 		    // "split": "3",
 		    // "width":"300",
 		    // "height":"250",
-		    "googleSheets": {},
+
 		    "options":{
 		        "css":{
 		            // "justify-self":"flex-start",
@@ -592,7 +592,7 @@ let nesting_development =  {
 				under:"C1"
 			},
 
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					// "justify-self":"flex-start",
@@ -620,7 +620,7 @@ let nesting_development =  {
 			// "split": "3",
 			// "width":"300",
 			// "height":"250",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					// "justify-self":"flex-start",
@@ -645,7 +645,7 @@ let nesting_development =  {
 				under:"B3"
 			},
 			"height":"350",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					order:-2,
@@ -678,7 +678,7 @@ let nesting_development =  {
 			},
 
 			"split": "3",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					// "justify-self":"flex-start",
@@ -705,7 +705,7 @@ let nesting_development =  {
 				name:"C3",
 				under:"B3"
 			},
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					// "justify-self":"flex-start",
@@ -730,7 +730,7 @@ let nesting_development =  {
 			},
 			// "width":"1200",
 			"height":"350",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					order:2,
@@ -789,7 +789,7 @@ let  nesting_and_duplicate_development =     {
 				],
 			},
 			"background": "rgb(155, 9, 104)",
-			"googleSheets": {},
+
 			options:{
 				css:{
 					"clip-path":"polygon(100% 0%, 0% 0%, 0% 99%, 38% 28%, 68% 67%)"
@@ -814,7 +814,7 @@ let  nesting_and_duplicate_development =     {
 					height:"200px"
 				}
 			},
-			"googleSheets": {},
+
 		},
 		{
 			"key": "my-input-counter",
@@ -825,7 +825,7 @@ let  nesting_and_duplicate_development =     {
 				"group":"outerDelta"
 			},
 			"split": "1",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 				}
@@ -838,7 +838,7 @@ let  nesting_and_duplicate_development =     {
 			delta:{
 				"group":"outerDelta"
 			},
-			"googleSheets": {},
+
 
 		},
 		{
@@ -857,7 +857,7 @@ let  nesting_and_duplicate_development =     {
 			"left":"400",
 			"split": "3",
 			"height":"250",
-			"googleSheets": {},
+
 
 		},
 		{
@@ -875,7 +875,7 @@ let  nesting_and_duplicate_development =     {
 			"left":"800",
 			"split": "2",
 			"height":"150",
-			"googleSheets": {},
+
 
 		},
 
@@ -890,7 +890,7 @@ let  nesting_and_duplicate_development =     {
 			},
 			"next":"true",
 			"split": "2",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "remove",
@@ -902,7 +902,7 @@ let  nesting_and_duplicate_development =     {
 				"by":"1"
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "more-text",
@@ -911,7 +911,7 @@ let  nesting_and_duplicate_development =     {
 			"split": "3",
 			"height":"250",
 			"fontSize":72,
-			"googleSheets": {},
+
 		},
 
 		{
@@ -923,7 +923,7 @@ let  nesting_and_duplicate_development =     {
 				"group":"outerDelta"
 			},
 			"split": "1",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 				}
@@ -936,7 +936,7 @@ let  nesting_and_duplicate_development =     {
 			delta:{
 				"group":"outerDelta"
 			},
-			"googleSheets": {},
+
 
 		},
 		{
@@ -955,7 +955,7 @@ let  nesting_and_duplicate_development =     {
 			"left":"400",
 			"split": "3",
 			"height":"250",
-			"googleSheets": {},
+
 
 		},
 		{
@@ -974,7 +974,7 @@ let  nesting_and_duplicate_development =     {
 			"left":"800",
 			"split": "2",
 			"height":"150",
-			"googleSheets": {},
+
 
 		},
 		{
@@ -984,7 +984,7 @@ let  nesting_and_duplicate_development =     {
 			"split": "5",
 			// "width":"420",
 			"height":500,
-			"googleSheets": {},
+
 			webRTC:{
 				item:"localVideo"
 			}
@@ -1009,7 +1009,7 @@ let  nesting_and_duplicate_development =     {
 			"split": "4",
 			// "width":"420",
 			// "height":500,
-			"googleSheets": {},
+
 			webRTC:{
 				item:"remoteVideo"
 			}
@@ -1032,7 +1032,7 @@ let  nesting_and_duplicate_development =     {
 			"split": "4",
 			"width":"420",
 			"height":300,
-			"googleSheets": {},
+
 			webRTC:{
 				item:"remoteVideo"
 			}
@@ -1044,7 +1044,7 @@ let  nesting_and_duplicate_development =     {
 			"type": "button",
 			"next":"true",
 			"split": "3",
-			"googleSheets": {},
+
 			webRTC:{
 				item:"startButton"
 			}
@@ -1054,7 +1054,7 @@ let  nesting_and_duplicate_development =     {
 			"value": "Call",
 			"type": "button",
 			"split": "3",
-			"googleSheets": {},
+
 			webRTC:{
 				item:"callButton"
 			}
@@ -1065,7 +1065,7 @@ let  nesting_and_duplicate_development =     {
 			"type": "button",
 
 			"split": "3",
-			"googleSheets": {},
+
 			webRTC:{
 				item:"hangupButton"
 			}
@@ -1082,7 +1082,7 @@ let  nesting_and_duplicate_development =     {
 			},
 			"width":"1600",
 			"height":"700",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					display:"flex",
@@ -1104,7 +1104,7 @@ let  nesting_and_duplicate_development =     {
 				under:"A1"
 			},
 			// "height":"250",
-			"googleSheets": {},
+
 			"text-align":"center",
 			"options":{
 				"css":{
@@ -1130,7 +1130,7 @@ let  nesting_and_duplicate_development =     {
 		    // "split": "3",
 		    // "width":"300",
 		    // "height":"250",
-		    "googleSheets": {},
+
 		    "options":{
 		        "css":{
 		            // "justify-self":"flex-start",
@@ -1155,7 +1155,7 @@ let  nesting_and_duplicate_development =     {
 				under:"C1"
 			},
 
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					// "justify-self":"flex-start",
@@ -1183,7 +1183,7 @@ let  nesting_and_duplicate_development =     {
 			// "split": "3",
 			// "width":"300",
 			// "height":"250",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					// "justify-self":"flex-start",
@@ -1208,7 +1208,7 @@ let  nesting_and_duplicate_development =     {
 				under:"B3"
 			},
 			"height":"350",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					order:-2,
@@ -1241,7 +1241,7 @@ let  nesting_and_duplicate_development =     {
 			},
 
 			"split": "3",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					// "justify-self":"flex-start",
@@ -1268,7 +1268,7 @@ let  nesting_and_duplicate_development =     {
 				name:"C3",
 				under:"B3"
 			},
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					// "justify-self":"flex-start",
@@ -1293,7 +1293,7 @@ let  nesting_and_duplicate_development =     {
 			},
 			// "width":"1200",
 			"height":"350",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					order:2,
@@ -1336,7 +1336,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 				},
                 // "background": "rgb(155, 9, 104)",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						// "background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -1355,7 +1355,7 @@ let nesting_and_duplicate_testing =  [
 						color:"black"
 					}
 				},
-                "googleSheets": {},
+
 			},
 			{
                 "key": "my-indicator-message",
@@ -1368,7 +1368,7 @@ let nesting_and_duplicate_testing =  [
 						color:"black"
 					}
 				},
-                "googleSheets": {},
+
 			},
 
 
@@ -1395,7 +1395,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
                 // "background": "rgb(155, 9, 104)",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -1417,7 +1417,7 @@ let nesting_and_duplicate_testing =  [
 				},
                 "next":"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -1429,7 +1429,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
 			},
 
 
@@ -1458,7 +1458,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -1478,7 +1478,7 @@ let nesting_and_duplicate_testing =  [
 						"group":"outerDelta"
 					},
 					"split": "1",
-					"googleSheets": {},
+
 					"options":{
 						"css":{
 						}
@@ -1491,7 +1491,7 @@ let nesting_and_duplicate_testing =  [
 					delta:{
 						"group":"outerDelta"
 					},
-					"googleSheets": {},
+
 
 				},
 				{
@@ -1510,7 +1510,7 @@ let nesting_and_duplicate_testing =  [
 					"left":"400",
 					"split": "3",
 					"height":"250",
-					"googleSheets": {},
+
 
 				},
 				{
@@ -1530,7 +1530,7 @@ let nesting_and_duplicate_testing =  [
 					"left":"800",
 					"split": "2",
 					"height":"150",
-					"googleSheets": {},
+
 
 				},
 			]
@@ -1563,7 +1563,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -1605,7 +1605,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
                 // "background": "rgb(155, 9, 104)",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -1623,7 +1623,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "9",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -1657,7 +1657,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -1675,7 +1675,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -1688,7 +1688,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -1707,7 +1707,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -1725,7 +1725,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -1740,7 +1740,7 @@ let nesting_and_duplicate_testing =  [
 				},
 				next:"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -1757,7 +1757,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 
             {
@@ -1769,7 +1769,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -1782,7 +1782,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -1801,7 +1801,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -1819,7 +1819,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -1851,7 +1851,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -1871,7 +1871,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -1888,7 +1888,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 
             {
@@ -1900,7 +1900,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -1913,7 +1913,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -1932,7 +1932,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -1950,7 +1950,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -1983,7 +1983,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
                 // "background": "rgb(155, 9, 104)",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -2000,7 +2000,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
 			},
             {
                 "key": "my-input",
@@ -2009,7 +2009,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2028,7 +2028,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2046,7 +2046,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -2061,7 +2061,7 @@ let nesting_and_duplicate_testing =  [
 				},
                 "next":"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -2073,7 +2073,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
 			},
 			...afterItems,
 
@@ -2102,7 +2102,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -2118,7 +2118,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -2131,7 +2131,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2150,7 +2150,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2168,7 +2168,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -2183,7 +2183,7 @@ let nesting_and_duplicate_testing =  [
 				},
 				next:"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -2200,7 +2200,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 
             {
@@ -2212,7 +2212,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -2225,7 +2225,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2244,7 +2244,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2262,7 +2262,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 			...afterItems,
@@ -2295,7 +2295,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -2313,7 +2313,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -2330,7 +2330,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 
             {
@@ -2342,7 +2342,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -2355,7 +2355,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2374,7 +2374,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2392,7 +2392,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 			...afterItems,
@@ -2426,7 +2426,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
                 // "background": "rgb(155, 9, 104)",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -2443,7 +2443,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
 			},
             {
                 "key": "my-input",
@@ -2452,7 +2452,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2471,7 +2471,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2489,7 +2489,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 			...betweenItems,
@@ -2504,7 +2504,7 @@ let nesting_and_duplicate_testing =  [
 				},
                 "next":"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -2516,7 +2516,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
 			},
 
 
@@ -2545,7 +2545,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -2561,7 +2561,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -2574,7 +2574,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2593,7 +2593,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2611,7 +2611,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 			...betweenItems,
@@ -2626,7 +2626,7 @@ let nesting_and_duplicate_testing =  [
 				},
 				next:"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -2643,7 +2643,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 
             {
@@ -2655,7 +2655,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -2668,7 +2668,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2687,7 +2687,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2705,7 +2705,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -2737,7 +2737,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -2753,7 +2753,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -2766,7 +2766,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2785,7 +2785,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2803,7 +2803,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -2818,7 +2818,7 @@ let nesting_and_duplicate_testing =  [
 				},
 				next:"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -2835,7 +2835,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 			...betweenItems,
             {
@@ -2847,7 +2847,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -2860,7 +2860,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2879,7 +2879,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2897,7 +2897,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -2929,7 +2929,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -2945,7 +2945,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -2958,7 +2958,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -2977,7 +2977,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -2995,7 +2995,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 			...betweenItems,
@@ -3010,7 +3010,7 @@ let nesting_and_duplicate_testing =  [
 				},
 				next:"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -3027,7 +3027,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 			...betweenItems,
             {
@@ -3039,7 +3039,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -3052,7 +3052,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -3071,7 +3071,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -3089,7 +3089,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -3121,7 +3121,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -3139,7 +3139,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -3156,7 +3156,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 			...betweenItems,
             {
@@ -3168,7 +3168,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -3181,7 +3181,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -3200,7 +3200,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -3218,7 +3218,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -3251,7 +3251,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
                 // "background": "rgb(155, 9, 104)",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -3269,7 +3269,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
 			},
             {
                 "key": "my-input",
@@ -3278,7 +3278,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -3297,7 +3297,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -3315,7 +3315,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 			...betweenItems,
@@ -3330,7 +3330,7 @@ let nesting_and_duplicate_testing =  [
 				},
                 "next":"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -3342,7 +3342,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
 			},
 
 
@@ -3371,7 +3371,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
                 // "background": "rgb(155, 9, 104)",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -3387,7 +3387,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
 			},
             {
                 "key": "my-input",
@@ -3396,7 +3396,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -3415,7 +3415,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -3433,7 +3433,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 			...betweenItems,
@@ -3448,7 +3448,7 @@ let nesting_and_duplicate_testing =  [
 				},
                 "next":"true",
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -3460,7 +3460,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
 			},
 			...afterItems
 
@@ -3490,7 +3490,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -3510,7 +3510,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -3527,7 +3527,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 			...betweenItems,
             {
@@ -3539,7 +3539,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -3552,7 +3552,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -3571,7 +3571,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -3589,7 +3589,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 
@@ -3621,7 +3621,7 @@ let nesting_and_duplicate_testing =  [
 					],
 				},
 
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -3639,7 +3639,7 @@ let nesting_and_duplicate_testing =  [
 					"by":"1"
 				},
                 "split": "3",
-                "googleSheets": {},
+
             },
             {
                 "key": "remove",
@@ -3656,7 +3656,7 @@ let nesting_and_duplicate_testing =  [
                 "split": "3",
                 // "width":"300",
                 // "height":"250",
-                "googleSheets": {},
+
 			},
 			...betweenItems,
             {
@@ -3668,7 +3668,7 @@ let nesting_and_duplicate_testing =  [
 					"group":"outerDelta"
 				},
                 "split": "1",
-                "googleSheets": {},
+
                 "options":{
                     "css":{
                     }
@@ -3681,7 +3681,7 @@ let nesting_and_duplicate_testing =  [
 				delta:{
 					"group":"outerDelta"
 				},
-                "googleSheets": {},
+
 
 			},
             {
@@ -3700,7 +3700,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"400",
                 "split": "3",
                 "height":"250",
-                "googleSheets": {},
+
 
 			},
 			{
@@ -3718,7 +3718,7 @@ let nesting_and_duplicate_testing =  [
 				"left":"800",
                 "split": "2",
                 "height":"150",
-                "googleSheets": {},
+
 
 			},
 			...afterItems
@@ -3764,7 +3764,7 @@ let latch_dropdown_duplicate_nesting_development = {
 					}
 				],
 			},
-			"googleSheets": {},
+
 			options:{
 				css:{
 					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -3780,7 +3780,7 @@ let latch_dropdown_duplicate_nesting_development = {
 		    "type": "text",
 		    "value":"Some Text",
 		    "background":"blue",
-		    "googleSheets": {},
+
 			"split":"4",
 		},
 		{
@@ -3796,7 +3796,7 @@ let latch_dropdown_duplicate_nesting_development = {
 			// "width":"500",
 			"split":"8",
 			"height":"1200",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					display:"flex",
@@ -3839,7 +3839,7 @@ let latch_dropdown_duplicate_nesting_development = {
 					order:-3
 				}
 			},
-			"googleSheets": {},
+
 		},
 		{
 			"key": "localVideo",
@@ -3848,7 +3848,7 @@ let latch_dropdown_duplicate_nesting_development = {
 			"split": "5",
 			// "width":"420",
 			"height":500,
-			"googleSheets": {},
+
 		},
 		{
 			"key": "add",
@@ -3872,7 +3872,7 @@ let latch_dropdown_duplicate_nesting_development = {
 					"height":"100px"
 				}
 			},
-			"googleSheets": {},
+
 		},
 		{
 			"key": "remove",
@@ -3895,7 +3895,7 @@ let latch_dropdown_duplicate_nesting_development = {
 				}
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 
 
@@ -3927,7 +3927,7 @@ let latch_dropdown_duplicate_development = {
 			nest:{
 
 			},
-			"googleSheets": {},
+
 			options:{
 				css:{
 					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -3943,7 +3943,7 @@ let latch_dropdown_duplicate_development = {
 		    "type": "text",
 		    "value":"Some Text",
 		    "background":"blue",
-		    "googleSheets": {},
+
 			"split":"4",
 		},
 		{
@@ -3965,7 +3965,7 @@ let latch_dropdown_duplicate_development = {
 
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "my-dropdown-2",
@@ -3986,7 +3986,7 @@ let latch_dropdown_duplicate_development = {
 
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "my-dropdown-3",
@@ -4006,7 +4006,7 @@ let latch_dropdown_duplicate_development = {
 
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "localVideo",
@@ -4018,7 +4018,7 @@ let latch_dropdown_duplicate_development = {
 			"split": "5",
 			// "width":"420",
 			"height":500,
-			"googleSheets": {},
+
 		},
 		{
 			"key": "add",
@@ -4031,7 +4031,7 @@ let latch_dropdown_duplicate_development = {
 			},
 			"next":"true",
 			"split": "2",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "remove",
@@ -4043,7 +4043,7 @@ let latch_dropdown_duplicate_development = {
 				"by":1
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 
 
@@ -4070,7 +4070,7 @@ let latch_dropdown_development = {
 			nest:{
 
 			},
-			"googleSheets": {},
+
 			options:{
 				css:{
 					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -4096,14 +4096,14 @@ let latch_dropdown_development = {
 					height:"200px"
 				}
 			},
-			"googleSheets": {},
+
 		},
 		{
 		    "key": "my-table",
 		    "type": "simpleTable",
 		    "value":"",
 		    "background":"blue",
-		    "googleSheets": {},
+
 			"split":"4",
 			"height":"300"
 		},
@@ -4124,7 +4124,7 @@ let latch_dropdown_development = {
 
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "localVideo",
@@ -4133,7 +4133,7 @@ let latch_dropdown_development = {
 			"split": "5",
 			// "width":"420",
 			"height":500,
-			"googleSheets": {},
+
 		},
 		{
 			"key": "my-dropdown",
@@ -4147,7 +4147,7 @@ let latch_dropdown_development = {
 
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 
 
@@ -4174,7 +4174,7 @@ let latch_dropdown_at_base_development = {
 			nest:{
 
 			},
-			"googleSheets": {},
+
 			options:{
 				css:{
 					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -4200,7 +4200,7 @@ let latch_dropdown_at_base_development = {
 					height:"200px"
 				}
 			},
-			"googleSheets": {},
+
 		},
 
 		{
@@ -4217,7 +4217,7 @@ let latch_dropdown_at_base_development = {
 
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 
 
@@ -4249,7 +4249,7 @@ let latch_dropdown_nesting_development = {
 					},
 				],
 			},
-			"googleSheets": {},
+
 			options:{
 				css:{
 					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -4275,7 +4275,7 @@ let latch_dropdown_nesting_development = {
 					height:"200px"
 				}
 			},
-			"googleSheets": {},
+
 		},
 
 		{
@@ -4291,7 +4291,7 @@ let latch_dropdown_nesting_development = {
 			// "width":"500",
 			"split":"8",
 			"height":"400",
-			"googleSheets": {},
+
 			"options":{
 				"css":{
 					display:"flex",
@@ -4331,7 +4331,7 @@ let latch_dropdown_nesting_development = {
 				}
 			},
 			// "split": "3",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "my-dropdown",
@@ -4358,7 +4358,7 @@ let latch_dropdown_nesting_development = {
 				}
 			},
 			// "split": "3",
-			"googleSheets": {},
+
 		},
 		{
 		    "key": "my-table",
@@ -4373,7 +4373,7 @@ let latch_dropdown_nesting_development = {
 		    // "split": "3",
 		    // "width":"300",
 		    // "height":"250",
-		    "googleSheets": {},
+
 		    "options":{
 		        "css":{
 		            // "justify-self":"flex-start",
@@ -4396,7 +4396,7 @@ let latch_dropdown_nesting_development = {
 			},
 			// "width":"420",
 			"height":500,
-			"googleSheets": {},
+
 		},
 
 
@@ -4441,7 +4441,7 @@ let component_sizing_development ={
 			},
 			height:"1000",
 			// width:"648",
-			"googleSheets": {},
+
 			options:{
 				css:{
 					"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -4468,14 +4468,14 @@ let component_sizing_development ={
 					height:"200px"
 				}
 			},
-			"googleSheets": {},
+
 		},
 		{
 		    "key": "my-table",
 		    "type": "simpleTable",
 		    "value":"",
 		    "background":"blue",
-		    "googleSheets": {},
+
 			"split":"4",
 			"height":"300"
 		},
@@ -4485,21 +4485,21 @@ let component_sizing_development ={
 			value:"Some Text",
 			background:"red",
 			"split": "3",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "my-dropdown",
 			type:"textbox",
 			value:"Some Text",
 			"split": "3",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "my-dropdown",
 			type:"loading",
 			"split": "3",
 			"color":"blue",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "my-dropdown",
@@ -4507,7 +4507,7 @@ let component_sizing_development ={
 			value:"I dont do anything",
 			"split": "3",
 			"color":"blue",
-			"googleSheets": {},
+
 		},
 		{
 			"key": "localVideo",
@@ -4516,7 +4516,7 @@ let component_sizing_development ={
 			"split": "5",
 			// "width":"420",
 			"height":500,
-			"googleSheets": {},
+
 		},
 		{
 			"key": "my-dropdown",
@@ -4530,7 +4530,7 @@ let component_sizing_development ={
 
 			},
 			"split": "3",
-			"googleSheets": {},
+
 		},
 
 
@@ -4583,7 +4583,7 @@ let component_position_development = [
 					],
 					name:"home"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						// width:"125%"
@@ -4607,7 +4607,7 @@ let component_position_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
             {
                 "key": "image-1",
@@ -4719,7 +4719,7 @@ let component_position_development = [
 						},
 					],
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"25%",
@@ -4750,7 +4750,7 @@ let component_position_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 			{
 				"key": "text",
@@ -4771,7 +4771,7 @@ let component_position_development = [
 						// "font-family":""
 					}
 				},
-				"googleSheets": {},
+
 			},
 			{
 				"key": "container",
@@ -4860,7 +4860,7 @@ let component_position_development = [
 
 				},
 				// width:"648",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -4882,7 +4882,7 @@ let component_position_development = [
 				"type": "simpleTable",
 				"value":"",
 				"background":"blue",
-				"googleSheets": {},
+
 				"split":"4",
 				"height":"300"
 			},
@@ -4892,21 +4892,21 @@ let component_position_development = [
 				value:"Some Text",
 				background:"red",
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
 				type:"textbox",
 				value:"Some Text",
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
 				type:"loading",
 				"split": "3",
 				"color":"blue",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
@@ -4914,7 +4914,7 @@ let component_position_development = [
 				value:"I dont do anything",
 				"split": "3",
 				"color":"blue",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "localVideo",
@@ -4923,7 +4923,7 @@ let component_position_development = [
 				"split": "5",
 				// "width":"420",
 				"height":500,
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
@@ -4937,7 +4937,7 @@ let component_position_development = [
 
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 
 
@@ -4977,7 +4977,7 @@ let component_position_development = [
 						},
 					],
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"25%",
@@ -5008,7 +5008,7 @@ let component_position_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 			{
 				"key": "container",
@@ -5098,7 +5098,7 @@ let component_position_development = [
 				},
 				height:"1000",
 				// width:"648",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -5121,21 +5121,21 @@ let component_position_development = [
 				value:"Some Text",
 				background:"red",
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
 				type:"textbox",
 				value:"Some Text",
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
 				type:"loading",
 				"split": "3",
 				"color":"blue",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
@@ -5143,7 +5143,7 @@ let component_position_development = [
 				value:"My Footer",
 				"split": "3",
 				"color":"blue",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "localVideo",
@@ -5152,7 +5152,7 @@ let component_position_development = [
 				"split": "5",
 				// "width":"420",
 				"height":500,
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
@@ -5166,7 +5166,7 @@ let component_position_development = [
 
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 
 
@@ -5220,7 +5220,7 @@ let display_development = [
 				navigation:{
 					name:"guides"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						// width:"20%",
@@ -5354,7 +5354,7 @@ let display_development = [
 						}
 					}
 				},
-				"googleSheets": {},
+
 			},
             {
                 "key": "text-display1",
@@ -5412,7 +5412,7 @@ let display_development = [
 					}
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "remove-1",
@@ -5425,7 +5425,7 @@ let display_development = [
 					"by":"1"
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 
 			{
@@ -5544,7 +5544,7 @@ let display_development = [
 						}
 					}
 				},
-				"googleSheets": {},
+
 			},
             {
                 "key": "section-2display2",
@@ -5628,7 +5628,7 @@ let display_development = [
 					}
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "remove",
@@ -5641,7 +5641,7 @@ let display_development = [
 					"by":"1"
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 
 		] .map((x:any,i)=>{
@@ -5696,10 +5696,14 @@ let home_development = [
 							name:"guides",
 							type:"direct_link"
 						},
+						{
+							name:"form",
+							type:"direct_link"
+						},
 					],
 					name:"home"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						// width:"125%"
@@ -5729,7 +5733,7 @@ let home_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
             {
                 "key": "image-1",
@@ -5803,9 +5807,18 @@ let home_development = [
 					group:"guides",
 					type:"direct_link"
 				},
-				// top:-40,
 				top:-40,
 				"value":"Guides",
+			},
+			{
+				"key": "form",
+				type:"text",
+				navigation:{
+					group:"form",
+					type:"direct_link"
+				},
+				top:-40,
+				"value":"Form",
 			},
 			// {
 			// 	"key": "books",
@@ -5854,7 +5867,7 @@ let home_development = [
 				navigation:{
 					name:"home"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"25%",
@@ -5885,7 +5898,7 @@ let home_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 			{
 				"key": "text",
@@ -5906,7 +5919,7 @@ let home_development = [
 						// "font-family":""
 					}
 				},
-				"googleSheets": {},
+
 			},
 			{
 				"key": "container",
@@ -5998,7 +6011,7 @@ let home_development = [
 					name:"home"
 				},
 				// width:"648",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -6020,7 +6033,7 @@ let home_development = [
 				"type": "heading",
 				"value":"Duplicate Me",
 				"background":"blue",
-				"googleSheets": {},
+
 				"split":"4",
 				"height":"300"
 			},
@@ -6030,21 +6043,21 @@ let home_development = [
 				value:"Some Text",
 				background:"red",
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-textbox",
 				type:"textbox",
 				value:"Some Text",
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-button",
 				type:"loading",
 				"split": "3",
 				"color":"blue",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-button",
@@ -6052,7 +6065,7 @@ let home_development = [
 				value:"I dont do anything",
 				"split": "3",
 				"color":"blue",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "localVideo",
@@ -6061,7 +6074,7 @@ let home_development = [
 				"split": "5",
 				// "width":"420",
 				"height":500,
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
@@ -6075,7 +6088,7 @@ let home_development = [
 
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown-2",
@@ -6089,7 +6102,7 @@ let home_development = [
 
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 
 
@@ -6133,7 +6146,7 @@ let home_development = [
 				navigation:{
 					name:"home"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"25%",
@@ -6164,7 +6177,7 @@ let home_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 			{
 				"key": "container",
@@ -6257,7 +6270,7 @@ let home_development = [
 				},
 				height:"1000",
 				// width:"648",
-				"googleSheets": {},
+
 				options:{
 					css:{
 						"background-color": `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
@@ -6280,21 +6293,21 @@ let home_development = [
 				value:"Some Text",
 				background:"red",
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
 				type:"textbox",
 				value:"Some Text",
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
 				type:"loading",
 				"split": "3",
 				"color":"blue",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
@@ -6302,7 +6315,7 @@ let home_development = [
 				value:"My Footer",
 				"split": "3",
 				"color":"blue",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "localVideo",
@@ -6311,7 +6324,7 @@ let home_development = [
 				"split": "5",
 				// "width":"420",
 				"height":500,
-				"googleSheets": {},
+
 			},
 			{
 				"key": "my-dropdown",
@@ -6325,7 +6338,7 @@ let home_development = [
 
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 
 
@@ -6367,7 +6380,7 @@ let about_development = [
 				navigation:{
 					name:"about"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"100%",
@@ -6398,7 +6411,7 @@ let about_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
             {
@@ -6448,7 +6461,7 @@ let articles_development = [
 				navigation:{
 					name:"articles"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -6511,7 +6524,7 @@ let articles_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
             {
@@ -6560,7 +6573,7 @@ let articles_development = [
 				navigation:{
 					name:"articles"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -6620,7 +6633,7 @@ let articles_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
 
@@ -6656,7 +6669,7 @@ let articles_development = [
 						},
 					],
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -6719,7 +6732,7 @@ let articles_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
             {
@@ -6768,7 +6781,7 @@ let articles_development = [
 				navigation:{
 					name:"articles"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -6831,7 +6844,7 @@ let articles_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
             {
@@ -6880,7 +6893,7 @@ let articles_development = [
 				navigation:{
 					name:"articles"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -6943,7 +6956,7 @@ let articles_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
             {
@@ -6996,7 +7009,7 @@ let video_development = [
 				navigation:{
 					name:"videos"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						// width:"20%",
@@ -7033,7 +7046,7 @@ let video_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
             {
                 "key": "text",
@@ -7101,7 +7114,7 @@ let blog_development = [
 				navigation:{
 					name:"blog"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 
@@ -7157,7 +7170,7 @@ let blog_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
             {
                 "key": "text",
@@ -7205,7 +7218,7 @@ let blog_development = [
 				navigation:{
 					name:"blog"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"25%",
@@ -7239,7 +7252,7 @@ let blog_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 			{
                 "key": "image-1",
@@ -7311,7 +7324,7 @@ let blog_development = [
 				navigation:{
 					name:"blog"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"25%",
@@ -7345,7 +7358,7 @@ let blog_development = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 			{
                 "key": "counter",
@@ -7401,7 +7414,7 @@ let blog_development = [
 					"by":"1"
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "add",
@@ -7413,7 +7426,7 @@ let blog_development = [
 					"by":"1"
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "remove",
@@ -7425,7 +7438,7 @@ let blog_development = [
 					"by":"1"
 				},
 				"split": "6",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "table",
@@ -7448,7 +7461,7 @@ let blog_development = [
 
 				},
 				"split": "6",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "add",
@@ -7461,7 +7474,7 @@ let blog_development = [
 					"by":"3"
 				},
 				"split": "3",
-				"googleSheets": {},
+
 			},
 			{
 				"key": "remove",
@@ -7473,7 +7486,7 @@ let blog_development = [
 					"by":"2"
 				},
 				"split": "6",
-				"googleSheets": {},
+
 			},
 
 
@@ -7494,6 +7507,138 @@ let guides_development = [
 	guides_navigation,
 	...display_development
 ]
+let form_navigation = objectCopy(home_development.slice(0,1)[0])
+form_navigation.title = "form navigation"
+form_navigation.metafields[0].navigation.name = "form"
+let form_development:Array<zProtoComponent> = [
+	form_navigation,
+	{
+		"title": "form box 1",
+		"type_slug": "forms",
+		"metafields": [
+			{
+				"key": "Body",
+				"type": "body",
+				stack:"100",
+
+				delta:{
+
+				},
+				nest:{
+
+				},
+				navigation:{
+					name:"form"
+				},
+
+				options:{
+					css:{
+
+						opacity:".5",
+
+					},
+					judima:{
+						moving:{
+							point:"bottom",
+							target:'form navigation',
+							coordinates:{x:0,y:0},
+							type:"custom"
+						}
+					},
+				}
+			},
+			{
+				"key":"input-1",
+				type:"input",
+				value:"FIRST NAME",
+				top:150,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{}
+				}
+			},
+			{
+				"key":"input-2",
+				type:"input",
+				value:"LAST  NAME",
+				top:150,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{}
+				}
+			},
+			{
+				"key":"input-3",
+				type:"input",
+				value:"ADDRESS",
+				top:150,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{}
+				}
+			},
+			{
+				"key":"input-4",
+				type:"date",
+				value:"DOB",
+				top:150,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{}
+				}
+			},
+			{
+				"key":"input-5",
+				type:"input",
+				value:"CITY",
+				left:200,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{}
+				}
+			},
+			{
+				"key":"input-6",
+				type:"input",
+				value:"STATE",
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{}
+				}
+			},
+			{
+				"key":"input-7",
+				type:"input",
+				value:"ZIPCODE",
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{}
+				}
+			},
+
+
+
+
+		] .map((x:any,i)=>{
+			x.key += "-form-group-1"
+			return x
+		})
+	},
+]
 
 let navigation_development = [
 	...home_development,
@@ -7501,7 +7646,8 @@ let navigation_development = [
 	...articles_development,
 	...video_development,
 	...blog_development,
-	...guides_development
+	...guides_development,
+	...form_development
 ]
 let navigation_testing = [...navigation_development]
 
@@ -7547,7 +7693,7 @@ let mobileCustom_development  = [
 					],
 					name:"articles"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						// width:"125%"
@@ -7581,7 +7727,7 @@ let mobileCustom_development  = [
 					},
 
 				},
-				"googleSheets": {},
+
 			},
             {
                 "key": "image-1",
@@ -7707,7 +7853,7 @@ let mobileCustom_development  = [
 				navigation:{
 					name:"articles"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -7775,7 +7921,7 @@ let mobileCustom_development  = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
             {
@@ -7824,7 +7970,7 @@ let mobileCustom_development  = [
 				navigation:{
 					name:"articles"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -7895,7 +8041,7 @@ let mobileCustom_development  = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
 
@@ -7931,7 +8077,7 @@ let mobileCustom_development  = [
 						},
 					],
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -7995,7 +8141,7 @@ let mobileCustom_development  = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
             {
@@ -8044,7 +8190,7 @@ let mobileCustom_development  = [
 				navigation:{
 					name:"articles"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -8108,7 +8254,7 @@ let mobileCustom_development  = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
             {
@@ -8157,7 +8303,7 @@ let mobileCustom_development  = [
 				navigation:{
 					name:"articles"
 				},
-				"googleSheets": {},
+
 				options:{
 					css:{
 						width:"20%",
@@ -8221,7 +8367,7 @@ let mobileCustom_development  = [
 						"font-family":"Gilgongo Doro"
 					}
 				},
-				"googleSheets": {},
+
 			},
 
             {

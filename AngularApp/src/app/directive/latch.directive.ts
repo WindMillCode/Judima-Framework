@@ -324,7 +324,7 @@ export class LatchDirective {
 					ryber[co].metadata.zChildrenSubject
 					.subscribe((devObj)=>{
 
-						console.log(ryber[co].metadata.deltaNode)
+						
 						zChildren =this.zChildren= ryber[co].metadata.zChildren
 						this.templateMyElements = devObj.templateMyElements
 

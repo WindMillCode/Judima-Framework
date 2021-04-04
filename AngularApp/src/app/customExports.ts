@@ -19,7 +19,7 @@ export class zChildren {
     element:  HTMLElement;
     css:Object | any;
     cssDefault?:Object;
-    bool?:string;
+    bool?:zBools;
     innerText?:null | string | zChildText ;
     link?:string;
     quantity?:any;
@@ -29,6 +29,137 @@ export class zChildren {
     symbol?:Symbol|String
 }
 
+export class zProtoComponent {
+    title:String;
+    type_slup:String;
+    metafields:Array<zProtoChildren>
+}
+export enum zBools {
+    "divBoard",
+    "imgBoard",
+    "videoBoard",
+    "canvasBoard",
+    "h1","h2","h3","h4","h5","h6",
+    "a","p","code","span","strong",
+    "i","ta","c","l","ul","f","div",
+    "img","b","embed","video","audio",
+    "mat-spinner","ag-grid","gsap-cursor"
+}
+export class zOptionsJudima {
+    mobile?:{
+        widthRatio?:Number;
+        top?:Number
+        stack?:Number
+        footerSpace?:Number
+    };
+    desktop?:{
+
+        top?:Number
+        stack?:Number
+        footerSpace?:Number
+    };
+
+    // body only
+    moving?:{
+        point:{"right","bottom"};
+        target:String; // the title or a signature of a component
+        coordinates:{x:Number;y:Number}
+        type:{"custom"}
+    }
+    //
+
+    stack?:{
+        overlapFix:{"false","true"}
+    }
+}
+export class zProtoChildren {
+    key? : String;
+    type?: String;
+    top?: String | Number;
+    left?: String | Number;
+    width?: String | Number;
+    height?: String | Number;
+    split?: String | Number;
+
+    //children only
+    next?:{"true"}
+    //
+    // body only
+    gap?:String | Number;
+    stack?:String | Number;
+    //
+    options?:{
+        css?:any | CSSRuleList,
+        judima?:zOptionsJudima,
+        extras:any,
+        extend:any
+    };
+    navigation?:{
+        group?:Array<{
+            name:string,
+            type: { //enum
+                "direct_link"
+            }
+        }>;
+        name:string
+    };
+    delta?:{
+        group: Array<{
+            name:string,
+            type: { //enum
+                "add_remove_button",
+                "repeat"
+            },
+            by?: String | Number
+        }>
+    }   | {
+        group:String ,
+        type:{"add","remove"}
+        by: String | Number
+    };
+    nest?:{
+        group: Array<{
+            name:string,
+            type: { //enum
+                "regular"
+            },
+        }>
+    } | {
+        group:String;
+        name:String;
+        under?: String;
+    };
+    latch:{
+        options?:Array<String>;
+        state?:{"open","closed"};
+        type?:String;
+        display?:{
+            type:{"target","part"};
+            name:String
+        };
+        zChildren:Array<{
+            bool:String;
+            css?:any | CSSRuleList
+            val?:String
+            logic:{ // for as many media queries
+                desktop:{
+                    width:Number,
+                    height:Number,
+                    top:Number,
+                    left:Number
+                },
+                mobile:{
+                    width:Number,
+                    height:Number,
+                    top:Number,
+                    left:Number
+                }
+            }
+            extras?:any
+            group:Array<String>
+        }>
+    }
+}
 
 
 export class componentObject { // not final
