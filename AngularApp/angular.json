@@ -50,7 +50,8 @@
                             "backend/modernizr/modernizr.js",
                             "backend/polyfills/object.js",
                             "backend/polyfills/signaturePad.js",
-                            "src/assets/scripts/pikaday.js"
+                            "src/assets/scripts/pikaday.js",
+                            "src/assets/scripts/vanillaTilt.js"
                         ],
                         "optimization": false,
                         "sourceMap": true,

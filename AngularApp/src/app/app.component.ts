@@ -41,6 +41,10 @@ declare global {
 	// globals for randomTextGenerator
 	var RandomTextGenerator
 	//
+
+    //globals for vanillaTilt
+    var  VanillaTilt
+    //
 }
 
 @Component({
@@ -72,15 +76,15 @@ export class AppComponent implements OnInit, OnDestroy {
         ryber.appCO0.metadata.scripts.push(
             ...this.ryber.appAddScripts({
                 scripts:[
-					{
-						src:"https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js",
-						name:"vanillaTilt",
-						// integrity:"sha512-SttpKhJqONuBVxbRcuH0wezjuX+BoFoli0yPsnrAADcHsQMW8rkR84ItFHGIkPvhnlRnE2FaifDOUw+EltbuHg==",
-						// defer:"true",
-                        placement:{
-                            appendChild:document.body
-                        }
-					},
+					// {
+					// 	src:"https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js",
+					// 	name:"vanillaTilt",
+					// 	// integrity:"sha512-SttpKhJqONuBVxbRcuH0wezjuX+BoFoli0yPsnrAADcHsQMW8rkR84ItFHGIkPvhnlRnE2FaifDOUw+EltbuHg==",
+					// 	// defer:"true",
+                    //     placement:{
+                    //         appendChild:document.body
+                    //     }
+					// },
                 ].filter((x:any,i)=>{
                     return x !== null
                 })
@@ -155,6 +159,10 @@ export class AppComponent implements OnInit, OnDestroy {
                         suffix:"_tD_"
                     }
                     //
+                    co.metadata.vanillaTilt = {
+                        group:{},
+                        suffix:"_vT_"
+                    }
                     co.metadata.zChildrenSubject = new Subject<any>()
                     .pipe(
                         tap((val) => {

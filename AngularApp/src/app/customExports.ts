@@ -143,16 +143,16 @@ export class zProtoChildren {
             val?:String
             logic:{ // for as many media queries
                 desktop:{
-                    width:Number,
-                    height:Number,
-                    top:Number,
-                    left:Number
+                    width:Number | Function,
+                    height:Number | Function,
+                    top:Number | Function,
+                    left:Number | Function
                 },
                 mobile:{
-                    width:Number,
-                    height:Number,
-                    top:Number,
-                    left:Number
+                    width:Number | Function,
+                    height:Number | Function,
+                    top:Number | Function,
+                    left:Number | Function
                 }
             }
             extras?:any

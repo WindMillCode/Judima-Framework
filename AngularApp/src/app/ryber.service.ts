@@ -129,6 +129,15 @@ export class RyberService {
                 ...navigation,
                 zSymbolNeeded:"true",
             }
+            // add the componentObject name to additional extras
+            try{
+                Object.values(options.extras)
+                .forEach((x:any,i)=>{
+                    x.co = co
+                })
+            }
+            catch(e){}
+            // 
 			//
 
             let symbol: any = ""
@@ -169,6 +178,7 @@ export class RyberService {
                     signature: title,
                     css,
                     extras: {
+                        co,
 						judima,
                         section,
                         type,
@@ -295,12 +305,7 @@ export class RyberService {
                             googleSheets,
                             link: form?.link
                         },
-                        appLatch:{
-                            confirm:latch === undefined ?"false":"true",
-                            co,
-							latch,
-							zSymbolNeeded:"true",
-                        },
+                        appLatch,
                         appNest,
                         component,
                         type,

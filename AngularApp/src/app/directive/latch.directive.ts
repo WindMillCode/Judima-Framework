@@ -324,7 +324,7 @@ export class LatchDirective {
 					ryber[co].metadata.zChildrenSubject
 					.subscribe((devObj)=>{
 
-						
+
 						zChildren =this.zChildren= ryber[co].metadata.zChildren
 						this.templateMyElements = devObj.templateMyElements
 
@@ -377,9 +377,14 @@ export class LatchDirective {
 								//
 
 								if(deltaNode[deltaNodegroup]?.symbols.includes(neededZSymbol) || deltaNodegroup ===null ){
-									zChildren[x].extras.appLatch.display.name =
-									zChildren[x].extras.appLatch.display.originalName+ suffix + deltaNode[deltaNodegroup].count
+									// DONT REMOVE THIS LOGIC, FOR WHEN COMPONENT DOESNT HAVE DUPLICATES
+									try{
+										zChildren[x].extras.appLatch.display.name =
+										zChildren[x].extras.appLatch.display.originalName+ suffix + deltaNode[deltaNodegroup].count
 
+									}
+									catch(e){}
+									// 
 								}
 
 
@@ -399,7 +404,12 @@ export class LatchDirective {
 											.map((z:any,k)=>{
 
 												if(deltaNode[deltaNodegroup]?.symbols.includes(neededZSymbol) || deltaNodegroup ===null){
-													return  y.originalGroup[k] + suffix + deltaNode[deltaNodegroup].count
+													// DONT REMOVE THIS LOGIC, FOR WHEN COMPONENT DOESNT HAVE DUPLICATES
+													try{
+														return  y.originalGroup[k] + suffix + deltaNode[deltaNodegroup].count
+													}
+													catch(e){}
+													//
 												}
 												return z
 											})
@@ -548,7 +558,7 @@ export class LatchDirective {
 								dims,
 								neededTargets:x.neededTargets,
 								zChildren,
-								css:zChildren[extras.display.targets[i]].css,
+								css:zChildren[extras.display.targets[i]]?.css || {},
 								logic:x.logic[ryber[co].metadata.section.mediaQuery] || x.logic["default"]
 							});
 						})

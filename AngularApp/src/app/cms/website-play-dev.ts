@@ -7533,9 +7533,7 @@ let form_development:Array<zProtoComponent> = [
 
 				options:{
 					css:{
-
 						opacity:".5",
-
 					},
 					judima:{
 						moving:{
@@ -7545,6 +7543,13 @@ let form_development:Array<zProtoComponent> = [
 							type:"custom"
 						}
 					},
+					extras:{
+						appVanillaTilt:{
+							confirm:"true",
+							type:"body",
+							zSymbolNeeded:"true"
+						}
+					}
 				}
 			},
 			{
@@ -7552,47 +7557,126 @@ let form_development:Array<zProtoComponent> = [
 				type:"input",
 				value:"FIRST NAME",
 				top:150,
+				latch:{
+					type:"display",
+					display:{
+						type:"target",
+						name:"vt-1"
+					},
+					zChildren:[
+						{
+							bool:"div",
+							css:{
+								"background-color":"blue"
+							},
+							val:"vt-display-1 a_p_p_Glassmorphism",
+							logic:{
+								desktop:{
+									width:1.10,
+									height:1.50,
+									top:-40,
+									left:-40
+								},
+								mobile:{
+									width:1.10,
+									height:1.50,
+									top:-40,
+									left:-40
+								}
+							},
+							extras:{
+								appVanillaTilt:{
+									type:"target",
+									group:"my-tilt-0"
+								}
+							},
+							group:["vt-1"]
+						}
+					]
+				},
 				options:{
 					css:{},
 					judima:{},
 					extend:{},
-					extras:{}
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-0"
+						}
+					}
+
 				}
 			},
 			{
 				"key":"input-2",
 				type:"input",
 				value:"LAST  NAME",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-1"
+					},
+				},
 				top:150,
 				options:{
 					css:{},
 					judima:{},
 					extend:{},
-					extras:{}
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-0"
+						}
+					}
 				}
 			},
 			{
 				"key":"input-3",
 				type:"input",
 				value:"ADDRESS",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-1"
+					},
+				},
 				top:150,
 				options:{
 					css:{},
 					judima:{},
 					extend:{},
-					extras:{}
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-0"
+						}
+					}
 				}
 			},
 			{
 				"key":"input-4",
 				type:"date",
 				value:"DOB",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-1"
+					},
+				},
 				top:150,
 				options:{
 					css:{},
 					judima:{},
 					extend:{},
-					extras:{}
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-0"
+						}
+					}
 				}
 			},
 			{
@@ -7600,33 +7684,267 @@ let form_development:Array<zProtoComponent> = [
 				type:"input",
 				value:"CITY",
 				left:200,
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-1"
+					},
+				},
 				options:{
 					css:{},
 					judima:{},
 					extend:{},
-					extras:{}
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-0"
+						}
+					}
 				}
 			},
 			{
 				"key":"input-6",
 				type:"input",
 				value:"STATE",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-1"
+					},
+				},
 				options:{
 					css:{},
 					judima:{},
 					extend:{},
-					extras:{}
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-0"
+						}
+					}
 				}
 			},
 			{
 				"key":"input-7",
 				type:"input",
 				value:"ZIPCODE",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-1"
+					},
+				},
 				options:{
 					css:{},
 					judima:{},
 					extend:{},
-					extras:{}
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-0"
+						}
+					}
+				}
+			},
+
+			{
+				"key":"input-1",
+				type:"input",
+				value:"FIRST NAME",
+				next:"true",
+				top:150,
+				latch:{
+					type:"display",
+					display:{
+						type:"target",
+						name:"vt-2"
+					},
+					zChildren:[
+						{
+							bool:"div",
+							css:{
+								"background-color":"green"
+							},
+							val:"vt-display-1 a_p_p_Glassmorphism",
+							logic:{
+								desktop:{
+									width:1.10,
+									height:1.50,
+									top:-40,
+									left:-40
+								},
+								mobile:{
+									width:1.10,
+									height:1.50,
+									top:-40,
+									left:-40
+								}
+							},
+							extras:{
+								appVanillaTilt:{
+									type:"target",
+									group:"my-tilt-1"
+								}
+							},
+							group:["vt-2"]
+						}
+					]
+				},
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-1"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-2",
+				type:"input",
+				value:"LAST  NAME",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-2"
+					},
+				},
+				top:150,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-1"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-3",
+				type:"input",
+				value:"ADDRESS",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-2"
+					},
+				},
+				top:150,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-1"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-4",
+				type:"date",
+				value:"DOB",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-2"
+					},
+				},
+				top:150,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-1"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-5",
+				type:"input",
+				value:"CITY",
+				left:200,
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-2"
+					},
+				},
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-1"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-6",
+				type:"input",
+				value:"STATE",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-2"
+					},
+				},
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-1"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-7",
+				type:"input",
+				value:"ZIPCODE",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-2"
+					},
+				},
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-1"
+						}
+					}
 				}
 			},
 

@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef, ViewRef, EmbeddedViewRef, ViewChildren, ChangeDetectorRef } from '@angular/core';
 import { RyberService } from '../ryber.service'
 import { fromEvent, from, Subscription, Subscriber, of, combineLatest } from 'rxjs';
-import { deltaNode, eventDispatcher, numberParse, objectCopy } from '../customExports'
+import { deltaNode, eventDispatcher, numberParse, objectCopy,navigationType } from '../customExports'
 import { catchError, delay,first,take } from 'rxjs/operators'
 import { environment as env } from '../../environments/environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -97,7 +97,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
             if(env.directive?.templateDirective?.lifecycleHooks) console.log(this.extras.co + " " + this.extras.zSymbol+ ' templateDirective ngOnInit fires on mount')
             let {ryber,extras,zChildren,subscriptions} = this
             let {co} = extras
-            let {group}  = ryber[co].metadata.templateDirective.group
+            let {group}  = ryber[co].metadata.templateDirective
 
             // optional script loading
             let {scripts} =this.ryber.appCO0.metadata
@@ -123,6 +123,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
                 // feature element organization
                 Object.entries(zChildren)
+                .slice(2)
                 .forEach((x:any,i)=>{
 
                     // if an element doesnt belong it doesnt belong
