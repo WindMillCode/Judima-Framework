@@ -384,7 +384,7 @@ export class LatchDirective {
 
 									}
 									catch(e){}
-									// 
+									//
 								}
 
 
@@ -490,6 +490,9 @@ export class LatchDirective {
 									y.co = co
 
 								})
+								if(x.needed?.includes("appLatch")){
+									zChidlrenExtras.appLatch = {}
+								}
 								zChidlrenExtras.appLatch.deltaNode ={
 									...zChidlrenExtras.appLatch.deltaNode,
 									group: zChildren[extras.zSymbol].extras.appDeltaNode?.group,

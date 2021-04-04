@@ -7522,7 +7522,12 @@ let form_development:Array<zProtoComponent> = [
 				stack:"100",
 
 				delta:{
-
+					group:[
+						{
+							name:"vanilla",
+							type:"add_remove_button"
+						}
+					]
 				},
 				nest:{
 
@@ -7768,7 +7773,7 @@ let form_development:Array<zProtoComponent> = [
 							css:{
 								"background-color":"green"
 							},
-							val:"vt-display-1 a_p_p_Glassmorphism",
+							val:"vt-display-2 a_p_p_Glassmorphism",
 							logic:{
 								desktop:{
 									width:1.10,
@@ -7947,6 +7952,251 @@ let form_development:Array<zProtoComponent> = [
 					}
 				}
 			},
+
+			{
+				"key":"input-1",
+				type:"input",
+				value:"FIRST NAME",
+				top:150,
+				next:"true",
+				latch:{
+					type:"display",
+					display:{
+						type:"target",
+						name:"vt-3"
+					},
+					zChildren:[
+						{
+							bool:"div",
+							css:{
+								"background-color":"red"
+							},
+							val:"vt-display-3 a_p_p_Glassmorphism",
+							logic:{
+								desktop:{
+									width:1.10,
+									height:1.50,
+									top:-40,
+									left:-40
+								},
+								mobile:{
+									width:1.10,
+									height:1.50,
+									top:-40,
+									left:-40
+								}
+							},
+							extras:{
+								appVanillaTilt:{
+									type:"target",
+									group:"my-tilt-2"
+								},
+							},
+							needed:["appLatch"],
+							group:["vt-3"]
+						}
+					]
+				},
+				delta:{
+					group:"vanilla",
+				},
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-2"
+						}
+					}
+
+				}
+			},
+			{
+				"key":"input-2",
+				type:"input",
+				value:"LAST  NAME",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-3"
+					},
+				},
+				delta:{
+					group:"vanilla",
+				},
+				top:150,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-2"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-3",
+				type:"input",
+				value:"ADDRESS",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-3"
+					},
+				},
+				top:150,
+				delta:{
+					group:"vanilla",
+				},
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-2"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-4",
+				type:"date",
+				value:"DOB",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-3"
+					},
+				},
+				delta:{
+					group:"vanilla",
+				},
+				top:150,
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-2"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-5",
+				type:"input",
+				value:"CITY",
+				left:200,
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-3"
+					},
+				},
+				delta:{
+					group:"vanilla",
+				},
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-2"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-6",
+				type:"input",
+				value:"STATE",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-3"
+					},
+				},
+				delta:{
+					group:"vanilla",
+				},
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-2"
+						}
+					}
+				}
+			},
+			{
+				"key":"input-7",
+				type:"input",
+				value:"ZIPCODE",
+				latch:{
+					type:"display",
+					display:{
+						type:"part",
+						name:"vt-3"
+					},
+				},
+				delta:{
+					group:"vanilla",
+				},
+				options:{
+					css:{},
+					judima:{},
+					extend:{},
+					extras:{
+						appVanillaTilt:{
+							type:"part",
+							group:"my-tilt-2"
+						}
+					}
+				}
+			},
+			{
+				key:"add-button",
+				type:"button",
+				value:"Add",
+				next:"true",
+				delta:{
+					group:"vanilla",
+					type:"add",
+					by:2
+				}
+			},
+			{
+				key:"remove-button",
+				type:"button",
+				value:"Remove",
+				delta:{
+					group:"vanilla",
+					type:"remove",
+					by:2
+				}
+			}
+
+
+
 
 
 

@@ -29,66 +29,7 @@ import { Console } from 'node:console';
     ) { }
 
 
-    @HostListener('click') onClick() {
 
-
-        if (this.extras?.confirm === 'true') {
-
-            let {http,subscriptions,group,zChildren,ref} = this
-            //communicate with the python backend
-
-            let data:any = {
-                titleName:zChildren[group.modelName[0]].element.value,
-                env:"extract_model",
-                storageBuckets:group.storageBuckets.map((x:any,i)=>{
-                    return zChildren[x].element.value
-                })
-            }
-            zChildren[group.result[0]].element.innerText = "Submitting..."
-
-            let postRequest =http.post(
-                "http://localhost:3005",
-                data,
-                {
-                    responseType: 'text',
-                }
-            )
-            .subscribe({
-
-
-                error: (error) => {
-
-                    zChildren[group.result[0]].element.innerText =error
-                    ref.detectChanges()
-                    postRequest.unsubscribe()
-                    eventDispatcher({
-                        event: 'resize',
-                        element: window
-                    })
-                },
-                next: (result: any) => {
-
-                    if(result.includes("an error occured")){
-                        zChildren[group.result[0]].element.innerText =result
-                    }
-                    else{
-                        zChildren[group.result[0]].element.innerText ="Result: "+result
-                    }
-
-                    postRequest.unsubscribe()
-                    eventDispatcher({
-                        event: 'resize',
-                        element: window
-                    })
-                }
-
-            })
-            subscriptions.push(postRequest)
-            //
-
-        }
-
-    }
 
 
     ngOnInit() {
@@ -124,6 +65,19 @@ import { Console } from 'node:console';
 
 
                 // feature element organization
+
+                // reset the group for navigation and duplication
+                Object.entries(group)
+                .forEach((x:any,i)=>{
+                    let key = x[0]
+                    let val = x[1]
+                    val.subscriptions?.forEach((y,j)=>{
+                        y.unsubscribe()
+                    })
+                })
+                group = {}
+                //
+
                 Object.entries(zChildren)
                 .slice(2)
                 .forEach((x:any,i)=>{
@@ -135,15 +89,21 @@ import { Console } from 'node:console';
                     //
 
                     // start to organize the elements into groups
+                        // for latch determine which duplicate it belongs to
                     let myGroup = x[1].extras.appVanillaTilt?.group || "default"
                     let myType =  x[1].extras.appVanillaTilt?.type || "default"
-                    let deltaNodeGroup =  x[1].extras?.appDeltaNode?.group
+                    let deltaNodeGroup =  x[1].extras?.appDeltaNode?.group || x[1].extras.appLatch?.deltaNode?.group
                     // determine if there is a duplicate and which duplicate it belongs to
                     let count = 0
                     ryber[co].metadata.deltaNode.groups[deltaNodeGroup]?.deltas
                     .forEach((y:any,j)=>    {
-                        if(y.includes(x[0])){
-                            count = j
+
+                        let targetZSymbols = [x[0],x[1].extras.appLatch?.deltaNode?.zSymbol]
+
+                        let included = y.some( ai => targetZSymbols.includes(ai) );
+                        // console.log(included)
+                        if(included){
+                            count = j +1
                         }
                     })
                     //
@@ -169,6 +129,7 @@ import { Console } from 'node:console';
                 //
 
                 // there should be one target make it tilt
+
                 Object.entries(group)
                 .forEach((x:any,i)=>{
                     let key = x[0]
@@ -177,7 +138,9 @@ import { Console } from 'node:console';
                     if(action.full ==="return"){
                         val.init = "false"
                     }
-                    // 
+                    //
+
+
                     if(val.init !== "true" && val.types.target !== undefined){
                         val.init = "true"
 
@@ -205,22 +168,26 @@ import { Console } from 'node:console';
                                 ref.detectChanges()
 
                             }
+                            let tiltChange = fromEvent(zChildren[y].element,"tiltChange")
+                            .subscribe(tiltOthers)
+                            let tiltOut =  fromEvent(zChildren[y].element,"mouseout")
+                            .pipe(
+                                delay(50)
+                            )
+                            .subscribe(tiltOthers)
+                            val.subscriptions = [tiltChange,tiltOut]
                             subscriptions.push(
-
-                                fromEvent(zChildren[y].element,"tiltChange")
-                                .subscribe(tiltOthers),
-                                fromEvent(zChildren[y].element,"mouseout")
-                                .pipe(
-                                    delay(50)
-                                )
-                                .subscribe(tiltOthers)
+                                ...val.subscriptions
                             )
                             //
+
+
                         })
 
 
                     }
                 })
+                console.log(group)
                 //
 
 

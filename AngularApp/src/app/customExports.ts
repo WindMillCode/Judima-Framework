@@ -31,7 +31,7 @@ export class zChildren {
 
 export class zProtoComponent {
     title:String;
-    type_slup:String;
+    type_slug:String;
     metafields:Array<zProtoChildren>
 }
 export enum zBools {
@@ -72,7 +72,7 @@ export class zOptionsJudima {
         overlapFix:{"false","true"}
     }
 }
-export class zProtoChildren {
+export interface zProtoChildren {
     key? : String;
     type?: String;
     top?: String | Number;
@@ -96,7 +96,7 @@ export class zProtoChildren {
     };
     navigation?:{
         group?:Array<{
-            name:string,
+            name:String,
             type: { //enum
                 "direct_link"
             }
@@ -154,7 +154,10 @@ export class zProtoChildren {
                     top:Number | Function,
                     left:Number | Function
                 }
-            }
+            },
+            needed?:Array<{ //Array enum
+                "appLatchMetadata"
+            }>;
             extras?:any
             group:Array<String>
         }>
