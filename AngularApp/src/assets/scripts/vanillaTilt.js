@@ -105,6 +105,8 @@ class VanillaTilt {
     .forEach((x,i)=>{
         x.addEventListener("mouseenter", this.onMouseEnterBind);
         x.addEventListener("mouseleave", this.onMouseLeaveBind);
+        // x.addEventListener("mouseover", this.onMouseEnterBind);
+        // x.addEventListener("mouseout", this.onMouseLeaveBind);
         x.addEventListener("mousemove", this.onMouseMoveBind);
     })
 

@@ -147,7 +147,7 @@ RSpec.configure do |config|
 	# my_drivers = %i{seleniumChrome}
 	# my_drivers = %i{ internetExplorer }
 	hosts = Hash.new
-	hosts[:dev] =  %{http://localhost:8000}
+	hosts[:dev] =  %{http://localhost:8002}
 
 	config.full_backtrace = false
 	config.backtrace_exclusion_patterns = [
@@ -1119,7 +1119,6 @@ def stagingTest
 
 		end
 
-
 		scenario %{make sure the outer div is engulfing the targeted divs on duplication} do
 			overlay  = { :element => ( first %{[class*=display-overlay]} )}
 			displays = { :element => ( first %{[class*=display3]} )}
@@ -1167,55 +1166,32 @@ def stagingTest
 
 	end
 
+	RSpec.feature %{vanilla Tilt},:skip => true  do
+
+
+
+
+	end
 	RSpec.feature %{staging}  do
 
 
-		scenario %{make sure the outer div is engulfing the targeted divs on duplication} do
-			overlay  = { :element => ( first %{[class*=display-overlay]} )}
-			displays = { :element => ( first %{[class*=display3]} )}
-
-
-			# get the difference between the 2 sections
-			overlay [:style] = overlay [:element].style  %{top},%{height}
-			displays[:style] = displays[:element].style %{top},%{height}
-
-			%w{top height}.each do |x|
-				overlay [:style][x] = (numberParse :dimension => overlay [:style][x]).to_i
-				displays[:style][x] = (numberParse :dimension => displays [:style][x]).to_i
+		scenario %{vanilla Tilt should affect its own target elements} do
+			form_nav = first %{.f_o_r_m_form-main-navigation}
+			form_nav.click
+			display = first %{.a_p_p_Glassmorphism}
+			inputs = (all %{.a_p_p_Input}).to_a.slice 0,8
+		  inputs.each_with_index do |x,i|
+				unless i == 0
+					inputs[i-1].drag_to x
+					sleep 5
+					inputs.each do |y|
+						p y[:placeholder]
+						expect(display.style %{will-change},%{transform}).to eq (y.style %{will-change},%{transform})
+					end
+					sleep 5
+				end
 			end
-			overlay[:style][:y] = overlay [:style][%{top}] + overlay [:style][%{height}]
-			displays[:style][:y] = displays[:style][%{top}] + displays[:style][%{height}]
-			result = overlay[:style][:y] - displays[:style][:y]
-			p result
-			#
-
-			# add sections
-			add = first %{[class*="add-2"]}
-			rand(3..7).times do |x|
-				add.click
-			end
-			#
-
-			# test that the overlay correctly engulfes the display
-			overlay  = { :element => ( first %{[class*=display-overlay]} )}
-			displays = { :element => (( all %{[class*=display3]}  ).to_a.reverse.at(0)  )}
-
-
-
-			overlay [:style] = overlay [:element].style  %{top},%{height}
-			displays[:style] = displays[:element].style %{top},%{height}
-
-			%w{top height}.each do |x|
-				overlay [:style][x] = (numberParse :dimension => overlay [:style][x]).to_i
-				displays[:style][x] = (numberParse :dimension => displays [:style][x]).to_i
-			end
-			overlay[:style][:y] = overlay [:style][%{top}] + overlay [:style][%{height}]
-			displays[:style][:y] = displays[:style][%{top}] + displays[:style][%{height}]
-			expect(overlay[:style][:y] - displays[:style][:y]).to eq(result)
-			#
-		end
-
-		scenario %{} do
+			sleep 10
 
 		end
 

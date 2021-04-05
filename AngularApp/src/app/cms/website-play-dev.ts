@@ -7539,6 +7539,7 @@ let form_development:Array<zProtoComponent> = [
 				options:{
 					css:{
 						opacity:".5",
+						"background-color":"tan"
 					},
 					judima:{
 						moving:{
@@ -7689,6 +7690,7 @@ let form_development:Array<zProtoComponent> = [
 				type:"input",
 				value:"CITY",
 				left:200,
+				next:"true",
 				latch:{
 					type:"display",
 					display:{
@@ -7886,6 +7888,7 @@ let form_development:Array<zProtoComponent> = [
 				"key":"input-5",
 				type:"input",
 				value:"CITY",
+				next:"true",
 				left:200,
 				latch:{
 					type:"display",
@@ -8098,6 +8101,7 @@ let form_development:Array<zProtoComponent> = [
 				"key":"input-5",
 				type:"input",
 				value:"CITY",
+				next:"true",
 				left:200,
 				latch:{
 					type:"display",

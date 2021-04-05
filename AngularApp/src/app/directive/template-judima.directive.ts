@@ -99,6 +99,21 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
             let {co} = extras
             let {group}  = ryber[co].metadata.templateDirective
 
+            // detects navigation
+			let action:any = navigationType({
+				type:["full"],
+				fn:()=>{
+					if(
+						ryber.appCO0.metadata.navigation.full.navigated === "true" &&
+						ryber[co].metadata.judima.init === "true"
+					){
+						return "return"
+					}
+				},
+				ryber
+			})
+            //
+
             // optional script loading
             let {scripts} =this.ryber.appCO0.metadata
             scripts =  scripts .filter((x:any,i)=>{
@@ -122,6 +137,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
                 let {suffix} = group
 
                 // feature element organization
+
+                // reset the group for navigation and duplication
+                    // if you have subscriptions unsub here
+                // Object.entries(group)
+                // .forEach((x:any,i)=>{
+                //     let key = x[0]
+                //     let val = x[1]
+                //     val.subscriptions?.forEach((y,j)=>{
+                //         y.unsubscribe()
+                //     })
+                // })
+                group = {}
+                //
+
                 Object.entries(zChildren)
                 .slice(2)
                 .forEach((x:any,i)=>{
@@ -133,15 +162,21 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
                     //
 
                     // start to organize the elements into groups
+                        // for latch determine which duplicate it belongs to
                     let myGroup = x[1].extras.appTemplateDirective?.group || "default"
                     let myType =  x[1].extras.appTemplateDirective?.type || "default"
-                    let deltaNodeGroup =  x[1].extras?.appDeltaNode?.group
+                    let deltaNodeGroup =  x[1].extras?.appDeltaNode?.group || x[1].extras.appLatch?.deltaNode?.group
                     // determine if there is a duplicate and which duplicate it belongs to
                     let count = 0
-                    ryber[co].metadata.deltaNode.groups[deltaNodeGroup].deltas
-                    .forEach((y:any,j)=>{
-                        if(y.includes(x[0])){
-                            count = j
+                    ryber[co].metadata.deltaNode.groups[deltaNodeGroup]?.deltas
+                    .forEach((y:any,j)=>    {
+
+                        let targetZSymbols = [x[0],x[1].extras.appLatch?.deltaNode?.zSymbol]
+
+                        let included = y.some( ai => targetZSymbols.includes(ai) );
+                        // console.log(included)
+                        if(included){
+                            count = j +1
                         }
                     })
                     //

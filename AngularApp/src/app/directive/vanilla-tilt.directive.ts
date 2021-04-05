@@ -129,7 +129,6 @@ import { Console } from 'node:console';
                 //
 
                 // there should be one target make it tilt
-
                 Object.entries(group)
                 .forEach((x:any,i)=>{
                     let key = x[0]
@@ -187,7 +186,6 @@ import { Console } from 'node:console';
 
                     }
                 })
-                console.log(group)
                 //
 
 
