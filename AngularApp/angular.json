@@ -63,14 +63,18 @@
                         "production": {
                             "fileReplacements": [
                                 {
+                                    "replace": "src/app/website.ts",
+                                    "with": "src/app/cms/website-play-dev.ts"
+                                },
+                                {
                                     "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
+                                    "with": "src/environments/environment.judima.dev.ts"
                                 }
                             ],
                             "assets": [],
                             "optimization": true,
                             "outputHashing": "all",
-                            "sourceMap": false,
+                            "sourceMap": true,
                             "namedChunks": false,
                             "extractLicenses": true,
                             "vendorChunk": false,

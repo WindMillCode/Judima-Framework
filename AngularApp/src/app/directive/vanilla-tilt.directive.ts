@@ -143,7 +143,7 @@ import { Console } from 'node:console';
                     if(val.init !== "true" && val.types.target !== undefined){
                         val.init = "true"
 
-                        let part:any = Array.from(val.types.part)
+                        let part:any = val.types.part ? Array.from(val.types.part) : []
                         let target:any = Array.from(val.types.target)
                         target
                         .forEach((y:any,j)=>{
@@ -152,8 +152,9 @@ import { Console } from 'node:console';
 
                                 "mouse-event-element":[...part.map((z,k)=>{
                                     return zChildren[z].element
-                                }),zChildren[y].element]
+                                }),zChildren[y].element],
                                 // script modification wouldn't allow me to make change otherwise
+                                ...zChildren[y].extras.appVanillaTilt?.initOptions
                             })
 
                             // make sure all attached move along with element

@@ -634,6 +634,7 @@ export class LatchDirective {
 
 				css[key] = val({
 					delta,
+					zChildren
 				}).toString()+"px"
 			}
 			//

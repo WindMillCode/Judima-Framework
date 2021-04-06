@@ -5,8 +5,10 @@ import { ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 declare global {
-    interface Object { fromEntries: any; }
+    interface Object { fromEntries: any; numberParse :Function }
+    var numberParse
 }
+window.numberParse = numberParse
 
 
 
