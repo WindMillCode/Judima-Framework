@@ -97,7 +97,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
             if(env.directive?.templateDirective?.lifecycleHooks) console.log(this.extras.co + " " + this.extras.zSymbol+ ' templateDirective ngOnInit fires on mount')
             let {ryber,extras,zChildren,subscriptions} = this
             let {co} = extras
-            let {group}  = ryber[co].metadata.templateDirective
+            let {group,suffix}  = ryber[co].metadata.templateDirective
 
             // detects navigation
 			let action:any = navigationType({
@@ -133,8 +133,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
             ])
             .subscribe((result:any) => {
                 zChildren = ryber[co].metadata.zChildren
-                let ref = result[0].ref
-                let {suffix} = group
+                let ref = result[0].ref || this.ref
+
 
                 // feature element organization
 
@@ -154,6 +154,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
                 Object.entries(zChildren)
                 .slice(2)
                 .forEach((x:any,i)=>{
+                    
 
                     // if an element doesnt belong it doesnt belong
                     if(x[1].extras?.appTemplateDirective === undefined){
@@ -186,7 +187,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
                             deltaNode:{},
                             types:{},
                             suffix,
-                            count
+                            count,
+                            subscriptions:[]
                         }
 
                     }

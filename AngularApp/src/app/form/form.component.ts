@@ -392,6 +392,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         options:{
                             type:["latch"]
                         },
+                        ref,
                         templateMyElements:this.templateMyElements
                     })
 
@@ -421,6 +422,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         options:{
                             type:["deltaNode"]
                         },
+                        ref,
                         templateMyElements:this.templateMyElements
                     })
 
@@ -1020,7 +1022,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 Object.keys(zChild)
                 .forEach((x,i)=> {
                     if(zChild[x].extras?.judima?.formatIgnore === "false"){
-                        if(["p","ta","c"].includes(zChild[x].bool )){
+                        if(["p","ta","c","h1"].includes(zChild[x].bool )){
                             zChild[x].css["height"] = null
                             zChild[x].css["display"] = "table"
                             this.ref.detectChanges()
