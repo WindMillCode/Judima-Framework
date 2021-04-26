@@ -37,8 +37,9 @@ $bg-color-1 :rgba(random(255), random(255), random(255),(random(10)/10) + .5 );
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-blue.css";
 @import "./assets/styles/pikaday.css";
-@import "./assets/styles/component-position";
+// @import "./assets/styles/component-position";
 @import "./assets/styles/glassmorphism";
+@import "./assets/styles/facebook";
 
 /* libre-franklin-regular - latin */
 @font-face {

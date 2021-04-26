@@ -5,10 +5,14 @@ import { ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 declare global {
-    interface Object { fromEntries: any; numberParse :Function }
+    interface Object { fromEntries: any; numberParse :Function; xPosition:Function }
     var numberParse
+    var xPosition
+    var judimaPageOffset
 }
 window.numberParse = numberParse
+window.xPosition = xPosition
+window.judimaPageOffset = judimaPageOffset
 
 
 
@@ -50,9 +54,11 @@ export enum zBools {
 export class zOptionsJudima {
     mobile?:{
         widthRatio?:Number;
+        width?:Number
         top?:Number
         stack?:Number
-        footerSpace?:Number
+        footerSpace?:Number,
+        left?:Number
     };
     desktop?:{
 
@@ -76,15 +82,19 @@ export class zOptionsJudima {
 }
 export interface zProtoChildren {
     key? : String;
-    type?: String;
+    type: String;
     top?: String | Number;
     left?: String | Number;
     width?: String | Number;
     height?: String | Number;
     split?: String | Number;
+    value?: String | Number
+        // images only
+        imageURL?:String;
+        //
 
     //children only
-    next?:{"true"}
+    next?: String // {"true"}
     //
     // body only
     gap?:String | Number;
@@ -93,56 +103,76 @@ export interface zProtoChildren {
     options?:{
         css?:any | CSSRuleList,
         judima?:zOptionsJudima,
-        extras:any,
-        extend:any
+        extras?:any |
+        {
+            appVanillaTilt?:{
+                type:String,
+                group:String,
+                initOptions?:any // Vanilla Tilt init options
+            } | {
+                confirm:"true",
+                type:"body",
+                zSymbolNeeded:"true"
+            }
+        },
+        extend?:any
     };
+
+
     navigation?:{
         group?:Array<{
             name:String,
-            type: { //enum
+            type: String /*{ //enum
                 "direct_link"
-            }
-        }>;
-        name:string
+            } */
+        }>,
+        name:String
+    }  | {
+        group:String
+        type:String // enum "direct_link"
     };
     delta?:{
         group: Array<{
-            name:string,
-            type: { //enum
+            name:String,
+            type: String /*{ //enum
                 "add_remove_button",
                 "repeat"
-            },
+            }*/,
             by?: String | Number
         }>
-    }   | {
+    }  | {
         group:String ,
-        type:{"add","remove"}
-        by: String | Number
+        type?:String /*{"add","remove"}*/
+        by?: String | Number,
+        options?:any | {
+            next?: String | Function //["true","false"] // will skip to the next line or if false place next to
+        }
     };
     nest?:{
         group: Array<{
             name:string,
-            type: { //enum
+            type:String/* { //enum
                 "regular"
-            },
+            },*/
         }>
     } | {
         group:String;
         name:String;
         under?: String;
     };
-    latch:{
+    latch?:{
         options?:Array<String>;
-        state?:{"open","closed"};
-        type?:String;
+        state?:String /*{"open","closed"};*/
+        type?:String; //display
         display?:{
-            type:{"target","part"};
+            type:String /*{"target","part"};*/
             name:String
         };
-        zChildren:Array<{
+        zChildren?:Array<{
             bool:String;
             css?:any | CSSRuleList
             val?:String
+            text?:String
             logic:{ // for as many media queries
                 desktop:{
                     width:Number | Function,
@@ -157,6 +187,10 @@ export interface zProtoChildren {
                     left:Number | Function
                 }
             },
+            type?:Array<String>
+            // Array<{ //Array enum
+            //     "deltaNodeContainer"
+            // }>
             needed?:Array<{ //Array enum
                 "appLatchMetadata"
             }>;
@@ -175,11 +209,14 @@ export class componentObject { // not final
     init?:any
 }
 
-// let final:any = {};
 
-
-
-
+export function judimaPageOffset(devObj) {
+    let supportPageOffset = window.pageXOffset !== undefined;
+    let isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
+    let x = supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
+    let y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
+    return {x,y}
+}
 
 function wait(   ms   ){
     var start = new Date().getTime();
@@ -342,8 +379,17 @@ export function eventDispatcher(   devObj:{event:string,element:HTMLElement | Wi
     }
 }
 
-export function numberParse(   dimension:any   ){
-    dimension = parseFloat(dimension.split("p")[0])
+export function numberParse(   dimension:any  ){
+    // string or array
+    if(typeof dimension === "string"){
+        dimension = parseFloat(dimension.split("p")[0])
+    }
+    else{
+        dimension = dimension
+        .map((x:any,i)=>{
+            return parseFloat(x.split("p")[0])
+        })
+    }
     return dimension;
 }
 
@@ -1455,17 +1501,17 @@ export function xContain(
     devObj:{
         measure?:zChildren | number,
         parts?: Array<zChildren>,
-        type:string,
+        type:String,
         stops?: any,
-        debug? :string  | boolean
+        debug? :String  | Boolean
         preserve?:{
             align:Array<string> | Array<string>[]
             zChild:zChildren[]
             ref:ChangeDetectorRef,
             targetPos?:Array<number>,
             containPos?:Array<number>
-            type?:string
-            width?:number
+            type?:String
+            width?:Number
             left?:number,
 			options?:any
         }
@@ -1802,10 +1848,12 @@ export function _boardDimensions(devObj?:any) {
         })
     )
 
+
     result.xPosition = 			xPosition({
         target:1262.67 - (section.left *2),
         contain: numberParse(getComputedStyle(zChild["&#8353"].element).width),
     })
+
     result.section = {...section}
 
     return result

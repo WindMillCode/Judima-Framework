@@ -169,7 +169,7 @@ __FILE__
                 ...Array.from(scripts,(x:any,i)=>{return fromEvent(x.element,"load")}),
                 this.ryber[this.extras.co.valueOf()].metadata.zChildrenSubject
             ])
-            .subscribe(()=>{
+            .subscribe((result)=>{
                 // ...3rd party work here
             })
 ```
@@ -422,33 +422,27 @@ options:{
                 gap:20
             }
 ```
-    * this means if there were 10 zChildren horiztally aligned 
+* this means if there were 10 zChildren horiztally aligned 
 ```
 10 gaps of 20px each 200px total gap space on the line 
 1200 - 200 = 1000px alloted for the width of the zChildren
 if every zChildren had a split of 1 
 1/10 * 1000 = 100px final width for each zChild
 ```
-    * stack is the vertical gap between zChildren
-        * can be modified on the component using {stack:number}
-        * can be modified on the zChild using {top:number}
-        *  when modifying the top on zChildren when duplication is enabled,
-        if the target zChildren overlap you might have set overlapFix to false, even so there is a small chance the screen will go white (infinite loop). there is an infinite loop because overlapFix was to prevent deformity by fixing overlaps, but here in your case you intended overlaps
+* stack is the vertical gap between zChildren
+	* can be modified on the component using {stack:number}
+	* can be modified on the zChild using {top:number}
+	*  when modifying the top on zChildren when duplication is enabled,
+	if the target zChildren overlap you might have set overlapFix to false, even so there is a small chance the screen will go white (infinite loop). there is an infinite loop because overlapFix was to prevent deformity by fixing overlaps, but here in your case you intended overlaps
+```ts
+	options:{
+		judima:{
+			stack:{
+				overlapFix:"false"
+			}
+		}
+	}
 ```
-				options:{
-					judima:{
-						stack:{
-							overlapFix:"false"
-						}
-					}
-				}
-```
-
-
-        
-    
-
-
 
 
 ##### Delta-Node directive
@@ -784,6 +778,7 @@ latch:{
 ```
 * some times we want the display to expand and collaspe as elements are added and leave the DOM, to acheive that
     * starts at first name and includes all zChildren with the name, cannot choose even odd or exclude any
+	* the target zProtoChild, must be part of a deltaNode group, if not make the target a part and make the target, the zChild that is duplicating
 ```ts
 			{
 				"key": "heading",
@@ -956,7 +951,34 @@ latch:{
 			},
 ```
 
+* when there is duplication logic needed on the display so other directives can know which belongs to which group use 
+```ts
+needed:["appLatch"],
+```
 
+to help associate
+```ts
+						{
+							bool:"img",
+							val:"account-image a_p_p_Login_Image",
+							css:{
+								"z-index":2
+							},
+							extras:{
+								extend:{
+									src:"./assets/media/python.jpg"
+								},
+								appFacebookLogin:{
+									type:"login-img"
+								},
+							},
+							logic:{...}
+							// 
+							needed:["appLatch"],
+							// 
+							group:["facebook_login_card"]
+						},
+```
 
 
 ## types schema 

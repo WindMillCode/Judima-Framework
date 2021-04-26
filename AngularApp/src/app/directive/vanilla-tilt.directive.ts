@@ -147,6 +147,7 @@ import { Console } from 'node:console';
                         let target:any = Array.from(val.types.target)
                         target
                         .forEach((y:any,j)=>{
+                            zChildren[y].element.vanillaTilt?.destroy()
                             VanillaTilt.init(zChildren[y].element,{
                                 perspective:500,
 

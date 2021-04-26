@@ -24,7 +24,8 @@
                 "judima": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/AngularApp",
+                        // "outputPath": "dist/AngularApp",
+                        "outputPath":"../docs",
                         "fileReplacements": [
                             {
                                 "replace": "src/app/website.ts",
@@ -61,20 +62,24 @@
                     },
                     "configurations": {
                         "production": {
+                            "baseHref":"/Facebook_Project/",
+                            "deployUrl":"/Facebook_Project/",
                             "fileReplacements": [
                                 {
                                     "replace": "src/app/website.ts",
-                                    "with": "src/app/cms/website-play-dev.ts"
+                                    "with": "src/app/cms/website-facebook-dev.ts"
                                 },
                                 {
                                     "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.judima.dev.ts"
+                                    "with": "src/environments/environment.facebook.dev.ts"
                                 }
                             ],
-                            "assets": [],
+                            "assets": [
+                                "src/assets"
+                            ],
                             "optimization": true,
                             "outputHashing": "all",
-                            "sourceMap": true,
+                            "sourceMap": false,
                             "namedChunks": false,
                             "extractLicenses": true,
                             "vendorChunk": false,
@@ -92,6 +97,7 @@
                                 }
                             ]
                         },
+
                         "play": {
                             "fileReplacements": [
                                 {
@@ -103,7 +109,7 @@
                                     "with": "src/environments/environment.judima.dev.ts"
                                 }
                             ]
-                        },
+                        }
 
 
 
@@ -113,23 +119,18 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
                         "browserTarget": "AngularApp:judima:play",
-                        "port": 8000,
+                        "port": 4520,
                         "liveReload": true,
-						"hmr": false,
-						// "proxyConfig": "src/proxy.conf.json"
+						"hmr": true
                     },
                     "configurations": {
                         "production": {
                             "browserTarget": "AngularApp:judima:production"
                         },
                         "play": {
-                            "port": 8000,
+                            "port": 4520,
                             "browserTarget": "AngularApp:judima:play"
                         },
-
-                        "webRTC": {
-                            "browserTarget": "AngularApp:judima:webRTC"
-                        }
 
                     }
                 },

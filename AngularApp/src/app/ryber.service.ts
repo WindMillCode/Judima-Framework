@@ -43,7 +43,7 @@ export class RyberService {
             let { co,mf } = devObj
             let { navigation,appSection,gsapCursor,webVitals,columnDefs,rowData,webRTC,imageURL,latch,options,nest,printGroupType, printGroup, key, type, gap, stack, value, group, count, newline, form,delta, refreshGroup, background, color, fonts, title, fontSize, italics, googleSheets, border } = mf
             let { left, top, height, width, split, next } = mf
-			let component = { left, top, height, width, split, next }
+			let component = { left, top, height, width, split, next,gap }
 
 
 
@@ -137,7 +137,7 @@ export class RyberService {
                 })
             }
             catch(e){}
-            // 
+            //
 			//
 
             let symbol: any = ""
@@ -658,7 +658,8 @@ export class RyberService {
                 symbol = rUD({
                     co,
                     bool: 'div',
-                    val: key.split("_").reverse()[0]+ ' a_p_p_Nester',
+                    // val: key.split("_").reverse()[0]+ ' a_p_p_Nester',
+                    val:key + ' a_p_p_Nester',
                     css,
                     extras: {
 						judima,
@@ -729,7 +730,7 @@ export class RyberService {
                     "font-size": "48px",
                     top: "0px",
                     // height: "75px",
-                    left: '400px',
+                    // left: '400px',
                     "z-index": 4,
                     'background-color': background,
                     color,
@@ -754,7 +755,8 @@ export class RyberService {
                     co,
                     bool: 'b',
                     text: value,
-                    val: key.split("_").reverse()[0] + ' a_p_p_Button',
+                    // val: key.split("_").reverse()[0] + ' a_p_p_Button',
+                    val:key + ' a_p_p_Button',
                     css,
                     extras: {
 						extend,
@@ -763,6 +765,7 @@ export class RyberService {
 						type,
 						appDeltaNode,
                         appNest,
+                        appLatch,
                         appWebRTC:{
                             confirm:this.appCO0.metadata.webRTC.init.includes(webRTC?.item)  ? "true" : webRTC?.item !== undefined ? "pickup":"false",
                             co,
@@ -857,7 +860,8 @@ export class RyberService {
                 symbol = rUD({
                     co,
                     bool: 'img',
-                    val: key.split("_").reverse()[0]+ ' a_p_p_Image',
+                    // val: key.split("_").reverse()[0]+ ' a_p_p_Image',
+                    val : key + ' a_p_p_Image',
                     css,
                     extras: {
 						judima,
@@ -1294,6 +1298,43 @@ export class RyberService {
 
             }
 
+            else if(type === "anchor") {
+
+                let css = {
+
+                    "z-index": 4,
+					...options.css
+                }
+				extend = {
+					...extend,
+					//your props here
+					...options.extend
+				}
+				judima = {
+					...judima,
+					//your props here
+					...options.judima
+				}
+
+                symbol = rUD({
+                    co,
+                    bool: 'a',
+                    val: key+ ' a_p_p_Anchor',
+                    text: value,
+                    css,
+                    extras: {
+						extend,
+						judima,
+                        component,
+						type: "anchor",
+						appDeltaNode,
+                        appLatch,
+						appNest,
+                        ...options.extras
+                    }
+                })
+            }
+
             else {
 
                 let css = {
@@ -1329,6 +1370,7 @@ export class RyberService {
                         component,
 						type: "text",
 						appDeltaNode,
+                        appLatch,
 						appNest,
                         ...options.extras
                     }
@@ -1800,7 +1842,7 @@ export class RyberService {
                 full:{
                     map:{},
                     navigated:"false",
-                    startURL:"/form"
+                    startURL:"/home"
                 }
             },
             webRTC:{

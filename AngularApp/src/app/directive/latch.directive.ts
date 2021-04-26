@@ -341,20 +341,20 @@ export class LatchDirective {
 						}
 						// determine if there are duplicates
 
-							let deltaNodegroup = zChildren[extras.zSymbol].extras.appDeltaNode?.group || extras.deltaNode?.group || null
-							if(ryber[co].metadata.deltaNode.groups[deltaNodegroup]){
-								extras.deltaNode =extras.deltaNode || {
-									group:null,
-									zSymbol:null,
-									containerZSymbol:[]
-								}
-								ryber[co].metadata.latch.display.deltaNode[deltaNodegroup] ={
-									count:ryber[co].metadata.deltaNode.groups[deltaNodegroup]?.deltas.length,
-									symbols:objectCopy(
-										ryber[co].metadata.deltaNode.groups[deltaNodegroup]?.deltas
-									).reverse()[0] || []
-								}
+						let deltaNodegroup = zChildren[extras.zSymbol].extras.appDeltaNode?.group || extras.deltaNode?.group || null
+						if(ryber[co].metadata.deltaNode.groups[deltaNodegroup]){
+							extras.deltaNode =extras.deltaNode || {
+								group:null,
+								zSymbol:null,
+								containerZSymbol:[]
 							}
+							ryber[co].metadata.latch.display.deltaNode[deltaNodegroup] ={
+								count:ryber[co].metadata.deltaNode.groups[deltaNodegroup]?.deltas.length,
+								symbols:objectCopy(
+									ryber[co].metadata.deltaNode.groups[deltaNodegroup]?.deltas
+								).reverse()[0] || []
+							}
+						}
 
 						//
 
@@ -501,6 +501,7 @@ export class LatchDirective {
 							}
 							catch(e){}
 
+
 							let symbol = rUD({
 								quantity:4,
 								co,
@@ -515,7 +516,7 @@ export class LatchDirective {
 									},
 									...zChidlrenExtras
 								},
-								val:"a_p_p_Display " +x.val
+								val:x.val + "  a_p_p_Display"
 							})
 
 							if(x?.type?.includes("deltaNodeContainer")){
@@ -526,6 +527,7 @@ export class LatchDirective {
 							return symbol
 						})
 
+
 						// console.log(extras.zChildren)
 						ref.detectChanges()
 
@@ -533,6 +535,15 @@ export class LatchDirective {
 						ryber[co].metadata.latch.updateZChild.next({
 						})
 						//
+
+
+						zChildren[extras.zSymbol].extras.appDeltaNode.options?.modify({
+							zChild:zChildren,
+							x:extras.zSymbol,
+							index:zChildren[extras.zSymbol].extras.appDeltaNode.options.index,
+							hook:"latchDirective",
+							co:ryber[co]
+						})
 					}),
 					//
 
@@ -543,6 +554,7 @@ export class LatchDirective {
 							return
 						}
 
+
 						extras.zChildren
 						.forEach((x:any,i)=>{
 							// for some reason on navigation this filter methods removes
@@ -551,13 +563,14 @@ export class LatchDirective {
 							if(x?.type?.includes("deltaNodeContainer")){
 								x.neededTargets =
 								x.neededTargets
-								.filter((x:any,i)=>{
-									return zChildren[x] !== undefined
+								.filter((y:any,j)=>{
+									return zChildren[y] !== undefined
 								})
 							}
 							//
 
 							this._displayDetermineDims({
+								zSymbol:extras.display.targets[i],
 								dims,
 								neededTargets:x.neededTargets,
 								zChildren,
@@ -579,8 +592,8 @@ export class LatchDirective {
     }
 
 
-	private _displayDetermineDims(devObj:{dims: string[][], neededTargets: any, zChildren: any, css: any,logic:any}) {
-		let {dims,neededTargets,zChildren,css,logic} = devObj
+	private _displayDetermineDims(devObj:{zSymbol?:string,dims: string[][], neededTargets: any, zChildren: any, css: any,logic:any}) {
+		let {zSymbol,dims,neededTargets,zChildren,css,logic} = devObj
 
 
 		let delta:any = {
@@ -633,8 +646,10 @@ export class LatchDirective {
 			else if(typeof val ==="function"){
 
 				css[key] = val({
+					zSymbol,
+					css,
 					delta,
-					zChildren
+					zChildren,
 				}).toString()+"px"
 			}
 			//

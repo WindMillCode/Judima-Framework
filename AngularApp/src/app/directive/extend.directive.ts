@@ -1,4 +1,5 @@
 import {Directive, ElementRef, HostListener,Input,Renderer2,OnInit} from '@angular/core';
+import { of } from 'rxjs';
 import {objectCopy, xContain} from "../customExports"
 
 @Directive({
@@ -30,12 +31,13 @@ export class ExtendDirective implements OnInit {
 
 
 
+
         }
         if(this.el.nativeElement.tagName === "INPUT"){
             this.renderer.setAttribute(
                 this.el.nativeElement,
                 "size",
-                (parseInt(this.el.nativeElement.getAttribute('placeholder').length) + 5).toString()
+                (parseInt(this.el.nativeElement.getAttribute('placeholder')?.length) + 5).toString()
 
             )
         }

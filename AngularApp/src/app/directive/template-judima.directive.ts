@@ -93,7 +93,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
     ngOnInit() {
         this.extras = this.templateDirective
 
-        if (this.extras?.confirm === 'true' && this.extras?.type === "body"  ) {
+        if (this.extras?.confirm === 'true' && this.extras?.type.includes("body")  ) {
             if(env.directive?.templateDirective?.lifecycleHooks) console.log(this.extras.co + " " + this.extras.zSymbol+ ' templateDirective ngOnInit fires on mount')
             let {ryber,extras,zChildren,subscriptions} = this
             let {co} = extras
@@ -154,7 +154,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
                 Object.entries(zChildren)
                 .slice(2)
                 .forEach((x:any,i)=>{
-                    
+
 
                     // if an element doesnt belong it doesnt belong
                     if(x[1].extras?.appTemplateDirective === undefined){

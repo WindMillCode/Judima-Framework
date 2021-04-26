@@ -32,6 +32,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
     foo:any= {}
     typesES:string = 'formES'
     subscriptions: Array<Subscription> = []
+    desktopSection:any
+    mobileSection:any
 
 
     ngOnInit():void {
@@ -110,7 +112,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 */
 
                 let section:any =  {
-					...this.ryber.appCO0.metadata.sectionDefault,
+					...ryber.appCO0.metadata.ryber.sectionDefault,
 					...zChild["&#8353"]?.extras?.section,
 				}
 
@@ -122,7 +124,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 section.area =section.left + section.width
 				section.prevLeft = section.left
 
-                // --
+                // initialzation
+                let {desktopSection,mobileSection} = this
                 let keep
                 let keepCurrent
                 let keepLast
@@ -302,7 +305,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             },0) ) /  ( x.length-1 )
                         let gapType = x.reduce((acc,y,j)=>{
                                 acc += numberParse(zChild[y].css["width"]) + (
-                                    zChild[y].extras?.component?.split === undefined || zChild[y].extras?.component?.split === 6 ? 0: section.gap
+                                    zChild[y].extras?.component?.split === undefined || zChild[y].extras?.component?.split === 6 ? 0: (zChild[y].extras?.component?.gap||section.gap)
                                 )
                                 return acc
                             },0)
@@ -322,7 +325,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     numberParse(   zChild[x[j-1]].css["left"]  ) +
                                     numberParse(   zChild[x[j-1]].css["width"]  ) +
                                     // section.gap
-                                    (gapType >= section.width -300 ?gaps : section.gap)
+                                    (gapType >= section.width -300 ?gaps : (zChild[y].extras?.component?.gap||section.gap))
                                 ).toString() + "px"
                             }
                             //
@@ -356,11 +359,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                 //stack spacing setup
                 let spacing =[]
-                // =  [null,
-                //     ...Array.from(align[0],(x,i)=> {return 50}),
-				// 	...Array.from(align[1] !== undefined && align[0].length <= 1 ? align[1] : Array(0) ,(x,i)=> {return 50}),
-				// 	section.stack
-                // ]
+
                 cmsZKeys
                 .forEach((x:any,i)=>{
                     if(zChild[x].extras.component.top !== undefined){
@@ -396,11 +395,23 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                         templateMyElements:this.templateMyElements
                     })
 
-
                     eventDispatcher({
                         event:'resize',
                         element:window
                     })
+
+                    switch (ryber[appTV].metadata.section.mediaQuery) {
+                        case "desktop":
+                            this.positionBoard({ zChild: topLevelZChild, section,mediaQuery:this.desktopSection });
+                            break;
+
+                        case "mobile":
+                            this.positionBoard({ zChild: topLevelZChild, section,mediaQuery:this.mobileSection });
+                            break;
+
+                        default:
+                            break;
+                    }
                 })
 				//
 
@@ -417,6 +428,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     topLevelZChild = this._topLevelZChildInit()
                     latchZChild = this.ryber[this.appTV].metadata.latch.zChild = this._latchZChildInit()
 
+                    // console.log(zChild)
                     this.directivesSendData({
                         directivesZChild:zChild,
                         options:{
@@ -431,12 +443,24 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     this.ryber[this.appTV].metadata.deltaNode.component.confirm = "true"
                     //
 
-
-
                     eventDispatcher({
                         event:'resize',
                         element:window
                     })
+
+                    switch (ryber[appTV].metadata.section.mediaQuery) {
+                        case "desktop":
+                            this.positionBoard({ zChild: topLevelZChild, section,mediaQuery:this.desktopSection });
+                            break;
+
+                        case "mobile":
+                            this.positionBoard({ zChild: topLevelZChild, section,mediaQuery:this.mobileSection });
+                            break;
+
+                        default:
+                            break;
+                    }
+
                 })
 				//
 
@@ -514,6 +538,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             currentGroup.hooks.component.add("add prepare")
                             //
 
+
+
                             // deterimine new spacing
                                 component.keep = {groups:[{items:[],index:[],oneExists:"false"}]}
                                 // inspect the keep
@@ -524,15 +550,18 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                 })
                                 //
 
+
                                 // determine groups to be duplicated and placed in different parts of keep
                                 determineKeepGroups({component})
                                 //
 
 
+
+
                                 // create the logic for the new groups
                                 // length = 1 only means it has 0 and needs a new attach
                                 // length = 2 means replace both per guidance of mapping
-                                // console.log(component)
+
                                 logicKeep({
                                     hook:currentGroup.hooks.component,
                                     zSymbolsMap:"deltasMap",
@@ -541,6 +570,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                                     zChild,
 
                                 })
+
                                 component.keep.groups.reverse()
                                 .forEach((x:any,i)=>{
                                     // update the finalKeep and zChildKeys
@@ -581,6 +611,73 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                             .forEach((x:any,i)=>{
                                 finalAlign.push(x)
                             })
+
+                            // options for configuring how deltas are placed
+                            component.deltas
+                            .forEach((x:any,i)=>{
+                                let index = [[],...this.ryber[this.appTV].metadata.deltaNode.groups[current.group].deltas]
+                                .reduce((acc,y,j)=>{
+                                    if( y.includes(x)){
+                                        return j
+                                    }
+                                    return acc
+                                }) -1
+
+                                // console.log(zChild[x].css)
+
+                                zChild[x].extras.component.next = zChild[x].extras.appDeltaNode.options?.next?.({index}) ||zChild[x].extras.component.next
+                                zChild[x].cssDefault.left =zChild[x].extras.appDeltaNode.options?.cssLeft?.({index,css:zChild[x].cssDefault}) || zChild[x].cssDefault.left
+                                zChild[x].extras.appDeltaNode.options?.modify({zChild,x,index,hook:"templateComponent"})
+                                zChild[x].extras.appDeltaNode.options !== undefined ? zChild[x].extras.appDeltaNode.options.index= index  : null
+                                // console.log(zChild[x].extras.component)
+                            })
+
+                            // for align to work, the elements that are to be on the same line must be placed together
+                            finalAlign=finalAlign
+                            .map((x:any,i)=>{
+                                let myX = x
+                                x.forEach((y:any,j)=>{
+                                    if(zChild[y].extras.component.next === "false"){
+                                        finalAlign[i-1].push(y)
+                                        myX.splice(j,1)
+                                        zChild[y].extras.component.next = "keepFalse"
+                                    }
+                                })
+                                return myX
+                            })
+                            .filter((x:any,i)=>{
+                                return x.length !== 0
+                            })
+                            //
+
+                            // trying to reform the keep so duplicated that would be
+                            // juxtaposed, get that the keep is x[1] so it must match
+                            // with the elements of the same index as align to match properly
+                            finalKeep=finalKeep
+                            .map((x:any,i)=>{
+                                let a = finalAlign
+                                .reduce((acc,y,j)=>{
+                                    return y.includes(x[0]) ? j:acc
+                                },-1)
+                                let prev =
+                                    finalAlign[a]
+                                    .filter((y:any,j)=>{
+
+                                        return y !== x[0] && zChild[y].extras.component.next !== "keepFalse"
+                                    })
+                                let prevKeep = finalKeep
+                                .filter((y:any,i)=>{
+                                    return y[0] === prev[0]
+                                })[0]
+                                x[1] = prevKeep?.[1] || x[1]
+                                return x
+                            })
+                            // console.log(finalKeep)
+                            // console.log(zChild)
+                            // console.log("-")
+                            //
+
+
                             //
 
 
@@ -742,12 +839,10 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
                         else if(  ryber.appCO0.metadata.ryber.sectionDefault.app.width.mediaQuery !=="desktop"  ){
 
-
                             //element management
                             ryber[appTV].metadata.section.mediaQuery ="mobile"
                             this.mobileMediaQuery({finalZChildKeys, zChild, section, topLevelZChild, moving, ref, ryber, appTV,sectionType:"custom"});
                             //
-
 
                         }
                     }
@@ -787,8 +882,10 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     let val = x[1]
                     if(env.component.form[key].includes(ii)){
                         console.log(key +" for " +appTV , val );
+                        console.log(ryber[appTV].metadata)
                     }
                 })
+
                 //
         })
         //
@@ -848,7 +945,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 
     private desktopMediaQuery(devObj:{zChild: any, keep: any[], finalKeep: any[], finalZChildKeys: any[], finalAlign: any[], section: any, ref: ChangeDetectorRef, align: any[], topLevelZChild: any, moving: any, ryber: RyberService, appTV: any}) {
         let {zChild, keep, finalKeep, finalZChildKeys, finalAlign, section, ref, align, topLevelZChild, moving, ryber, appTV} = devObj
-        let desktopSection = {
+        let desktopSection = this.desktopSection= {
             ...ryber.appCO0.metadata.ryber.sectionDefault.desktop,
             ...zChild["&#8353"].extras.judima.desktop
         }
@@ -868,6 +965,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     }
                 });
 
+
                 ref.detectChanges();
                 //
                 keep = finalKeep;
@@ -885,7 +983,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                     ],
                     options: {
                         overlapFix: {
-                            confirm: "true",
+                            confirm: "false",
                             flag: "false"
                         }
                     },
@@ -965,7 +1063,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
         if(sectionType === "custom"){
             board = ryber.appCO0.metadata.ryber.sectionDefault.app.custom.board
         }
-        let mobileSection =  {
+        let mobileSection = this.mobileSection =  {
             ...ryber.appCO0.metadata.ryber.sectionDefault.mobile,
             ...zChild["&#8353"].extras.judima.mobile
         }
@@ -980,11 +1078,15 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 .forEach((x, i) => {
 
                     zChild[x].css["width"] = (
-                        (zChild[x].extras.judima?.mobile?.widthRatio ||mobileSection.widthRatio )
-                        * numberParse(getComputedStyle(board.element).width)
+                        (zChild[x].extras.judima?.mobile?.width||mobileSection.width) ||
+                        (
+                            (zChild[x].extras.judima?.mobile?.widthRatio ||mobileSection.widthRatio )
+                            * numberParse(getComputedStyle(board.element).width)
+                        )
                     ).toString() + "px";
-                    this.ref.detectChanges();
-                    zChild[x].css["left"] = zChild[x].extras.judima?.mobile?.left || (
+                    ref.detectChanges();
+                    zChild[x].css["left"] =  (
+                        zChild[x].extras.judima?.mobile?.left ||
                         xPosition({
                             target: numberParse(zChild[x].css["width"]),
                             contain: numberParse(getComputedStyle(board.element).width)
@@ -1124,6 +1226,9 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
             max = max
             .reduce((acc: any, x, i) => {
 
+                if(zChild[x].extras.judima.formatIgnore === "true"){
+                    return acc
+                }
                 let sum = numberParse(zChild[x].css["top"]) +
                     numberParse(zChild[x].css["height"]);
 
@@ -1132,6 +1237,8 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
                 }
                 return acc;
             }, ["", 0])[0];
+
+
 
 
         if(zChild["&#8353"].extras.component.height !== undefined){
@@ -1199,6 +1306,7 @@ export class FormComponent implements OnInit  , AfterViewInit, OnDestroy {
 				})
 			);
 			//
+
 		}
 
 	}

@@ -276,7 +276,8 @@
                 appLatch [latch] = "ryber.appAvailble( a.extras[1][bb], 'appLatch')"
 				*ngIf= "a.bool[1][bb] ==='div'   else elseBlock19"
 				class = {{a.val[1][bb]}}
-				[ngStyle] = 'a.ngCss[1][bb]' >
+				[ngStyle] = 'a.ngCss[1][bb]'
+                [innerHTML] = 'a.text[1][bb]?.item' >
 			</div>
 		</ng-template>
 		<ng-template #elseBlock19  >
