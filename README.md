@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.8.
 
-It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) version 11.2.9
+It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) version 11.2.13
 ## Educational
 * every other software stack on sevearl platforms the software is doing the same things
     * in web design this is not the case
@@ -23,6 +23,167 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
 * after that its zChildren representations of DOM elements in their individuality
 * they are genererated from the component's component Object, which takes advantages of Angular's binding mechanism in order to represent the element
  
+#### zProtoChild Schema
+* unknown properties,classes and interfaces can be defined in customExports.ts
+```ts
+export interface zProtoChildren {
+    key? : String;
+    type: String;
+    top?: String | Number;
+    left?: String | Number;
+    width?: String | Number;
+    height?: String | Number;
+    split?: String | Number;
+    value?: String | Number
+        // images only
+        imageURL?:String;
+        //
+
+    //children only
+    next?: String // {"true"}
+    //
+    // body only
+    gap?:String | Number;
+    stack?:String | Number;
+    //
+    options?:{
+        css?:any | CSSRuleList,
+        judima?:zOptionsJudima,
+        extras?:any |
+        {
+            appVanillaTilt?:{
+                type:String,
+                group:String,
+                initOptions?:any // Vanilla Tilt init options
+            } | {
+                confirm:"true",
+                type:"body",
+                zSymbolNeeded:"true"
+            }
+        },
+        extend?:any
+    };
+
+
+    navigation?:{
+        group?:Array<{
+            name:String,
+            type: String /*{ //enum
+                "direct_link"
+            } */
+        }>,
+        name:String
+    }  | {
+        group:String
+        type:String // enum "direct_link"
+    };
+    delta?:{
+        group: Array<{
+            name:String,
+            type: String /*{ //enum
+                "add_remove_button",
+                "repeat"
+            }*/,
+            by?: String | Number
+        }>
+    }  | {
+        group:String ,
+        type?:String /*{"add","remove"}*/
+        by?: String | Number,
+        options?:any | {
+            next?: String | Function //["true","false"] // will skip to the next line or if false place next to
+        }
+    };
+    nest?:{
+        group: Array<{
+            name:string,
+            type:String/* { //enum
+                "regular"
+            },*/
+        }>
+    } | {
+        group:String;
+        name:String;
+        under?: String;
+    };
+    latch?:{
+        options?:Array<String>;
+        state?:String /*{"open","closed"};*/
+        type?:String; //display,dropdown
+        display?:{
+            type:String /*{"target","part"};*/
+            name:String
+        };
+        zChildren?:Array<{
+            bool:String;
+            css?:any | CSSRuleList
+            val?:String
+            text?:String
+            logic:{ // for as many media queries
+                desktop:{
+                    width:Number | Function,
+                    height:Number | Function,
+                    top:Number | Function,
+                    left:Number | Function
+                },
+                mobile:{
+                    width:Number | Function,
+                    height:Number | Function,
+                    top:Number | Function,
+                    left:Number | Function
+                }
+            },
+            type?:Array<String>
+            // Array<{ //Array enum
+            //     "deltaNodeContainer"
+            // }>
+            needed?:Array<{ //Array enum
+                "appLatchMetadata"
+            }>;
+            extras?:any
+            group:Array<String>
+        }>
+    }
+}
+```
+
+#### website.ts
+
+* website.ts is the JSON representation of your website, judima uses this JSON object to construct your website. Really this is the only place the developer should be, and many focus is to help it be cms friendly but right now its very developer friendly,
+* since its a .ts and not JSON file you can use typescript to make any suitable modifications to the __zProtoComponent__ - (JSON representation of a component and its HTMLElements)
+	* key- the className(s) for the element
+	* type - the type of zChild it will be, you define this in the zChildTemplate fn in the ryber's constructor
+	*stack
+		* when type === body, sets the default vertical spacing between all HTMLElements in the components		
+	* top
+		* when type !== body, sets the vertical spacing for that single element to whatever is before it
+	* left  
+		* when type === body, sets the default indentation where the component HTMLElements should start
+		* when type !== body, is the distance plus the left from (type=== body)
+		 	* if you need to make an element go before the left, lower the body left
+	* width 
+		* when type === body, sets the width of the component, if an elements width overbounds its, the next element not itself will go below it starting at the new left
+		* when type !== body, sets the width of the element
+	* height
+		* when type === body, sets the height of the board (canvas to draw component on)
+		* when type !== body, sets height of element
+	* split 
+		* when type === body, the body width is seperated by gaps and elements width, for a split of 10, if the width is 400 and the gap is 20 and there are 5 elements with a split of 1 (5*10) for 50, the total gap space and 350 left to be divided amoung the 5 elements, if each element had a split of 2, each element would be (350/ *(10/2))  	 = (350 / 5) = 70px, with a gap of 10 between, same if the numbers were different, if there was a split of 3, 95px, but the gap is still the same 10px, for pretty print purposes
+		* when type !== body, sets the split for itself
+	* value
+		* for HTMLTextElements, the string the element should display
+	* imageURL 
+		* for HTMLImageElements, the image URL, although you can provide it with extend
+	* next
+		* when,type !== body && next === "true" place the element on the next line below the previous
+			* DO NOT use next = "true" if its not required
+	* gap
+		* when type === body sets the default horizational spacing between elements in a componet
+		* when type !== body, sets the horizational spacing between the previous element and itself
+	*  options
+		* here modify the HTMLElements, css, configure the judima options, use the extras object to assoicate the elemennt with a feature from a directive, or add element attributes with extend
+	* navigation
+		* when type === body
 #### zChild properties
 * quanity -what type of zChild it is
     * there are 4 types of zChild we will discuss static and dynamic, if you are a beginner you will quickly led down the rabbit hole of understanding the other two types
@@ -34,7 +195,7 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
         * __dynamic zChild__
             * its quantity value is 2
             * its element comes in and out of the DOM when its not needed its taken completly out of memory. you interact with  data , functions ,lifecycle hook on the entrance and exit of the dynamic zChild 
-            * __NEVER REFERENCE DIRECTLY THESE zChildren BY USING THEIR SYMBOLS, ALWAYS WORK IN THE DELTANODE SYSTEM AND REFRENCE THEM IN TERMS OF THE ARRAY PROVIDE BY ITS DELTANODE GROUP
+
         * __latch zChild__ 
             * its quantity is 4
             * this represents an element that is a feature of another  element, such as options in a dropdown, or overlay for an title element. they opearte as a feature of the target element 
@@ -85,6 +246,8 @@ It is currrently at   [Angular CLI](https://github.com/angular/angular-cli) vers
     * extend - key value pairs to set the Element attributes
     * judima - object that indicates to the framework how to treat its respective individual zChild, if not set , the component then app settings take precedience
     * the rest of the objects are from user cretead  directives, however deltaNode,navigation,latch,nest, and section are built -in and are needed for the app to function and to perform the basic abilities of any website
+
+
 
 
 ### The Ryber
@@ -176,7 +339,7 @@ __FILE__
 
 ### app.component.ts
 * this is where angular intends for the application to initalize so judima uses it here
-* app initalizion partly occurs here however, everything that cannot be expressed in terms of judima are async executed here such as the loading of 3rd party scripts , global variables, navigation logic, and component configuration.component configuration is required to help judima work but the main concept is setting a data object for a component whether it was required to express judima features or not. the intent is for non-judima code to be maintained here and in the ryber,however judima is flexible make as many exceptions as you wish
+* app initalizion partly occurs here however, everything that cannot be expressed in terms of judima are async executed here such as the loading of 3rd party scripts , global variables, navigation logic, and component configuration. Component configuration is required to help judima work but the main concept is setting a data object for a component whether it was required to express judima features or not. the intent is for non-judima code to be maintained here and in the ryber,however judima is flexible make as many exceptions as you wish
 
 ### customExports.ts
 * judima utility library, 
@@ -637,6 +800,18 @@ zChildren
 		]
 
 ```
+
+##### Visible Directive
+
+* used to make elements appear and disappear according to the app
+* if you want to make components disappear use navigation instead, future support considered
+* according to standard convention, prefix types with their groupType
+
+
+|groupType|types|data|
+|:------|:------:|------|
+|click|target,toggle||
+||||
 ##### Latch Directive
 * Latch directive is used when a feature of a zChild cannot be expressed without more DOM Element, which will result in more zChildren
 * these elements may be topLevel but formatIgnore is applied because it must follow the positioning of the target element, whether they are options in a dropdown, a calendar for a date input or a shape appearing when a mouse hovers over an element
@@ -675,6 +850,7 @@ latch:{
     * you can use a function to provide a custom result if desired
 * latch.zChildren[].group is an array that indicates to the display to encompass all zChidren with latch.display.name included in that group, not your typical group you can say the display elemne is the group itself
 * you can make displays for display, but since its a ratio just try to compute dimension results from the static zChildrem display on display is a performance issue
+* also says if you want the end developer to pass data calucationg the final result with a function, we cant directly pass it so we use the metadata object, passed as metadata prop in the devObj argument, and indirectly use developer custoization with the latchUtility functions or any function you would like
 ```ts
 			{
 				"key": "heading",
@@ -711,7 +887,12 @@ latch:{
 
 									},
 									top:-40,
-									left:-40
+									left:latchUtilities.centerX(),
+									metadata:{
+										left:{
+											contain:"metadata here"
+										}
+									}
 								},
 								mobile:{
 									width:1.10,
@@ -958,27 +1139,29 @@ needed:["appLatch"],
 
 to help associate
 ```ts
-						{
-							bool:"img",
-							val:"account-image a_p_p_Login_Image",
-							css:{
-								"z-index":2
-							},
-							extras:{
-								extend:{
-									src:"./assets/media/python.jpg"
-								},
-								appFacebookLogin:{
-									type:"login-img"
-								},
-							},
-							logic:{...}
-							// 
-							needed:["appLatch"],
-							// 
-							group:["facebook_login_card"]
-						},
+{
+	bool:"img",
+	val:"account-image a_p_p_Login_Image",
+	css:{
+		"z-index":2
+	},
+	extras:{
+		extend:{
+			src:"./assets/media/python.jpg"
+		},
+		appFacebookLogin:{
+			type:"login-img"
+		},
+	},
+	logic:{...}
+	// 
+	needed:["appLatch"],
+	// 
+	group:["facebook_login_card"]
+},
 ```
+
+
 
 
 ## types schema 
@@ -1012,8 +1195,6 @@ key is the css for devs, highlighter for editors
 type represents the enum types schema above, there are no input-email, each entry goes as one word for types
 value is the value you want the element to have
 
-* group is for type = options
-    represents the option group for a set of options you want the applicant to choose from
 
 * nest  - when you want to place an element inside another, enum [A1:ZZ],notatton to represent which are children and which are parents
   nestUnder- the element to place the element in
@@ -1081,6 +1262,35 @@ color, background-color,split top,left,width,height,font-size,font-family, [shee
     // for the guide, if the field keys are the same, its all over the entry is gone, do something about this
         // for now all fields needs to be differnt
 
+## Working with other angular modules
+* theres primeng , material -carousel ...
+* whenever working with outside modules setup like so
+	* so we use extras[].options, specifically for the attribute issues with other libraries until we can come up with a better solution or if we can destructure somehow
+```html
+		<ng-template #elseBlock28  >
+            <p-carousel
+			#myVal
+
+            [value]="a.extras[1][bb].options.value"
+            [numVisible]="a.extras[1][bb].options.numVisible"
+            [circular]="a.extras[1][bb].options.circular"
+            [responsiveOptions]="a.extras[1][bb].options.responsiveOptions"
+            [orientation]="a.extras[1][bb].options.orientation"
+            [autoplayInterval]="a.extras[1][bb].options.autoplayInterval"
+            [contentClass]="a.extras[1][bb].options.contentClass"
+            [dotsContainerClass] ="a.extras[1][bb].options.dotsContainerClass"
+            [styleClass] ="a.extras[1][bb].options.styleClass"
+
+            *ngIf= "a.bool[1][bb] ==='mat-carousel'"
+            class = {{a.val[1][bb]}}
+            [ngStyle] ='a.ngCss[1][bb]'
+            appExtend [extend] = "ryber.appAvailble( a.extras[1][bb], 'extend')"
+            appLatch [latch] = "ryber.appAvailble( a.extras[1][bb], 'appLatch')"
+			>
+			...
+            </p-carousel>
+		</ng-template>
+```
 ## ToDo
 * latch directives, we could have several type each can be a features of all included types this logic should refelct in latch directive or make your own directive
 
@@ -1122,13 +1332,7 @@ color, background-color,split top,left,width,height,font-size,font-family, [shee
 
 
 ### Issues
-* for dynamic clean up you mainly wants to take care of things in clean up, what we did in the GNDC project saved us a ton but even for the dynamic elements in lifecycle hook 'done' instead of 'prepare' position doesnt always work, use the lifecycle hooks and place dynaimc code in the clean up block as you go from one media query to another ,
-    * if you do cleanup in the block you only have to worry about position of lifecycle hook 'done', but u can debate this because position of lifecycle hook 'prepare' is still position
-    * try to turn to repitition in position so devs can use the code more easily
-    * the dynamic elements code in features and position are the same, try to turn into a cohesive fn
-*  when the add and remove button are on the same line as the items to duplicates, the items to be moved dont know how to react properly this can be seen from movingKeep in desktop mediaQuery fix this
-* you must keep all items that belong with nesting, filtered out of dynamicPosiiton
-* multipleGroup Nesting should happen before top Level 
+*
 
 ### Tasks
 
